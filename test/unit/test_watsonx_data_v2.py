@@ -19,19 +19,19 @@ Unit Tests for WatsonxDataV2
 
 from ibm_cloud_sdk_core.authenticators.no_auth_authenticator import NoAuthAuthenticator
 import inspect
-import io
 import json
 import os
 import pytest
 import re
 import requests
 import responses
-import tempfile
 import urllib
 from ibm_watsonxdata.watsonx_data_v2 import *
 
 
-_service = WatsonxDataV2(authenticator=NoAuthAuthenticator())
+_service = WatsonxDataV2(
+    authenticator=NoAuthAuthenticator()
+)
 
 _base_url = 'https://region.lakehouse.cloud.ibm.com/lakehouse/api/v2'
 _service.set_service_url(_base_url)
@@ -44,20 +44,13 @@ def preprocess_url(operation_path: str):
     The returned request URL is used to register the mock response so it needs
     to match the request URL that is formed by the requests library.
     """
-    # First, unquote the path since it might have some quoted/escaped characters in it
-    # due to how the generator inserts the operation paths into the unit test code.
-    operation_path = urllib.parse.unquote(operation_path)
 
-    # Next, quote the path using urllib so that we approximate what will
-    # happen during request processing.
-    operation_path = urllib.parse.quote(operation_path, safe='/')
-
-    # Finally, form the request URL from the base URL and operation path.
+    # Form the request URL from the base URL and operation path.
     request_url = _base_url + operation_path
 
     # If the request url does NOT end with a /, then just return it as-is.
     # Otherwise, return a regular expression that matches one or more trailing /.
-    if re.fullmatch('.*/+', request_url) is None:
+    if not request_url.endswith('/'):
         return request_url
     return re.compile(request_url.rstrip('/') + '/+')
 
@@ -108,7 +101,7 @@ class TestListBucketRegistrations:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations')
-        mock_response = '{"bucket_registrations": [{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "<access_key>", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "secret_key"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}]}'
+        mock_response = '{"bucket_registrations": [{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}]}'
         responses.add(
             responses.GET,
             url,
@@ -146,7 +139,7 @@ class TestListBucketRegistrations:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations')
-        mock_response = '{"bucket_registrations": [{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "<access_key>", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "secret_key"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}]}'
+        mock_response = '{"bucket_registrations": [{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}]}'
         responses.add(
             responses.GET,
             url,
@@ -184,7 +177,7 @@ class TestCreateBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "<access_key>", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "secret_key"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
         responses.add(
             responses.POST,
             url,
@@ -195,10 +188,10 @@ class TestCreateBucketRegistration:
 
         # Construct a dict representation of a BucketDetails model
         bucket_details_model = {}
-        bucket_details_model['access_key'] = '<access_key>'
+        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
         bucket_details_model['bucket_name'] = 'sample-bucket'
         bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        bucket_details_model['secret_key'] = 'secret_key'
+        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
 
         # Construct a dict representation of a BucketCatalog model
         bucket_catalog_model = {}
@@ -261,7 +254,7 @@ class TestCreateBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "<access_key>", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "secret_key"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
         responses.add(
             responses.POST,
             url,
@@ -272,10 +265,10 @@ class TestCreateBucketRegistration:
 
         # Construct a dict representation of a BucketDetails model
         bucket_details_model = {}
-        bucket_details_model['access_key'] = '<access_key>'
+        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
         bucket_details_model['bucket_name'] = 'sample-bucket'
         bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        bucket_details_model['secret_key'] = 'secret_key'
+        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
 
         # Construct a dict representation of a BucketCatalog model
         bucket_catalog_model = {}
@@ -336,7 +329,7 @@ class TestCreateBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "<access_key>", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "secret_key"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
         responses.add(
             responses.POST,
             url,
@@ -347,10 +340,10 @@ class TestCreateBucketRegistration:
 
         # Construct a dict representation of a BucketDetails model
         bucket_details_model = {}
-        bucket_details_model['access_key'] = '<access_key>'
+        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
         bucket_details_model['bucket_name'] = 'sample-bucket'
         bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        bucket_details_model['secret_key'] = 'secret_key'
+        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
 
         # Construct a dict representation of a BucketCatalog model
         bucket_catalog_model = {}
@@ -402,7 +395,7 @@ class TestGetBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "<access_key>", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "secret_key"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
         responses.add(
             responses.GET,
             url,
@@ -442,7 +435,7 @@ class TestGetBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "<access_key>", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "secret_key"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
         responses.add(
             responses.GET,
             url,
@@ -480,7 +473,7 @@ class TestGetBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "<access_key>", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "secret_key"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
         responses.add(
             responses.GET,
             url,
@@ -511,15 +504,15 @@ class TestGetBucketRegistration:
         self.test_get_bucket_registration_value_error()
 
 
-class TestDeleteBucketRegistration:
+class TestDeregisterBucket:
     """
-    Test Class for delete_bucket_registration
+    Test Class for deregister_bucket
     """
 
     @responses.activate
-    def test_delete_bucket_registration_all_params(self):
+    def test_deregister_bucket_all_params(self):
         """
-        delete_bucket_registration()
+        deregister_bucket()
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
@@ -534,7 +527,7 @@ class TestDeleteBucketRegistration:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.delete_bucket_registration(
+        response = _service.deregister_bucket(
             bucket_id,
             auth_instance_id=auth_instance_id,
             headers={},
@@ -544,19 +537,19 @@ class TestDeleteBucketRegistration:
         assert len(responses.calls) == 1
         assert response.status_code == 204
 
-    def test_delete_bucket_registration_all_params_with_retries(self):
-        # Enable retries and run test_delete_bucket_registration_all_params.
+    def test_deregister_bucket_all_params_with_retries(self):
+        # Enable retries and run test_deregister_bucket_all_params.
         _service.enable_retries()
-        self.test_delete_bucket_registration_all_params()
+        self.test_deregister_bucket_all_params()
 
-        # Disable retries and run test_delete_bucket_registration_all_params.
+        # Disable retries and run test_deregister_bucket_all_params.
         _service.disable_retries()
-        self.test_delete_bucket_registration_all_params()
+        self.test_deregister_bucket_all_params()
 
     @responses.activate
-    def test_delete_bucket_registration_required_params(self):
+    def test_deregister_bucket_required_params(self):
         """
-        test_delete_bucket_registration_required_params()
+        test_deregister_bucket_required_params()
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
@@ -570,7 +563,7 @@ class TestDeleteBucketRegistration:
         bucket_id = 'testString'
 
         # Invoke method
-        response = _service.delete_bucket_registration(
+        response = _service.deregister_bucket(
             bucket_id,
             headers={},
         )
@@ -579,19 +572,19 @@ class TestDeleteBucketRegistration:
         assert len(responses.calls) == 1
         assert response.status_code == 204
 
-    def test_delete_bucket_registration_required_params_with_retries(self):
-        # Enable retries and run test_delete_bucket_registration_required_params.
+    def test_deregister_bucket_required_params_with_retries(self):
+        # Enable retries and run test_deregister_bucket_required_params.
         _service.enable_retries()
-        self.test_delete_bucket_registration_required_params()
+        self.test_deregister_bucket_required_params()
 
-        # Disable retries and run test_delete_bucket_registration_required_params.
+        # Disable retries and run test_deregister_bucket_required_params.
         _service.disable_retries()
-        self.test_delete_bucket_registration_required_params()
+        self.test_deregister_bucket_required_params()
 
     @responses.activate
-    def test_delete_bucket_registration_value_error(self):
+    def test_deregister_bucket_value_error(self):
         """
-        test_delete_bucket_registration_value_error()
+        test_deregister_bucket_value_error()
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
@@ -611,16 +604,16 @@ class TestDeleteBucketRegistration:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.delete_bucket_registration(**req_copy)
+                _service.deregister_bucket(**req_copy)
 
-    def test_delete_bucket_registration_value_error_with_retries(self):
-        # Enable retries and run test_delete_bucket_registration_value_error.
+    def test_deregister_bucket_value_error_with_retries(self):
+        # Enable retries and run test_deregister_bucket_value_error.
         _service.enable_retries()
-        self.test_delete_bucket_registration_value_error()
+        self.test_deregister_bucket_value_error()
 
-        # Disable retries and run test_delete_bucket_registration_value_error.
+        # Disable retries and run test_deregister_bucket_value_error.
         _service.disable_retries()
-        self.test_delete_bucket_registration_value_error()
+        self.test_deregister_bucket_value_error()
 
 
 class TestUpdateBucketRegistration:
@@ -635,7 +628,7 @@ class TestUpdateBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "<access_key>", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "secret_key"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
         responses.add(
             responses.PATCH,
             url,
@@ -644,16 +637,23 @@ class TestUpdateBucketRegistration:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a BucketDetails model
+        bucket_details_model = {}
+        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
+        bucket_details_model['bucket_name'] = 'sample-bucket'
+        bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
+        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
+
+        # Construct a dict representation of a BucketRegistrationPatch model
+        bucket_registration_patch_model = {}
+        bucket_registration_patch_model['bucket_details'] = bucket_details_model
+        bucket_registration_patch_model['bucket_display_name'] = 'sample-bucket-displayname'
+        bucket_registration_patch_model['description'] = 'COS bucket for customer data'
+        bucket_registration_patch_model['tags'] = ['testbucket', 'userbucket']
 
         # Set up parameter values
         bucket_id = 'testString'
-        body = [json_patch_operation_model]
+        body = bucket_registration_patch_model
         auth_instance_id = 'testString'
 
         # Invoke method
@@ -687,7 +687,7 @@ class TestUpdateBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "<access_key>", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "secret_key"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
         responses.add(
             responses.PATCH,
             url,
@@ -696,16 +696,23 @@ class TestUpdateBucketRegistration:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a BucketDetails model
+        bucket_details_model = {}
+        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
+        bucket_details_model['bucket_name'] = 'sample-bucket'
+        bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
+        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
+
+        # Construct a dict representation of a BucketRegistrationPatch model
+        bucket_registration_patch_model = {}
+        bucket_registration_patch_model['bucket_details'] = bucket_details_model
+        bucket_registration_patch_model['bucket_display_name'] = 'sample-bucket-displayname'
+        bucket_registration_patch_model['description'] = 'COS bucket for customer data'
+        bucket_registration_patch_model['tags'] = ['testbucket', 'userbucket']
 
         # Set up parameter values
         bucket_id = 'testString'
-        body = [json_patch_operation_model]
+        body = bucket_registration_patch_model
 
         # Invoke method
         response = _service.update_bucket_registration(
@@ -737,7 +744,7 @@ class TestUpdateBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "<access_key>", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "secret_key"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
         responses.add(
             responses.PATCH,
             url,
@@ -746,16 +753,23 @@ class TestUpdateBucketRegistration:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a BucketDetails model
+        bucket_details_model = {}
+        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
+        bucket_details_model['bucket_name'] = 'sample-bucket'
+        bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
+        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
+
+        # Construct a dict representation of a BucketRegistrationPatch model
+        bucket_registration_patch_model = {}
+        bucket_registration_patch_model['bucket_details'] = bucket_details_model
+        bucket_registration_patch_model['bucket_display_name'] = 'sample-bucket-displayname'
+        bucket_registration_patch_model['description'] = 'COS bucket for customer data'
+        bucket_registration_patch_model['tags'] = ['testbucket', 'userbucket']
 
         # Set up parameter values
         bucket_id = 'testString'
-        body = [json_patch_operation_model]
+        body = bucket_registration_patch_model
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -1131,173 +1145,6 @@ class TestListBucketObjects:
         self.test_list_bucket_objects_value_error()
 
 
-class TestTestBucketConnection:
-    """
-    Test Class for test_bucket_connection
-    """
-
-    @responses.activate
-    def test_test_bucket_connection_all_params(self):
-        """
-        test_bucket_connection()
-        """
-        # Set up mock
-        url = preprocess_url('/test_bucket_connection')
-        mock_response = '{"bucket_status": {"state": true, "state_message": "bucket does not exist or the credentials provided are not valid."}, "response": {"message": "message", "message_code": "message_code"}}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Set up parameter values
-        access_key = '<access_key>'
-        bucket_name = 'sample-bucket'
-        bucket_type = 'ibm_cos'
-        endpoint = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        region = 'us-south'
-        secret_key = 'secret_key'
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.test_bucket_connection(
-            access_key,
-            bucket_name,
-            bucket_type,
-            endpoint,
-            region,
-            secret_key,
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-        # Validate body params
-        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['access_key'] == '<access_key>'
-        assert req_body['bucket_name'] == 'sample-bucket'
-        assert req_body['bucket_type'] == 'ibm_cos'
-        assert req_body['endpoint'] == 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        assert req_body['region'] == 'us-south'
-        assert req_body['secret_key'] == 'secret_key'
-
-    def test_test_bucket_connection_all_params_with_retries(self):
-        # Enable retries and run test_test_bucket_connection_all_params.
-        _service.enable_retries()
-        self.test_test_bucket_connection_all_params()
-
-        # Disable retries and run test_test_bucket_connection_all_params.
-        _service.disable_retries()
-        self.test_test_bucket_connection_all_params()
-
-    @responses.activate
-    def test_test_bucket_connection_required_params(self):
-        """
-        test_test_bucket_connection_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/test_bucket_connection')
-        mock_response = '{"bucket_status": {"state": true, "state_message": "bucket does not exist or the credentials provided are not valid."}, "response": {"message": "message", "message_code": "message_code"}}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Set up parameter values
-        access_key = '<access_key>'
-        bucket_name = 'sample-bucket'
-        bucket_type = 'ibm_cos'
-        endpoint = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        region = 'us-south'
-        secret_key = 'secret_key'
-
-        # Invoke method
-        response = _service.test_bucket_connection(
-            access_key,
-            bucket_name,
-            bucket_type,
-            endpoint,
-            region,
-            secret_key,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-        # Validate body params
-        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['access_key'] == '<access_key>'
-        assert req_body['bucket_name'] == 'sample-bucket'
-        assert req_body['bucket_type'] == 'ibm_cos'
-        assert req_body['endpoint'] == 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        assert req_body['region'] == 'us-south'
-        assert req_body['secret_key'] == 'secret_key'
-
-    def test_test_bucket_connection_required_params_with_retries(self):
-        # Enable retries and run test_test_bucket_connection_required_params.
-        _service.enable_retries()
-        self.test_test_bucket_connection_required_params()
-
-        # Disable retries and run test_test_bucket_connection_required_params.
-        _service.disable_retries()
-        self.test_test_bucket_connection_required_params()
-
-    @responses.activate
-    def test_test_bucket_connection_value_error(self):
-        """
-        test_test_bucket_connection_value_error()
-        """
-        # Set up mock
-        url = preprocess_url('/test_bucket_connection')
-        mock_response = '{"bucket_status": {"state": true, "state_message": "bucket does not exist or the credentials provided are not valid."}, "response": {"message": "message", "message_code": "message_code"}}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Set up parameter values
-        access_key = '<access_key>'
-        bucket_name = 'sample-bucket'
-        bucket_type = 'ibm_cos'
-        endpoint = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        region = 'us-south'
-        secret_key = 'secret_key'
-
-        # Pass in all but one required param and check for a ValueError
-        req_param_dict = {
-            "access_key": access_key,
-            "bucket_name": bucket_name,
-            "bucket_type": bucket_type,
-            "endpoint": endpoint,
-            "region": region,
-            "secret_key": secret_key,
-        }
-        for param in req_param_dict.keys():
-            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
-            with pytest.raises(ValueError):
-                _service.test_bucket_connection(**req_copy)
-
-    def test_test_bucket_connection_value_error_with_retries(self):
-        # Enable retries and run test_test_bucket_connection_value_error.
-        _service.enable_retries()
-        self.test_test_bucket_connection_value_error()
-
-        # Disable retries and run test_test_bucket_connection_value_error.
-        _service.disable_retries()
-        self.test_test_bucket_connection_value_error()
-
-
 # endregion
 ##############################################################################
 # End of Service: Buckets
@@ -1335,193 +1182,6 @@ class TestNewInstance:
             service = WatsonxDataV2.new_instance(
                 service_name='TEST_SERVICE_NOT_FOUND',
             )
-
-
-class TestCreateDriverDatabaseCatalog:
-    """
-    Test Class for create_driver_database_catalog
-    """
-
-    @responses.activate
-    def test_create_driver_database_catalog_all_params(self):
-        """
-        create_driver_database_catalog()
-        """
-        # Set up mock
-        url = preprocess_url('/database_driver_registrations')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=201,
-        )
-
-        # Set up parameter values
-        driver = io.BytesIO(b'This is a mock file.').getvalue()
-        driver_file_name = 'testString'
-        database_display_name = 'testString'
-        database_type = 'testString'
-        catalog_name = 'testString'
-        hostname = 'testString'
-        port = 'testString'
-        username = 'testString'
-        password = 'testString'
-        database_name = 'testString'
-        driver_content_type = 'testString'
-        certificate = 'testString'
-        certificate_extension = 'testString'
-        ssl = 'testString'
-        description = 'testString'
-        created_on = 'testString'
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.create_driver_database_catalog(
-            driver,
-            driver_file_name,
-            database_display_name,
-            database_type,
-            catalog_name,
-            hostname,
-            port,
-            username,
-            password,
-            database_name,
-            driver_content_type=driver_content_type,
-            certificate=certificate,
-            certificate_extension=certificate_extension,
-            ssl=ssl,
-            description=description,
-            created_on=created_on,
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 201
-
-    def test_create_driver_database_catalog_all_params_with_retries(self):
-        # Enable retries and run test_create_driver_database_catalog_all_params.
-        _service.enable_retries()
-        self.test_create_driver_database_catalog_all_params()
-
-        # Disable retries and run test_create_driver_database_catalog_all_params.
-        _service.disable_retries()
-        self.test_create_driver_database_catalog_all_params()
-
-    @responses.activate
-    def test_create_driver_database_catalog_required_params(self):
-        """
-        test_create_driver_database_catalog_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/database_driver_registrations')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=201,
-        )
-
-        # Set up parameter values
-        driver = io.BytesIO(b'This is a mock file.').getvalue()
-        driver_file_name = 'testString'
-        database_display_name = 'testString'
-        database_type = 'testString'
-        catalog_name = 'testString'
-        hostname = 'testString'
-        port = 'testString'
-        username = 'testString'
-        password = 'testString'
-        database_name = 'testString'
-
-        # Invoke method
-        response = _service.create_driver_database_catalog(
-            driver,
-            driver_file_name,
-            database_display_name,
-            database_type,
-            catalog_name,
-            hostname,
-            port,
-            username,
-            password,
-            database_name,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 201
-
-    def test_create_driver_database_catalog_required_params_with_retries(self):
-        # Enable retries and run test_create_driver_database_catalog_required_params.
-        _service.enable_retries()
-        self.test_create_driver_database_catalog_required_params()
-
-        # Disable retries and run test_create_driver_database_catalog_required_params.
-        _service.disable_retries()
-        self.test_create_driver_database_catalog_required_params()
-
-    @responses.activate
-    def test_create_driver_database_catalog_value_error(self):
-        """
-        test_create_driver_database_catalog_value_error()
-        """
-        # Set up mock
-        url = preprocess_url('/database_driver_registrations')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=201,
-        )
-
-        # Set up parameter values
-        driver = io.BytesIO(b'This is a mock file.').getvalue()
-        driver_file_name = 'testString'
-        database_display_name = 'testString'
-        database_type = 'testString'
-        catalog_name = 'testString'
-        hostname = 'testString'
-        port = 'testString'
-        username = 'testString'
-        password = 'testString'
-        database_name = 'testString'
-
-        # Pass in all but one required param and check for a ValueError
-        req_param_dict = {
-            "driver": driver,
-            "driver_file_name": driver_file_name,
-            "database_display_name": database_display_name,
-            "database_type": database_type,
-            "catalog_name": catalog_name,
-            "hostname": hostname,
-            "port": port,
-            "username": username,
-            "password": password,
-            "database_name": database_name,
-        }
-        for param in req_param_dict.keys():
-            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
-            with pytest.raises(ValueError):
-                _service.create_driver_database_catalog(**req_copy)
-
-    def test_create_driver_database_catalog_value_error_with_retries(self):
-        # Enable retries and run test_create_driver_database_catalog_value_error.
-        _service.enable_retries()
-        self.test_create_driver_database_catalog_value_error()
-
-        # Disable retries and run test_create_driver_database_catalog_value_error.
-        _service.disable_retries()
-        self.test_create_driver_database_catalog_value_error()
 
 
 class TestListDatabaseRegistrations:
@@ -2115,16 +1775,21 @@ class TestUpdateDatabase:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a DatabaseRegistrationPatchDatabaseDetails model
+        database_registration_patch_database_details_model = {}
+        database_registration_patch_database_details_model['password'] = 'samplepassword'
+        database_registration_patch_database_details_model['username'] = 'sampleuser'
+
+        # Construct a dict representation of a DatabaseRegistrationPatch model
+        database_registration_patch_model = {}
+        database_registration_patch_model['database_details'] = database_registration_patch_database_details_model
+        database_registration_patch_model['database_display_name'] = 'new_database'
+        database_registration_patch_model['description'] = 'External database description'
+        database_registration_patch_model['tags'] = ['testdatabase', 'userdatabase']
 
         # Set up parameter values
         database_id = 'testString'
-        body = [json_patch_operation_model]
+        body = database_registration_patch_model
         auth_instance_id = 'testString'
 
         # Invoke method
@@ -2167,16 +1832,21 @@ class TestUpdateDatabase:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a DatabaseRegistrationPatchDatabaseDetails model
+        database_registration_patch_database_details_model = {}
+        database_registration_patch_database_details_model['password'] = 'samplepassword'
+        database_registration_patch_database_details_model['username'] = 'sampleuser'
+
+        # Construct a dict representation of a DatabaseRegistrationPatch model
+        database_registration_patch_model = {}
+        database_registration_patch_model['database_details'] = database_registration_patch_database_details_model
+        database_registration_patch_model['database_display_name'] = 'new_database'
+        database_registration_patch_model['description'] = 'External database description'
+        database_registration_patch_model['tags'] = ['testdatabase', 'userdatabase']
 
         # Set up parameter values
         database_id = 'testString'
-        body = [json_patch_operation_model]
+        body = database_registration_patch_model
 
         # Invoke method
         response = _service.update_database(
@@ -2217,16 +1887,21 @@ class TestUpdateDatabase:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a DatabaseRegistrationPatchDatabaseDetails model
+        database_registration_patch_database_details_model = {}
+        database_registration_patch_database_details_model['password'] = 'samplepassword'
+        database_registration_patch_database_details_model['username'] = 'sampleuser'
+
+        # Construct a dict representation of a DatabaseRegistrationPatch model
+        database_registration_patch_model = {}
+        database_registration_patch_model['database_details'] = database_registration_patch_database_details_model
+        database_registration_patch_model['database_display_name'] = 'new_database'
+        database_registration_patch_model['description'] = 'External database description'
+        database_registration_patch_model['tags'] = ['testdatabase', 'userdatabase']
 
         # Set up parameter values
         database_id = 'testString'
-        body = [json_patch_operation_model]
+        body = database_registration_patch_model
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -2248,191 +1923,13 @@ class TestUpdateDatabase:
         self.test_update_database_value_error()
 
 
-class TestValidateDatabaseConnection:
-    """
-    Test Class for validate_database_connection
-    """
-
-    @responses.activate
-    def test_validate_database_connection_all_params(self):
-        """
-        validate_database_connection()
-        """
-        # Set up mock
-        url = preprocess_url('/test_database_connection')
-        mock_response = '{"connection_response": {"state": false, "state_message": "state_message"}}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Construct a dict representation of a ValidateDatabaseBodyDatabaseDetails model
-        validate_database_body_database_details_model = {}
-        validate_database_body_database_details_model['database_name'] = 'sampledatabase'
-        validate_database_body_database_details_model['hostname'] = 'db2@hostname.com'
-        validate_database_body_database_details_model['password'] = 'samplepassword'
-        validate_database_body_database_details_model['port'] = 4553
-        validate_database_body_database_details_model['sasl'] = True
-        validate_database_body_database_details_model['ssl'] = True
-        validate_database_body_database_details_model['tables'] = 'kafka_table_name'
-        validate_database_body_database_details_model['username'] = 'sampleuser'
-        validate_database_body_database_details_model['validate_server_certificate'] = True
-
-        # Set up parameter values
-        database_details = validate_database_body_database_details_model
-        database_type = 'netezza'
-        certificate = 'contents of a pem/crt file'
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.validate_database_connection(
-            database_details,
-            database_type,
-            certificate=certificate,
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-        # Validate body params
-        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['database_details'] == validate_database_body_database_details_model
-        assert req_body['database_type'] == 'netezza'
-        assert req_body['certificate'] == 'contents of a pem/crt file'
-
-    def test_validate_database_connection_all_params_with_retries(self):
-        # Enable retries and run test_validate_database_connection_all_params.
-        _service.enable_retries()
-        self.test_validate_database_connection_all_params()
-
-        # Disable retries and run test_validate_database_connection_all_params.
-        _service.disable_retries()
-        self.test_validate_database_connection_all_params()
-
-    @responses.activate
-    def test_validate_database_connection_required_params(self):
-        """
-        test_validate_database_connection_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/test_database_connection')
-        mock_response = '{"connection_response": {"state": false, "state_message": "state_message"}}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Construct a dict representation of a ValidateDatabaseBodyDatabaseDetails model
-        validate_database_body_database_details_model = {}
-        validate_database_body_database_details_model['database_name'] = 'sampledatabase'
-        validate_database_body_database_details_model['hostname'] = 'db2@hostname.com'
-        validate_database_body_database_details_model['password'] = 'samplepassword'
-        validate_database_body_database_details_model['port'] = 4553
-        validate_database_body_database_details_model['sasl'] = True
-        validate_database_body_database_details_model['ssl'] = True
-        validate_database_body_database_details_model['tables'] = 'kafka_table_name'
-        validate_database_body_database_details_model['username'] = 'sampleuser'
-        validate_database_body_database_details_model['validate_server_certificate'] = True
-
-        # Set up parameter values
-        database_details = validate_database_body_database_details_model
-        database_type = 'netezza'
-        certificate = 'contents of a pem/crt file'
-
-        # Invoke method
-        response = _service.validate_database_connection(
-            database_details,
-            database_type,
-            certificate=certificate,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-        # Validate body params
-        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['database_details'] == validate_database_body_database_details_model
-        assert req_body['database_type'] == 'netezza'
-        assert req_body['certificate'] == 'contents of a pem/crt file'
-
-    def test_validate_database_connection_required_params_with_retries(self):
-        # Enable retries and run test_validate_database_connection_required_params.
-        _service.enable_retries()
-        self.test_validate_database_connection_required_params()
-
-        # Disable retries and run test_validate_database_connection_required_params.
-        _service.disable_retries()
-        self.test_validate_database_connection_required_params()
-
-    @responses.activate
-    def test_validate_database_connection_value_error(self):
-        """
-        test_validate_database_connection_value_error()
-        """
-        # Set up mock
-        url = preprocess_url('/test_database_connection')
-        mock_response = '{"connection_response": {"state": false, "state_message": "state_message"}}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Construct a dict representation of a ValidateDatabaseBodyDatabaseDetails model
-        validate_database_body_database_details_model = {}
-        validate_database_body_database_details_model['database_name'] = 'sampledatabase'
-        validate_database_body_database_details_model['hostname'] = 'db2@hostname.com'
-        validate_database_body_database_details_model['password'] = 'samplepassword'
-        validate_database_body_database_details_model['port'] = 4553
-        validate_database_body_database_details_model['sasl'] = True
-        validate_database_body_database_details_model['ssl'] = True
-        validate_database_body_database_details_model['tables'] = 'kafka_table_name'
-        validate_database_body_database_details_model['username'] = 'sampleuser'
-        validate_database_body_database_details_model['validate_server_certificate'] = True
-
-        # Set up parameter values
-        database_details = validate_database_body_database_details_model
-        database_type = 'netezza'
-        certificate = 'contents of a pem/crt file'
-
-        # Pass in all but one required param and check for a ValueError
-        req_param_dict = {
-            "database_details": database_details,
-            "database_type": database_type,
-        }
-        for param in req_param_dict.keys():
-            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
-            with pytest.raises(ValueError):
-                _service.validate_database_connection(**req_copy)
-
-    def test_validate_database_connection_value_error_with_retries(self):
-        # Enable retries and run test_validate_database_connection_value_error.
-        _service.enable_retries()
-        self.test_validate_database_connection_value_error()
-
-        # Disable retries and run test_validate_database_connection_value_error.
-        _service.disable_retries()
-        self.test_validate_database_connection_value_error()
-
-
 # endregion
 ##############################################################################
 # End of Service: Databases
 ##############################################################################
 
 ##############################################################################
-# Start of Service: Engines
+# Start of Service: OtherEngines
 ##############################################################################
 # region
 
@@ -2463,1192 +1960,6 @@ class TestNewInstance:
             service = WatsonxDataV2.new_instance(
                 service_name='TEST_SERVICE_NOT_FOUND',
             )
-
-
-class TestListDb2Engines:
-    """
-    Test Class for list_db2_engines
-    """
-
-    @responses.activate
-    def test_list_db2_engines_all_params(self):
-        """
-        list_db2_engines()
-        """
-        # Set up mock
-        url = preprocess_url('/db2_engines')
-        mock_response = '{"db2_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}]}'
-        responses.add(
-            responses.GET,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Set up parameter values
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.list_db2_engines(
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-
-    def test_list_db2_engines_all_params_with_retries(self):
-        # Enable retries and run test_list_db2_engines_all_params.
-        _service.enable_retries()
-        self.test_list_db2_engines_all_params()
-
-        # Disable retries and run test_list_db2_engines_all_params.
-        _service.disable_retries()
-        self.test_list_db2_engines_all_params()
-
-    @responses.activate
-    def test_list_db2_engines_required_params(self):
-        """
-        test_list_db2_engines_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/db2_engines')
-        mock_response = '{"db2_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}]}'
-        responses.add(
-            responses.GET,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Invoke method
-        response = _service.list_db2_engines()
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-
-    def test_list_db2_engines_required_params_with_retries(self):
-        # Enable retries and run test_list_db2_engines_required_params.
-        _service.enable_retries()
-        self.test_list_db2_engines_required_params()
-
-        # Disable retries and run test_list_db2_engines_required_params.
-        _service.disable_retries()
-        self.test_list_db2_engines_required_params()
-
-
-class TestCreateDb2Engine:
-    """
-    Test Class for create_db2_engine
-    """
-
-    @responses.activate
-    def test_create_db2_engine_all_params(self):
-        """
-        create_db2_engine()
-        """
-        # Set up mock
-        url = preprocess_url('/db2_engines')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=201,
-        )
-
-        # Construct a dict representation of a Db2EngineDetailsBody model
-        db2_engine_details_body_model = {}
-        db2_engine_details_body_model['connection_string'] = '1.2.3.4'
-
-        # Set up parameter values
-        origin = 'external'
-        type = 'db2'
-        description = 'db2 engine description'
-        engine_details = db2_engine_details_body_model
-        engine_display_name = 'sampleEngine'
-        tags = ['tag1', 'tag2']
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.create_db2_engine(
-            origin,
-            type,
-            description=description,
-            engine_details=engine_details,
-            engine_display_name=engine_display_name,
-            tags=tags,
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 201
-        # Validate body params
-        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['origin'] == 'external'
-        assert req_body['type'] == 'db2'
-        assert req_body['description'] == 'db2 engine description'
-        assert req_body['engine_details'] == db2_engine_details_body_model
-        assert req_body['engine_display_name'] == 'sampleEngine'
-        assert req_body['tags'] == ['tag1', 'tag2']
-
-    def test_create_db2_engine_all_params_with_retries(self):
-        # Enable retries and run test_create_db2_engine_all_params.
-        _service.enable_retries()
-        self.test_create_db2_engine_all_params()
-
-        # Disable retries and run test_create_db2_engine_all_params.
-        _service.disable_retries()
-        self.test_create_db2_engine_all_params()
-
-    @responses.activate
-    def test_create_db2_engine_required_params(self):
-        """
-        test_create_db2_engine_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/db2_engines')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=201,
-        )
-
-        # Construct a dict representation of a Db2EngineDetailsBody model
-        db2_engine_details_body_model = {}
-        db2_engine_details_body_model['connection_string'] = '1.2.3.4'
-
-        # Set up parameter values
-        origin = 'external'
-        type = 'db2'
-        description = 'db2 engine description'
-        engine_details = db2_engine_details_body_model
-        engine_display_name = 'sampleEngine'
-        tags = ['tag1', 'tag2']
-
-        # Invoke method
-        response = _service.create_db2_engine(
-            origin,
-            type,
-            description=description,
-            engine_details=engine_details,
-            engine_display_name=engine_display_name,
-            tags=tags,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 201
-        # Validate body params
-        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['origin'] == 'external'
-        assert req_body['type'] == 'db2'
-        assert req_body['description'] == 'db2 engine description'
-        assert req_body['engine_details'] == db2_engine_details_body_model
-        assert req_body['engine_display_name'] == 'sampleEngine'
-        assert req_body['tags'] == ['tag1', 'tag2']
-
-    def test_create_db2_engine_required_params_with_retries(self):
-        # Enable retries and run test_create_db2_engine_required_params.
-        _service.enable_retries()
-        self.test_create_db2_engine_required_params()
-
-        # Disable retries and run test_create_db2_engine_required_params.
-        _service.disable_retries()
-        self.test_create_db2_engine_required_params()
-
-    @responses.activate
-    def test_create_db2_engine_value_error(self):
-        """
-        test_create_db2_engine_value_error()
-        """
-        # Set up mock
-        url = preprocess_url('/db2_engines')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=201,
-        )
-
-        # Construct a dict representation of a Db2EngineDetailsBody model
-        db2_engine_details_body_model = {}
-        db2_engine_details_body_model['connection_string'] = '1.2.3.4'
-
-        # Set up parameter values
-        origin = 'external'
-        type = 'db2'
-        description = 'db2 engine description'
-        engine_details = db2_engine_details_body_model
-        engine_display_name = 'sampleEngine'
-        tags = ['tag1', 'tag2']
-
-        # Pass in all but one required param and check for a ValueError
-        req_param_dict = {
-            "origin": origin,
-            "type": type,
-        }
-        for param in req_param_dict.keys():
-            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
-            with pytest.raises(ValueError):
-                _service.create_db2_engine(**req_copy)
-
-    def test_create_db2_engine_value_error_with_retries(self):
-        # Enable retries and run test_create_db2_engine_value_error.
-        _service.enable_retries()
-        self.test_create_db2_engine_value_error()
-
-        # Disable retries and run test_create_db2_engine_value_error.
-        _service.disable_retries()
-        self.test_create_db2_engine_value_error()
-
-
-class TestDeleteDb2Engine:
-    """
-    Test Class for delete_db2_engine
-    """
-
-    @responses.activate
-    def test_delete_db2_engine_all_params(self):
-        """
-        delete_db2_engine()
-        """
-        # Set up mock
-        url = preprocess_url('/db2_engines/testString')
-        responses.add(
-            responses.DELETE,
-            url,
-            status=204,
-        )
-
-        # Set up parameter values
-        engine_id = 'testString'
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.delete_db2_engine(
-            engine_id,
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 204
-
-    def test_delete_db2_engine_all_params_with_retries(self):
-        # Enable retries and run test_delete_db2_engine_all_params.
-        _service.enable_retries()
-        self.test_delete_db2_engine_all_params()
-
-        # Disable retries and run test_delete_db2_engine_all_params.
-        _service.disable_retries()
-        self.test_delete_db2_engine_all_params()
-
-    @responses.activate
-    def test_delete_db2_engine_required_params(self):
-        """
-        test_delete_db2_engine_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/db2_engines/testString')
-        responses.add(
-            responses.DELETE,
-            url,
-            status=204,
-        )
-
-        # Set up parameter values
-        engine_id = 'testString'
-
-        # Invoke method
-        response = _service.delete_db2_engine(
-            engine_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 204
-
-    def test_delete_db2_engine_required_params_with_retries(self):
-        # Enable retries and run test_delete_db2_engine_required_params.
-        _service.enable_retries()
-        self.test_delete_db2_engine_required_params()
-
-        # Disable retries and run test_delete_db2_engine_required_params.
-        _service.disable_retries()
-        self.test_delete_db2_engine_required_params()
-
-    @responses.activate
-    def test_delete_db2_engine_value_error(self):
-        """
-        test_delete_db2_engine_value_error()
-        """
-        # Set up mock
-        url = preprocess_url('/db2_engines/testString')
-        responses.add(
-            responses.DELETE,
-            url,
-            status=204,
-        )
-
-        # Set up parameter values
-        engine_id = 'testString'
-
-        # Pass in all but one required param and check for a ValueError
-        req_param_dict = {
-            "engine_id": engine_id,
-        }
-        for param in req_param_dict.keys():
-            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
-            with pytest.raises(ValueError):
-                _service.delete_db2_engine(**req_copy)
-
-    def test_delete_db2_engine_value_error_with_retries(self):
-        # Enable retries and run test_delete_db2_engine_value_error.
-        _service.enable_retries()
-        self.test_delete_db2_engine_value_error()
-
-        # Disable retries and run test_delete_db2_engine_value_error.
-        _service.disable_retries()
-        self.test_delete_db2_engine_value_error()
-
-
-class TestUpdateDb2Engine:
-    """
-    Test Class for update_db2_engine
-    """
-
-    @responses.activate
-    def test_update_db2_engine_all_params(self):
-        """
-        update_db2_engine()
-        """
-        # Set up mock
-        url = preprocess_url('/db2_engines/testString')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}'
-        responses.add(
-            responses.PATCH,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
-
-        # Set up parameter values
-        engine_id = 'testString'
-        body = [json_patch_operation_model]
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.update_db2_engine(
-            engine_id,
-            body,
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-        # Validate body params
-        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body == body
-
-    def test_update_db2_engine_all_params_with_retries(self):
-        # Enable retries and run test_update_db2_engine_all_params.
-        _service.enable_retries()
-        self.test_update_db2_engine_all_params()
-
-        # Disable retries and run test_update_db2_engine_all_params.
-        _service.disable_retries()
-        self.test_update_db2_engine_all_params()
-
-    @responses.activate
-    def test_update_db2_engine_required_params(self):
-        """
-        test_update_db2_engine_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/db2_engines/testString')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}'
-        responses.add(
-            responses.PATCH,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
-
-        # Set up parameter values
-        engine_id = 'testString'
-        body = [json_patch_operation_model]
-
-        # Invoke method
-        response = _service.update_db2_engine(
-            engine_id,
-            body,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-        # Validate body params
-        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body == body
-
-    def test_update_db2_engine_required_params_with_retries(self):
-        # Enable retries and run test_update_db2_engine_required_params.
-        _service.enable_retries()
-        self.test_update_db2_engine_required_params()
-
-        # Disable retries and run test_update_db2_engine_required_params.
-        _service.disable_retries()
-        self.test_update_db2_engine_required_params()
-
-    @responses.activate
-    def test_update_db2_engine_value_error(self):
-        """
-        test_update_db2_engine_value_error()
-        """
-        # Set up mock
-        url = preprocess_url('/db2_engines/testString')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}'
-        responses.add(
-            responses.PATCH,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
-
-        # Set up parameter values
-        engine_id = 'testString'
-        body = [json_patch_operation_model]
-
-        # Pass in all but one required param and check for a ValueError
-        req_param_dict = {
-            "engine_id": engine_id,
-            "body": body,
-        }
-        for param in req_param_dict.keys():
-            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
-            with pytest.raises(ValueError):
-                _service.update_db2_engine(**req_copy)
-
-    def test_update_db2_engine_value_error_with_retries(self):
-        # Enable retries and run test_update_db2_engine_value_error.
-        _service.enable_retries()
-        self.test_update_db2_engine_value_error()
-
-        # Disable retries and run test_update_db2_engine_value_error.
-        _service.disable_retries()
-        self.test_update_db2_engine_value_error()
-
-
-class TestGetEngines:
-    """
-    Test Class for get_engines
-    """
-
-    @responses.activate
-    def test_get_engines_all_params(self):
-        """
-        get_engines()
-        """
-        # Set up mock
-        url = preprocess_url('/engines')
-        mock_response = '{"engines": {"db2_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}], "milvus_services": [{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}], "netezza_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}], "prestissimo_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}], "presto_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}], "spark_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "ibm", "status": "Registered", "tags": ["tags"], "type": "spark"}]}}'
-        responses.add(
-            responses.GET,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Set up parameter values
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.get_engines(
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-
-    def test_get_engines_all_params_with_retries(self):
-        # Enable retries and run test_get_engines_all_params.
-        _service.enable_retries()
-        self.test_get_engines_all_params()
-
-        # Disable retries and run test_get_engines_all_params.
-        _service.disable_retries()
-        self.test_get_engines_all_params()
-
-    @responses.activate
-    def test_get_engines_required_params(self):
-        """
-        test_get_engines_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/engines')
-        mock_response = '{"engines": {"db2_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}], "milvus_services": [{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}], "netezza_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}], "prestissimo_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}], "presto_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}], "spark_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "ibm", "status": "Registered", "tags": ["tags"], "type": "spark"}]}}'
-        responses.add(
-            responses.GET,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Invoke method
-        response = _service.get_engines()
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-
-    def test_get_engines_required_params_with_retries(self):
-        # Enable retries and run test_get_engines_required_params.
-        _service.enable_retries()
-        self.test_get_engines_required_params()
-
-        # Disable retries and run test_get_engines_required_params.
-        _service.disable_retries()
-        self.test_get_engines_required_params()
-
-
-class TestGetDeployments:
-    """
-    Test Class for get_deployments
-    """
-
-    @responses.activate
-    def test_get_deployments_all_params(self):
-        """
-        get_deployments()
-        """
-        # Set up mock
-        url = preprocess_url('/instance')
-        mock_response = '{"deploymentresponse": {"deployment": {"cloud_type": "awq", "enable_private_endpoints": true, "enable_public_endpoints": true, "first_time_use": false, "formation_id": "new_form_id", "id": "dep_id", "plan_id": "new_plan_id", "platform_options": {"backup_encryption_key_crn": "<backup_encryption_key_crn>", "disk_encryption_key_crn": "<disk_encryption_key_crn>", "key_protect_key_id": "<key_protect_key_id>"}, "region": "us-south", "resource_group_crn": "crn:v1:staging:public:resource-controller::a/hddrtnjjj27dh38xbw::resource-group:c02a6a94f16e4ca", "type": "deployment_type", "version": "1.0.2"}}, "response": {"message": "message", "message_code": "message_code"}}'
-        responses.add(
-            responses.GET,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Set up parameter values
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.get_deployments(
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-
-    def test_get_deployments_all_params_with_retries(self):
-        # Enable retries and run test_get_deployments_all_params.
-        _service.enable_retries()
-        self.test_get_deployments_all_params()
-
-        # Disable retries and run test_get_deployments_all_params.
-        _service.disable_retries()
-        self.test_get_deployments_all_params()
-
-    @responses.activate
-    def test_get_deployments_required_params(self):
-        """
-        test_get_deployments_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/instance')
-        mock_response = '{"deploymentresponse": {"deployment": {"cloud_type": "awq", "enable_private_endpoints": true, "enable_public_endpoints": true, "first_time_use": false, "formation_id": "new_form_id", "id": "dep_id", "plan_id": "new_plan_id", "platform_options": {"backup_encryption_key_crn": "<backup_encryption_key_crn>", "disk_encryption_key_crn": "<disk_encryption_key_crn>", "key_protect_key_id": "<key_protect_key_id>"}, "region": "us-south", "resource_group_crn": "crn:v1:staging:public:resource-controller::a/hddrtnjjj27dh38xbw::resource-group:c02a6a94f16e4ca", "type": "deployment_type", "version": "1.0.2"}}, "response": {"message": "message", "message_code": "message_code"}}'
-        responses.add(
-            responses.GET,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Invoke method
-        response = _service.get_deployments()
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-
-    def test_get_deployments_required_params_with_retries(self):
-        # Enable retries and run test_get_deployments_required_params.
-        _service.enable_retries()
-        self.test_get_deployments_required_params()
-
-        # Disable retries and run test_get_deployments_required_params.
-        _service.disable_retries()
-        self.test_get_deployments_required_params()
-
-
-class TestListNetezzaEngines:
-    """
-    Test Class for list_netezza_engines
-    """
-
-    @responses.activate
-    def test_list_netezza_engines_all_params(self):
-        """
-        list_netezza_engines()
-        """
-        # Set up mock
-        url = preprocess_url('/netezza_engines')
-        mock_response = '{"netezza_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}]}'
-        responses.add(
-            responses.GET,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Set up parameter values
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.list_netezza_engines(
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-
-    def test_list_netezza_engines_all_params_with_retries(self):
-        # Enable retries and run test_list_netezza_engines_all_params.
-        _service.enable_retries()
-        self.test_list_netezza_engines_all_params()
-
-        # Disable retries and run test_list_netezza_engines_all_params.
-        _service.disable_retries()
-        self.test_list_netezza_engines_all_params()
-
-    @responses.activate
-    def test_list_netezza_engines_required_params(self):
-        """
-        test_list_netezza_engines_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/netezza_engines')
-        mock_response = '{"netezza_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}]}'
-        responses.add(
-            responses.GET,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Invoke method
-        response = _service.list_netezza_engines()
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-
-    def test_list_netezza_engines_required_params_with_retries(self):
-        # Enable retries and run test_list_netezza_engines_required_params.
-        _service.enable_retries()
-        self.test_list_netezza_engines_required_params()
-
-        # Disable retries and run test_list_netezza_engines_required_params.
-        _service.disable_retries()
-        self.test_list_netezza_engines_required_params()
-
-
-class TestCreateNetezzaEngine:
-    """
-    Test Class for create_netezza_engine
-    """
-
-    @responses.activate
-    def test_create_netezza_engine_all_params(self):
-        """
-        create_netezza_engine()
-        """
-        # Set up mock
-        url = preprocess_url('/netezza_engines')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=201,
-        )
-
-        # Construct a dict representation of a NetezzaEngineDetailsBody model
-        netezza_engine_details_body_model = {}
-        netezza_engine_details_body_model['connection_string'] = '1.2.3.4'
-
-        # Set up parameter values
-        origin = 'external'
-        type = 'netezza'
-        description = 'netezza engine description'
-        engine_details = netezza_engine_details_body_model
-        engine_display_name = 'sampleEngine'
-        tags = ['tag1', 'tag2']
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.create_netezza_engine(
-            origin,
-            type,
-            description=description,
-            engine_details=engine_details,
-            engine_display_name=engine_display_name,
-            tags=tags,
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 201
-        # Validate body params
-        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['origin'] == 'external'
-        assert req_body['type'] == 'netezza'
-        assert req_body['description'] == 'netezza engine description'
-        assert req_body['engine_details'] == netezza_engine_details_body_model
-        assert req_body['engine_display_name'] == 'sampleEngine'
-        assert req_body['tags'] == ['tag1', 'tag2']
-
-    def test_create_netezza_engine_all_params_with_retries(self):
-        # Enable retries and run test_create_netezza_engine_all_params.
-        _service.enable_retries()
-        self.test_create_netezza_engine_all_params()
-
-        # Disable retries and run test_create_netezza_engine_all_params.
-        _service.disable_retries()
-        self.test_create_netezza_engine_all_params()
-
-    @responses.activate
-    def test_create_netezza_engine_required_params(self):
-        """
-        test_create_netezza_engine_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/netezza_engines')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=201,
-        )
-
-        # Construct a dict representation of a NetezzaEngineDetailsBody model
-        netezza_engine_details_body_model = {}
-        netezza_engine_details_body_model['connection_string'] = '1.2.3.4'
-
-        # Set up parameter values
-        origin = 'external'
-        type = 'netezza'
-        description = 'netezza engine description'
-        engine_details = netezza_engine_details_body_model
-        engine_display_name = 'sampleEngine'
-        tags = ['tag1', 'tag2']
-
-        # Invoke method
-        response = _service.create_netezza_engine(
-            origin,
-            type,
-            description=description,
-            engine_details=engine_details,
-            engine_display_name=engine_display_name,
-            tags=tags,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 201
-        # Validate body params
-        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['origin'] == 'external'
-        assert req_body['type'] == 'netezza'
-        assert req_body['description'] == 'netezza engine description'
-        assert req_body['engine_details'] == netezza_engine_details_body_model
-        assert req_body['engine_display_name'] == 'sampleEngine'
-        assert req_body['tags'] == ['tag1', 'tag2']
-
-    def test_create_netezza_engine_required_params_with_retries(self):
-        # Enable retries and run test_create_netezza_engine_required_params.
-        _service.enable_retries()
-        self.test_create_netezza_engine_required_params()
-
-        # Disable retries and run test_create_netezza_engine_required_params.
-        _service.disable_retries()
-        self.test_create_netezza_engine_required_params()
-
-    @responses.activate
-    def test_create_netezza_engine_value_error(self):
-        """
-        test_create_netezza_engine_value_error()
-        """
-        # Set up mock
-        url = preprocess_url('/netezza_engines')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}'
-        responses.add(
-            responses.POST,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=201,
-        )
-
-        # Construct a dict representation of a NetezzaEngineDetailsBody model
-        netezza_engine_details_body_model = {}
-        netezza_engine_details_body_model['connection_string'] = '1.2.3.4'
-
-        # Set up parameter values
-        origin = 'external'
-        type = 'netezza'
-        description = 'netezza engine description'
-        engine_details = netezza_engine_details_body_model
-        engine_display_name = 'sampleEngine'
-        tags = ['tag1', 'tag2']
-
-        # Pass in all but one required param and check for a ValueError
-        req_param_dict = {
-            "origin": origin,
-            "type": type,
-        }
-        for param in req_param_dict.keys():
-            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
-            with pytest.raises(ValueError):
-                _service.create_netezza_engine(**req_copy)
-
-    def test_create_netezza_engine_value_error_with_retries(self):
-        # Enable retries and run test_create_netezza_engine_value_error.
-        _service.enable_retries()
-        self.test_create_netezza_engine_value_error()
-
-        # Disable retries and run test_create_netezza_engine_value_error.
-        _service.disable_retries()
-        self.test_create_netezza_engine_value_error()
-
-
-class TestDeleteNetezzaEngine:
-    """
-    Test Class for delete_netezza_engine
-    """
-
-    @responses.activate
-    def test_delete_netezza_engine_all_params(self):
-        """
-        delete_netezza_engine()
-        """
-        # Set up mock
-        url = preprocess_url('/netezza_engines/testString')
-        responses.add(
-            responses.DELETE,
-            url,
-            status=204,
-        )
-
-        # Set up parameter values
-        engine_id = 'testString'
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.delete_netezza_engine(
-            engine_id,
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 204
-
-    def test_delete_netezza_engine_all_params_with_retries(self):
-        # Enable retries and run test_delete_netezza_engine_all_params.
-        _service.enable_retries()
-        self.test_delete_netezza_engine_all_params()
-
-        # Disable retries and run test_delete_netezza_engine_all_params.
-        _service.disable_retries()
-        self.test_delete_netezza_engine_all_params()
-
-    @responses.activate
-    def test_delete_netezza_engine_required_params(self):
-        """
-        test_delete_netezza_engine_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/netezza_engines/testString')
-        responses.add(
-            responses.DELETE,
-            url,
-            status=204,
-        )
-
-        # Set up parameter values
-        engine_id = 'testString'
-
-        # Invoke method
-        response = _service.delete_netezza_engine(
-            engine_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 204
-
-    def test_delete_netezza_engine_required_params_with_retries(self):
-        # Enable retries and run test_delete_netezza_engine_required_params.
-        _service.enable_retries()
-        self.test_delete_netezza_engine_required_params()
-
-        # Disable retries and run test_delete_netezza_engine_required_params.
-        _service.disable_retries()
-        self.test_delete_netezza_engine_required_params()
-
-    @responses.activate
-    def test_delete_netezza_engine_value_error(self):
-        """
-        test_delete_netezza_engine_value_error()
-        """
-        # Set up mock
-        url = preprocess_url('/netezza_engines/testString')
-        responses.add(
-            responses.DELETE,
-            url,
-            status=204,
-        )
-
-        # Set up parameter values
-        engine_id = 'testString'
-
-        # Pass in all but one required param and check for a ValueError
-        req_param_dict = {
-            "engine_id": engine_id,
-        }
-        for param in req_param_dict.keys():
-            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
-            with pytest.raises(ValueError):
-                _service.delete_netezza_engine(**req_copy)
-
-    def test_delete_netezza_engine_value_error_with_retries(self):
-        # Enable retries and run test_delete_netezza_engine_value_error.
-        _service.enable_retries()
-        self.test_delete_netezza_engine_value_error()
-
-        # Disable retries and run test_delete_netezza_engine_value_error.
-        _service.disable_retries()
-        self.test_delete_netezza_engine_value_error()
-
-
-class TestUpdateNetezzaEngine:
-    """
-    Test Class for update_netezza_engine
-    """
-
-    @responses.activate
-    def test_update_netezza_engine_all_params(self):
-        """
-        update_netezza_engine()
-        """
-        # Set up mock
-        url = preprocess_url('/netezza_engines/testString')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}'
-        responses.add(
-            responses.PATCH,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
-
-        # Set up parameter values
-        engine_id = 'testString'
-        body = [json_patch_operation_model]
-        auth_instance_id = 'testString'
-
-        # Invoke method
-        response = _service.update_netezza_engine(
-            engine_id,
-            body,
-            auth_instance_id=auth_instance_id,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-        # Validate body params
-        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body == body
-
-    def test_update_netezza_engine_all_params_with_retries(self):
-        # Enable retries and run test_update_netezza_engine_all_params.
-        _service.enable_retries()
-        self.test_update_netezza_engine_all_params()
-
-        # Disable retries and run test_update_netezza_engine_all_params.
-        _service.disable_retries()
-        self.test_update_netezza_engine_all_params()
-
-    @responses.activate
-    def test_update_netezza_engine_required_params(self):
-        """
-        test_update_netezza_engine_required_params()
-        """
-        # Set up mock
-        url = preprocess_url('/netezza_engines/testString')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}'
-        responses.add(
-            responses.PATCH,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
-
-        # Set up parameter values
-        engine_id = 'testString'
-        body = [json_patch_operation_model]
-
-        # Invoke method
-        response = _service.update_netezza_engine(
-            engine_id,
-            body,
-            headers={},
-        )
-
-        # Check for correct operation
-        assert len(responses.calls) == 1
-        assert response.status_code == 200
-        # Validate body params
-        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body == body
-
-    def test_update_netezza_engine_required_params_with_retries(self):
-        # Enable retries and run test_update_netezza_engine_required_params.
-        _service.enable_retries()
-        self.test_update_netezza_engine_required_params()
-
-        # Disable retries and run test_update_netezza_engine_required_params.
-        _service.disable_retries()
-        self.test_update_netezza_engine_required_params()
-
-    @responses.activate
-    def test_update_netezza_engine_value_error(self):
-        """
-        test_update_netezza_engine_value_error()
-        """
-        # Set up mock
-        url = preprocess_url('/netezza_engines/testString')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}'
-        responses.add(
-            responses.PATCH,
-            url,
-            body=mock_response,
-            content_type='application/json',
-            status=200,
-        )
-
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
-
-        # Set up parameter values
-        engine_id = 'testString'
-        body = [json_patch_operation_model]
-
-        # Pass in all but one required param and check for a ValueError
-        req_param_dict = {
-            "engine_id": engine_id,
-            "body": body,
-        }
-        for param in req_param_dict.keys():
-            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
-            with pytest.raises(ValueError):
-                _service.update_netezza_engine(**req_copy)
-
-    def test_update_netezza_engine_value_error_with_retries(self):
-        # Enable retries and run test_update_netezza_engine_value_error.
-        _service.enable_retries()
-        self.test_update_netezza_engine_value_error()
-
-        # Disable retries and run test_update_netezza_engine_value_error.
-        _service.disable_retries()
-        self.test_update_netezza_engine_value_error()
 
 
 class TestListOtherEngines:
@@ -4017,6 +2328,1135 @@ class TestDeleteOtherEngine:
         self.test_delete_other_engine_value_error()
 
 
+# endregion
+##############################################################################
+# End of Service: OtherEngines
+##############################################################################
+
+##############################################################################
+# Start of Service: Db2Engines
+##############################################################################
+# region
+
+
+class TestNewInstance:
+    """
+    Test Class for new_instance
+    """
+
+    def test_new_instance(self):
+        """
+        new_instance()
+        """
+        os.environ['TEST_SERVICE_AUTH_TYPE'] = 'noAuth'
+
+        service = WatsonxDataV2.new_instance(
+            service_name='TEST_SERVICE',
+        )
+
+        assert service is not None
+        assert isinstance(service, WatsonxDataV2)
+
+    def test_new_instance_without_authenticator(self):
+        """
+        new_instance_without_authenticator()
+        """
+        with pytest.raises(ValueError, match='authenticator must be provided'):
+            service = WatsonxDataV2.new_instance(
+                service_name='TEST_SERVICE_NOT_FOUND',
+            )
+
+
+class TestListDb2Engines:
+    """
+    Test Class for list_db2_engines
+    """
+
+    @responses.activate
+    def test_list_db2_engines_all_params(self):
+        """
+        list_db2_engines()
+        """
+        # Set up mock
+        url = preprocess_url('/db2_engines')
+        mock_response = '{"db2_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.list_db2_engines(
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_db2_engines_all_params_with_retries(self):
+        # Enable retries and run test_list_db2_engines_all_params.
+        _service.enable_retries()
+        self.test_list_db2_engines_all_params()
+
+        # Disable retries and run test_list_db2_engines_all_params.
+        _service.disable_retries()
+        self.test_list_db2_engines_all_params()
+
+    @responses.activate
+    def test_list_db2_engines_required_params(self):
+        """
+        test_list_db2_engines_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/db2_engines')
+        mock_response = '{"db2_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.list_db2_engines()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_db2_engines_required_params_with_retries(self):
+        # Enable retries and run test_list_db2_engines_required_params.
+        _service.enable_retries()
+        self.test_list_db2_engines_required_params()
+
+        # Disable retries and run test_list_db2_engines_required_params.
+        _service.disable_retries()
+        self.test_list_db2_engines_required_params()
+
+
+class TestCreateDb2Engine:
+    """
+    Test Class for create_db2_engine
+    """
+
+    @responses.activate
+    def test_create_db2_engine_all_params(self):
+        """
+        create_db2_engine()
+        """
+        # Set up mock
+        url = preprocess_url('/db2_engines')
+        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a Db2EngineDetailsBody model
+        db2_engine_details_body_model = {}
+        db2_engine_details_body_model['connection_string'] = '1.2.3.4'
+
+        # Set up parameter values
+        origin = 'external'
+        description = 'db2 engine description'
+        engine_details = db2_engine_details_body_model
+        engine_display_name = 'sampleEngine'
+        tags = ['tag1', 'tag2']
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_db2_engine(
+            origin,
+            description=description,
+            engine_details=engine_details,
+            engine_display_name=engine_display_name,
+            tags=tags,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['origin'] == 'external'
+        assert req_body['description'] == 'db2 engine description'
+        assert req_body['engine_details'] == db2_engine_details_body_model
+        assert req_body['engine_display_name'] == 'sampleEngine'
+        assert req_body['tags'] == ['tag1', 'tag2']
+
+    def test_create_db2_engine_all_params_with_retries(self):
+        # Enable retries and run test_create_db2_engine_all_params.
+        _service.enable_retries()
+        self.test_create_db2_engine_all_params()
+
+        # Disable retries and run test_create_db2_engine_all_params.
+        _service.disable_retries()
+        self.test_create_db2_engine_all_params()
+
+    @responses.activate
+    def test_create_db2_engine_required_params(self):
+        """
+        test_create_db2_engine_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/db2_engines')
+        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a Db2EngineDetailsBody model
+        db2_engine_details_body_model = {}
+        db2_engine_details_body_model['connection_string'] = '1.2.3.4'
+
+        # Set up parameter values
+        origin = 'external'
+        description = 'db2 engine description'
+        engine_details = db2_engine_details_body_model
+        engine_display_name = 'sampleEngine'
+        tags = ['tag1', 'tag2']
+
+        # Invoke method
+        response = _service.create_db2_engine(
+            origin,
+            description=description,
+            engine_details=engine_details,
+            engine_display_name=engine_display_name,
+            tags=tags,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['origin'] == 'external'
+        assert req_body['description'] == 'db2 engine description'
+        assert req_body['engine_details'] == db2_engine_details_body_model
+        assert req_body['engine_display_name'] == 'sampleEngine'
+        assert req_body['tags'] == ['tag1', 'tag2']
+
+    def test_create_db2_engine_required_params_with_retries(self):
+        # Enable retries and run test_create_db2_engine_required_params.
+        _service.enable_retries()
+        self.test_create_db2_engine_required_params()
+
+        # Disable retries and run test_create_db2_engine_required_params.
+        _service.disable_retries()
+        self.test_create_db2_engine_required_params()
+
+    @responses.activate
+    def test_create_db2_engine_value_error(self):
+        """
+        test_create_db2_engine_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/db2_engines')
+        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a Db2EngineDetailsBody model
+        db2_engine_details_body_model = {}
+        db2_engine_details_body_model['connection_string'] = '1.2.3.4'
+
+        # Set up parameter values
+        origin = 'external'
+        description = 'db2 engine description'
+        engine_details = db2_engine_details_body_model
+        engine_display_name = 'sampleEngine'
+        tags = ['tag1', 'tag2']
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "origin": origin,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_db2_engine(**req_copy)
+
+    def test_create_db2_engine_value_error_with_retries(self):
+        # Enable retries and run test_create_db2_engine_value_error.
+        _service.enable_retries()
+        self.test_create_db2_engine_value_error()
+
+        # Disable retries and run test_create_db2_engine_value_error.
+        _service.disable_retries()
+        self.test_create_db2_engine_value_error()
+
+
+class TestDeleteDb2Engine:
+    """
+    Test Class for delete_db2_engine
+    """
+
+    @responses.activate
+    def test_delete_db2_engine_all_params(self):
+        """
+        delete_db2_engine()
+        """
+        # Set up mock
+        url = preprocess_url('/db2_engines/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_db2_engine(
+            engine_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+
+    def test_delete_db2_engine_all_params_with_retries(self):
+        # Enable retries and run test_delete_db2_engine_all_params.
+        _service.enable_retries()
+        self.test_delete_db2_engine_all_params()
+
+        # Disable retries and run test_delete_db2_engine_all_params.
+        _service.disable_retries()
+        self.test_delete_db2_engine_all_params()
+
+    @responses.activate
+    def test_delete_db2_engine_required_params(self):
+        """
+        test_delete_db2_engine_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/db2_engines/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_db2_engine(
+            engine_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+
+    def test_delete_db2_engine_required_params_with_retries(self):
+        # Enable retries and run test_delete_db2_engine_required_params.
+        _service.enable_retries()
+        self.test_delete_db2_engine_required_params()
+
+        # Disable retries and run test_delete_db2_engine_required_params.
+        _service.disable_retries()
+        self.test_delete_db2_engine_required_params()
+
+    @responses.activate
+    def test_delete_db2_engine_value_error(self):
+        """
+        test_delete_db2_engine_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/db2_engines/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.delete_db2_engine(**req_copy)
+
+    def test_delete_db2_engine_value_error_with_retries(self):
+        # Enable retries and run test_delete_db2_engine_value_error.
+        _service.enable_retries()
+        self.test_delete_db2_engine_value_error()
+
+        # Disable retries and run test_delete_db2_engine_value_error.
+        _service.disable_retries()
+        self.test_delete_db2_engine_value_error()
+
+
+class TestUpdateDb2Engine:
+    """
+    Test Class for update_db2_engine
+    """
+
+    @responses.activate
+    def test_update_db2_engine_all_params(self):
+        """
+        update_db2_engine()
+        """
+        # Set up mock
+        url = preprocess_url('/db2_engines/testString')
+        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a Db2EnginePatch model
+        db2_engine_patch_model = {}
+        db2_engine_patch_model['description'] = 'db2 engine updated description'
+        db2_engine_patch_model['engine_display_name'] = 'sampleEngine'
+        db2_engine_patch_model['tags'] = ['tag1', 'tag2']
+
+        # Set up parameter values
+        engine_id = 'testString'
+        body = db2_engine_patch_model
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.update_db2_engine(
+            engine_id,
+            body,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body == body
+
+    def test_update_db2_engine_all_params_with_retries(self):
+        # Enable retries and run test_update_db2_engine_all_params.
+        _service.enable_retries()
+        self.test_update_db2_engine_all_params()
+
+        # Disable retries and run test_update_db2_engine_all_params.
+        _service.disable_retries()
+        self.test_update_db2_engine_all_params()
+
+    @responses.activate
+    def test_update_db2_engine_required_params(self):
+        """
+        test_update_db2_engine_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/db2_engines/testString')
+        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a Db2EnginePatch model
+        db2_engine_patch_model = {}
+        db2_engine_patch_model['description'] = 'db2 engine updated description'
+        db2_engine_patch_model['engine_display_name'] = 'sampleEngine'
+        db2_engine_patch_model['tags'] = ['tag1', 'tag2']
+
+        # Set up parameter values
+        engine_id = 'testString'
+        body = db2_engine_patch_model
+
+        # Invoke method
+        response = _service.update_db2_engine(
+            engine_id,
+            body,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body == body
+
+    def test_update_db2_engine_required_params_with_retries(self):
+        # Enable retries and run test_update_db2_engine_required_params.
+        _service.enable_retries()
+        self.test_update_db2_engine_required_params()
+
+        # Disable retries and run test_update_db2_engine_required_params.
+        _service.disable_retries()
+        self.test_update_db2_engine_required_params()
+
+    @responses.activate
+    def test_update_db2_engine_value_error(self):
+        """
+        test_update_db2_engine_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/db2_engines/testString')
+        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "db2 engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-db2-01-db2-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "db2"}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a Db2EnginePatch model
+        db2_engine_patch_model = {}
+        db2_engine_patch_model['description'] = 'db2 engine updated description'
+        db2_engine_patch_model['engine_display_name'] = 'sampleEngine'
+        db2_engine_patch_model['tags'] = ['tag1', 'tag2']
+
+        # Set up parameter values
+        engine_id = 'testString'
+        body = db2_engine_patch_model
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+            "body": body,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.update_db2_engine(**req_copy)
+
+    def test_update_db2_engine_value_error_with_retries(self):
+        # Enable retries and run test_update_db2_engine_value_error.
+        _service.enable_retries()
+        self.test_update_db2_engine_value_error()
+
+        # Disable retries and run test_update_db2_engine_value_error.
+        _service.disable_retries()
+        self.test_update_db2_engine_value_error()
+
+
+# endregion
+##############################################################################
+# End of Service: Db2Engines
+##############################################################################
+
+##############################################################################
+# Start of Service: NetezzaEngines
+##############################################################################
+# region
+
+
+class TestNewInstance:
+    """
+    Test Class for new_instance
+    """
+
+    def test_new_instance(self):
+        """
+        new_instance()
+        """
+        os.environ['TEST_SERVICE_AUTH_TYPE'] = 'noAuth'
+
+        service = WatsonxDataV2.new_instance(
+            service_name='TEST_SERVICE',
+        )
+
+        assert service is not None
+        assert isinstance(service, WatsonxDataV2)
+
+    def test_new_instance_without_authenticator(self):
+        """
+        new_instance_without_authenticator()
+        """
+        with pytest.raises(ValueError, match='authenticator must be provided'):
+            service = WatsonxDataV2.new_instance(
+                service_name='TEST_SERVICE_NOT_FOUND',
+            )
+
+
+class TestListNetezzaEngines:
+    """
+    Test Class for list_netezza_engines
+    """
+
+    @responses.activate
+    def test_list_netezza_engines_all_params(self):
+        """
+        list_netezza_engines()
+        """
+        # Set up mock
+        url = preprocess_url('/netezza_engines')
+        mock_response = '{"netezza_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.list_netezza_engines(
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_netezza_engines_all_params_with_retries(self):
+        # Enable retries and run test_list_netezza_engines_all_params.
+        _service.enable_retries()
+        self.test_list_netezza_engines_all_params()
+
+        # Disable retries and run test_list_netezza_engines_all_params.
+        _service.disable_retries()
+        self.test_list_netezza_engines_all_params()
+
+    @responses.activate
+    def test_list_netezza_engines_required_params(self):
+        """
+        test_list_netezza_engines_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/netezza_engines')
+        mock_response = '{"netezza_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.list_netezza_engines()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_netezza_engines_required_params_with_retries(self):
+        # Enable retries and run test_list_netezza_engines_required_params.
+        _service.enable_retries()
+        self.test_list_netezza_engines_required_params()
+
+        # Disable retries and run test_list_netezza_engines_required_params.
+        _service.disable_retries()
+        self.test_list_netezza_engines_required_params()
+
+
+class TestCreateNetezzaEngine:
+    """
+    Test Class for create_netezza_engine
+    """
+
+    @responses.activate
+    def test_create_netezza_engine_all_params(self):
+        """
+        create_netezza_engine()
+        """
+        # Set up mock
+        url = preprocess_url('/netezza_engines')
+        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a NetezzaEngineDetailsBody model
+        netezza_engine_details_body_model = {}
+        netezza_engine_details_body_model['connection_string'] = '1.2.3.4'
+
+        # Set up parameter values
+        origin = 'external'
+        description = 'netezza engine description'
+        engine_details = netezza_engine_details_body_model
+        engine_display_name = 'sampleEngine'
+        tags = ['tag1', 'tag2']
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_netezza_engine(
+            origin,
+            description=description,
+            engine_details=engine_details,
+            engine_display_name=engine_display_name,
+            tags=tags,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['origin'] == 'external'
+        assert req_body['description'] == 'netezza engine description'
+        assert req_body['engine_details'] == netezza_engine_details_body_model
+        assert req_body['engine_display_name'] == 'sampleEngine'
+        assert req_body['tags'] == ['tag1', 'tag2']
+
+    def test_create_netezza_engine_all_params_with_retries(self):
+        # Enable retries and run test_create_netezza_engine_all_params.
+        _service.enable_retries()
+        self.test_create_netezza_engine_all_params()
+
+        # Disable retries and run test_create_netezza_engine_all_params.
+        _service.disable_retries()
+        self.test_create_netezza_engine_all_params()
+
+    @responses.activate
+    def test_create_netezza_engine_required_params(self):
+        """
+        test_create_netezza_engine_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/netezza_engines')
+        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a NetezzaEngineDetailsBody model
+        netezza_engine_details_body_model = {}
+        netezza_engine_details_body_model['connection_string'] = '1.2.3.4'
+
+        # Set up parameter values
+        origin = 'external'
+        description = 'netezza engine description'
+        engine_details = netezza_engine_details_body_model
+        engine_display_name = 'sampleEngine'
+        tags = ['tag1', 'tag2']
+
+        # Invoke method
+        response = _service.create_netezza_engine(
+            origin,
+            description=description,
+            engine_details=engine_details,
+            engine_display_name=engine_display_name,
+            tags=tags,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['origin'] == 'external'
+        assert req_body['description'] == 'netezza engine description'
+        assert req_body['engine_details'] == netezza_engine_details_body_model
+        assert req_body['engine_display_name'] == 'sampleEngine'
+        assert req_body['tags'] == ['tag1', 'tag2']
+
+    def test_create_netezza_engine_required_params_with_retries(self):
+        # Enable retries and run test_create_netezza_engine_required_params.
+        _service.enable_retries()
+        self.test_create_netezza_engine_required_params()
+
+        # Disable retries and run test_create_netezza_engine_required_params.
+        _service.disable_retries()
+        self.test_create_netezza_engine_required_params()
+
+    @responses.activate
+    def test_create_netezza_engine_value_error(self):
+        """
+        test_create_netezza_engine_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/netezza_engines')
+        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a NetezzaEngineDetailsBody model
+        netezza_engine_details_body_model = {}
+        netezza_engine_details_body_model['connection_string'] = '1.2.3.4'
+
+        # Set up parameter values
+        origin = 'external'
+        description = 'netezza engine description'
+        engine_details = netezza_engine_details_body_model
+        engine_display_name = 'sampleEngine'
+        tags = ['tag1', 'tag2']
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "origin": origin,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_netezza_engine(**req_copy)
+
+    def test_create_netezza_engine_value_error_with_retries(self):
+        # Enable retries and run test_create_netezza_engine_value_error.
+        _service.enable_retries()
+        self.test_create_netezza_engine_value_error()
+
+        # Disable retries and run test_create_netezza_engine_value_error.
+        _service.disable_retries()
+        self.test_create_netezza_engine_value_error()
+
+
+class TestDeleteNetezzaEngine:
+    """
+    Test Class for delete_netezza_engine
+    """
+
+    @responses.activate
+    def test_delete_netezza_engine_all_params(self):
+        """
+        delete_netezza_engine()
+        """
+        # Set up mock
+        url = preprocess_url('/netezza_engines/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_netezza_engine(
+            engine_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+
+    def test_delete_netezza_engine_all_params_with_retries(self):
+        # Enable retries and run test_delete_netezza_engine_all_params.
+        _service.enable_retries()
+        self.test_delete_netezza_engine_all_params()
+
+        # Disable retries and run test_delete_netezza_engine_all_params.
+        _service.disable_retries()
+        self.test_delete_netezza_engine_all_params()
+
+    @responses.activate
+    def test_delete_netezza_engine_required_params(self):
+        """
+        test_delete_netezza_engine_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/netezza_engines/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_netezza_engine(
+            engine_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+
+    def test_delete_netezza_engine_required_params_with_retries(self):
+        # Enable retries and run test_delete_netezza_engine_required_params.
+        _service.enable_retries()
+        self.test_delete_netezza_engine_required_params()
+
+        # Disable retries and run test_delete_netezza_engine_required_params.
+        _service.disable_retries()
+        self.test_delete_netezza_engine_required_params()
+
+    @responses.activate
+    def test_delete_netezza_engine_value_error(self):
+        """
+        test_delete_netezza_engine_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/netezza_engines/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.delete_netezza_engine(**req_copy)
+
+    def test_delete_netezza_engine_value_error_with_retries(self):
+        # Enable retries and run test_delete_netezza_engine_value_error.
+        _service.enable_retries()
+        self.test_delete_netezza_engine_value_error()
+
+        # Disable retries and run test_delete_netezza_engine_value_error.
+        _service.disable_retries()
+        self.test_delete_netezza_engine_value_error()
+
+
+class TestUpdateNetezzaEngine:
+    """
+    Test Class for update_netezza_engine
+    """
+
+    @responses.activate
+    def test_update_netezza_engine_all_params(self):
+        """
+        update_netezza_engine()
+        """
+        # Set up mock
+        url = preprocess_url('/netezza_engines/testString')
+        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a NetezzaEnginePatch model
+        netezza_engine_patch_model = {}
+        netezza_engine_patch_model['description'] = 'netezza engine updated description'
+        netezza_engine_patch_model['engine_display_name'] = 'sampleEngine'
+        netezza_engine_patch_model['tags'] = ['tag1', 'tag2']
+
+        # Set up parameter values
+        engine_id = 'testString'
+        body = netezza_engine_patch_model
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.update_netezza_engine(
+            engine_id,
+            body,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body == body
+
+    def test_update_netezza_engine_all_params_with_retries(self):
+        # Enable retries and run test_update_netezza_engine_all_params.
+        _service.enable_retries()
+        self.test_update_netezza_engine_all_params()
+
+        # Disable retries and run test_update_netezza_engine_all_params.
+        _service.disable_retries()
+        self.test_update_netezza_engine_all_params()
+
+    @responses.activate
+    def test_update_netezza_engine_required_params(self):
+        """
+        test_update_netezza_engine_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/netezza_engines/testString')
+        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a NetezzaEnginePatch model
+        netezza_engine_patch_model = {}
+        netezza_engine_patch_model['description'] = 'netezza engine updated description'
+        netezza_engine_patch_model['engine_display_name'] = 'sampleEngine'
+        netezza_engine_patch_model['tags'] = ['tag1', 'tag2']
+
+        # Set up parameter values
+        engine_id = 'testString'
+        body = netezza_engine_patch_model
+
+        # Invoke method
+        response = _service.update_netezza_engine(
+            engine_id,
+            body,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body == body
+
+    def test_update_netezza_engine_required_params_with_retries(self):
+        # Enable retries and run test_update_netezza_engine_required_params.
+        _service.enable_retries()
+        self.test_update_netezza_engine_required_params()
+
+        # Disable retries and run test_update_netezza_engine_required_params.
+        _service.disable_retries()
+        self.test_update_netezza_engine_required_params()
+
+    @responses.activate
+    def test_update_netezza_engine_value_error(self):
+        """
+        test_update_netezza_engine_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/netezza_engines/testString')
+        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "netezza engine for running sql queries", "engine_details": {"connection_string": "1.2.3.4", "metastore_host": "1.2.3.4"}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "host_name": "xyz-netezza-01-netezza-svc", "origin": "ibm", "port": 4, "status": "REGISTERED", "tags": ["tags"], "type": "netezza"}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a NetezzaEnginePatch model
+        netezza_engine_patch_model = {}
+        netezza_engine_patch_model['description'] = 'netezza engine updated description'
+        netezza_engine_patch_model['engine_display_name'] = 'sampleEngine'
+        netezza_engine_patch_model['tags'] = ['tag1', 'tag2']
+
+        # Set up parameter values
+        engine_id = 'testString'
+        body = netezza_engine_patch_model
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+            "body": body,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.update_netezza_engine(**req_copy)
+
+    def test_update_netezza_engine_value_error_with_retries(self):
+        # Enable retries and run test_update_netezza_engine_value_error.
+        _service.enable_retries()
+        self.test_update_netezza_engine_value_error()
+
+        # Disable retries and run test_update_netezza_engine_value_error.
+        _service.disable_retries()
+        self.test_update_netezza_engine_value_error()
+
+
+# endregion
+##############################################################################
+# End of Service: NetezzaEngines
+##############################################################################
+
+##############################################################################
+# Start of Service: PrestissimoEngines
+##############################################################################
+# region
+
+
+class TestNewInstance:
+    """
+    Test Class for new_instance
+    """
+
+    def test_new_instance(self):
+        """
+        new_instance()
+        """
+        os.environ['TEST_SERVICE_AUTH_TYPE'] = 'noAuth'
+
+        service = WatsonxDataV2.new_instance(
+            service_name='TEST_SERVICE',
+        )
+
+        assert service is not None
+        assert isinstance(service, WatsonxDataV2)
+
+    def test_new_instance_without_authenticator(self):
+        """
+        new_instance_without_authenticator()
+        """
+        with pytest.raises(ValueError, match='authenticator must be provided'):
+            service = WatsonxDataV2.new_instance(
+                service_name='TEST_SERVICE_NOT_FOUND',
+            )
+
+
 class TestListPrestissimoEngines:
     """
     Test Class for list_prestissimo_engines
@@ -4029,7 +3469,7 @@ class TestListPrestissimoEngines:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines')
-        mock_response = '{"prestissimo_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
+        mock_response = '{"prestissimo_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
         responses.add(
             responses.GET,
             url,
@@ -4067,7 +3507,7 @@ class TestListPrestissimoEngines:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines')
-        mock_response = '{"prestissimo_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
+        mock_response = '{"prestissimo_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
         responses.add(
             responses.GET,
             url,
@@ -4105,7 +3545,7 @@ class TestCreatePrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.POST,
             url,
@@ -4121,23 +3561,13 @@ class TestCreatePrestissimoEngine:
 
         # Construct a dict representation of a PrestissimoEndpoints model
         prestissimo_endpoints_model = {}
-        prestissimo_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        prestissimo_endpoints_model[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
+        prestissimo_endpoints_model['applications_api'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
+        prestissimo_endpoints_model['history_server_endpoint'] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
         prestissimo_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        prestissimo_endpoints_model[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        prestissimo_endpoints_model[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
+        prestissimo_endpoints_model['spark_jobs_v4_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
+        prestissimo_endpoints_model['spark_kernel_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
         prestissimo_endpoints_model['view_history_server'] = 'testString'
-        prestissimo_endpoints_model[
-            'wxd_application_endpoint'
-        ] = '$HOST/v1/1698311655308796/engines/spark817/applications'
+        prestissimo_endpoints_model['wxd_application_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications'
 
         # Construct a dict representation of a PrestissimoEngineDetails model
         prestissimo_engine_details_model = {}
@@ -4153,7 +3583,6 @@ class TestCreatePrestissimoEngine:
 
         # Set up parameter values
         origin = 'native'
-        type = 'prestissimo'
         associated_catalogs = ['hive_data']
         description = 'prestissimo engine description'
         engine_details = prestissimo_engine_details_model
@@ -4166,7 +3595,6 @@ class TestCreatePrestissimoEngine:
         # Invoke method
         response = _service.create_prestissimo_engine(
             origin,
-            type,
             associated_catalogs=associated_catalogs,
             description=description,
             engine_details=engine_details,
@@ -4184,7 +3612,6 @@ class TestCreatePrestissimoEngine:
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['origin'] == 'native'
-        assert req_body['type'] == 'prestissimo'
         assert req_body['associated_catalogs'] == ['hive_data']
         assert req_body['description'] == 'prestissimo engine description'
         assert req_body['engine_details'] == prestissimo_engine_details_model
@@ -4209,7 +3636,7 @@ class TestCreatePrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.POST,
             url,
@@ -4225,23 +3652,13 @@ class TestCreatePrestissimoEngine:
 
         # Construct a dict representation of a PrestissimoEndpoints model
         prestissimo_endpoints_model = {}
-        prestissimo_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        prestissimo_endpoints_model[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
+        prestissimo_endpoints_model['applications_api'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
+        prestissimo_endpoints_model['history_server_endpoint'] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
         prestissimo_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        prestissimo_endpoints_model[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        prestissimo_endpoints_model[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
+        prestissimo_endpoints_model['spark_jobs_v4_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
+        prestissimo_endpoints_model['spark_kernel_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
         prestissimo_endpoints_model['view_history_server'] = 'testString'
-        prestissimo_endpoints_model[
-            'wxd_application_endpoint'
-        ] = '$HOST/v1/1698311655308796/engines/spark817/applications'
+        prestissimo_endpoints_model['wxd_application_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications'
 
         # Construct a dict representation of a PrestissimoEngineDetails model
         prestissimo_engine_details_model = {}
@@ -4257,7 +3674,6 @@ class TestCreatePrestissimoEngine:
 
         # Set up parameter values
         origin = 'native'
-        type = 'prestissimo'
         associated_catalogs = ['hive_data']
         description = 'prestissimo engine description'
         engine_details = prestissimo_engine_details_model
@@ -4269,7 +3685,6 @@ class TestCreatePrestissimoEngine:
         # Invoke method
         response = _service.create_prestissimo_engine(
             origin,
-            type,
             associated_catalogs=associated_catalogs,
             description=description,
             engine_details=engine_details,
@@ -4286,7 +3701,6 @@ class TestCreatePrestissimoEngine:
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['origin'] == 'native'
-        assert req_body['type'] == 'prestissimo'
         assert req_body['associated_catalogs'] == ['hive_data']
         assert req_body['description'] == 'prestissimo engine description'
         assert req_body['engine_details'] == prestissimo_engine_details_model
@@ -4311,7 +3725,7 @@ class TestCreatePrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.POST,
             url,
@@ -4327,23 +3741,13 @@ class TestCreatePrestissimoEngine:
 
         # Construct a dict representation of a PrestissimoEndpoints model
         prestissimo_endpoints_model = {}
-        prestissimo_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        prestissimo_endpoints_model[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
+        prestissimo_endpoints_model['applications_api'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
+        prestissimo_endpoints_model['history_server_endpoint'] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
         prestissimo_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        prestissimo_endpoints_model[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        prestissimo_endpoints_model[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
+        prestissimo_endpoints_model['spark_jobs_v4_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
+        prestissimo_endpoints_model['spark_kernel_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
         prestissimo_endpoints_model['view_history_server'] = 'testString'
-        prestissimo_endpoints_model[
-            'wxd_application_endpoint'
-        ] = '$HOST/v1/1698311655308796/engines/spark817/applications'
+        prestissimo_endpoints_model['wxd_application_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications'
 
         # Construct a dict representation of a PrestissimoEngineDetails model
         prestissimo_engine_details_model = {}
@@ -4359,7 +3763,6 @@ class TestCreatePrestissimoEngine:
 
         # Set up parameter values
         origin = 'native'
-        type = 'prestissimo'
         associated_catalogs = ['hive_data']
         description = 'prestissimo engine description'
         engine_details = prestissimo_engine_details_model
@@ -4371,7 +3774,6 @@ class TestCreatePrestissimoEngine:
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
             "origin": origin,
-            "type": type,
         }
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
@@ -4400,7 +3802,7 @@ class TestGetPrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.GET,
             url,
@@ -4440,7 +3842,7 @@ class TestGetPrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.GET,
             url,
@@ -4478,7 +3880,7 @@ class TestGetPrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.GET,
             url,
@@ -4633,7 +4035,7 @@ class TestUpdatePrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.PATCH,
             url,
@@ -4642,16 +4044,64 @@ class TestUpdatePrestissimoEngine:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a PrestissimoEnginePropertiesCatalog model
+        prestissimo_engine_properties_catalog_model = {}
+        prestissimo_engine_properties_catalog_model['catalog_name'] = ['testString']
+
+        # Construct a dict representation of a PrestissimoNodeDescriptionBody model
+        prestissimo_node_description_body_model = {}
+        prestissimo_node_description_body_model['node_type'] = 'worker'
+        prestissimo_node_description_body_model['quantity'] = 38
+
+        # Construct a dict representation of a EnginePropertiesOaiGenConfiguration model
+        engine_properties_oai_gen_configuration_model = {}
+        engine_properties_oai_gen_configuration_model['coordinator'] = prestissimo_node_description_body_model
+        engine_properties_oai_gen_configuration_model['worker'] = prestissimo_node_description_body_model
+
+        # Construct a dict representation of a PrestissimoEnginePropertiesVelox model
+        prestissimo_engine_properties_velox_model = {}
+        prestissimo_engine_properties_velox_model['velox_property'] = ['testString']
+
+        # Construct a dict representation of a NodeDescriptionBody model
+        node_description_body_model = {}
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        # Construct a dict representation of a PrestissimoEnginePropertiesOaiGen1Jvm model
+        prestissimo_engine_properties_oai_gen1_jvm_model = {}
+        prestissimo_engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+
+        # Construct a dict representation of a PrestissimoEngineEngineProperties model
+        prestissimo_engine_engine_properties_model = {}
+        prestissimo_engine_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
+        prestissimo_engine_engine_properties_model['configuration'] = engine_properties_oai_gen_configuration_model
+        prestissimo_engine_engine_properties_model['velox'] = prestissimo_engine_properties_velox_model
+        prestissimo_engine_engine_properties_model['jvm'] = prestissimo_engine_properties_oai_gen1_jvm_model
+
+        # Construct a dict representation of a RemoveEnginePropertiesConfiguration model
+        remove_engine_properties_configuration_model = {}
+        remove_engine_properties_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_configuration_model['worker'] = ['testString']
+
+        # Construct a dict representation of a RemoveEngineProperties model
+        remove_engine_properties_model = {}
+        remove_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
+        remove_engine_properties_model['configuration'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['velox'] = ['testString']
+
+        # Construct a dict representation of a PrestissimoEnginePatch model
+        prestissimo_engine_patch_model = {}
+        prestissimo_engine_patch_model['description'] = 'updated description for prestissimo engine'
+        prestissimo_engine_patch_model['engine_display_name'] = 'sampleEngine'
+        prestissimo_engine_patch_model['engine_properties'] = prestissimo_engine_engine_properties_model
+        prestissimo_engine_patch_model['engine_restart'] = 'force'
+        prestissimo_engine_patch_model['remove_engine_properties'] = remove_engine_properties_model
+        prestissimo_engine_patch_model['tags'] = ['tag1', 'tag2']
 
         # Set up parameter values
         engine_id = 'testString'
-        body = [json_patch_operation_model]
+        body = prestissimo_engine_patch_model
         auth_instance_id = 'testString'
 
         # Invoke method
@@ -4685,7 +4135,7 @@ class TestUpdatePrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.PATCH,
             url,
@@ -4694,16 +4144,64 @@ class TestUpdatePrestissimoEngine:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a PrestissimoEnginePropertiesCatalog model
+        prestissimo_engine_properties_catalog_model = {}
+        prestissimo_engine_properties_catalog_model['catalog_name'] = ['testString']
+
+        # Construct a dict representation of a PrestissimoNodeDescriptionBody model
+        prestissimo_node_description_body_model = {}
+        prestissimo_node_description_body_model['node_type'] = 'worker'
+        prestissimo_node_description_body_model['quantity'] = 38
+
+        # Construct a dict representation of a EnginePropertiesOaiGenConfiguration model
+        engine_properties_oai_gen_configuration_model = {}
+        engine_properties_oai_gen_configuration_model['coordinator'] = prestissimo_node_description_body_model
+        engine_properties_oai_gen_configuration_model['worker'] = prestissimo_node_description_body_model
+
+        # Construct a dict representation of a PrestissimoEnginePropertiesVelox model
+        prestissimo_engine_properties_velox_model = {}
+        prestissimo_engine_properties_velox_model['velox_property'] = ['testString']
+
+        # Construct a dict representation of a NodeDescriptionBody model
+        node_description_body_model = {}
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        # Construct a dict representation of a PrestissimoEnginePropertiesOaiGen1Jvm model
+        prestissimo_engine_properties_oai_gen1_jvm_model = {}
+        prestissimo_engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+
+        # Construct a dict representation of a PrestissimoEngineEngineProperties model
+        prestissimo_engine_engine_properties_model = {}
+        prestissimo_engine_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
+        prestissimo_engine_engine_properties_model['configuration'] = engine_properties_oai_gen_configuration_model
+        prestissimo_engine_engine_properties_model['velox'] = prestissimo_engine_properties_velox_model
+        prestissimo_engine_engine_properties_model['jvm'] = prestissimo_engine_properties_oai_gen1_jvm_model
+
+        # Construct a dict representation of a RemoveEnginePropertiesConfiguration model
+        remove_engine_properties_configuration_model = {}
+        remove_engine_properties_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_configuration_model['worker'] = ['testString']
+
+        # Construct a dict representation of a RemoveEngineProperties model
+        remove_engine_properties_model = {}
+        remove_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
+        remove_engine_properties_model['configuration'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['velox'] = ['testString']
+
+        # Construct a dict representation of a PrestissimoEnginePatch model
+        prestissimo_engine_patch_model = {}
+        prestissimo_engine_patch_model['description'] = 'updated description for prestissimo engine'
+        prestissimo_engine_patch_model['engine_display_name'] = 'sampleEngine'
+        prestissimo_engine_patch_model['engine_properties'] = prestissimo_engine_engine_properties_model
+        prestissimo_engine_patch_model['engine_restart'] = 'force'
+        prestissimo_engine_patch_model['remove_engine_properties'] = remove_engine_properties_model
+        prestissimo_engine_patch_model['tags'] = ['tag1', 'tag2']
 
         # Set up parameter values
         engine_id = 'testString'
-        body = [json_patch_operation_model]
+        body = prestissimo_engine_patch_model
 
         # Invoke method
         response = _service.update_prestissimo_engine(
@@ -4735,7 +4233,7 @@ class TestUpdatePrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.PATCH,
             url,
@@ -4744,16 +4242,64 @@ class TestUpdatePrestissimoEngine:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a PrestissimoEnginePropertiesCatalog model
+        prestissimo_engine_properties_catalog_model = {}
+        prestissimo_engine_properties_catalog_model['catalog_name'] = ['testString']
+
+        # Construct a dict representation of a PrestissimoNodeDescriptionBody model
+        prestissimo_node_description_body_model = {}
+        prestissimo_node_description_body_model['node_type'] = 'worker'
+        prestissimo_node_description_body_model['quantity'] = 38
+
+        # Construct a dict representation of a EnginePropertiesOaiGenConfiguration model
+        engine_properties_oai_gen_configuration_model = {}
+        engine_properties_oai_gen_configuration_model['coordinator'] = prestissimo_node_description_body_model
+        engine_properties_oai_gen_configuration_model['worker'] = prestissimo_node_description_body_model
+
+        # Construct a dict representation of a PrestissimoEnginePropertiesVelox model
+        prestissimo_engine_properties_velox_model = {}
+        prestissimo_engine_properties_velox_model['velox_property'] = ['testString']
+
+        # Construct a dict representation of a NodeDescriptionBody model
+        node_description_body_model = {}
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        # Construct a dict representation of a PrestissimoEnginePropertiesOaiGen1Jvm model
+        prestissimo_engine_properties_oai_gen1_jvm_model = {}
+        prestissimo_engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+
+        # Construct a dict representation of a PrestissimoEngineEngineProperties model
+        prestissimo_engine_engine_properties_model = {}
+        prestissimo_engine_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
+        prestissimo_engine_engine_properties_model['configuration'] = engine_properties_oai_gen_configuration_model
+        prestissimo_engine_engine_properties_model['velox'] = prestissimo_engine_properties_velox_model
+        prestissimo_engine_engine_properties_model['jvm'] = prestissimo_engine_properties_oai_gen1_jvm_model
+
+        # Construct a dict representation of a RemoveEnginePropertiesConfiguration model
+        remove_engine_properties_configuration_model = {}
+        remove_engine_properties_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_configuration_model['worker'] = ['testString']
+
+        # Construct a dict representation of a RemoveEngineProperties model
+        remove_engine_properties_model = {}
+        remove_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
+        remove_engine_properties_model['configuration'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['velox'] = ['testString']
+
+        # Construct a dict representation of a PrestissimoEnginePatch model
+        prestissimo_engine_patch_model = {}
+        prestissimo_engine_patch_model['description'] = 'updated description for prestissimo engine'
+        prestissimo_engine_patch_model['engine_display_name'] = 'sampleEngine'
+        prestissimo_engine_patch_model['engine_properties'] = prestissimo_engine_engine_properties_model
+        prestissimo_engine_patch_model['engine_restart'] = 'force'
+        prestissimo_engine_patch_model['remove_engine_properties'] = remove_engine_properties_model
+        prestissimo_engine_patch_model['tags'] = ['tag1', 'tag2']
 
         # Set up parameter values
         engine_id = 'testString'
-        body = [json_patch_operation_model]
+        body = prestissimo_engine_patch_model
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -4896,21 +4442,21 @@ class TestListPrestissimoEngineCatalogs:
         self.test_list_prestissimo_engine_catalogs_value_error()
 
 
-class TestReplacePrestissimoEngineCatalogs:
+class TestAddPrestissimoEngineCatalogs:
     """
-    Test Class for replace_prestissimo_engine_catalogs
+    Test Class for add_prestissimo_engine_catalogs
     """
 
     @responses.activate
-    def test_replace_prestissimo_engine_catalogs_all_params(self):
+    def test_add_prestissimo_engine_catalogs_all_params(self):
         """
-        replace_prestissimo_engine_catalogs()
+        add_prestissimo_engine_catalogs()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/catalogs')
         mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
         responses.add(
-            responses.PUT,
+            responses.POST,
             url,
             body=mock_response,
             content_type='application/json',
@@ -4923,9 +4469,9 @@ class TestReplacePrestissimoEngineCatalogs:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.replace_prestissimo_engine_catalogs(
+        response = _service.add_prestissimo_engine_catalogs(
             engine_id,
-            catalog_names,
+            catalog_names=catalog_names,
             auth_instance_id=auth_instance_id,
             headers={},
         )
@@ -4933,30 +4479,29 @@ class TestReplacePrestissimoEngineCatalogs:
         # Check for correct operation
         assert len(responses.calls) == 1
         assert response.status_code == 201
-        # Validate query params
-        query_string = responses.calls[0].request.url.split('?', 1)[1]
-        query_string = urllib.parse.unquote_plus(query_string)
-        assert 'catalog_names={}'.format(catalog_names) in query_string
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['catalog_names'] == 'testString'
 
-    def test_replace_prestissimo_engine_catalogs_all_params_with_retries(self):
-        # Enable retries and run test_replace_prestissimo_engine_catalogs_all_params.
+    def test_add_prestissimo_engine_catalogs_all_params_with_retries(self):
+        # Enable retries and run test_add_prestissimo_engine_catalogs_all_params.
         _service.enable_retries()
-        self.test_replace_prestissimo_engine_catalogs_all_params()
+        self.test_add_prestissimo_engine_catalogs_all_params()
 
-        # Disable retries and run test_replace_prestissimo_engine_catalogs_all_params.
+        # Disable retries and run test_add_prestissimo_engine_catalogs_all_params.
         _service.disable_retries()
-        self.test_replace_prestissimo_engine_catalogs_all_params()
+        self.test_add_prestissimo_engine_catalogs_all_params()
 
     @responses.activate
-    def test_replace_prestissimo_engine_catalogs_required_params(self):
+    def test_add_prestissimo_engine_catalogs_required_params(self):
         """
-        test_replace_prestissimo_engine_catalogs_required_params()
+        test_add_prestissimo_engine_catalogs_required_params()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/catalogs')
         mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
         responses.add(
-            responses.PUT,
+            responses.POST,
             url,
             body=mock_response,
             content_type='application/json',
@@ -4968,39 +4513,38 @@ class TestReplacePrestissimoEngineCatalogs:
         catalog_names = 'testString'
 
         # Invoke method
-        response = _service.replace_prestissimo_engine_catalogs(
+        response = _service.add_prestissimo_engine_catalogs(
             engine_id,
-            catalog_names,
+            catalog_names=catalog_names,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
         assert response.status_code == 201
-        # Validate query params
-        query_string = responses.calls[0].request.url.split('?', 1)[1]
-        query_string = urllib.parse.unquote_plus(query_string)
-        assert 'catalog_names={}'.format(catalog_names) in query_string
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['catalog_names'] == 'testString'
 
-    def test_replace_prestissimo_engine_catalogs_required_params_with_retries(self):
-        # Enable retries and run test_replace_prestissimo_engine_catalogs_required_params.
+    def test_add_prestissimo_engine_catalogs_required_params_with_retries(self):
+        # Enable retries and run test_add_prestissimo_engine_catalogs_required_params.
         _service.enable_retries()
-        self.test_replace_prestissimo_engine_catalogs_required_params()
+        self.test_add_prestissimo_engine_catalogs_required_params()
 
-        # Disable retries and run test_replace_prestissimo_engine_catalogs_required_params.
+        # Disable retries and run test_add_prestissimo_engine_catalogs_required_params.
         _service.disable_retries()
-        self.test_replace_prestissimo_engine_catalogs_required_params()
+        self.test_add_prestissimo_engine_catalogs_required_params()
 
     @responses.activate
-    def test_replace_prestissimo_engine_catalogs_value_error(self):
+    def test_add_prestissimo_engine_catalogs_value_error(self):
         """
-        test_replace_prestissimo_engine_catalogs_value_error()
+        test_add_prestissimo_engine_catalogs_value_error()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/catalogs')
         mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
         responses.add(
-            responses.PUT,
+            responses.POST,
             url,
             body=mock_response,
             content_type='application/json',
@@ -5014,21 +4558,20 @@ class TestReplacePrestissimoEngineCatalogs:
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
             "engine_id": engine_id,
-            "catalog_names": catalog_names,
         }
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.replace_prestissimo_engine_catalogs(**req_copy)
+                _service.add_prestissimo_engine_catalogs(**req_copy)
 
-    def test_replace_prestissimo_engine_catalogs_value_error_with_retries(self):
-        # Enable retries and run test_replace_prestissimo_engine_catalogs_value_error.
+    def test_add_prestissimo_engine_catalogs_value_error_with_retries(self):
+        # Enable retries and run test_add_prestissimo_engine_catalogs_value_error.
         _service.enable_retries()
-        self.test_replace_prestissimo_engine_catalogs_value_error()
+        self.test_add_prestissimo_engine_catalogs_value_error()
 
-        # Disable retries and run test_replace_prestissimo_engine_catalogs_value_error.
+        # Disable retries and run test_add_prestissimo_engine_catalogs_value_error.
         _service.disable_retries()
-        self.test_replace_prestissimo_engine_catalogs_value_error()
+        self.test_add_prestissimo_engine_catalogs_value_error()
 
 
 class TestDeletePrestissimoEngineCatalogs:
@@ -5284,15 +4827,15 @@ class TestGetPrestissimoEngineCatalog:
         self.test_get_prestissimo_engine_catalog_value_error()
 
 
-class TestCreatePrestissimoEnginePause:
+class TestPausePrestissimoEngine:
     """
-    Test Class for create_prestissimo_engine_pause
+    Test Class for pause_prestissimo_engine
     """
 
     @responses.activate
-    def test_create_prestissimo_engine_pause_all_params(self):
+    def test_pause_prestissimo_engine_all_params(self):
         """
-        create_prestissimo_engine_pause()
+        pause_prestissimo_engine()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/pause')
@@ -5302,7 +4845,7 @@ class TestCreatePrestissimoEnginePause:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -5310,7 +4853,7 @@ class TestCreatePrestissimoEnginePause:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.create_prestissimo_engine_pause(
+        response = _service.pause_prestissimo_engine(
             engine_id,
             auth_instance_id=auth_instance_id,
             headers={},
@@ -5318,21 +4861,21 @@ class TestCreatePrestissimoEnginePause:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_prestissimo_engine_pause_all_params_with_retries(self):
-        # Enable retries and run test_create_prestissimo_engine_pause_all_params.
+    def test_pause_prestissimo_engine_all_params_with_retries(self):
+        # Enable retries and run test_pause_prestissimo_engine_all_params.
         _service.enable_retries()
-        self.test_create_prestissimo_engine_pause_all_params()
+        self.test_pause_prestissimo_engine_all_params()
 
-        # Disable retries and run test_create_prestissimo_engine_pause_all_params.
+        # Disable retries and run test_pause_prestissimo_engine_all_params.
         _service.disable_retries()
-        self.test_create_prestissimo_engine_pause_all_params()
+        self.test_pause_prestissimo_engine_all_params()
 
     @responses.activate
-    def test_create_prestissimo_engine_pause_required_params(self):
+    def test_pause_prestissimo_engine_required_params(self):
         """
-        test_create_prestissimo_engine_pause_required_params()
+        test_pause_prestissimo_engine_required_params()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/pause')
@@ -5342,35 +4885,35 @@ class TestCreatePrestissimoEnginePause:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
         engine_id = 'testString'
 
         # Invoke method
-        response = _service.create_prestissimo_engine_pause(
+        response = _service.pause_prestissimo_engine(
             engine_id,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_prestissimo_engine_pause_required_params_with_retries(self):
-        # Enable retries and run test_create_prestissimo_engine_pause_required_params.
+    def test_pause_prestissimo_engine_required_params_with_retries(self):
+        # Enable retries and run test_pause_prestissimo_engine_required_params.
         _service.enable_retries()
-        self.test_create_prestissimo_engine_pause_required_params()
+        self.test_pause_prestissimo_engine_required_params()
 
-        # Disable retries and run test_create_prestissimo_engine_pause_required_params.
+        # Disable retries and run test_pause_prestissimo_engine_required_params.
         _service.disable_retries()
-        self.test_create_prestissimo_engine_pause_required_params()
+        self.test_pause_prestissimo_engine_required_params()
 
     @responses.activate
-    def test_create_prestissimo_engine_pause_value_error(self):
+    def test_pause_prestissimo_engine_value_error(self):
         """
-        test_create_prestissimo_engine_pause_value_error()
+        test_pause_prestissimo_engine_value_error()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/pause')
@@ -5380,7 +4923,7 @@ class TestCreatePrestissimoEnginePause:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -5393,16 +4936,16 @@ class TestCreatePrestissimoEnginePause:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.create_prestissimo_engine_pause(**req_copy)
+                _service.pause_prestissimo_engine(**req_copy)
 
-    def test_create_prestissimo_engine_pause_value_error_with_retries(self):
-        # Enable retries and run test_create_prestissimo_engine_pause_value_error.
+    def test_pause_prestissimo_engine_value_error_with_retries(self):
+        # Enable retries and run test_pause_prestissimo_engine_value_error.
         _service.enable_retries()
-        self.test_create_prestissimo_engine_pause_value_error()
+        self.test_pause_prestissimo_engine_value_error()
 
-        # Disable retries and run test_create_prestissimo_engine_pause_value_error.
+        # Disable retries and run test_pause_prestissimo_engine_value_error.
         _service.disable_retries()
-        self.test_create_prestissimo_engine_pause_value_error()
+        self.test_pause_prestissimo_engine_value_error()
 
 
 class TestRunPrestissimoExplainStatement:
@@ -5692,15 +5235,15 @@ class TestRunPrestissimoExplainAnalyzeStatement:
         self.test_run_prestissimo_explain_analyze_statement_value_error()
 
 
-class TestCreatePrestissimoEngineRestart:
+class TestRestartPrestissimoEngine:
     """
-    Test Class for create_prestissimo_engine_restart
+    Test Class for restart_prestissimo_engine
     """
 
     @responses.activate
-    def test_create_prestissimo_engine_restart_all_params(self):
+    def test_restart_prestissimo_engine_all_params(self):
         """
-        create_prestissimo_engine_restart()
+        restart_prestissimo_engine()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/restart')
@@ -5710,7 +5253,7 @@ class TestCreatePrestissimoEngineRestart:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -5718,7 +5261,7 @@ class TestCreatePrestissimoEngineRestart:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.create_prestissimo_engine_restart(
+        response = _service.restart_prestissimo_engine(
             engine_id,
             auth_instance_id=auth_instance_id,
             headers={},
@@ -5726,21 +5269,21 @@ class TestCreatePrestissimoEngineRestart:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_prestissimo_engine_restart_all_params_with_retries(self):
-        # Enable retries and run test_create_prestissimo_engine_restart_all_params.
+    def test_restart_prestissimo_engine_all_params_with_retries(self):
+        # Enable retries and run test_restart_prestissimo_engine_all_params.
         _service.enable_retries()
-        self.test_create_prestissimo_engine_restart_all_params()
+        self.test_restart_prestissimo_engine_all_params()
 
-        # Disable retries and run test_create_prestissimo_engine_restart_all_params.
+        # Disable retries and run test_restart_prestissimo_engine_all_params.
         _service.disable_retries()
-        self.test_create_prestissimo_engine_restart_all_params()
+        self.test_restart_prestissimo_engine_all_params()
 
     @responses.activate
-    def test_create_prestissimo_engine_restart_required_params(self):
+    def test_restart_prestissimo_engine_required_params(self):
         """
-        test_create_prestissimo_engine_restart_required_params()
+        test_restart_prestissimo_engine_required_params()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/restart')
@@ -5750,35 +5293,35 @@ class TestCreatePrestissimoEngineRestart:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
         engine_id = 'testString'
 
         # Invoke method
-        response = _service.create_prestissimo_engine_restart(
+        response = _service.restart_prestissimo_engine(
             engine_id,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_prestissimo_engine_restart_required_params_with_retries(self):
-        # Enable retries and run test_create_prestissimo_engine_restart_required_params.
+    def test_restart_prestissimo_engine_required_params_with_retries(self):
+        # Enable retries and run test_restart_prestissimo_engine_required_params.
         _service.enable_retries()
-        self.test_create_prestissimo_engine_restart_required_params()
+        self.test_restart_prestissimo_engine_required_params()
 
-        # Disable retries and run test_create_prestissimo_engine_restart_required_params.
+        # Disable retries and run test_restart_prestissimo_engine_required_params.
         _service.disable_retries()
-        self.test_create_prestissimo_engine_restart_required_params()
+        self.test_restart_prestissimo_engine_required_params()
 
     @responses.activate
-    def test_create_prestissimo_engine_restart_value_error(self):
+    def test_restart_prestissimo_engine_value_error(self):
         """
-        test_create_prestissimo_engine_restart_value_error()
+        test_restart_prestissimo_engine_value_error()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/restart')
@@ -5788,7 +5331,7 @@ class TestCreatePrestissimoEngineRestart:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -5801,27 +5344,27 @@ class TestCreatePrestissimoEngineRestart:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.create_prestissimo_engine_restart(**req_copy)
+                _service.restart_prestissimo_engine(**req_copy)
 
-    def test_create_prestissimo_engine_restart_value_error_with_retries(self):
-        # Enable retries and run test_create_prestissimo_engine_restart_value_error.
+    def test_restart_prestissimo_engine_value_error_with_retries(self):
+        # Enable retries and run test_restart_prestissimo_engine_value_error.
         _service.enable_retries()
-        self.test_create_prestissimo_engine_restart_value_error()
+        self.test_restart_prestissimo_engine_value_error()
 
-        # Disable retries and run test_create_prestissimo_engine_restart_value_error.
+        # Disable retries and run test_restart_prestissimo_engine_value_error.
         _service.disable_retries()
-        self.test_create_prestissimo_engine_restart_value_error()
+        self.test_restart_prestissimo_engine_value_error()
 
 
-class TestCreatePrestissimoEngineResume:
+class TestResumePrestissimoEngine:
     """
-    Test Class for create_prestissimo_engine_resume
+    Test Class for resume_prestissimo_engine
     """
 
     @responses.activate
-    def test_create_prestissimo_engine_resume_all_params(self):
+    def test_resume_prestissimo_engine_all_params(self):
         """
-        create_prestissimo_engine_resume()
+        resume_prestissimo_engine()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/resume')
@@ -5831,7 +5374,7 @@ class TestCreatePrestissimoEngineResume:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -5839,7 +5382,7 @@ class TestCreatePrestissimoEngineResume:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.create_prestissimo_engine_resume(
+        response = _service.resume_prestissimo_engine(
             engine_id,
             auth_instance_id=auth_instance_id,
             headers={},
@@ -5847,21 +5390,21 @@ class TestCreatePrestissimoEngineResume:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_prestissimo_engine_resume_all_params_with_retries(self):
-        # Enable retries and run test_create_prestissimo_engine_resume_all_params.
+    def test_resume_prestissimo_engine_all_params_with_retries(self):
+        # Enable retries and run test_resume_prestissimo_engine_all_params.
         _service.enable_retries()
-        self.test_create_prestissimo_engine_resume_all_params()
+        self.test_resume_prestissimo_engine_all_params()
 
-        # Disable retries and run test_create_prestissimo_engine_resume_all_params.
+        # Disable retries and run test_resume_prestissimo_engine_all_params.
         _service.disable_retries()
-        self.test_create_prestissimo_engine_resume_all_params()
+        self.test_resume_prestissimo_engine_all_params()
 
     @responses.activate
-    def test_create_prestissimo_engine_resume_required_params(self):
+    def test_resume_prestissimo_engine_required_params(self):
         """
-        test_create_prestissimo_engine_resume_required_params()
+        test_resume_prestissimo_engine_required_params()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/resume')
@@ -5871,35 +5414,35 @@ class TestCreatePrestissimoEngineResume:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
         engine_id = 'testString'
 
         # Invoke method
-        response = _service.create_prestissimo_engine_resume(
+        response = _service.resume_prestissimo_engine(
             engine_id,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_prestissimo_engine_resume_required_params_with_retries(self):
-        # Enable retries and run test_create_prestissimo_engine_resume_required_params.
+    def test_resume_prestissimo_engine_required_params_with_retries(self):
+        # Enable retries and run test_resume_prestissimo_engine_required_params.
         _service.enable_retries()
-        self.test_create_prestissimo_engine_resume_required_params()
+        self.test_resume_prestissimo_engine_required_params()
 
-        # Disable retries and run test_create_prestissimo_engine_resume_required_params.
+        # Disable retries and run test_resume_prestissimo_engine_required_params.
         _service.disable_retries()
-        self.test_create_prestissimo_engine_resume_required_params()
+        self.test_resume_prestissimo_engine_required_params()
 
     @responses.activate
-    def test_create_prestissimo_engine_resume_value_error(self):
+    def test_resume_prestissimo_engine_value_error(self):
         """
-        test_create_prestissimo_engine_resume_value_error()
+        test_resume_prestissimo_engine_value_error()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/resume')
@@ -5909,7 +5452,7 @@ class TestCreatePrestissimoEngineResume:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -5922,27 +5465,27 @@ class TestCreatePrestissimoEngineResume:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.create_prestissimo_engine_resume(**req_copy)
+                _service.resume_prestissimo_engine(**req_copy)
 
-    def test_create_prestissimo_engine_resume_value_error_with_retries(self):
-        # Enable retries and run test_create_prestissimo_engine_resume_value_error.
+    def test_resume_prestissimo_engine_value_error_with_retries(self):
+        # Enable retries and run test_resume_prestissimo_engine_value_error.
         _service.enable_retries()
-        self.test_create_prestissimo_engine_resume_value_error()
+        self.test_resume_prestissimo_engine_value_error()
 
-        # Disable retries and run test_create_prestissimo_engine_resume_value_error.
+        # Disable retries and run test_resume_prestissimo_engine_value_error.
         _service.disable_retries()
-        self.test_create_prestissimo_engine_resume_value_error()
+        self.test_resume_prestissimo_engine_value_error()
 
 
-class TestCreatePrestissimoEngineScale:
+class TestScalePrestissimoEngine:
     """
-    Test Class for create_prestissimo_engine_scale
+    Test Class for scale_prestissimo_engine
     """
 
     @responses.activate
-    def test_create_prestissimo_engine_scale_all_params(self):
+    def test_scale_prestissimo_engine_all_params(self):
         """
-        create_prestissimo_engine_scale()
+        scale_prestissimo_engine()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/scale')
@@ -5952,7 +5495,7 @@ class TestCreatePrestissimoEngineScale:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=202,
         )
 
         # Construct a dict representation of a PrestissimoNodeDescriptionBody model
@@ -5967,7 +5510,7 @@ class TestCreatePrestissimoEngineScale:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.create_prestissimo_engine_scale(
+        response = _service.scale_prestissimo_engine(
             engine_id,
             coordinator=coordinator,
             worker=worker,
@@ -5977,25 +5520,25 @@ class TestCreatePrestissimoEngineScale:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 202
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['coordinator'] == prestissimo_node_description_body_model
         assert req_body['worker'] == prestissimo_node_description_body_model
 
-    def test_create_prestissimo_engine_scale_all_params_with_retries(self):
-        # Enable retries and run test_create_prestissimo_engine_scale_all_params.
+    def test_scale_prestissimo_engine_all_params_with_retries(self):
+        # Enable retries and run test_scale_prestissimo_engine_all_params.
         _service.enable_retries()
-        self.test_create_prestissimo_engine_scale_all_params()
+        self.test_scale_prestissimo_engine_all_params()
 
-        # Disable retries and run test_create_prestissimo_engine_scale_all_params.
+        # Disable retries and run test_scale_prestissimo_engine_all_params.
         _service.disable_retries()
-        self.test_create_prestissimo_engine_scale_all_params()
+        self.test_scale_prestissimo_engine_all_params()
 
     @responses.activate
-    def test_create_prestissimo_engine_scale_required_params(self):
+    def test_scale_prestissimo_engine_required_params(self):
         """
-        test_create_prestissimo_engine_scale_required_params()
+        test_scale_prestissimo_engine_required_params()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/scale')
@@ -6005,7 +5548,7 @@ class TestCreatePrestissimoEngineScale:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=202,
         )
 
         # Construct a dict representation of a PrestissimoNodeDescriptionBody model
@@ -6019,7 +5562,7 @@ class TestCreatePrestissimoEngineScale:
         worker = prestissimo_node_description_body_model
 
         # Invoke method
-        response = _service.create_prestissimo_engine_scale(
+        response = _service.scale_prestissimo_engine(
             engine_id,
             coordinator=coordinator,
             worker=worker,
@@ -6028,25 +5571,25 @@ class TestCreatePrestissimoEngineScale:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 202
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['coordinator'] == prestissimo_node_description_body_model
         assert req_body['worker'] == prestissimo_node_description_body_model
 
-    def test_create_prestissimo_engine_scale_required_params_with_retries(self):
-        # Enable retries and run test_create_prestissimo_engine_scale_required_params.
+    def test_scale_prestissimo_engine_required_params_with_retries(self):
+        # Enable retries and run test_scale_prestissimo_engine_required_params.
         _service.enable_retries()
-        self.test_create_prestissimo_engine_scale_required_params()
+        self.test_scale_prestissimo_engine_required_params()
 
-        # Disable retries and run test_create_prestissimo_engine_scale_required_params.
+        # Disable retries and run test_scale_prestissimo_engine_required_params.
         _service.disable_retries()
-        self.test_create_prestissimo_engine_scale_required_params()
+        self.test_scale_prestissimo_engine_required_params()
 
     @responses.activate
-    def test_create_prestissimo_engine_scale_value_error(self):
+    def test_scale_prestissimo_engine_value_error(self):
         """
-        test_create_prestissimo_engine_scale_value_error()
+        test_scale_prestissimo_engine_value_error()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/scale')
@@ -6056,7 +5599,7 @@ class TestCreatePrestissimoEngineScale:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=202,
         )
 
         # Construct a dict representation of a PrestissimoNodeDescriptionBody model
@@ -6076,16 +5619,55 @@ class TestCreatePrestissimoEngineScale:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.create_prestissimo_engine_scale(**req_copy)
+                _service.scale_prestissimo_engine(**req_copy)
 
-    def test_create_prestissimo_engine_scale_value_error_with_retries(self):
-        # Enable retries and run test_create_prestissimo_engine_scale_value_error.
+    def test_scale_prestissimo_engine_value_error_with_retries(self):
+        # Enable retries and run test_scale_prestissimo_engine_value_error.
         _service.enable_retries()
-        self.test_create_prestissimo_engine_scale_value_error()
+        self.test_scale_prestissimo_engine_value_error()
 
-        # Disable retries and run test_create_prestissimo_engine_scale_value_error.
+        # Disable retries and run test_scale_prestissimo_engine_value_error.
         _service.disable_retries()
-        self.test_create_prestissimo_engine_scale_value_error()
+        self.test_scale_prestissimo_engine_value_error()
+
+
+# endregion
+##############################################################################
+# End of Service: PrestissimoEngines
+##############################################################################
+
+##############################################################################
+# Start of Service: PrestoEngines
+##############################################################################
+# region
+
+
+class TestNewInstance:
+    """
+    Test Class for new_instance
+    """
+
+    def test_new_instance(self):
+        """
+        new_instance()
+        """
+        os.environ['TEST_SERVICE_AUTH_TYPE'] = 'noAuth'
+
+        service = WatsonxDataV2.new_instance(
+            service_name='TEST_SERVICE',
+        )
+
+        assert service is not None
+        assert isinstance(service, WatsonxDataV2)
+
+    def test_new_instance_without_authenticator(self):
+        """
+        new_instance_without_authenticator()
+        """
+        with pytest.raises(ValueError, match='authenticator must be provided'):
+            service = WatsonxDataV2.new_instance(
+                service_name='TEST_SERVICE_NOT_FOUND',
+            )
 
 
 class TestListPrestoEngines:
@@ -6100,7 +5682,7 @@ class TestListPrestoEngines:
         """
         # Set up mock
         url = preprocess_url('/presto_engines')
-        mock_response = '{"presto_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
+        mock_response = '{"presto_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
         responses.add(
             responses.GET,
             url,
@@ -6138,7 +5720,7 @@ class TestListPrestoEngines:
         """
         # Set up mock
         url = preprocess_url('/presto_engines')
-        mock_response = '{"presto_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
+        mock_response = '{"presto_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
         responses.add(
             responses.GET,
             url,
@@ -6176,7 +5758,7 @@ class TestCreatePrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.POST,
             url,
@@ -6202,7 +5784,6 @@ class TestCreatePrestoEngine:
 
         # Set up parameter values
         origin = 'native'
-        type = 'presto'
         associated_catalogs = ['iceberg_data', 'hive_data']
         description = 'presto engine for running sql queries'
         engine_details = engine_details_body_model
@@ -6215,7 +5796,6 @@ class TestCreatePrestoEngine:
         # Invoke method
         response = _service.create_presto_engine(
             origin,
-            type,
             associated_catalogs=associated_catalogs,
             description=description,
             engine_details=engine_details,
@@ -6233,7 +5813,6 @@ class TestCreatePrestoEngine:
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['origin'] == 'native'
-        assert req_body['type'] == 'presto'
         assert req_body['associated_catalogs'] == ['iceberg_data', 'hive_data']
         assert req_body['description'] == 'presto engine for running sql queries'
         assert req_body['engine_details'] == engine_details_body_model
@@ -6258,7 +5837,7 @@ class TestCreatePrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.POST,
             url,
@@ -6284,7 +5863,6 @@ class TestCreatePrestoEngine:
 
         # Set up parameter values
         origin = 'native'
-        type = 'presto'
         associated_catalogs = ['iceberg_data', 'hive_data']
         description = 'presto engine for running sql queries'
         engine_details = engine_details_body_model
@@ -6296,7 +5874,6 @@ class TestCreatePrestoEngine:
         # Invoke method
         response = _service.create_presto_engine(
             origin,
-            type,
             associated_catalogs=associated_catalogs,
             description=description,
             engine_details=engine_details,
@@ -6313,7 +5890,6 @@ class TestCreatePrestoEngine:
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['origin'] == 'native'
-        assert req_body['type'] == 'presto'
         assert req_body['associated_catalogs'] == ['iceberg_data', 'hive_data']
         assert req_body['description'] == 'presto engine for running sql queries'
         assert req_body['engine_details'] == engine_details_body_model
@@ -6338,7 +5914,7 @@ class TestCreatePrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.POST,
             url,
@@ -6364,7 +5940,6 @@ class TestCreatePrestoEngine:
 
         # Set up parameter values
         origin = 'native'
-        type = 'presto'
         associated_catalogs = ['iceberg_data', 'hive_data']
         description = 'presto engine for running sql queries'
         engine_details = engine_details_body_model
@@ -6376,7 +5951,6 @@ class TestCreatePrestoEngine:
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
             "origin": origin,
-            "type": type,
         }
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
@@ -6405,7 +5979,7 @@ class TestGetPrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.GET,
             url,
@@ -6445,7 +6019,7 @@ class TestGetPrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.GET,
             url,
@@ -6483,7 +6057,7 @@ class TestGetPrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.GET,
             url,
@@ -6638,7 +6212,7 @@ class TestUpdatePrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.PATCH,
             url,
@@ -6647,16 +6221,64 @@ class TestUpdatePrestoEngine:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a PrestoEnginePropertiesCatalog model
+        presto_engine_properties_catalog_model = {}
+        presto_engine_properties_catalog_model['catalog_name'] = 'testString'
+
+        # Construct a dict representation of a NodeDescriptionBody model
+        node_description_body_model = {}
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        # Construct a dict representation of a EnginePropertiesOaiGen1Configuration model
+        engine_properties_oai_gen1_configuration_model = {}
+        engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
+
+        # Construct a dict representation of a PrestoEnginePropertiesGlobal model
+        presto_engine_properties_global_model = {}
+        presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
+
+        # Construct a dict representation of a EnginePropertiesOaiGen1Jvm model
+        engine_properties_oai_gen1_jvm_model = {}
+        engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
+
+        # Construct a dict representation of a PrestoEngineEngineProperties model
+        presto_engine_engine_properties_model = {}
+        presto_engine_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_engine_properties_model['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model['global'] = presto_engine_properties_global_model
+        presto_engine_engine_properties_model['jvm'] = engine_properties_oai_gen1_jvm_model
+
+        # Construct a dict representation of a RemoveEnginePropertiesOaiGenConfiguration model
+        remove_engine_properties_oai_gen_configuration_model = {}
+        remove_engine_properties_oai_gen_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_configuration_model['worker'] = ['testString']
+
+        # Construct a dict representation of a RemoveEnginePropertiesOaiGenJvm model
+        remove_engine_properties_oai_gen_jvm_model = {}
+        remove_engine_properties_oai_gen_jvm_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_jvm_model['worker'] = ['testString']
+
+        # Construct a dict representation of a PrestoEnginePatchRemoveEngineProperties model
+        presto_engine_patch_remove_engine_properties_model = {}
+        presto_engine_patch_remove_engine_properties_model['configuration'] = remove_engine_properties_oai_gen_configuration_model
+        presto_engine_patch_remove_engine_properties_model['jvm'] = remove_engine_properties_oai_gen_jvm_model
+        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+
+        # Construct a dict representation of a PrestoEnginePatch model
+        presto_engine_patch_model = {}
+        presto_engine_patch_model['description'] = 'updated description for presto engine'
+        presto_engine_patch_model['engine_display_name'] = 'sampleEngine'
+        presto_engine_patch_model['engine_properties'] = presto_engine_engine_properties_model
+        presto_engine_patch_model['engine_restart'] = 'force'
+        presto_engine_patch_model['remove_engine_properties'] = presto_engine_patch_remove_engine_properties_model
+        presto_engine_patch_model['tags'] = ['tag1', 'tag2']
 
         # Set up parameter values
         engine_id = 'testString'
-        body = [json_patch_operation_model]
+        body = presto_engine_patch_model
         auth_instance_id = 'testString'
 
         # Invoke method
@@ -6690,7 +6312,7 @@ class TestUpdatePrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.PATCH,
             url,
@@ -6699,16 +6321,64 @@ class TestUpdatePrestoEngine:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a PrestoEnginePropertiesCatalog model
+        presto_engine_properties_catalog_model = {}
+        presto_engine_properties_catalog_model['catalog_name'] = 'testString'
+
+        # Construct a dict representation of a NodeDescriptionBody model
+        node_description_body_model = {}
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        # Construct a dict representation of a EnginePropertiesOaiGen1Configuration model
+        engine_properties_oai_gen1_configuration_model = {}
+        engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
+
+        # Construct a dict representation of a PrestoEnginePropertiesGlobal model
+        presto_engine_properties_global_model = {}
+        presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
+
+        # Construct a dict representation of a EnginePropertiesOaiGen1Jvm model
+        engine_properties_oai_gen1_jvm_model = {}
+        engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
+
+        # Construct a dict representation of a PrestoEngineEngineProperties model
+        presto_engine_engine_properties_model = {}
+        presto_engine_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_engine_properties_model['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model['global'] = presto_engine_properties_global_model
+        presto_engine_engine_properties_model['jvm'] = engine_properties_oai_gen1_jvm_model
+
+        # Construct a dict representation of a RemoveEnginePropertiesOaiGenConfiguration model
+        remove_engine_properties_oai_gen_configuration_model = {}
+        remove_engine_properties_oai_gen_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_configuration_model['worker'] = ['testString']
+
+        # Construct a dict representation of a RemoveEnginePropertiesOaiGenJvm model
+        remove_engine_properties_oai_gen_jvm_model = {}
+        remove_engine_properties_oai_gen_jvm_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_jvm_model['worker'] = ['testString']
+
+        # Construct a dict representation of a PrestoEnginePatchRemoveEngineProperties model
+        presto_engine_patch_remove_engine_properties_model = {}
+        presto_engine_patch_remove_engine_properties_model['configuration'] = remove_engine_properties_oai_gen_configuration_model
+        presto_engine_patch_remove_engine_properties_model['jvm'] = remove_engine_properties_oai_gen_jvm_model
+        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+
+        # Construct a dict representation of a PrestoEnginePatch model
+        presto_engine_patch_model = {}
+        presto_engine_patch_model['description'] = 'updated description for presto engine'
+        presto_engine_patch_model['engine_display_name'] = 'sampleEngine'
+        presto_engine_patch_model['engine_properties'] = presto_engine_engine_properties_model
+        presto_engine_patch_model['engine_restart'] = 'force'
+        presto_engine_patch_model['remove_engine_properties'] = presto_engine_patch_remove_engine_properties_model
+        presto_engine_patch_model['tags'] = ['tag1', 'tag2']
 
         # Set up parameter values
         engine_id = 'testString'
-        body = [json_patch_operation_model]
+        body = presto_engine_patch_model
 
         # Invoke method
         response = _service.update_presto_engine(
@@ -6740,7 +6410,7 @@ class TestUpdatePrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.PATCH,
             url,
@@ -6749,16 +6419,64 @@ class TestUpdatePrestoEngine:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a PrestoEnginePropertiesCatalog model
+        presto_engine_properties_catalog_model = {}
+        presto_engine_properties_catalog_model['catalog_name'] = 'testString'
+
+        # Construct a dict representation of a NodeDescriptionBody model
+        node_description_body_model = {}
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        # Construct a dict representation of a EnginePropertiesOaiGen1Configuration model
+        engine_properties_oai_gen1_configuration_model = {}
+        engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
+
+        # Construct a dict representation of a PrestoEnginePropertiesGlobal model
+        presto_engine_properties_global_model = {}
+        presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
+
+        # Construct a dict representation of a EnginePropertiesOaiGen1Jvm model
+        engine_properties_oai_gen1_jvm_model = {}
+        engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
+
+        # Construct a dict representation of a PrestoEngineEngineProperties model
+        presto_engine_engine_properties_model = {}
+        presto_engine_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_engine_properties_model['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model['global'] = presto_engine_properties_global_model
+        presto_engine_engine_properties_model['jvm'] = engine_properties_oai_gen1_jvm_model
+
+        # Construct a dict representation of a RemoveEnginePropertiesOaiGenConfiguration model
+        remove_engine_properties_oai_gen_configuration_model = {}
+        remove_engine_properties_oai_gen_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_configuration_model['worker'] = ['testString']
+
+        # Construct a dict representation of a RemoveEnginePropertiesOaiGenJvm model
+        remove_engine_properties_oai_gen_jvm_model = {}
+        remove_engine_properties_oai_gen_jvm_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_jvm_model['worker'] = ['testString']
+
+        # Construct a dict representation of a PrestoEnginePatchRemoveEngineProperties model
+        presto_engine_patch_remove_engine_properties_model = {}
+        presto_engine_patch_remove_engine_properties_model['configuration'] = remove_engine_properties_oai_gen_configuration_model
+        presto_engine_patch_remove_engine_properties_model['jvm'] = remove_engine_properties_oai_gen_jvm_model
+        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+
+        # Construct a dict representation of a PrestoEnginePatch model
+        presto_engine_patch_model = {}
+        presto_engine_patch_model['description'] = 'updated description for presto engine'
+        presto_engine_patch_model['engine_display_name'] = 'sampleEngine'
+        presto_engine_patch_model['engine_properties'] = presto_engine_engine_properties_model
+        presto_engine_patch_model['engine_restart'] = 'force'
+        presto_engine_patch_model['remove_engine_properties'] = presto_engine_patch_remove_engine_properties_model
+        presto_engine_patch_model['tags'] = ['tag1', 'tag2']
 
         # Set up parameter values
         engine_id = 'testString'
-        body = [json_patch_operation_model]
+        body = presto_engine_patch_model
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -6901,21 +6619,21 @@ class TestListPrestoEngineCatalogs:
         self.test_list_presto_engine_catalogs_value_error()
 
 
-class TestReplacePrestoEngineCatalogs:
+class TestAddPrestoEngineCatalogs:
     """
-    Test Class for replace_presto_engine_catalogs
+    Test Class for add_presto_engine_catalogs
     """
 
     @responses.activate
-    def test_replace_presto_engine_catalogs_all_params(self):
+    def test_add_presto_engine_catalogs_all_params(self):
         """
-        replace_presto_engine_catalogs()
+        add_presto_engine_catalogs()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/catalogs')
         mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
         responses.add(
-            responses.PUT,
+            responses.POST,
             url,
             body=mock_response,
             content_type='application/json',
@@ -6928,9 +6646,9 @@ class TestReplacePrestoEngineCatalogs:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.replace_presto_engine_catalogs(
+        response = _service.add_presto_engine_catalogs(
             engine_id,
-            catalog_names,
+            catalog_names=catalog_names,
             auth_instance_id=auth_instance_id,
             headers={},
         )
@@ -6938,30 +6656,29 @@ class TestReplacePrestoEngineCatalogs:
         # Check for correct operation
         assert len(responses.calls) == 1
         assert response.status_code == 201
-        # Validate query params
-        query_string = responses.calls[0].request.url.split('?', 1)[1]
-        query_string = urllib.parse.unquote_plus(query_string)
-        assert 'catalog_names={}'.format(catalog_names) in query_string
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['catalog_names'] == 'testString'
 
-    def test_replace_presto_engine_catalogs_all_params_with_retries(self):
-        # Enable retries and run test_replace_presto_engine_catalogs_all_params.
+    def test_add_presto_engine_catalogs_all_params_with_retries(self):
+        # Enable retries and run test_add_presto_engine_catalogs_all_params.
         _service.enable_retries()
-        self.test_replace_presto_engine_catalogs_all_params()
+        self.test_add_presto_engine_catalogs_all_params()
 
-        # Disable retries and run test_replace_presto_engine_catalogs_all_params.
+        # Disable retries and run test_add_presto_engine_catalogs_all_params.
         _service.disable_retries()
-        self.test_replace_presto_engine_catalogs_all_params()
+        self.test_add_presto_engine_catalogs_all_params()
 
     @responses.activate
-    def test_replace_presto_engine_catalogs_required_params(self):
+    def test_add_presto_engine_catalogs_required_params(self):
         """
-        test_replace_presto_engine_catalogs_required_params()
+        test_add_presto_engine_catalogs_required_params()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/catalogs')
         mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
         responses.add(
-            responses.PUT,
+            responses.POST,
             url,
             body=mock_response,
             content_type='application/json',
@@ -6973,39 +6690,38 @@ class TestReplacePrestoEngineCatalogs:
         catalog_names = 'testString'
 
         # Invoke method
-        response = _service.replace_presto_engine_catalogs(
+        response = _service.add_presto_engine_catalogs(
             engine_id,
-            catalog_names,
+            catalog_names=catalog_names,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
         assert response.status_code == 201
-        # Validate query params
-        query_string = responses.calls[0].request.url.split('?', 1)[1]
-        query_string = urllib.parse.unquote_plus(query_string)
-        assert 'catalog_names={}'.format(catalog_names) in query_string
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['catalog_names'] == 'testString'
 
-    def test_replace_presto_engine_catalogs_required_params_with_retries(self):
-        # Enable retries and run test_replace_presto_engine_catalogs_required_params.
+    def test_add_presto_engine_catalogs_required_params_with_retries(self):
+        # Enable retries and run test_add_presto_engine_catalogs_required_params.
         _service.enable_retries()
-        self.test_replace_presto_engine_catalogs_required_params()
+        self.test_add_presto_engine_catalogs_required_params()
 
-        # Disable retries and run test_replace_presto_engine_catalogs_required_params.
+        # Disable retries and run test_add_presto_engine_catalogs_required_params.
         _service.disable_retries()
-        self.test_replace_presto_engine_catalogs_required_params()
+        self.test_add_presto_engine_catalogs_required_params()
 
     @responses.activate
-    def test_replace_presto_engine_catalogs_value_error(self):
+    def test_add_presto_engine_catalogs_value_error(self):
         """
-        test_replace_presto_engine_catalogs_value_error()
+        test_add_presto_engine_catalogs_value_error()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/catalogs')
         mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
         responses.add(
-            responses.PUT,
+            responses.POST,
             url,
             body=mock_response,
             content_type='application/json',
@@ -7019,21 +6735,20 @@ class TestReplacePrestoEngineCatalogs:
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
             "engine_id": engine_id,
-            "catalog_names": catalog_names,
         }
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.replace_presto_engine_catalogs(**req_copy)
+                _service.add_presto_engine_catalogs(**req_copy)
 
-    def test_replace_presto_engine_catalogs_value_error_with_retries(self):
-        # Enable retries and run test_replace_presto_engine_catalogs_value_error.
+    def test_add_presto_engine_catalogs_value_error_with_retries(self):
+        # Enable retries and run test_add_presto_engine_catalogs_value_error.
         _service.enable_retries()
-        self.test_replace_presto_engine_catalogs_value_error()
+        self.test_add_presto_engine_catalogs_value_error()
 
-        # Disable retries and run test_replace_presto_engine_catalogs_value_error.
+        # Disable retries and run test_add_presto_engine_catalogs_value_error.
         _service.disable_retries()
-        self.test_replace_presto_engine_catalogs_value_error()
+        self.test_add_presto_engine_catalogs_value_error()
 
 
 class TestDeletePrestoEngineCatalogs:
@@ -7289,15 +7004,15 @@ class TestGetPrestoEngineCatalog:
         self.test_get_presto_engine_catalog_value_error()
 
 
-class TestCreateEnginePause:
+class TestPausePrestoEngine:
     """
-    Test Class for create_engine_pause
+    Test Class for pause_presto_engine
     """
 
     @responses.activate
-    def test_create_engine_pause_all_params(self):
+    def test_pause_presto_engine_all_params(self):
         """
-        create_engine_pause()
+        pause_presto_engine()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/pause')
@@ -7307,7 +7022,7 @@ class TestCreateEnginePause:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -7315,7 +7030,7 @@ class TestCreateEnginePause:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.create_engine_pause(
+        response = _service.pause_presto_engine(
             engine_id,
             auth_instance_id=auth_instance_id,
             headers={},
@@ -7323,21 +7038,21 @@ class TestCreateEnginePause:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_engine_pause_all_params_with_retries(self):
-        # Enable retries and run test_create_engine_pause_all_params.
+    def test_pause_presto_engine_all_params_with_retries(self):
+        # Enable retries and run test_pause_presto_engine_all_params.
         _service.enable_retries()
-        self.test_create_engine_pause_all_params()
+        self.test_pause_presto_engine_all_params()
 
-        # Disable retries and run test_create_engine_pause_all_params.
+        # Disable retries and run test_pause_presto_engine_all_params.
         _service.disable_retries()
-        self.test_create_engine_pause_all_params()
+        self.test_pause_presto_engine_all_params()
 
     @responses.activate
-    def test_create_engine_pause_required_params(self):
+    def test_pause_presto_engine_required_params(self):
         """
-        test_create_engine_pause_required_params()
+        test_pause_presto_engine_required_params()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/pause')
@@ -7347,35 +7062,35 @@ class TestCreateEnginePause:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
         engine_id = 'testString'
 
         # Invoke method
-        response = _service.create_engine_pause(
+        response = _service.pause_presto_engine(
             engine_id,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_engine_pause_required_params_with_retries(self):
-        # Enable retries and run test_create_engine_pause_required_params.
+    def test_pause_presto_engine_required_params_with_retries(self):
+        # Enable retries and run test_pause_presto_engine_required_params.
         _service.enable_retries()
-        self.test_create_engine_pause_required_params()
+        self.test_pause_presto_engine_required_params()
 
-        # Disable retries and run test_create_engine_pause_required_params.
+        # Disable retries and run test_pause_presto_engine_required_params.
         _service.disable_retries()
-        self.test_create_engine_pause_required_params()
+        self.test_pause_presto_engine_required_params()
 
     @responses.activate
-    def test_create_engine_pause_value_error(self):
+    def test_pause_presto_engine_value_error(self):
         """
-        test_create_engine_pause_value_error()
+        test_pause_presto_engine_value_error()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/pause')
@@ -7385,7 +7100,7 @@ class TestCreateEnginePause:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -7398,16 +7113,16 @@ class TestCreateEnginePause:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.create_engine_pause(**req_copy)
+                _service.pause_presto_engine(**req_copy)
 
-    def test_create_engine_pause_value_error_with_retries(self):
-        # Enable retries and run test_create_engine_pause_value_error.
+    def test_pause_presto_engine_value_error_with_retries(self):
+        # Enable retries and run test_pause_presto_engine_value_error.
         _service.enable_retries()
-        self.test_create_engine_pause_value_error()
+        self.test_pause_presto_engine_value_error()
 
-        # Disable retries and run test_create_engine_pause_value_error.
+        # Disable retries and run test_pause_presto_engine_value_error.
         _service.disable_retries()
-        self.test_create_engine_pause_value_error()
+        self.test_pause_presto_engine_value_error()
 
 
 class TestRunExplainStatement:
@@ -7697,15 +7412,15 @@ class TestRunExplainAnalyzeStatement:
         self.test_run_explain_analyze_statement_value_error()
 
 
-class TestCreateEngineRestart:
+class TestRestartPrestoEngine:
     """
-    Test Class for create_engine_restart
+    Test Class for restart_presto_engine
     """
 
     @responses.activate
-    def test_create_engine_restart_all_params(self):
+    def test_restart_presto_engine_all_params(self):
         """
-        create_engine_restart()
+        restart_presto_engine()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/restart')
@@ -7715,7 +7430,7 @@ class TestCreateEngineRestart:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -7723,7 +7438,7 @@ class TestCreateEngineRestart:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.create_engine_restart(
+        response = _service.restart_presto_engine(
             engine_id,
             auth_instance_id=auth_instance_id,
             headers={},
@@ -7731,21 +7446,21 @@ class TestCreateEngineRestart:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_engine_restart_all_params_with_retries(self):
-        # Enable retries and run test_create_engine_restart_all_params.
+    def test_restart_presto_engine_all_params_with_retries(self):
+        # Enable retries and run test_restart_presto_engine_all_params.
         _service.enable_retries()
-        self.test_create_engine_restart_all_params()
+        self.test_restart_presto_engine_all_params()
 
-        # Disable retries and run test_create_engine_restart_all_params.
+        # Disable retries and run test_restart_presto_engine_all_params.
         _service.disable_retries()
-        self.test_create_engine_restart_all_params()
+        self.test_restart_presto_engine_all_params()
 
     @responses.activate
-    def test_create_engine_restart_required_params(self):
+    def test_restart_presto_engine_required_params(self):
         """
-        test_create_engine_restart_required_params()
+        test_restart_presto_engine_required_params()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/restart')
@@ -7755,35 +7470,35 @@ class TestCreateEngineRestart:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
         engine_id = 'testString'
 
         # Invoke method
-        response = _service.create_engine_restart(
+        response = _service.restart_presto_engine(
             engine_id,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_engine_restart_required_params_with_retries(self):
-        # Enable retries and run test_create_engine_restart_required_params.
+    def test_restart_presto_engine_required_params_with_retries(self):
+        # Enable retries and run test_restart_presto_engine_required_params.
         _service.enable_retries()
-        self.test_create_engine_restart_required_params()
+        self.test_restart_presto_engine_required_params()
 
-        # Disable retries and run test_create_engine_restart_required_params.
+        # Disable retries and run test_restart_presto_engine_required_params.
         _service.disable_retries()
-        self.test_create_engine_restart_required_params()
+        self.test_restart_presto_engine_required_params()
 
     @responses.activate
-    def test_create_engine_restart_value_error(self):
+    def test_restart_presto_engine_value_error(self):
         """
-        test_create_engine_restart_value_error()
+        test_restart_presto_engine_value_error()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/restart')
@@ -7793,7 +7508,7 @@ class TestCreateEngineRestart:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -7806,27 +7521,27 @@ class TestCreateEngineRestart:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.create_engine_restart(**req_copy)
+                _service.restart_presto_engine(**req_copy)
 
-    def test_create_engine_restart_value_error_with_retries(self):
-        # Enable retries and run test_create_engine_restart_value_error.
+    def test_restart_presto_engine_value_error_with_retries(self):
+        # Enable retries and run test_restart_presto_engine_value_error.
         _service.enable_retries()
-        self.test_create_engine_restart_value_error()
+        self.test_restart_presto_engine_value_error()
 
-        # Disable retries and run test_create_engine_restart_value_error.
+        # Disable retries and run test_restart_presto_engine_value_error.
         _service.disable_retries()
-        self.test_create_engine_restart_value_error()
+        self.test_restart_presto_engine_value_error()
 
 
-class TestCreateEngineResume:
+class TestResumePrestoEngine:
     """
-    Test Class for create_engine_resume
+    Test Class for resume_presto_engine
     """
 
     @responses.activate
-    def test_create_engine_resume_all_params(self):
+    def test_resume_presto_engine_all_params(self):
         """
-        create_engine_resume()
+        resume_presto_engine()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/resume')
@@ -7836,7 +7551,7 @@ class TestCreateEngineResume:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -7844,7 +7559,7 @@ class TestCreateEngineResume:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.create_engine_resume(
+        response = _service.resume_presto_engine(
             engine_id,
             auth_instance_id=auth_instance_id,
             headers={},
@@ -7852,21 +7567,21 @@ class TestCreateEngineResume:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_engine_resume_all_params_with_retries(self):
-        # Enable retries and run test_create_engine_resume_all_params.
+    def test_resume_presto_engine_all_params_with_retries(self):
+        # Enable retries and run test_resume_presto_engine_all_params.
         _service.enable_retries()
-        self.test_create_engine_resume_all_params()
+        self.test_resume_presto_engine_all_params()
 
-        # Disable retries and run test_create_engine_resume_all_params.
+        # Disable retries and run test_resume_presto_engine_all_params.
         _service.disable_retries()
-        self.test_create_engine_resume_all_params()
+        self.test_resume_presto_engine_all_params()
 
     @responses.activate
-    def test_create_engine_resume_required_params(self):
+    def test_resume_presto_engine_required_params(self):
         """
-        test_create_engine_resume_required_params()
+        test_resume_presto_engine_required_params()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/resume')
@@ -7876,35 +7591,35 @@ class TestCreateEngineResume:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
         engine_id = 'testString'
 
         # Invoke method
-        response = _service.create_engine_resume(
+        response = _service.resume_presto_engine(
             engine_id,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_engine_resume_required_params_with_retries(self):
-        # Enable retries and run test_create_engine_resume_required_params.
+    def test_resume_presto_engine_required_params_with_retries(self):
+        # Enable retries and run test_resume_presto_engine_required_params.
         _service.enable_retries()
-        self.test_create_engine_resume_required_params()
+        self.test_resume_presto_engine_required_params()
 
-        # Disable retries and run test_create_engine_resume_required_params.
+        # Disable retries and run test_resume_presto_engine_required_params.
         _service.disable_retries()
-        self.test_create_engine_resume_required_params()
+        self.test_resume_presto_engine_required_params()
 
     @responses.activate
-    def test_create_engine_resume_value_error(self):
+    def test_resume_presto_engine_value_error(self):
         """
-        test_create_engine_resume_value_error()
+        test_resume_presto_engine_value_error()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/resume')
@@ -7914,7 +7629,7 @@ class TestCreateEngineResume:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -7927,27 +7642,27 @@ class TestCreateEngineResume:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.create_engine_resume(**req_copy)
+                _service.resume_presto_engine(**req_copy)
 
-    def test_create_engine_resume_value_error_with_retries(self):
-        # Enable retries and run test_create_engine_resume_value_error.
+    def test_resume_presto_engine_value_error_with_retries(self):
+        # Enable retries and run test_resume_presto_engine_value_error.
         _service.enable_retries()
-        self.test_create_engine_resume_value_error()
+        self.test_resume_presto_engine_value_error()
 
-        # Disable retries and run test_create_engine_resume_value_error.
+        # Disable retries and run test_resume_presto_engine_value_error.
         _service.disable_retries()
-        self.test_create_engine_resume_value_error()
+        self.test_resume_presto_engine_value_error()
 
 
-class TestCreateEngineScale:
+class TestScalePrestoEngine:
     """
-    Test Class for create_engine_scale
+    Test Class for scale_presto_engine
     """
 
     @responses.activate
-    def test_create_engine_scale_all_params(self):
+    def test_scale_presto_engine_all_params(self):
         """
-        create_engine_scale()
+        scale_presto_engine()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/scale')
@@ -7957,7 +7672,7 @@ class TestCreateEngineScale:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=202,
         )
 
         # Construct a dict representation of a NodeDescription model
@@ -7972,7 +7687,7 @@ class TestCreateEngineScale:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.create_engine_scale(
+        response = _service.scale_presto_engine(
             engine_id,
             coordinator=coordinator,
             worker=worker,
@@ -7982,25 +7697,25 @@ class TestCreateEngineScale:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 202
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['coordinator'] == node_description_model
         assert req_body['worker'] == node_description_model
 
-    def test_create_engine_scale_all_params_with_retries(self):
-        # Enable retries and run test_create_engine_scale_all_params.
+    def test_scale_presto_engine_all_params_with_retries(self):
+        # Enable retries and run test_scale_presto_engine_all_params.
         _service.enable_retries()
-        self.test_create_engine_scale_all_params()
+        self.test_scale_presto_engine_all_params()
 
-        # Disable retries and run test_create_engine_scale_all_params.
+        # Disable retries and run test_scale_presto_engine_all_params.
         _service.disable_retries()
-        self.test_create_engine_scale_all_params()
+        self.test_scale_presto_engine_all_params()
 
     @responses.activate
-    def test_create_engine_scale_required_params(self):
+    def test_scale_presto_engine_required_params(self):
         """
-        test_create_engine_scale_required_params()
+        test_scale_presto_engine_required_params()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/scale')
@@ -8010,7 +7725,7 @@ class TestCreateEngineScale:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=202,
         )
 
         # Construct a dict representation of a NodeDescription model
@@ -8024,7 +7739,7 @@ class TestCreateEngineScale:
         worker = node_description_model
 
         # Invoke method
-        response = _service.create_engine_scale(
+        response = _service.scale_presto_engine(
             engine_id,
             coordinator=coordinator,
             worker=worker,
@@ -8033,25 +7748,25 @@ class TestCreateEngineScale:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 202
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['coordinator'] == node_description_model
         assert req_body['worker'] == node_description_model
 
-    def test_create_engine_scale_required_params_with_retries(self):
-        # Enable retries and run test_create_engine_scale_required_params.
+    def test_scale_presto_engine_required_params_with_retries(self):
+        # Enable retries and run test_scale_presto_engine_required_params.
         _service.enable_retries()
-        self.test_create_engine_scale_required_params()
+        self.test_scale_presto_engine_required_params()
 
-        # Disable retries and run test_create_engine_scale_required_params.
+        # Disable retries and run test_scale_presto_engine_required_params.
         _service.disable_retries()
-        self.test_create_engine_scale_required_params()
+        self.test_scale_presto_engine_required_params()
 
     @responses.activate
-    def test_create_engine_scale_value_error(self):
+    def test_scale_presto_engine_value_error(self):
         """
-        test_create_engine_scale_value_error()
+        test_scale_presto_engine_value_error()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/scale')
@@ -8061,7 +7776,7 @@ class TestCreateEngineScale:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=202,
         )
 
         # Construct a dict representation of a NodeDescription model
@@ -8081,16 +7796,55 @@ class TestCreateEngineScale:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.create_engine_scale(**req_copy)
+                _service.scale_presto_engine(**req_copy)
 
-    def test_create_engine_scale_value_error_with_retries(self):
-        # Enable retries and run test_create_engine_scale_value_error.
+    def test_scale_presto_engine_value_error_with_retries(self):
+        # Enable retries and run test_scale_presto_engine_value_error.
         _service.enable_retries()
-        self.test_create_engine_scale_value_error()
+        self.test_scale_presto_engine_value_error()
 
-        # Disable retries and run test_create_engine_scale_value_error.
+        # Disable retries and run test_scale_presto_engine_value_error.
         _service.disable_retries()
-        self.test_create_engine_scale_value_error()
+        self.test_scale_presto_engine_value_error()
+
+
+# endregion
+##############################################################################
+# End of Service: PrestoEngines
+##############################################################################
+
+##############################################################################
+# Start of Service: SparkEngines
+##############################################################################
+# region
+
+
+class TestNewInstance:
+    """
+    Test Class for new_instance
+    """
+
+    def test_new_instance(self):
+        """
+        new_instance()
+        """
+        os.environ['TEST_SERVICE_AUTH_TYPE'] = 'noAuth'
+
+        service = WatsonxDataV2.new_instance(
+            service_name='TEST_SERVICE',
+        )
+
+        assert service is not None
+        assert isinstance(service, WatsonxDataV2)
+
+    def test_new_instance_without_authenticator(self):
+        """
+        new_instance_without_authenticator()
+        """
+        with pytest.raises(ValueError, match='authenticator must be provided'):
+            service = WatsonxDataV2.new_instance(
+                service_name='TEST_SERVICE_NOT_FOUND',
+            )
 
 
 class TestListSparkEngines:
@@ -8105,7 +7859,7 @@ class TestListSparkEngines:
         """
         # Set up mock
         url = preprocess_url('/spark_engines')
-        mock_response = '{"spark_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "ibm", "status": "Registered", "tags": ["tags"], "type": "spark"}]}'
+        mock_response = '{"spark_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"api_key": "apikey", "connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "default_config": {"config1": "config1", "config2": "config2"}, "default_version": "4.8.3", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications", "wxd_engine_endpoint": "$HOST/v1/1698311655308796/engines/spark817", "wxd_history_server_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server", "wxd_history_server_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server/ui"}, "engine_home_bucket_display_name": "test-spark-bucket", "engine_home_bucket_name": "test-spark-bucket", "engine_home_path": "spark/spark1234", "engine_home_volume": "test-spark-volume", "engine_home_volume_id": "1704979825978585", "engine_home_volume_name": "my-volume", "engine_home_volume_storage_class": "nfs-client", "engine_home_volume_storage_size": "5Gi", "instance_id": "spark-id", "managed_by": "fully/self", "scale_config": {"auto_scale_enabled": true, "current_number_of_nodes": 2, "maximum_number_of_nodes": 5, "minimum_number_of_nodes": 1, "node_type": "medium", "number_of_nodes": 2}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "external", "status": "Registered", "tags": ["tags"], "type": "spark"}]}'
         responses.add(
             responses.GET,
             url,
@@ -8143,7 +7897,7 @@ class TestListSparkEngines:
         """
         # Set up mock
         url = preprocess_url('/spark_engines')
-        mock_response = '{"spark_engines": [{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "ibm", "status": "Registered", "tags": ["tags"], "type": "spark"}]}'
+        mock_response = '{"spark_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"api_key": "apikey", "connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "default_config": {"config1": "config1", "config2": "config2"}, "default_version": "4.8.3", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications", "wxd_engine_endpoint": "$HOST/v1/1698311655308796/engines/spark817", "wxd_history_server_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server", "wxd_history_server_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server/ui"}, "engine_home_bucket_display_name": "test-spark-bucket", "engine_home_bucket_name": "test-spark-bucket", "engine_home_path": "spark/spark1234", "engine_home_volume": "test-spark-volume", "engine_home_volume_id": "1704979825978585", "engine_home_volume_name": "my-volume", "engine_home_volume_storage_class": "nfs-client", "engine_home_volume_storage_size": "5Gi", "instance_id": "spark-id", "managed_by": "fully/self", "scale_config": {"auto_scale_enabled": true, "current_number_of_nodes": 2, "maximum_number_of_nodes": 5, "minimum_number_of_nodes": 1, "node_type": "medium", "number_of_nodes": 2}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "external", "status": "Registered", "tags": ["tags"], "type": "spark"}]}'
         responses.add(
             responses.GET,
             url,
@@ -8181,38 +7935,64 @@ class TestCreateSparkEngine:
         """
         # Set up mock
         url = preprocess_url('/spark_engines')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "ibm", "status": "Registered", "tags": ["tags"], "type": "spark"}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"api_key": "apikey", "connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "default_config": {"config1": "config1", "config2": "config2"}, "default_version": "4.8.3", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications", "wxd_engine_endpoint": "$HOST/v1/1698311655308796/engines/spark817", "wxd_history_server_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server", "wxd_history_server_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server/ui"}, "engine_home_bucket_display_name": "test-spark-bucket", "engine_home_bucket_name": "test-spark-bucket", "engine_home_path": "spark/spark1234", "engine_home_volume": "test-spark-volume", "engine_home_volume_id": "1704979825978585", "engine_home_volume_name": "my-volume", "engine_home_volume_storage_class": "nfs-client", "engine_home_volume_storage_size": "5Gi", "instance_id": "spark-id", "managed_by": "fully/self", "scale_config": {"auto_scale_enabled": true, "current_number_of_nodes": 2, "maximum_number_of_nodes": 5, "minimum_number_of_nodes": 1, "node_type": "medium", "number_of_nodes": 2}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "external", "status": "Registered", "tags": ["tags"], "type": "spark"}'
         responses.add(
             responses.POST,
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=202,
         )
+
+        # Construct a dict representation of a SparkDefaultConfig model
+        spark_default_config_model = {}
+        spark_default_config_model['config1'] = 'testString'
+        spark_default_config_model['config2'] = 'testString'
+
+        # Construct a dict representation of a SparkScaleConfig model
+        spark_scale_config_model = {}
+        spark_scale_config_model['auto_scale_enabled'] = True
+        spark_scale_config_model['current_number_of_nodes'] = 2
+        spark_scale_config_model['maximum_number_of_nodes'] = 5
+        spark_scale_config_model['minimum_number_of_nodes'] = 1
+        spark_scale_config_model['node_type'] = 'small'
+        spark_scale_config_model['number_of_nodes'] = 5
 
         # Construct a dict representation of a SparkEngineDetailsPrototype model
         spark_engine_details_prototype_model = {}
         spark_engine_details_prototype_model['api_key'] = 'apikey'
         spark_engine_details_prototype_model['connection_string'] = '1.2.3.4'
+        spark_engine_details_prototype_model['default_config'] = spark_default_config_model
+        spark_engine_details_prototype_model['default_version'] = '3.3'
+        spark_engine_details_prototype_model['engine_home_bucket_display_name'] = 'test-spark-bucket'
+        spark_engine_details_prototype_model['engine_home_bucket_name'] = '4fec0f8b-888a-4c16-8f38-250c8499e6ce-customer'
+        spark_engine_details_prototype_model['engine_home_path'] = 'spark/spark1234'
+        spark_engine_details_prototype_model['engine_home_volume_id'] = '1704979825978585'
+        spark_engine_details_prototype_model['engine_home_volume_name'] = 'my-volume'
+        spark_engine_details_prototype_model['engine_home_volume_storage_class'] = 'nfs-client'
+        spark_engine_details_prototype_model['engine_home_volume_storage_size'] = '5Gi'
         spark_engine_details_prototype_model['instance_id'] = 'spark-id'
         spark_engine_details_prototype_model['managed_by'] = 'fully/self'
+        spark_engine_details_prototype_model['scale_config'] = spark_scale_config_model
 
         # Set up parameter values
-        origin = 'external'
-        type = 'spark'
-        description = 'spark engine description'
+        origin = 'native'
+        associated_catalogs = ['iceberg_data']
+        description = 'testString'
         engine_details = spark_engine_details_prototype_model
-        engine_display_name = 'sampleEngine'
-        tags = ['tag1', 'tag2']
+        engine_display_name = 'test-native'
+        status = 'testString'
+        tags = ['testString']
         auth_instance_id = 'testString'
 
         # Invoke method
         response = _service.create_spark_engine(
             origin,
-            type,
+            associated_catalogs=associated_catalogs,
             description=description,
             engine_details=engine_details,
             engine_display_name=engine_display_name,
+            status=status,
             tags=tags,
             auth_instance_id=auth_instance_id,
             headers={},
@@ -8220,15 +8000,16 @@ class TestCreateSparkEngine:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 202
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['origin'] == 'external'
-        assert req_body['type'] == 'spark'
-        assert req_body['description'] == 'spark engine description'
+        assert req_body['origin'] == 'native'
+        assert req_body['associated_catalogs'] == ['iceberg_data']
+        assert req_body['description'] == 'testString'
         assert req_body['engine_details'] == spark_engine_details_prototype_model
-        assert req_body['engine_display_name'] == 'sampleEngine'
-        assert req_body['tags'] == ['tag1', 'tag2']
+        assert req_body['engine_display_name'] == 'test-native'
+        assert req_body['status'] == 'testString'
+        assert req_body['tags'] == ['testString']
 
     def test_create_spark_engine_all_params_with_retries(self):
         # Enable retries and run test_create_spark_engine_all_params.
@@ -8246,52 +8027,79 @@ class TestCreateSparkEngine:
         """
         # Set up mock
         url = preprocess_url('/spark_engines')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "ibm", "status": "Registered", "tags": ["tags"], "type": "spark"}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"api_key": "apikey", "connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "default_config": {"config1": "config1", "config2": "config2"}, "default_version": "4.8.3", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications", "wxd_engine_endpoint": "$HOST/v1/1698311655308796/engines/spark817", "wxd_history_server_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server", "wxd_history_server_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server/ui"}, "engine_home_bucket_display_name": "test-spark-bucket", "engine_home_bucket_name": "test-spark-bucket", "engine_home_path": "spark/spark1234", "engine_home_volume": "test-spark-volume", "engine_home_volume_id": "1704979825978585", "engine_home_volume_name": "my-volume", "engine_home_volume_storage_class": "nfs-client", "engine_home_volume_storage_size": "5Gi", "instance_id": "spark-id", "managed_by": "fully/self", "scale_config": {"auto_scale_enabled": true, "current_number_of_nodes": 2, "maximum_number_of_nodes": 5, "minimum_number_of_nodes": 1, "node_type": "medium", "number_of_nodes": 2}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "external", "status": "Registered", "tags": ["tags"], "type": "spark"}'
         responses.add(
             responses.POST,
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=202,
         )
+
+        # Construct a dict representation of a SparkDefaultConfig model
+        spark_default_config_model = {}
+        spark_default_config_model['config1'] = 'testString'
+        spark_default_config_model['config2'] = 'testString'
+
+        # Construct a dict representation of a SparkScaleConfig model
+        spark_scale_config_model = {}
+        spark_scale_config_model['auto_scale_enabled'] = True
+        spark_scale_config_model['current_number_of_nodes'] = 2
+        spark_scale_config_model['maximum_number_of_nodes'] = 5
+        spark_scale_config_model['minimum_number_of_nodes'] = 1
+        spark_scale_config_model['node_type'] = 'small'
+        spark_scale_config_model['number_of_nodes'] = 5
 
         # Construct a dict representation of a SparkEngineDetailsPrototype model
         spark_engine_details_prototype_model = {}
         spark_engine_details_prototype_model['api_key'] = 'apikey'
         spark_engine_details_prototype_model['connection_string'] = '1.2.3.4'
+        spark_engine_details_prototype_model['default_config'] = spark_default_config_model
+        spark_engine_details_prototype_model['default_version'] = '3.3'
+        spark_engine_details_prototype_model['engine_home_bucket_display_name'] = 'test-spark-bucket'
+        spark_engine_details_prototype_model['engine_home_bucket_name'] = '4fec0f8b-888a-4c16-8f38-250c8499e6ce-customer'
+        spark_engine_details_prototype_model['engine_home_path'] = 'spark/spark1234'
+        spark_engine_details_prototype_model['engine_home_volume_id'] = '1704979825978585'
+        spark_engine_details_prototype_model['engine_home_volume_name'] = 'my-volume'
+        spark_engine_details_prototype_model['engine_home_volume_storage_class'] = 'nfs-client'
+        spark_engine_details_prototype_model['engine_home_volume_storage_size'] = '5Gi'
         spark_engine_details_prototype_model['instance_id'] = 'spark-id'
         spark_engine_details_prototype_model['managed_by'] = 'fully/self'
+        spark_engine_details_prototype_model['scale_config'] = spark_scale_config_model
 
         # Set up parameter values
-        origin = 'external'
-        type = 'spark'
-        description = 'spark engine description'
+        origin = 'native'
+        associated_catalogs = ['iceberg_data']
+        description = 'testString'
         engine_details = spark_engine_details_prototype_model
-        engine_display_name = 'sampleEngine'
-        tags = ['tag1', 'tag2']
+        engine_display_name = 'test-native'
+        status = 'testString'
+        tags = ['testString']
 
         # Invoke method
         response = _service.create_spark_engine(
             origin,
-            type,
+            associated_catalogs=associated_catalogs,
             description=description,
             engine_details=engine_details,
             engine_display_name=engine_display_name,
+            status=status,
             tags=tags,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 202
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['origin'] == 'external'
-        assert req_body['type'] == 'spark'
-        assert req_body['description'] == 'spark engine description'
+        assert req_body['origin'] == 'native'
+        assert req_body['associated_catalogs'] == ['iceberg_data']
+        assert req_body['description'] == 'testString'
         assert req_body['engine_details'] == spark_engine_details_prototype_model
-        assert req_body['engine_display_name'] == 'sampleEngine'
-        assert req_body['tags'] == ['tag1', 'tag2']
+        assert req_body['engine_display_name'] == 'test-native'
+        assert req_body['status'] == 'testString'
+        assert req_body['tags'] == ['testString']
 
     def test_create_spark_engine_required_params_with_retries(self):
         # Enable retries and run test_create_spark_engine_required_params.
@@ -8309,34 +8117,58 @@ class TestCreateSparkEngine:
         """
         # Set up mock
         url = preprocess_url('/spark_engines')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "ibm", "status": "Registered", "tags": ["tags"], "type": "spark"}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"api_key": "apikey", "connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "default_config": {"config1": "config1", "config2": "config2"}, "default_version": "4.8.3", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications", "wxd_engine_endpoint": "$HOST/v1/1698311655308796/engines/spark817", "wxd_history_server_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server", "wxd_history_server_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server/ui"}, "engine_home_bucket_display_name": "test-spark-bucket", "engine_home_bucket_name": "test-spark-bucket", "engine_home_path": "spark/spark1234", "engine_home_volume": "test-spark-volume", "engine_home_volume_id": "1704979825978585", "engine_home_volume_name": "my-volume", "engine_home_volume_storage_class": "nfs-client", "engine_home_volume_storage_size": "5Gi", "instance_id": "spark-id", "managed_by": "fully/self", "scale_config": {"auto_scale_enabled": true, "current_number_of_nodes": 2, "maximum_number_of_nodes": 5, "minimum_number_of_nodes": 1, "node_type": "medium", "number_of_nodes": 2}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "external", "status": "Registered", "tags": ["tags"], "type": "spark"}'
         responses.add(
             responses.POST,
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=202,
         )
+
+        # Construct a dict representation of a SparkDefaultConfig model
+        spark_default_config_model = {}
+        spark_default_config_model['config1'] = 'testString'
+        spark_default_config_model['config2'] = 'testString'
+
+        # Construct a dict representation of a SparkScaleConfig model
+        spark_scale_config_model = {}
+        spark_scale_config_model['auto_scale_enabled'] = True
+        spark_scale_config_model['current_number_of_nodes'] = 2
+        spark_scale_config_model['maximum_number_of_nodes'] = 5
+        spark_scale_config_model['minimum_number_of_nodes'] = 1
+        spark_scale_config_model['node_type'] = 'small'
+        spark_scale_config_model['number_of_nodes'] = 5
 
         # Construct a dict representation of a SparkEngineDetailsPrototype model
         spark_engine_details_prototype_model = {}
         spark_engine_details_prototype_model['api_key'] = 'apikey'
         spark_engine_details_prototype_model['connection_string'] = '1.2.3.4'
+        spark_engine_details_prototype_model['default_config'] = spark_default_config_model
+        spark_engine_details_prototype_model['default_version'] = '3.3'
+        spark_engine_details_prototype_model['engine_home_bucket_display_name'] = 'test-spark-bucket'
+        spark_engine_details_prototype_model['engine_home_bucket_name'] = '4fec0f8b-888a-4c16-8f38-250c8499e6ce-customer'
+        spark_engine_details_prototype_model['engine_home_path'] = 'spark/spark1234'
+        spark_engine_details_prototype_model['engine_home_volume_id'] = '1704979825978585'
+        spark_engine_details_prototype_model['engine_home_volume_name'] = 'my-volume'
+        spark_engine_details_prototype_model['engine_home_volume_storage_class'] = 'nfs-client'
+        spark_engine_details_prototype_model['engine_home_volume_storage_size'] = '5Gi'
         spark_engine_details_prototype_model['instance_id'] = 'spark-id'
         spark_engine_details_prototype_model['managed_by'] = 'fully/self'
+        spark_engine_details_prototype_model['scale_config'] = spark_scale_config_model
 
         # Set up parameter values
-        origin = 'external'
-        type = 'spark'
-        description = 'spark engine description'
+        origin = 'native'
+        associated_catalogs = ['iceberg_data']
+        description = 'testString'
         engine_details = spark_engine_details_prototype_model
-        engine_display_name = 'sampleEngine'
-        tags = ['tag1', 'tag2']
+        engine_display_name = 'test-native'
+        status = 'testString'
+        tags = ['testString']
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
             "origin": origin,
-            "type": type,
         }
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
@@ -8351,6 +8183,127 @@ class TestCreateSparkEngine:
         # Disable retries and run test_create_spark_engine_value_error.
         _service.disable_retries()
         self.test_create_spark_engine_value_error()
+
+
+class TestGetSparkEngine:
+    """
+    Test Class for get_spark_engine
+    """
+
+    @responses.activate
+    def test_get_spark_engine_all_params(self):
+        """
+        get_spark_engine()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString')
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"api_key": "apikey", "connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "default_config": {"config1": "config1", "config2": "config2"}, "default_version": "4.8.3", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications", "wxd_engine_endpoint": "$HOST/v1/1698311655308796/engines/spark817", "wxd_history_server_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server", "wxd_history_server_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server/ui"}, "engine_home_bucket_display_name": "test-spark-bucket", "engine_home_bucket_name": "test-spark-bucket", "engine_home_path": "spark/spark1234", "engine_home_volume": "test-spark-volume", "engine_home_volume_id": "1704979825978585", "engine_home_volume_name": "my-volume", "engine_home_volume_storage_class": "nfs-client", "engine_home_volume_storage_size": "5Gi", "instance_id": "spark-id", "managed_by": "fully/self", "scale_config": {"auto_scale_enabled": true, "current_number_of_nodes": 2, "maximum_number_of_nodes": 5, "minimum_number_of_nodes": 1, "node_type": "medium", "number_of_nodes": 2}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "external", "status": "Registered", "tags": ["tags"], "type": "spark"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_spark_engine(
+            engine_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_spark_engine_all_params_with_retries(self):
+        # Enable retries and run test_get_spark_engine_all_params.
+        _service.enable_retries()
+        self.test_get_spark_engine_all_params()
+
+        # Disable retries and run test_get_spark_engine_all_params.
+        _service.disable_retries()
+        self.test_get_spark_engine_all_params()
+
+    @responses.activate
+    def test_get_spark_engine_required_params(self):
+        """
+        test_get_spark_engine_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString')
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"api_key": "apikey", "connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "default_config": {"config1": "config1", "config2": "config2"}, "default_version": "4.8.3", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications", "wxd_engine_endpoint": "$HOST/v1/1698311655308796/engines/spark817", "wxd_history_server_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server", "wxd_history_server_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server/ui"}, "engine_home_bucket_display_name": "test-spark-bucket", "engine_home_bucket_name": "test-spark-bucket", "engine_home_path": "spark/spark1234", "engine_home_volume": "test-spark-volume", "engine_home_volume_id": "1704979825978585", "engine_home_volume_name": "my-volume", "engine_home_volume_storage_class": "nfs-client", "engine_home_volume_storage_size": "5Gi", "instance_id": "spark-id", "managed_by": "fully/self", "scale_config": {"auto_scale_enabled": true, "current_number_of_nodes": 2, "maximum_number_of_nodes": 5, "minimum_number_of_nodes": 1, "node_type": "medium", "number_of_nodes": 2}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "external", "status": "Registered", "tags": ["tags"], "type": "spark"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Invoke method
+        response = _service.get_spark_engine(
+            engine_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_spark_engine_required_params_with_retries(self):
+        # Enable retries and run test_get_spark_engine_required_params.
+        _service.enable_retries()
+        self.test_get_spark_engine_required_params()
+
+        # Disable retries and run test_get_spark_engine_required_params.
+        _service.disable_retries()
+        self.test_get_spark_engine_required_params()
+
+    @responses.activate
+    def test_get_spark_engine_value_error(self):
+        """
+        test_get_spark_engine_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString')
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"api_key": "apikey", "connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "default_config": {"config1": "config1", "config2": "config2"}, "default_version": "4.8.3", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications", "wxd_engine_endpoint": "$HOST/v1/1698311655308796/engines/spark817", "wxd_history_server_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server", "wxd_history_server_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server/ui"}, "engine_home_bucket_display_name": "test-spark-bucket", "engine_home_bucket_name": "test-spark-bucket", "engine_home_path": "spark/spark1234", "engine_home_volume": "test-spark-volume", "engine_home_volume_id": "1704979825978585", "engine_home_volume_name": "my-volume", "engine_home_volume_storage_class": "nfs-client", "engine_home_volume_storage_size": "5Gi", "instance_id": "spark-id", "managed_by": "fully/self", "scale_config": {"auto_scale_enabled": true, "current_number_of_nodes": 2, "maximum_number_of_nodes": 5, "minimum_number_of_nodes": 1, "node_type": "medium", "number_of_nodes": 2}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "external", "status": "Registered", "tags": ["tags"], "type": "spark"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.get_spark_engine(**req_copy)
+
+    def test_get_spark_engine_value_error_with_retries(self):
+        # Enable retries and run test_get_spark_engine_value_error.
+        _service.enable_retries()
+        self.test_get_spark_engine_value_error()
+
+        # Disable retries and run test_get_spark_engine_value_error.
+        _service.disable_retries()
+        self.test_get_spark_engine_value_error()
 
 
 class TestDeleteSparkEngine:
@@ -8477,7 +8430,7 @@ class TestUpdateSparkEngine:
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "ibm", "status": "Registered", "tags": ["tags"], "type": "spark"}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"api_key": "apikey", "connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "default_config": {"config1": "config1", "config2": "config2"}, "default_version": "4.8.3", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications", "wxd_engine_endpoint": "$HOST/v1/1698311655308796/engines/spark817", "wxd_history_server_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server", "wxd_history_server_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server/ui"}, "engine_home_bucket_display_name": "test-spark-bucket", "engine_home_bucket_name": "test-spark-bucket", "engine_home_path": "spark/spark1234", "engine_home_volume": "test-spark-volume", "engine_home_volume_id": "1704979825978585", "engine_home_volume_name": "my-volume", "engine_home_volume_storage_class": "nfs-client", "engine_home_volume_storage_size": "5Gi", "instance_id": "spark-id", "managed_by": "fully/self", "scale_config": {"auto_scale_enabled": true, "current_number_of_nodes": 2, "maximum_number_of_nodes": 5, "minimum_number_of_nodes": 1, "node_type": "medium", "number_of_nodes": 2}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "external", "status": "Registered", "tags": ["tags"], "type": "spark"}'
         responses.add(
             responses.PATCH,
             url,
@@ -8486,16 +8439,21 @@ class TestUpdateSparkEngine:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a UpdateSparkEngineBodyEngineDetails model
+        update_spark_engine_body_engine_details_model = {}
+        update_spark_engine_body_engine_details_model['default_config'] = {'key1': 'testString'}
+        update_spark_engine_body_engine_details_model['default_version'] = '3.4'
+
+        # Construct a dict representation of a UpdateSparkEngineBody model
+        update_spark_engine_body_model = {}
+        update_spark_engine_body_model['description'] = 'Updated Description'
+        update_spark_engine_body_model['engine_details'] = update_spark_engine_body_engine_details_model
+        update_spark_engine_body_model['engine_display_name'] = 'Updated Display Name'
+        update_spark_engine_body_model['tags'] = ['tag1', 'tag2']
 
         # Set up parameter values
         engine_id = 'testString'
-        body = [json_patch_operation_model]
+        body = update_spark_engine_body_model
         auth_instance_id = 'testString'
 
         # Invoke method
@@ -8529,7 +8487,7 @@ class TestUpdateSparkEngine:
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "ibm", "status": "Registered", "tags": ["tags"], "type": "spark"}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"api_key": "apikey", "connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "default_config": {"config1": "config1", "config2": "config2"}, "default_version": "4.8.3", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications", "wxd_engine_endpoint": "$HOST/v1/1698311655308796/engines/spark817", "wxd_history_server_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server", "wxd_history_server_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server/ui"}, "engine_home_bucket_display_name": "test-spark-bucket", "engine_home_bucket_name": "test-spark-bucket", "engine_home_path": "spark/spark1234", "engine_home_volume": "test-spark-volume", "engine_home_volume_id": "1704979825978585", "engine_home_volume_name": "my-volume", "engine_home_volume_storage_class": "nfs-client", "engine_home_volume_storage_size": "5Gi", "instance_id": "spark-id", "managed_by": "fully/self", "scale_config": {"auto_scale_enabled": true, "current_number_of_nodes": 2, "maximum_number_of_nodes": 5, "minimum_number_of_nodes": 1, "node_type": "medium", "number_of_nodes": 2}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "external", "status": "Registered", "tags": ["tags"], "type": "spark"}'
         responses.add(
             responses.PATCH,
             url,
@@ -8538,16 +8496,21 @@ class TestUpdateSparkEngine:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a UpdateSparkEngineBodyEngineDetails model
+        update_spark_engine_body_engine_details_model = {}
+        update_spark_engine_body_engine_details_model['default_config'] = {'key1': 'testString'}
+        update_spark_engine_body_engine_details_model['default_version'] = '3.4'
+
+        # Construct a dict representation of a UpdateSparkEngineBody model
+        update_spark_engine_body_model = {}
+        update_spark_engine_body_model['description'] = 'Updated Description'
+        update_spark_engine_body_model['engine_details'] = update_spark_engine_body_engine_details_model
+        update_spark_engine_body_model['engine_display_name'] = 'Updated Display Name'
+        update_spark_engine_body_model['tags'] = ['tag1', 'tag2']
 
         # Set up parameter values
         engine_id = 'testString'
-        body = [json_patch_operation_model]
+        body = update_spark_engine_body_model
 
         # Invoke method
         response = _service.update_spark_engine(
@@ -8579,7 +8542,7 @@ class TestUpdateSparkEngine:
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString')
-        mock_response = '{"actions": ["actions"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "ibm", "status": "Registered", "tags": ["tags"], "type": "spark"}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "spark engine for running sql queries", "engine_details": {"api_key": "apikey", "connection_string": "https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>", "default_config": {"config1": "config1", "config2": "config2"}, "default_version": "4.8.3", "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications", "wxd_engine_endpoint": "$HOST/v1/1698311655308796/engines/spark817", "wxd_history_server_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server", "wxd_history_server_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/history_server/ui"}, "engine_home_bucket_display_name": "test-spark-bucket", "engine_home_bucket_name": "test-spark-bucket", "engine_home_path": "spark/spark1234", "engine_home_volume": "test-spark-volume", "engine_home_volume_id": "1704979825978585", "engine_home_volume_name": "my-volume", "engine_home_volume_storage_class": "nfs-client", "engine_home_volume_storage_size": "5Gi", "instance_id": "spark-id", "managed_by": "fully/self", "scale_config": {"auto_scale_enabled": true, "current_number_of_nodes": 2, "maximum_number_of_nodes": 5, "minimum_number_of_nodes": 1, "node_type": "medium", "number_of_nodes": 2}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "origin": "external", "status": "Registered", "tags": ["tags"], "type": "spark"}'
         responses.add(
             responses.PATCH,
             url,
@@ -8588,16 +8551,21 @@ class TestUpdateSparkEngine:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a UpdateSparkEngineBodyEngineDetails model
+        update_spark_engine_body_engine_details_model = {}
+        update_spark_engine_body_engine_details_model['default_config'] = {'key1': 'testString'}
+        update_spark_engine_body_engine_details_model['default_version'] = '3.4'
+
+        # Construct a dict representation of a UpdateSparkEngineBody model
+        update_spark_engine_body_model = {}
+        update_spark_engine_body_model['description'] = 'Updated Description'
+        update_spark_engine_body_model['engine_details'] = update_spark_engine_body_engine_details_model
+        update_spark_engine_body_model['engine_display_name'] = 'Updated Display Name'
+        update_spark_engine_body_model['tags'] = ['tag1', 'tag2']
 
         # Set up parameter values
         engine_id = 'testString'
-        body = [json_patch_operation_model]
+        body = update_spark_engine_body_model
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -8631,7 +8599,7 @@ class TestListSparkEngineApplications:
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/applications')
-        mock_response = '{"applications": [{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "conf": {"spark_app_name": "MyJob", "spark_hive_metastore_client_auth_mode": "PLAIN", "spark_hive_metastore_client_plain_password": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...", "spark_hive_metastore_client_plain_username": "ibm_lh_token_admin", "spark_hive_metastore_truststore_password": "changeit", "spark_hive_metastore_truststore_path": "file:///opt/ibm/jdk/lib/security/cacerts", "spark_hive_metastore_truststore_type": "JKS", "spark_hive_metastore_use_ssl": "true", "spark_sql_catalog_implementation": "Spark Catalog Implementation", "spark_sql_catalog_lakehouse": "org.apache.iceberg.spark.SparkCatalog", "spark_sql_catalog_lakehouse_type": "Spark Catalog Type", "spark_sql_catalog_lakehouse_uri": "Spark Catalog URI", "spark_sql_extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions", "spark_sql_iceberg_vectorization_enabled": "false"}, "env": {"anyKey": "anyValue"}, "name": "SparkApplicaton1"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae"}]}'
+        mock_response = '{"applications": [{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "class": "org.apache.spark.examples.SparkPi", "conf": {"spark_sample_config_properpty": "spark_sample_config_properpty"}, "env": {"sample_env_key": "sample_env_key"}, "files": "s3://mybucket/myfile.txt", "jars": "jars", "name": "SparkApplicaton1", "packages": "org.apache.spark:example_1.2.3", "repositories": "https://repo1.maven.org/maven2/", "spark_version": "3.3"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "spark_version": "3.3", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae", "volumes": [{"mount_path": "/mount/path", "name": "my-volume", "read_only": true, "source_sub_path": "/source/path"}], "wxd_application_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications/c7b3fccf-badb-46b0-b1ef-9b3154424021/ui"}]}'
         responses.add(
             responses.GET,
             url,
@@ -8643,17 +8611,23 @@ class TestListSparkEngineApplications:
         # Set up parameter values
         engine_id = 'testString'
         auth_instance_id = 'testString'
+        state = ['testString']
 
         # Invoke method
         response = _service.list_spark_engine_applications(
             engine_id,
             auth_instance_id=auth_instance_id,
+            state=state,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
         assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'state={}'.format(','.join(state)) in query_string
 
     def test_list_spark_engine_applications_all_params_with_retries(self):
         # Enable retries and run test_list_spark_engine_applications_all_params.
@@ -8671,7 +8645,7 @@ class TestListSparkEngineApplications:
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/applications')
-        mock_response = '{"applications": [{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "conf": {"spark_app_name": "MyJob", "spark_hive_metastore_client_auth_mode": "PLAIN", "spark_hive_metastore_client_plain_password": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...", "spark_hive_metastore_client_plain_username": "ibm_lh_token_admin", "spark_hive_metastore_truststore_password": "changeit", "spark_hive_metastore_truststore_path": "file:///opt/ibm/jdk/lib/security/cacerts", "spark_hive_metastore_truststore_type": "JKS", "spark_hive_metastore_use_ssl": "true", "spark_sql_catalog_implementation": "Spark Catalog Implementation", "spark_sql_catalog_lakehouse": "org.apache.iceberg.spark.SparkCatalog", "spark_sql_catalog_lakehouse_type": "Spark Catalog Type", "spark_sql_catalog_lakehouse_uri": "Spark Catalog URI", "spark_sql_extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions", "spark_sql_iceberg_vectorization_enabled": "false"}, "env": {"anyKey": "anyValue"}, "name": "SparkApplicaton1"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae"}]}'
+        mock_response = '{"applications": [{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "class": "org.apache.spark.examples.SparkPi", "conf": {"spark_sample_config_properpty": "spark_sample_config_properpty"}, "env": {"sample_env_key": "sample_env_key"}, "files": "s3://mybucket/myfile.txt", "jars": "jars", "name": "SparkApplicaton1", "packages": "org.apache.spark:example_1.2.3", "repositories": "https://repo1.maven.org/maven2/", "spark_version": "3.3"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "spark_version": "3.3", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae", "volumes": [{"mount_path": "/mount/path", "name": "my-volume", "read_only": true, "source_sub_path": "/source/path"}], "wxd_application_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications/c7b3fccf-badb-46b0-b1ef-9b3154424021/ui"}]}'
         responses.add(
             responses.GET,
             url,
@@ -8709,7 +8683,7 @@ class TestListSparkEngineApplications:
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/applications')
-        mock_response = '{"applications": [{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "conf": {"spark_app_name": "MyJob", "spark_hive_metastore_client_auth_mode": "PLAIN", "spark_hive_metastore_client_plain_password": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...", "spark_hive_metastore_client_plain_username": "ibm_lh_token_admin", "spark_hive_metastore_truststore_password": "changeit", "spark_hive_metastore_truststore_path": "file:///opt/ibm/jdk/lib/security/cacerts", "spark_hive_metastore_truststore_type": "JKS", "spark_hive_metastore_use_ssl": "true", "spark_sql_catalog_implementation": "Spark Catalog Implementation", "spark_sql_catalog_lakehouse": "org.apache.iceberg.spark.SparkCatalog", "spark_sql_catalog_lakehouse_type": "Spark Catalog Type", "spark_sql_catalog_lakehouse_uri": "Spark Catalog URI", "spark_sql_extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions", "spark_sql_iceberg_vectorization_enabled": "false"}, "env": {"anyKey": "anyValue"}, "name": "SparkApplicaton1"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae"}]}'
+        mock_response = '{"applications": [{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "class": "org.apache.spark.examples.SparkPi", "conf": {"spark_sample_config_properpty": "spark_sample_config_properpty"}, "env": {"sample_env_key": "sample_env_key"}, "files": "s3://mybucket/myfile.txt", "jars": "jars", "name": "SparkApplicaton1", "packages": "org.apache.spark:example_1.2.3", "repositories": "https://repo1.maven.org/maven2/", "spark_version": "3.3"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "spark_version": "3.3", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae", "volumes": [{"mount_path": "/mount/path", "name": "my-volume", "read_only": true, "source_sub_path": "/source/path"}], "wxd_application_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications/c7b3fccf-badb-46b0-b1ef-9b3154424021/ui"}]}'
         responses.add(
             responses.GET,
             url,
@@ -8752,7 +8726,7 @@ class TestCreateSparkEngineApplication:
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/applications')
-        mock_response = '{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "conf": {"spark_app_name": "MyJob", "spark_hive_metastore_client_auth_mode": "PLAIN", "spark_hive_metastore_client_plain_password": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...", "spark_hive_metastore_client_plain_username": "ibm_lh_token_admin", "spark_hive_metastore_truststore_password": "changeit", "spark_hive_metastore_truststore_path": "file:///opt/ibm/jdk/lib/security/cacerts", "spark_hive_metastore_truststore_type": "JKS", "spark_hive_metastore_use_ssl": "true", "spark_sql_catalog_implementation": "Spark Catalog Implementation", "spark_sql_catalog_lakehouse": "org.apache.iceberg.spark.SparkCatalog", "spark_sql_catalog_lakehouse_type": "Spark Catalog Type", "spark_sql_catalog_lakehouse_uri": "Spark Catalog URI", "spark_sql_extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions", "spark_sql_iceberg_vectorization_enabled": "false"}, "env": {"anyKey": "anyValue"}, "name": "SparkApplicaton1"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae"}'
+        mock_response = '{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "class": "org.apache.spark.examples.SparkPi", "conf": {"spark_sample_config_properpty": "spark_sample_config_properpty"}, "env": {"sample_env_key": "sample_env_key"}, "files": "s3://mybucket/myfile.txt", "jars": "jars", "name": "SparkApplicaton1", "packages": "org.apache.spark:example_1.2.3", "repositories": "https://repo1.maven.org/maven2/", "spark_version": "3.3"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "spark_version": "3.3", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae", "volumes": [{"mount_path": "/mount/path", "name": "my-volume", "read_only": true, "source_sub_path": "/source/path"}], "wxd_application_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications/c7b3fccf-badb-46b0-b1ef-9b3154424021/ui"}'
         responses.add(
             responses.POST,
             url,
@@ -8761,44 +8735,44 @@ class TestCreateSparkEngineApplication:
             status=201,
         )
 
-        # Construct a dict representation of a SparkApplicationDetailsConf model
-        spark_application_details_conf_model = {}
-        spark_application_details_conf_model['spark_app_name'] = 'MyJob'
-        spark_application_details_conf_model['spark_hive_metastore_client_auth_mode'] = 'PLAIN'
-        spark_application_details_conf_model[
-            'spark_hive_metastore_client_plain_password'
-        ] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...'
-        spark_application_details_conf_model['spark_hive_metastore_client_plain_username'] = 'ibm_lh_token_admin'
-        spark_application_details_conf_model['spark_hive_metastore_truststore_password'] = 'changeit'
-        spark_application_details_conf_model[
-            'spark_hive_metastore_truststore_path'
-        ] = 'file:///opt/ibm/jdk/lib/security/cacerts'
-        spark_application_details_conf_model['spark_hive_metastore_truststore_type'] = 'JKS'
-        spark_application_details_conf_model['spark_hive_metastore_use_ssl'] = 'true'
-        spark_application_details_conf_model['spark_sql_catalog_implementation'] = 'Spark Catalog Implementation'
-        spark_application_details_conf_model['spark_sql_catalog_lakehouse'] = 'org.apache.iceberg.spark.SparkCatalog'
-        spark_application_details_conf_model['spark_sql_catalog_lakehouse_type'] = 'Spark Catalog Type'
-        spark_application_details_conf_model['spark_sql_catalog_lakehouse_uri'] = 'Spark Catalog URI'
-        spark_application_details_conf_model[
-            'spark_sql_extensions'
-        ] = 'org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions'
-        spark_application_details_conf_model['spark_sql_iceberg_vectorization_enabled'] = 'false'
+        # Construct a dict representation of a SparkApplicationConfig model
+        spark_application_config_model = {}
+        spark_application_config_model['spark_sample_config_properpty'] = 'testString'
+
+        # Construct a dict representation of a SparkApplicationEnv model
+        spark_application_env_model = {}
+        spark_application_env_model['sample_env_key'] = 'testString'
 
         # Construct a dict representation of a SparkApplicationDetails model
         spark_application_details_model = {}
-        spark_application_details_model['application'] = 's3://mybucket/wordcount.py'
-        spark_application_details_model['arguments'] = ['people.txt']
-        spark_application_details_model['conf'] = spark_application_details_conf_model
-        spark_application_details_model['env'] = {'anyKey': 'anyValue'}
+        spark_application_details_model['application'] = '/opt/ibm/spark/examples/src/main/python/wordcount.py'
+        spark_application_details_model['arguments'] = ['/opt/ibm/spark/examples/src/main/resources/people.txt']
+        spark_application_details_model['class'] = 'org.apache.spark.examples.SparkPi'
+        spark_application_details_model['conf'] = spark_application_config_model
+        spark_application_details_model['env'] = spark_application_env_model
+        spark_application_details_model['files'] = 's3://mybucket/myfile.txt'
+        spark_application_details_model['jars'] = 'testString'
         spark_application_details_model['name'] = 'SparkApplicaton1'
+        spark_application_details_model['packages'] = 'org.apache.spark:example_1.2.3'
+        spark_application_details_model['repositories'] = 'https://repo1.maven.org/maven2/'
+        spark_application_details_model['spark_version'] = '3.3'
+
+        # Construct a dict representation of a SparkVolumeDetails model
+        spark_volume_details_model = {}
+        spark_volume_details_model['mount_path'] = '/mount/path'
+        spark_volume_details_model['name'] = 'my-volume'
+        spark_volume_details_model['read_only'] = True
+        spark_volume_details_model['source_sub_path'] = '/source/path'
 
         # Set up parameter values
         engine_id = 'testString'
         application_details = spark_application_details_model
-        job_endpoint = '<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications'
+        job_endpoint = 'testString'
         service_instance_id = 'testString'
         type = 'iae'
+        volumes = [spark_volume_details_model]
         auth_instance_id = 'testString'
+        state = ['testString']
 
         # Invoke method
         response = _service.create_spark_engine_application(
@@ -8807,22 +8781,26 @@ class TestCreateSparkEngineApplication:
             job_endpoint=job_endpoint,
             service_instance_id=service_instance_id,
             type=type,
+            volumes=volumes,
             auth_instance_id=auth_instance_id,
+            state=state,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
         assert response.status_code == 201
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'state={}'.format(','.join(state)) in query_string
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['application_details'] == spark_application_details_model
-        assert (
-            req_body['job_endpoint']
-            == '<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications'
-        )
+        assert req_body['job_endpoint'] == 'testString'
         assert req_body['service_instance_id'] == 'testString'
         assert req_body['type'] == 'iae'
+        assert req_body['volumes'] == [spark_volume_details_model]
 
     def test_create_spark_engine_application_all_params_with_retries(self):
         # Enable retries and run test_create_spark_engine_application_all_params.
@@ -8840,7 +8818,7 @@ class TestCreateSparkEngineApplication:
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/applications')
-        mock_response = '{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "conf": {"spark_app_name": "MyJob", "spark_hive_metastore_client_auth_mode": "PLAIN", "spark_hive_metastore_client_plain_password": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...", "spark_hive_metastore_client_plain_username": "ibm_lh_token_admin", "spark_hive_metastore_truststore_password": "changeit", "spark_hive_metastore_truststore_path": "file:///opt/ibm/jdk/lib/security/cacerts", "spark_hive_metastore_truststore_type": "JKS", "spark_hive_metastore_use_ssl": "true", "spark_sql_catalog_implementation": "Spark Catalog Implementation", "spark_sql_catalog_lakehouse": "org.apache.iceberg.spark.SparkCatalog", "spark_sql_catalog_lakehouse_type": "Spark Catalog Type", "spark_sql_catalog_lakehouse_uri": "Spark Catalog URI", "spark_sql_extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions", "spark_sql_iceberg_vectorization_enabled": "false"}, "env": {"anyKey": "anyValue"}, "name": "SparkApplicaton1"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae"}'
+        mock_response = '{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "class": "org.apache.spark.examples.SparkPi", "conf": {"spark_sample_config_properpty": "spark_sample_config_properpty"}, "env": {"sample_env_key": "sample_env_key"}, "files": "s3://mybucket/myfile.txt", "jars": "jars", "name": "SparkApplicaton1", "packages": "org.apache.spark:example_1.2.3", "repositories": "https://repo1.maven.org/maven2/", "spark_version": "3.3"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "spark_version": "3.3", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae", "volumes": [{"mount_path": "/mount/path", "name": "my-volume", "read_only": true, "source_sub_path": "/source/path"}], "wxd_application_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications/c7b3fccf-badb-46b0-b1ef-9b3154424021/ui"}'
         responses.add(
             responses.POST,
             url,
@@ -8849,43 +8827,42 @@ class TestCreateSparkEngineApplication:
             status=201,
         )
 
-        # Construct a dict representation of a SparkApplicationDetailsConf model
-        spark_application_details_conf_model = {}
-        spark_application_details_conf_model['spark_app_name'] = 'MyJob'
-        spark_application_details_conf_model['spark_hive_metastore_client_auth_mode'] = 'PLAIN'
-        spark_application_details_conf_model[
-            'spark_hive_metastore_client_plain_password'
-        ] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...'
-        spark_application_details_conf_model['spark_hive_metastore_client_plain_username'] = 'ibm_lh_token_admin'
-        spark_application_details_conf_model['spark_hive_metastore_truststore_password'] = 'changeit'
-        spark_application_details_conf_model[
-            'spark_hive_metastore_truststore_path'
-        ] = 'file:///opt/ibm/jdk/lib/security/cacerts'
-        spark_application_details_conf_model['spark_hive_metastore_truststore_type'] = 'JKS'
-        spark_application_details_conf_model['spark_hive_metastore_use_ssl'] = 'true'
-        spark_application_details_conf_model['spark_sql_catalog_implementation'] = 'Spark Catalog Implementation'
-        spark_application_details_conf_model['spark_sql_catalog_lakehouse'] = 'org.apache.iceberg.spark.SparkCatalog'
-        spark_application_details_conf_model['spark_sql_catalog_lakehouse_type'] = 'Spark Catalog Type'
-        spark_application_details_conf_model['spark_sql_catalog_lakehouse_uri'] = 'Spark Catalog URI'
-        spark_application_details_conf_model[
-            'spark_sql_extensions'
-        ] = 'org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions'
-        spark_application_details_conf_model['spark_sql_iceberg_vectorization_enabled'] = 'false'
+        # Construct a dict representation of a SparkApplicationConfig model
+        spark_application_config_model = {}
+        spark_application_config_model['spark_sample_config_properpty'] = 'testString'
+
+        # Construct a dict representation of a SparkApplicationEnv model
+        spark_application_env_model = {}
+        spark_application_env_model['sample_env_key'] = 'testString'
 
         # Construct a dict representation of a SparkApplicationDetails model
         spark_application_details_model = {}
-        spark_application_details_model['application'] = 's3://mybucket/wordcount.py'
-        spark_application_details_model['arguments'] = ['people.txt']
-        spark_application_details_model['conf'] = spark_application_details_conf_model
-        spark_application_details_model['env'] = {'anyKey': 'anyValue'}
+        spark_application_details_model['application'] = '/opt/ibm/spark/examples/src/main/python/wordcount.py'
+        spark_application_details_model['arguments'] = ['/opt/ibm/spark/examples/src/main/resources/people.txt']
+        spark_application_details_model['class'] = 'org.apache.spark.examples.SparkPi'
+        spark_application_details_model['conf'] = spark_application_config_model
+        spark_application_details_model['env'] = spark_application_env_model
+        spark_application_details_model['files'] = 's3://mybucket/myfile.txt'
+        spark_application_details_model['jars'] = 'testString'
         spark_application_details_model['name'] = 'SparkApplicaton1'
+        spark_application_details_model['packages'] = 'org.apache.spark:example_1.2.3'
+        spark_application_details_model['repositories'] = 'https://repo1.maven.org/maven2/'
+        spark_application_details_model['spark_version'] = '3.3'
+
+        # Construct a dict representation of a SparkVolumeDetails model
+        spark_volume_details_model = {}
+        spark_volume_details_model['mount_path'] = '/mount/path'
+        spark_volume_details_model['name'] = 'my-volume'
+        spark_volume_details_model['read_only'] = True
+        spark_volume_details_model['source_sub_path'] = '/source/path'
 
         # Set up parameter values
         engine_id = 'testString'
         application_details = spark_application_details_model
-        job_endpoint = '<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications'
+        job_endpoint = 'testString'
         service_instance_id = 'testString'
         type = 'iae'
+        volumes = [spark_volume_details_model]
 
         # Invoke method
         response = _service.create_spark_engine_application(
@@ -8894,6 +8871,7 @@ class TestCreateSparkEngineApplication:
             job_endpoint=job_endpoint,
             service_instance_id=service_instance_id,
             type=type,
+            volumes=volumes,
             headers={},
         )
 
@@ -8903,12 +8881,10 @@ class TestCreateSparkEngineApplication:
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['application_details'] == spark_application_details_model
-        assert (
-            req_body['job_endpoint']
-            == '<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications'
-        )
+        assert req_body['job_endpoint'] == 'testString'
         assert req_body['service_instance_id'] == 'testString'
         assert req_body['type'] == 'iae'
+        assert req_body['volumes'] == [spark_volume_details_model]
 
     def test_create_spark_engine_application_required_params_with_retries(self):
         # Enable retries and run test_create_spark_engine_application_required_params.
@@ -8926,7 +8902,7 @@ class TestCreateSparkEngineApplication:
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/applications')
-        mock_response = '{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "conf": {"spark_app_name": "MyJob", "spark_hive_metastore_client_auth_mode": "PLAIN", "spark_hive_metastore_client_plain_password": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...", "spark_hive_metastore_client_plain_username": "ibm_lh_token_admin", "spark_hive_metastore_truststore_password": "changeit", "spark_hive_metastore_truststore_path": "file:///opt/ibm/jdk/lib/security/cacerts", "spark_hive_metastore_truststore_type": "JKS", "spark_hive_metastore_use_ssl": "true", "spark_sql_catalog_implementation": "Spark Catalog Implementation", "spark_sql_catalog_lakehouse": "org.apache.iceberg.spark.SparkCatalog", "spark_sql_catalog_lakehouse_type": "Spark Catalog Type", "spark_sql_catalog_lakehouse_uri": "Spark Catalog URI", "spark_sql_extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions", "spark_sql_iceberg_vectorization_enabled": "false"}, "env": {"anyKey": "anyValue"}, "name": "SparkApplicaton1"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae"}'
+        mock_response = '{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "class": "org.apache.spark.examples.SparkPi", "conf": {"spark_sample_config_properpty": "spark_sample_config_properpty"}, "env": {"sample_env_key": "sample_env_key"}, "files": "s3://mybucket/myfile.txt", "jars": "jars", "name": "SparkApplicaton1", "packages": "org.apache.spark:example_1.2.3", "repositories": "https://repo1.maven.org/maven2/", "spark_version": "3.3"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "spark_version": "3.3", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae", "volumes": [{"mount_path": "/mount/path", "name": "my-volume", "read_only": true, "source_sub_path": "/source/path"}], "wxd_application_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications/c7b3fccf-badb-46b0-b1ef-9b3154424021/ui"}'
         responses.add(
             responses.POST,
             url,
@@ -8935,43 +8911,42 @@ class TestCreateSparkEngineApplication:
             status=201,
         )
 
-        # Construct a dict representation of a SparkApplicationDetailsConf model
-        spark_application_details_conf_model = {}
-        spark_application_details_conf_model['spark_app_name'] = 'MyJob'
-        spark_application_details_conf_model['spark_hive_metastore_client_auth_mode'] = 'PLAIN'
-        spark_application_details_conf_model[
-            'spark_hive_metastore_client_plain_password'
-        ] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...'
-        spark_application_details_conf_model['spark_hive_metastore_client_plain_username'] = 'ibm_lh_token_admin'
-        spark_application_details_conf_model['spark_hive_metastore_truststore_password'] = 'changeit'
-        spark_application_details_conf_model[
-            'spark_hive_metastore_truststore_path'
-        ] = 'file:///opt/ibm/jdk/lib/security/cacerts'
-        spark_application_details_conf_model['spark_hive_metastore_truststore_type'] = 'JKS'
-        spark_application_details_conf_model['spark_hive_metastore_use_ssl'] = 'true'
-        spark_application_details_conf_model['spark_sql_catalog_implementation'] = 'Spark Catalog Implementation'
-        spark_application_details_conf_model['spark_sql_catalog_lakehouse'] = 'org.apache.iceberg.spark.SparkCatalog'
-        spark_application_details_conf_model['spark_sql_catalog_lakehouse_type'] = 'Spark Catalog Type'
-        spark_application_details_conf_model['spark_sql_catalog_lakehouse_uri'] = 'Spark Catalog URI'
-        spark_application_details_conf_model[
-            'spark_sql_extensions'
-        ] = 'org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions'
-        spark_application_details_conf_model['spark_sql_iceberg_vectorization_enabled'] = 'false'
+        # Construct a dict representation of a SparkApplicationConfig model
+        spark_application_config_model = {}
+        spark_application_config_model['spark_sample_config_properpty'] = 'testString'
+
+        # Construct a dict representation of a SparkApplicationEnv model
+        spark_application_env_model = {}
+        spark_application_env_model['sample_env_key'] = 'testString'
 
         # Construct a dict representation of a SparkApplicationDetails model
         spark_application_details_model = {}
-        spark_application_details_model['application'] = 's3://mybucket/wordcount.py'
-        spark_application_details_model['arguments'] = ['people.txt']
-        spark_application_details_model['conf'] = spark_application_details_conf_model
-        spark_application_details_model['env'] = {'anyKey': 'anyValue'}
+        spark_application_details_model['application'] = '/opt/ibm/spark/examples/src/main/python/wordcount.py'
+        spark_application_details_model['arguments'] = ['/opt/ibm/spark/examples/src/main/resources/people.txt']
+        spark_application_details_model['class'] = 'org.apache.spark.examples.SparkPi'
+        spark_application_details_model['conf'] = spark_application_config_model
+        spark_application_details_model['env'] = spark_application_env_model
+        spark_application_details_model['files'] = 's3://mybucket/myfile.txt'
+        spark_application_details_model['jars'] = 'testString'
         spark_application_details_model['name'] = 'SparkApplicaton1'
+        spark_application_details_model['packages'] = 'org.apache.spark:example_1.2.3'
+        spark_application_details_model['repositories'] = 'https://repo1.maven.org/maven2/'
+        spark_application_details_model['spark_version'] = '3.3'
+
+        # Construct a dict representation of a SparkVolumeDetails model
+        spark_volume_details_model = {}
+        spark_volume_details_model['mount_path'] = '/mount/path'
+        spark_volume_details_model['name'] = 'my-volume'
+        spark_volume_details_model['read_only'] = True
+        spark_volume_details_model['source_sub_path'] = '/source/path'
 
         # Set up parameter values
         engine_id = 'testString'
         application_details = spark_application_details_model
-        job_endpoint = '<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications'
+        job_endpoint = 'testString'
         service_instance_id = 'testString'
         type = 'iae'
+        volumes = [spark_volume_details_model]
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -9015,12 +8990,14 @@ class TestDeleteSparkEngineApplications:
         engine_id = 'testString'
         application_id = 'testString'
         auth_instance_id = 'testString'
+        state = ['testString']
 
         # Invoke method
         response = _service.delete_spark_engine_applications(
             engine_id,
             application_id,
             auth_instance_id=auth_instance_id,
+            state=state,
             headers={},
         )
 
@@ -9031,6 +9008,7 @@ class TestDeleteSparkEngineApplications:
         query_string = responses.calls[0].request.url.split('?', 1)[1]
         query_string = urllib.parse.unquote_plus(query_string)
         assert 'application_id={}'.format(application_id) in query_string
+        assert 'state={}'.format(','.join(state)) in query_string
 
     def test_delete_spark_engine_applications_all_params_with_retries(self):
         # Enable retries and run test_delete_spark_engine_applications_all_params.
@@ -9131,7 +9109,7 @@ class TestGetSparkEngineApplicationStatus:
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/applications/testString')
-        mock_response = '{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "conf": {"spark_app_name": "MyJob", "spark_hive_metastore_client_auth_mode": "PLAIN", "spark_hive_metastore_client_plain_password": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...", "spark_hive_metastore_client_plain_username": "ibm_lh_token_admin", "spark_hive_metastore_truststore_password": "changeit", "spark_hive_metastore_truststore_path": "file:///opt/ibm/jdk/lib/security/cacerts", "spark_hive_metastore_truststore_type": "JKS", "spark_hive_metastore_use_ssl": "true", "spark_sql_catalog_implementation": "Spark Catalog Implementation", "spark_sql_catalog_lakehouse": "org.apache.iceberg.spark.SparkCatalog", "spark_sql_catalog_lakehouse_type": "Spark Catalog Type", "spark_sql_catalog_lakehouse_uri": "Spark Catalog URI", "spark_sql_extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions", "spark_sql_iceberg_vectorization_enabled": "false"}, "env": {"anyKey": "anyValue"}, "name": "SparkApplicaton1"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae"}'
+        mock_response = '{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "class": "org.apache.spark.examples.SparkPi", "conf": {"spark_sample_config_properpty": "spark_sample_config_properpty"}, "env": {"sample_env_key": "sample_env_key"}, "files": "s3://mybucket/myfile.txt", "jars": "jars", "name": "SparkApplicaton1", "packages": "org.apache.spark:example_1.2.3", "repositories": "https://repo1.maven.org/maven2/", "spark_version": "3.3"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "spark_version": "3.3", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae", "volumes": [{"mount_path": "/mount/path", "name": "my-volume", "read_only": true, "source_sub_path": "/source/path"}], "wxd_application_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications/c7b3fccf-badb-46b0-b1ef-9b3154424021/ui"}'
         responses.add(
             responses.GET,
             url,
@@ -9173,7 +9151,7 @@ class TestGetSparkEngineApplicationStatus:
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/applications/testString')
-        mock_response = '{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "conf": {"spark_app_name": "MyJob", "spark_hive_metastore_client_auth_mode": "PLAIN", "spark_hive_metastore_client_plain_password": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...", "spark_hive_metastore_client_plain_username": "ibm_lh_token_admin", "spark_hive_metastore_truststore_password": "changeit", "spark_hive_metastore_truststore_path": "file:///opt/ibm/jdk/lib/security/cacerts", "spark_hive_metastore_truststore_type": "JKS", "spark_hive_metastore_use_ssl": "true", "spark_sql_catalog_implementation": "Spark Catalog Implementation", "spark_sql_catalog_lakehouse": "org.apache.iceberg.spark.SparkCatalog", "spark_sql_catalog_lakehouse_type": "Spark Catalog Type", "spark_sql_catalog_lakehouse_uri": "Spark Catalog URI", "spark_sql_extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions", "spark_sql_iceberg_vectorization_enabled": "false"}, "env": {"anyKey": "anyValue"}, "name": "SparkApplicaton1"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae"}'
+        mock_response = '{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "class": "org.apache.spark.examples.SparkPi", "conf": {"spark_sample_config_properpty": "spark_sample_config_properpty"}, "env": {"sample_env_key": "sample_env_key"}, "files": "s3://mybucket/myfile.txt", "jars": "jars", "name": "SparkApplicaton1", "packages": "org.apache.spark:example_1.2.3", "repositories": "https://repo1.maven.org/maven2/", "spark_version": "3.3"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "spark_version": "3.3", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae", "volumes": [{"mount_path": "/mount/path", "name": "my-volume", "read_only": true, "source_sub_path": "/source/path"}], "wxd_application_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications/c7b3fccf-badb-46b0-b1ef-9b3154424021/ui"}'
         responses.add(
             responses.GET,
             url,
@@ -9213,7 +9191,7 @@ class TestGetSparkEngineApplicationStatus:
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/applications/testString')
-        mock_response = '{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "conf": {"spark_app_name": "MyJob", "spark_hive_metastore_client_auth_mode": "PLAIN", "spark_hive_metastore_client_plain_password": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...", "spark_hive_metastore_client_plain_username": "ibm_lh_token_admin", "spark_hive_metastore_truststore_password": "changeit", "spark_hive_metastore_truststore_path": "file:///opt/ibm/jdk/lib/security/cacerts", "spark_hive_metastore_truststore_type": "JKS", "spark_hive_metastore_use_ssl": "true", "spark_sql_catalog_implementation": "Spark Catalog Implementation", "spark_sql_catalog_lakehouse": "org.apache.iceberg.spark.SparkCatalog", "spark_sql_catalog_lakehouse_type": "Spark Catalog Type", "spark_sql_catalog_lakehouse_uri": "Spark Catalog URI", "spark_sql_extensions": "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions", "spark_sql_iceberg_vectorization_enabled": "false"}, "env": {"anyKey": "anyValue"}, "name": "SparkApplicaton1"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae"}'
+        mock_response = '{"application_details": {"application": "s3://mybucket/wordcount.py", "arguments": ["people.txt"], "class": "org.apache.spark.examples.SparkPi", "conf": {"spark_sample_config_properpty": "spark_sample_config_properpty"}, "env": {"sample_env_key": "sample_env_key"}, "files": "s3://mybucket/myfile.txt", "jars": "jars", "name": "SparkApplicaton1", "packages": "org.apache.spark:example_1.2.3", "repositories": "https://repo1.maven.org/maven2/", "spark_version": "3.3"}, "application_id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "auto_termination_time": "2020-12-08T10:00:00.000Z", "creation_time": "Saturday 28 October 2023 07:17:06.856+0000", "deploy_mode": "stand-alone", "end_time": "2020-12-08T10:00:00.000Z", "failed_time": "failed_time", "finish_time": "Saturday 28 October 2023 07:17:38.966+0000", "id": "cd7cbf1f-8893-4c51-aa3d-d92729f05e99", "job_endpoint": "<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications", "return_code": "0", "runtime": {"spark_version": "3.3"}, "service_instance_id": "service_instance_id", "spark_application_id": "app-20231028071726-0000", "spark_application_name": "PythonWordCount", "spark_version": "3.3", "start_time": "Saturday 28 October 2023 07:17:26.649+0000", "state": "FINISHED", "state_details": [{"code": "code", "message": "message", "type": "type"}], "submission_time": "2023-11-01T11:18:49.758Z", "template_id": "spark-3.3-jaas-v2-cp4d-template", "type": "iae", "volumes": [{"mount_path": "/mount/path", "name": "my-volume", "read_only": true, "source_sub_path": "/source/path"}], "wxd_application_ui_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications/c7b3fccf-badb-46b0-b1ef-9b3154424021/ui"}'
         responses.add(
             responses.GET,
             url,
@@ -9246,58 +9224,1299 @@ class TestGetSparkEngineApplicationStatus:
         self.test_get_spark_engine_application_status_value_error()
 
 
-# endregion
-##############################################################################
-# End of Service: Engines
-##############################################################################
-
-##############################################################################
-# Start of Service: Lhconsole
-##############################################################################
-# region
-
-
-class TestNewInstance:
+class TestListSparkEngineCatalogs:
     """
-    Test Class for new_instance
-    """
-
-    def test_new_instance(self):
-        """
-        new_instance()
-        """
-        os.environ['TEST_SERVICE_AUTH_TYPE'] = 'noAuth'
-
-        service = WatsonxDataV2.new_instance(
-            service_name='TEST_SERVICE',
-        )
-
-        assert service is not None
-        assert isinstance(service, WatsonxDataV2)
-
-    def test_new_instance_without_authenticator(self):
-        """
-        new_instance_without_authenticator()
-        """
-        with pytest.raises(ValueError, match='authenticator must be provided'):
-            service = WatsonxDataV2.new_instance(
-                service_name='TEST_SERVICE_NOT_FOUND',
-            )
-
-
-class TestTestLhConsole:
-    """
-    Test Class for test_lh_console
+    Test Class for list_spark_engine_catalogs
     """
 
     @responses.activate
-    def test_test_lh_console_all_params(self):
+    def test_list_spark_engine_catalogs_all_params(self):
         """
-        test_lh_console()
+        list_spark_engine_catalogs()
         """
         # Set up mock
-        url = preprocess_url('/ready')
+        url = preprocess_url('/spark_engines/testString/catalogs')
+        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.list_spark_engine_catalogs(
+            engine_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_spark_engine_catalogs_all_params_with_retries(self):
+        # Enable retries and run test_list_spark_engine_catalogs_all_params.
+        _service.enable_retries()
+        self.test_list_spark_engine_catalogs_all_params()
+
+        # Disable retries and run test_list_spark_engine_catalogs_all_params.
+        _service.disable_retries()
+        self.test_list_spark_engine_catalogs_all_params()
+
+    @responses.activate
+    def test_list_spark_engine_catalogs_required_params(self):
+        """
+        test_list_spark_engine_catalogs_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/catalogs')
+        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Invoke method
+        response = _service.list_spark_engine_catalogs(
+            engine_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_spark_engine_catalogs_required_params_with_retries(self):
+        # Enable retries and run test_list_spark_engine_catalogs_required_params.
+        _service.enable_retries()
+        self.test_list_spark_engine_catalogs_required_params()
+
+        # Disable retries and run test_list_spark_engine_catalogs_required_params.
+        _service.disable_retries()
+        self.test_list_spark_engine_catalogs_required_params()
+
+    @responses.activate
+    def test_list_spark_engine_catalogs_value_error(self):
+        """
+        test_list_spark_engine_catalogs_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/catalogs')
+        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.list_spark_engine_catalogs(**req_copy)
+
+    def test_list_spark_engine_catalogs_value_error_with_retries(self):
+        # Enable retries and run test_list_spark_engine_catalogs_value_error.
+        _service.enable_retries()
+        self.test_list_spark_engine_catalogs_value_error()
+
+        # Disable retries and run test_list_spark_engine_catalogs_value_error.
+        _service.disable_retries()
+        self.test_list_spark_engine_catalogs_value_error()
+
+
+class TestAddSparkEngineCatalogs:
+    """
+    Test Class for add_spark_engine_catalogs
+    """
+
+    @responses.activate
+    def test_add_spark_engine_catalogs_all_params(self):
+        """
+        add_spark_engine_catalogs()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/catalogs')
+        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        catalog_names = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.add_spark_engine_catalogs(
+            engine_id,
+            catalog_names=catalog_names,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['catalog_names'] == 'testString'
+
+    def test_add_spark_engine_catalogs_all_params_with_retries(self):
+        # Enable retries and run test_add_spark_engine_catalogs_all_params.
+        _service.enable_retries()
+        self.test_add_spark_engine_catalogs_all_params()
+
+        # Disable retries and run test_add_spark_engine_catalogs_all_params.
+        _service.disable_retries()
+        self.test_add_spark_engine_catalogs_all_params()
+
+    @responses.activate
+    def test_add_spark_engine_catalogs_required_params(self):
+        """
+        test_add_spark_engine_catalogs_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/catalogs')
+        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        catalog_names = 'testString'
+
+        # Invoke method
+        response = _service.add_spark_engine_catalogs(
+            engine_id,
+            catalog_names=catalog_names,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['catalog_names'] == 'testString'
+
+    def test_add_spark_engine_catalogs_required_params_with_retries(self):
+        # Enable retries and run test_add_spark_engine_catalogs_required_params.
+        _service.enable_retries()
+        self.test_add_spark_engine_catalogs_required_params()
+
+        # Disable retries and run test_add_spark_engine_catalogs_required_params.
+        _service.disable_retries()
+        self.test_add_spark_engine_catalogs_required_params()
+
+    @responses.activate
+    def test_add_spark_engine_catalogs_value_error(self):
+        """
+        test_add_spark_engine_catalogs_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/catalogs')
+        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        catalog_names = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.add_spark_engine_catalogs(**req_copy)
+
+    def test_add_spark_engine_catalogs_value_error_with_retries(self):
+        # Enable retries and run test_add_spark_engine_catalogs_value_error.
+        _service.enable_retries()
+        self.test_add_spark_engine_catalogs_value_error()
+
+        # Disable retries and run test_add_spark_engine_catalogs_value_error.
+        _service.disable_retries()
+        self.test_add_spark_engine_catalogs_value_error()
+
+
+class TestDeleteSparkEngineCatalogs:
+    """
+    Test Class for delete_spark_engine_catalogs
+    """
+
+    @responses.activate
+    def test_delete_spark_engine_catalogs_all_params(self):
+        """
+        delete_spark_engine_catalogs()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/catalogs')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        catalog_names = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_spark_engine_catalogs(
+            engine_id,
+            catalog_names,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'catalog_names={}'.format(catalog_names) in query_string
+
+    def test_delete_spark_engine_catalogs_all_params_with_retries(self):
+        # Enable retries and run test_delete_spark_engine_catalogs_all_params.
+        _service.enable_retries()
+        self.test_delete_spark_engine_catalogs_all_params()
+
+        # Disable retries and run test_delete_spark_engine_catalogs_all_params.
+        _service.disable_retries()
+        self.test_delete_spark_engine_catalogs_all_params()
+
+    @responses.activate
+    def test_delete_spark_engine_catalogs_required_params(self):
+        """
+        test_delete_spark_engine_catalogs_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/catalogs')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        catalog_names = 'testString'
+
+        # Invoke method
+        response = _service.delete_spark_engine_catalogs(
+            engine_id,
+            catalog_names,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'catalog_names={}'.format(catalog_names) in query_string
+
+    def test_delete_spark_engine_catalogs_required_params_with_retries(self):
+        # Enable retries and run test_delete_spark_engine_catalogs_required_params.
+        _service.enable_retries()
+        self.test_delete_spark_engine_catalogs_required_params()
+
+        # Disable retries and run test_delete_spark_engine_catalogs_required_params.
+        _service.disable_retries()
+        self.test_delete_spark_engine_catalogs_required_params()
+
+    @responses.activate
+    def test_delete_spark_engine_catalogs_value_error(self):
+        """
+        test_delete_spark_engine_catalogs_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/catalogs')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        catalog_names = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+            "catalog_names": catalog_names,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.delete_spark_engine_catalogs(**req_copy)
+
+    def test_delete_spark_engine_catalogs_value_error_with_retries(self):
+        # Enable retries and run test_delete_spark_engine_catalogs_value_error.
+        _service.enable_retries()
+        self.test_delete_spark_engine_catalogs_value_error()
+
+        # Disable retries and run test_delete_spark_engine_catalogs_value_error.
+        _service.disable_retries()
+        self.test_delete_spark_engine_catalogs_value_error()
+
+
+class TestGetSparkEngineCatalog:
+    """
+    Test Class for get_spark_engine_catalog
+    """
+
+    @responses.activate
+    def test_get_spark_engine_catalog_all_params(self):
+        """
+        get_spark_engine_catalog()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/catalogs/testString')
+        mock_response = '{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        catalog_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_spark_engine_catalog(
+            engine_id,
+            catalog_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_spark_engine_catalog_all_params_with_retries(self):
+        # Enable retries and run test_get_spark_engine_catalog_all_params.
+        _service.enable_retries()
+        self.test_get_spark_engine_catalog_all_params()
+
+        # Disable retries and run test_get_spark_engine_catalog_all_params.
+        _service.disable_retries()
+        self.test_get_spark_engine_catalog_all_params()
+
+    @responses.activate
+    def test_get_spark_engine_catalog_required_params(self):
+        """
+        test_get_spark_engine_catalog_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/catalogs/testString')
+        mock_response = '{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        catalog_id = 'testString'
+
+        # Invoke method
+        response = _service.get_spark_engine_catalog(
+            engine_id,
+            catalog_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_spark_engine_catalog_required_params_with_retries(self):
+        # Enable retries and run test_get_spark_engine_catalog_required_params.
+        _service.enable_retries()
+        self.test_get_spark_engine_catalog_required_params()
+
+        # Disable retries and run test_get_spark_engine_catalog_required_params.
+        _service.disable_retries()
+        self.test_get_spark_engine_catalog_required_params()
+
+    @responses.activate
+    def test_get_spark_engine_catalog_value_error(self):
+        """
+        test_get_spark_engine_catalog_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/catalogs/testString')
+        mock_response = '{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        catalog_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+            "catalog_id": catalog_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.get_spark_engine_catalog(**req_copy)
+
+    def test_get_spark_engine_catalog_value_error_with_retries(self):
+        # Enable retries and run test_get_spark_engine_catalog_value_error.
+        _service.enable_retries()
+        self.test_get_spark_engine_catalog_value_error()
+
+        # Disable retries and run test_get_spark_engine_catalog_value_error.
+        _service.disable_retries()
+        self.test_get_spark_engine_catalog_value_error()
+
+
+class TestGetSparkEngineHistoryServer:
+    """
+    Test Class for get_spark_engine_history_server
+    """
+
+    @responses.activate
+    def test_get_spark_engine_history_server_all_params(self):
+        """
+        get_spark_engine_history_server()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/history_server')
+        mock_response = '{"auto_termination_time": "2022-02-24T07:37:47Z", "cores": "1", "memory": "4G", "start_time": "2022-02-21T07:37:47Z", "state": "started"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_spark_engine_history_server(
+            engine_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_spark_engine_history_server_all_params_with_retries(self):
+        # Enable retries and run test_get_spark_engine_history_server_all_params.
+        _service.enable_retries()
+        self.test_get_spark_engine_history_server_all_params()
+
+        # Disable retries and run test_get_spark_engine_history_server_all_params.
+        _service.disable_retries()
+        self.test_get_spark_engine_history_server_all_params()
+
+    @responses.activate
+    def test_get_spark_engine_history_server_required_params(self):
+        """
+        test_get_spark_engine_history_server_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/history_server')
+        mock_response = '{"auto_termination_time": "2022-02-24T07:37:47Z", "cores": "1", "memory": "4G", "start_time": "2022-02-21T07:37:47Z", "state": "started"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Invoke method
+        response = _service.get_spark_engine_history_server(
+            engine_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_spark_engine_history_server_required_params_with_retries(self):
+        # Enable retries and run test_get_spark_engine_history_server_required_params.
+        _service.enable_retries()
+        self.test_get_spark_engine_history_server_required_params()
+
+        # Disable retries and run test_get_spark_engine_history_server_required_params.
+        _service.disable_retries()
+        self.test_get_spark_engine_history_server_required_params()
+
+    @responses.activate
+    def test_get_spark_engine_history_server_value_error(self):
+        """
+        test_get_spark_engine_history_server_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/history_server')
+        mock_response = '{"auto_termination_time": "2022-02-24T07:37:47Z", "cores": "1", "memory": "4G", "start_time": "2022-02-21T07:37:47Z", "state": "started"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.get_spark_engine_history_server(**req_copy)
+
+    def test_get_spark_engine_history_server_value_error_with_retries(self):
+        # Enable retries and run test_get_spark_engine_history_server_value_error.
+        _service.enable_retries()
+        self.test_get_spark_engine_history_server_value_error()
+
+        # Disable retries and run test_get_spark_engine_history_server_value_error.
+        _service.disable_retries()
+        self.test_get_spark_engine_history_server_value_error()
+
+
+class TestStartSparkEngineHistoryServer:
+    """
+    Test Class for start_spark_engine_history_server
+    """
+
+    @responses.activate
+    def test_start_spark_engine_history_server_all_params(self):
+        """
+        start_spark_engine_history_server()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/history_server')
+        mock_response = '{"auto_termination_time": "2022-02-24T07:37:47Z", "cores": "1", "memory": "4G", "start_time": "2022-02-21T07:37:47Z", "state": "started"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        cores = '1'
+        memory = '4G'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.start_spark_engine_history_server(
+            engine_id,
+            cores=cores,
+            memory=memory,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['cores'] == '1'
+        assert req_body['memory'] == '4G'
+
+    def test_start_spark_engine_history_server_all_params_with_retries(self):
+        # Enable retries and run test_start_spark_engine_history_server_all_params.
+        _service.enable_retries()
+        self.test_start_spark_engine_history_server_all_params()
+
+        # Disable retries and run test_start_spark_engine_history_server_all_params.
+        _service.disable_retries()
+        self.test_start_spark_engine_history_server_all_params()
+
+    @responses.activate
+    def test_start_spark_engine_history_server_required_params(self):
+        """
+        test_start_spark_engine_history_server_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/history_server')
+        mock_response = '{"auto_termination_time": "2022-02-24T07:37:47Z", "cores": "1", "memory": "4G", "start_time": "2022-02-21T07:37:47Z", "state": "started"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Invoke method
+        response = _service.start_spark_engine_history_server(
+            engine_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_start_spark_engine_history_server_required_params_with_retries(self):
+        # Enable retries and run test_start_spark_engine_history_server_required_params.
+        _service.enable_retries()
+        self.test_start_spark_engine_history_server_required_params()
+
+        # Disable retries and run test_start_spark_engine_history_server_required_params.
+        _service.disable_retries()
+        self.test_start_spark_engine_history_server_required_params()
+
+    @responses.activate
+    def test_start_spark_engine_history_server_value_error(self):
+        """
+        test_start_spark_engine_history_server_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/history_server')
+        mock_response = '{"auto_termination_time": "2022-02-24T07:37:47Z", "cores": "1", "memory": "4G", "start_time": "2022-02-21T07:37:47Z", "state": "started"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.start_spark_engine_history_server(**req_copy)
+
+    def test_start_spark_engine_history_server_value_error_with_retries(self):
+        # Enable retries and run test_start_spark_engine_history_server_value_error.
+        _service.enable_retries()
+        self.test_start_spark_engine_history_server_value_error()
+
+        # Disable retries and run test_start_spark_engine_history_server_value_error.
+        _service.disable_retries()
+        self.test_start_spark_engine_history_server_value_error()
+
+
+class TestDeleteSparkEngineHistoryServer:
+    """
+    Test Class for delete_spark_engine_history_server
+    """
+
+    @responses.activate
+    def test_delete_spark_engine_history_server_all_params(self):
+        """
+        delete_spark_engine_history_server()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/history_server')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_spark_engine_history_server(
+            engine_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+
+    def test_delete_spark_engine_history_server_all_params_with_retries(self):
+        # Enable retries and run test_delete_spark_engine_history_server_all_params.
+        _service.enable_retries()
+        self.test_delete_spark_engine_history_server_all_params()
+
+        # Disable retries and run test_delete_spark_engine_history_server_all_params.
+        _service.disable_retries()
+        self.test_delete_spark_engine_history_server_all_params()
+
+    @responses.activate
+    def test_delete_spark_engine_history_server_required_params(self):
+        """
+        test_delete_spark_engine_history_server_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/history_server')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_spark_engine_history_server(
+            engine_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+
+    def test_delete_spark_engine_history_server_required_params_with_retries(self):
+        # Enable retries and run test_delete_spark_engine_history_server_required_params.
+        _service.enable_retries()
+        self.test_delete_spark_engine_history_server_required_params()
+
+        # Disable retries and run test_delete_spark_engine_history_server_required_params.
+        _service.disable_retries()
+        self.test_delete_spark_engine_history_server_required_params()
+
+    @responses.activate
+    def test_delete_spark_engine_history_server_value_error(self):
+        """
+        test_delete_spark_engine_history_server_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/history_server')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.delete_spark_engine_history_server(**req_copy)
+
+    def test_delete_spark_engine_history_server_value_error_with_retries(self):
+        # Enable retries and run test_delete_spark_engine_history_server_value_error.
+        _service.enable_retries()
+        self.test_delete_spark_engine_history_server_value_error()
+
+        # Disable retries and run test_delete_spark_engine_history_server_value_error.
+        _service.disable_retries()
+        self.test_delete_spark_engine_history_server_value_error()
+
+
+class TestCreateSparkEnginePause:
+    """
+    Test Class for create_spark_engine_pause
+    """
+
+    @responses.activate
+    def test_create_spark_engine_pause_all_params(self):
+        """
+        create_spark_engine_pause()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/pause')
         mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_spark_engine_pause(
+            engine_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_spark_engine_pause_all_params_with_retries(self):
+        # Enable retries and run test_create_spark_engine_pause_all_params.
+        _service.enable_retries()
+        self.test_create_spark_engine_pause_all_params()
+
+        # Disable retries and run test_create_spark_engine_pause_all_params.
+        _service.disable_retries()
+        self.test_create_spark_engine_pause_all_params()
+
+    @responses.activate
+    def test_create_spark_engine_pause_required_params(self):
+        """
+        test_create_spark_engine_pause_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/pause')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Invoke method
+        response = _service.create_spark_engine_pause(
+            engine_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_spark_engine_pause_required_params_with_retries(self):
+        # Enable retries and run test_create_spark_engine_pause_required_params.
+        _service.enable_retries()
+        self.test_create_spark_engine_pause_required_params()
+
+        # Disable retries and run test_create_spark_engine_pause_required_params.
+        _service.disable_retries()
+        self.test_create_spark_engine_pause_required_params()
+
+    @responses.activate
+    def test_create_spark_engine_pause_value_error(self):
+        """
+        test_create_spark_engine_pause_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/pause')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_spark_engine_pause(**req_copy)
+
+    def test_create_spark_engine_pause_value_error_with_retries(self):
+        # Enable retries and run test_create_spark_engine_pause_value_error.
+        _service.enable_retries()
+        self.test_create_spark_engine_pause_value_error()
+
+        # Disable retries and run test_create_spark_engine_pause_value_error.
+        _service.disable_retries()
+        self.test_create_spark_engine_pause_value_error()
+
+
+class TestCreateSparkEngineResume:
+    """
+    Test Class for create_spark_engine_resume
+    """
+
+    @responses.activate
+    def test_create_spark_engine_resume_all_params(self):
+        """
+        create_spark_engine_resume()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/resume')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_spark_engine_resume(
+            engine_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_spark_engine_resume_all_params_with_retries(self):
+        # Enable retries and run test_create_spark_engine_resume_all_params.
+        _service.enable_retries()
+        self.test_create_spark_engine_resume_all_params()
+
+        # Disable retries and run test_create_spark_engine_resume_all_params.
+        _service.disable_retries()
+        self.test_create_spark_engine_resume_all_params()
+
+    @responses.activate
+    def test_create_spark_engine_resume_required_params(self):
+        """
+        test_create_spark_engine_resume_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/resume')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Invoke method
+        response = _service.create_spark_engine_resume(
+            engine_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_spark_engine_resume_required_params_with_retries(self):
+        # Enable retries and run test_create_spark_engine_resume_required_params.
+        _service.enable_retries()
+        self.test_create_spark_engine_resume_required_params()
+
+        # Disable retries and run test_create_spark_engine_resume_required_params.
+        _service.disable_retries()
+        self.test_create_spark_engine_resume_required_params()
+
+    @responses.activate
+    def test_create_spark_engine_resume_value_error(self):
+        """
+        test_create_spark_engine_resume_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/resume')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_spark_engine_resume(**req_copy)
+
+    def test_create_spark_engine_resume_value_error_with_retries(self):
+        # Enable retries and run test_create_spark_engine_resume_value_error.
+        _service.enable_retries()
+        self.test_create_spark_engine_resume_value_error()
+
+        # Disable retries and run test_create_spark_engine_resume_value_error.
+        _service.disable_retries()
+        self.test_create_spark_engine_resume_value_error()
+
+
+class TestCreateSparkEngineScale:
+    """
+    Test Class for create_spark_engine_scale
+    """
+
+    @responses.activate
+    def test_create_spark_engine_scale_all_params(self):
+        """
+        create_spark_engine_scale()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/scale')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        number_of_nodes = 2
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_spark_engine_scale(
+            engine_id,
+            number_of_nodes=number_of_nodes,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['number_of_nodes'] == 2
+
+    def test_create_spark_engine_scale_all_params_with_retries(self):
+        # Enable retries and run test_create_spark_engine_scale_all_params.
+        _service.enable_retries()
+        self.test_create_spark_engine_scale_all_params()
+
+        # Disable retries and run test_create_spark_engine_scale_all_params.
+        _service.disable_retries()
+        self.test_create_spark_engine_scale_all_params()
+
+    @responses.activate
+    def test_create_spark_engine_scale_required_params(self):
+        """
+        test_create_spark_engine_scale_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/scale')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        number_of_nodes = 2
+
+        # Invoke method
+        response = _service.create_spark_engine_scale(
+            engine_id,
+            number_of_nodes=number_of_nodes,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['number_of_nodes'] == 2
+
+    def test_create_spark_engine_scale_required_params_with_retries(self):
+        # Enable retries and run test_create_spark_engine_scale_required_params.
+        _service.enable_retries()
+        self.test_create_spark_engine_scale_required_params()
+
+        # Disable retries and run test_create_spark_engine_scale_required_params.
+        _service.disable_retries()
+        self.test_create_spark_engine_scale_required_params()
+
+    @responses.activate
+    def test_create_spark_engine_scale_value_error(self):
+        """
+        test_create_spark_engine_scale_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_engines/testString/scale')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        number_of_nodes = 2
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_spark_engine_scale(**req_copy)
+
+    def test_create_spark_engine_scale_value_error_with_retries(self):
+        # Enable retries and run test_create_spark_engine_scale_value_error.
+        _service.enable_retries()
+        self.test_create_spark_engine_scale_value_error()
+
+        # Disable retries and run test_create_spark_engine_scale_value_error.
+        _service.disable_retries()
+        self.test_create_spark_engine_scale_value_error()
+
+
+class TestListSparkVersions:
+    """
+    Test Class for list_spark_versions
+    """
+
+    @responses.activate
+    def test_list_spark_versions_all_params(self):
+        """
+        list_spark_versions()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_versions')
+        mock_response = '{"response": {"message": "message", "message_code": "message_code"}, "spark_versions": [{"display_name": "Instance Name"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.list_spark_versions(
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_spark_versions_all_params_with_retries(self):
+        # Enable retries and run test_list_spark_versions_all_params.
+        _service.enable_retries()
+        self.test_list_spark_versions_all_params()
+
+        # Disable retries and run test_list_spark_versions_all_params.
+        _service.disable_retries()
+        self.test_list_spark_versions_all_params()
+
+    @responses.activate
+    def test_list_spark_versions_required_params(self):
+        """
+        test_list_spark_versions_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/spark_versions')
+        mock_response = '{"response": {"message": "message", "message_code": "message_code"}, "spark_versions": [{"display_name": "Instance Name"}]}'
         responses.add(
             responses.GET,
             url,
@@ -9307,25 +10526,25 @@ class TestTestLhConsole:
         )
 
         # Invoke method
-        response = _service.test_lh_console()
+        response = _service.list_spark_versions()
 
         # Check for correct operation
         assert len(responses.calls) == 1
         assert response.status_code == 200
 
-    def test_test_lh_console_all_params_with_retries(self):
-        # Enable retries and run test_test_lh_console_all_params.
+    def test_list_spark_versions_required_params_with_retries(self):
+        # Enable retries and run test_list_spark_versions_required_params.
         _service.enable_retries()
-        self.test_test_lh_console_all_params()
+        self.test_list_spark_versions_required_params()
 
-        # Disable retries and run test_test_lh_console_all_params.
+        # Disable retries and run test_list_spark_versions_required_params.
         _service.disable_retries()
-        self.test_test_lh_console_all_params()
+        self.test_list_spark_versions_required_params()
 
 
 # endregion
 ##############################################################################
-# End of Service: Lhconsole
+# End of Service: SparkEngines
 ##############################################################################
 
 ##############################################################################
@@ -10414,15 +11633,15 @@ class TestDeleteTable:
         self.test_delete_table_value_error()
 
 
-class TestUpdateTable:
+class TestRenameTable:
     """
-    Test Class for update_table
+    Test Class for rename_table
     """
 
     @responses.activate
-    def test_update_table_all_params(self):
+    def test_rename_table_all_params(self):
         """
-        update_table()
+        rename_table()
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString')
@@ -10435,23 +11654,20 @@ class TestUpdateTable:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a TablePatch model
+        table_patch_model = {}
+        table_patch_model['table_name'] = 'updated_table_name'
 
         # Set up parameter values
         catalog_id = 'testString'
         schema_id = 'testString'
         table_id = 'testString'
         engine_id = 'testString'
-        body = [json_patch_operation_model]
+        body = table_patch_model
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.update_table(
+        response = _service.rename_table(
             catalog_id,
             schema_id,
             table_id,
@@ -10472,19 +11688,19 @@ class TestUpdateTable:
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body == body
 
-    def test_update_table_all_params_with_retries(self):
-        # Enable retries and run test_update_table_all_params.
+    def test_rename_table_all_params_with_retries(self):
+        # Enable retries and run test_rename_table_all_params.
         _service.enable_retries()
-        self.test_update_table_all_params()
+        self.test_rename_table_all_params()
 
-        # Disable retries and run test_update_table_all_params.
+        # Disable retries and run test_rename_table_all_params.
         _service.disable_retries()
-        self.test_update_table_all_params()
+        self.test_rename_table_all_params()
 
     @responses.activate
-    def test_update_table_required_params(self):
+    def test_rename_table_required_params(self):
         """
-        test_update_table_required_params()
+        test_rename_table_required_params()
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString')
@@ -10497,22 +11713,19 @@ class TestUpdateTable:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a TablePatch model
+        table_patch_model = {}
+        table_patch_model['table_name'] = 'updated_table_name'
 
         # Set up parameter values
         catalog_id = 'testString'
         schema_id = 'testString'
         table_id = 'testString'
         engine_id = 'testString'
-        body = [json_patch_operation_model]
+        body = table_patch_model
 
         # Invoke method
-        response = _service.update_table(
+        response = _service.rename_table(
             catalog_id,
             schema_id,
             table_id,
@@ -10532,19 +11745,19 @@ class TestUpdateTable:
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body == body
 
-    def test_update_table_required_params_with_retries(self):
-        # Enable retries and run test_update_table_required_params.
+    def test_rename_table_required_params_with_retries(self):
+        # Enable retries and run test_rename_table_required_params.
         _service.enable_retries()
-        self.test_update_table_required_params()
+        self.test_rename_table_required_params()
 
-        # Disable retries and run test_update_table_required_params.
+        # Disable retries and run test_rename_table_required_params.
         _service.disable_retries()
-        self.test_update_table_required_params()
+        self.test_rename_table_required_params()
 
     @responses.activate
-    def test_update_table_value_error(self):
+    def test_rename_table_value_error(self):
         """
-        test_update_table_value_error()
+        test_rename_table_value_error()
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString')
@@ -10557,19 +11770,16 @@ class TestUpdateTable:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a TablePatch model
+        table_patch_model = {}
+        table_patch_model['table_name'] = 'updated_table_name'
 
         # Set up parameter values
         catalog_id = 'testString'
         schema_id = 'testString'
         table_id = 'testString'
         engine_id = 'testString'
-        body = [json_patch_operation_model]
+        body = table_patch_model
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -10582,16 +11792,16 @@ class TestUpdateTable:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.update_table(**req_copy)
+                _service.rename_table(**req_copy)
 
-    def test_update_table_value_error_with_retries(self):
-        # Enable retries and run test_update_table_value_error.
+    def test_rename_table_value_error_with_retries(self):
+        # Enable retries and run test_rename_table_value_error.
         _service.enable_retries()
-        self.test_update_table_value_error()
+        self.test_rename_table_value_error()
 
-        # Disable retries and run test_update_table_value_error.
+        # Disable retries and run test_rename_table_value_error.
         _service.disable_retries()
-        self.test_update_table_value_error()
+        self.test_rename_table_value_error()
 
 
 class TestListColumns:
@@ -11091,12 +12301,9 @@ class TestUpdateColumn:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a ColumnPatch model
+        column_patch_model = {}
+        column_patch_model['column_name'] = 'expenses'
 
         # Set up parameter values
         engine_id = 'testString'
@@ -11104,7 +12311,7 @@ class TestUpdateColumn:
         schema_id = 'testString'
         table_id = 'testString'
         column_id = 'testString'
-        body = [json_patch_operation_model]
+        body = column_patch_model
         auth_instance_id = 'testString'
 
         # Invoke method
@@ -11155,12 +12362,9 @@ class TestUpdateColumn:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a ColumnPatch model
+        column_patch_model = {}
+        column_patch_model['column_name'] = 'expenses'
 
         # Set up parameter values
         engine_id = 'testString'
@@ -11168,7 +12372,7 @@ class TestUpdateColumn:
         schema_id = 'testString'
         table_id = 'testString'
         column_id = 'testString'
-        body = [json_patch_operation_model]
+        body = column_patch_model
 
         # Invoke method
         response = _service.update_column(
@@ -11217,12 +12421,9 @@ class TestUpdateColumn:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a ColumnPatch model
+        column_patch_model = {}
+        column_patch_model['column_name'] = 'expenses'
 
         # Set up parameter values
         engine_id = 'testString'
@@ -11230,7 +12431,7 @@ class TestUpdateColumn:
         schema_id = 'testString'
         table_id = 'testString'
         column_id = 'testString'
-        body = [json_patch_operation_model]
+        body = column_patch_model
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -11268,7 +12469,7 @@ class TestListTableSnapshots:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/snapshots')
-        mock_response = '{"snapshots": [{"committed_at": "1609379392", "operation": "alter", "snapshot_id": "2332342122211222", "summary": {"anyKey": "anyValue"}}]}'
+        mock_response = '{"snapshots": [{"committed_at": "1609379392", "operation": "alter", "snapshot_id": "2332342122211222", "summary": "summary"}]}'
         responses.add(
             responses.GET,
             url,
@@ -11318,7 +12519,7 @@ class TestListTableSnapshots:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/snapshots')
-        mock_response = '{"snapshots": [{"committed_at": "1609379392", "operation": "alter", "snapshot_id": "2332342122211222", "summary": {"anyKey": "anyValue"}}]}'
+        mock_response = '{"snapshots": [{"committed_at": "1609379392", "operation": "alter", "snapshot_id": "2332342122211222", "summary": "summary"}]}'
         responses.add(
             responses.GET,
             url,
@@ -11366,7 +12567,7 @@ class TestListTableSnapshots:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/snapshots')
-        mock_response = '{"snapshots": [{"committed_at": "1609379392", "operation": "alter", "snapshot_id": "2332342122211222", "summary": {"anyKey": "anyValue"}}]}'
+        mock_response = '{"snapshots": [{"committed_at": "1609379392", "operation": "alter", "snapshot_id": "2332342122211222", "summary": "summary"}]}'
         responses.add(
             responses.GET,
             url,
@@ -11403,21 +12604,21 @@ class TestListTableSnapshots:
         self.test_list_table_snapshots_value_error()
 
 
-class TestReplaceSnapshot:
+class TestRollbackTable:
     """
-    Test Class for replace_snapshot
+    Test Class for rollback_table
     """
 
     @responses.activate
-    def test_replace_snapshot_all_params(self):
+    def test_rollback_table_all_params(self):
         """
-        replace_snapshot()
+        rollback_table()
         """
         # Set up mock
-        url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/snapshots/testString')
+        url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/rollback')
         mock_response = '{"response": {"message": "message", "message_code": "message_code"}}'
         responses.add(
-            responses.PUT,
+            responses.POST,
             url,
             body=mock_response,
             content_type='application/json',
@@ -11433,12 +12634,12 @@ class TestReplaceSnapshot:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.replace_snapshot(
+        response = _service.rollback_table(
             engine_id,
             catalog_id,
             schema_id,
             table_id,
-            snapshot_id,
+            snapshot_id=snapshot_id,
             auth_instance_id=auth_instance_id,
             headers={},
         )
@@ -11450,26 +12651,29 @@ class TestReplaceSnapshot:
         query_string = responses.calls[0].request.url.split('?', 1)[1]
         query_string = urllib.parse.unquote_plus(query_string)
         assert 'engine_id={}'.format(engine_id) in query_string
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['snapshot_id'] == 'testString'
 
-    def test_replace_snapshot_all_params_with_retries(self):
-        # Enable retries and run test_replace_snapshot_all_params.
+    def test_rollback_table_all_params_with_retries(self):
+        # Enable retries and run test_rollback_table_all_params.
         _service.enable_retries()
-        self.test_replace_snapshot_all_params()
+        self.test_rollback_table_all_params()
 
-        # Disable retries and run test_replace_snapshot_all_params.
+        # Disable retries and run test_rollback_table_all_params.
         _service.disable_retries()
-        self.test_replace_snapshot_all_params()
+        self.test_rollback_table_all_params()
 
     @responses.activate
-    def test_replace_snapshot_required_params(self):
+    def test_rollback_table_required_params(self):
         """
-        test_replace_snapshot_required_params()
+        test_rollback_table_required_params()
         """
         # Set up mock
-        url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/snapshots/testString')
+        url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/rollback')
         mock_response = '{"response": {"message": "message", "message_code": "message_code"}}'
         responses.add(
-            responses.PUT,
+            responses.POST,
             url,
             body=mock_response,
             content_type='application/json',
@@ -11484,12 +12688,12 @@ class TestReplaceSnapshot:
         snapshot_id = 'testString'
 
         # Invoke method
-        response = _service.replace_snapshot(
+        response = _service.rollback_table(
             engine_id,
             catalog_id,
             schema_id,
             table_id,
-            snapshot_id,
+            snapshot_id=snapshot_id,
             headers={},
         )
 
@@ -11500,26 +12704,29 @@ class TestReplaceSnapshot:
         query_string = responses.calls[0].request.url.split('?', 1)[1]
         query_string = urllib.parse.unquote_plus(query_string)
         assert 'engine_id={}'.format(engine_id) in query_string
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['snapshot_id'] == 'testString'
 
-    def test_replace_snapshot_required_params_with_retries(self):
-        # Enable retries and run test_replace_snapshot_required_params.
+    def test_rollback_table_required_params_with_retries(self):
+        # Enable retries and run test_rollback_table_required_params.
         _service.enable_retries()
-        self.test_replace_snapshot_required_params()
+        self.test_rollback_table_required_params()
 
-        # Disable retries and run test_replace_snapshot_required_params.
+        # Disable retries and run test_rollback_table_required_params.
         _service.disable_retries()
-        self.test_replace_snapshot_required_params()
+        self.test_rollback_table_required_params()
 
     @responses.activate
-    def test_replace_snapshot_value_error(self):
+    def test_rollback_table_value_error(self):
         """
-        test_replace_snapshot_value_error()
+        test_rollback_table_value_error()
         """
         # Set up mock
-        url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/snapshots/testString')
+        url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/rollback')
         mock_response = '{"response": {"message": "message", "message_code": "message_code"}}'
         responses.add(
-            responses.PUT,
+            responses.POST,
             url,
             body=mock_response,
             content_type='application/json',
@@ -11539,21 +12746,20 @@ class TestReplaceSnapshot:
             "catalog_id": catalog_id,
             "schema_id": schema_id,
             "table_id": table_id,
-            "snapshot_id": snapshot_id,
         }
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.replace_snapshot(**req_copy)
+                _service.rollback_table(**req_copy)
 
-    def test_replace_snapshot_value_error_with_retries(self):
-        # Enable retries and run test_replace_snapshot_value_error.
+    def test_rollback_table_value_error_with_retries(self):
+        # Enable retries and run test_rollback_table_value_error.
         _service.enable_retries()
-        self.test_replace_snapshot_value_error()
+        self.test_rollback_table_value_error()
 
-        # Disable retries and run test_replace_snapshot_value_error.
+        # Disable retries and run test_rollback_table_value_error.
         _service.disable_retries()
-        self.test_replace_snapshot_value_error()
+        self.test_rollback_table_value_error()
 
 
 class TestUpdateSyncCatalog:
@@ -11577,16 +12783,14 @@ class TestUpdateSyncCatalog:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a SyncCatalogs model
+        sync_catalogs_model = {}
+        sync_catalogs_model['auto_add_new_tables'] = True
+        sync_catalogs_model['sync_iceberg_md'] = True
 
         # Set up parameter values
         catalog_id = 'testString'
-        body = [json_patch_operation_model]
+        body = sync_catalogs_model
         auth_instance_id = 'testString'
 
         # Invoke method
@@ -11629,16 +12833,14 @@ class TestUpdateSyncCatalog:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a SyncCatalogs model
+        sync_catalogs_model = {}
+        sync_catalogs_model['auto_add_new_tables'] = True
+        sync_catalogs_model['sync_iceberg_md'] = True
 
         # Set up parameter values
         catalog_id = 'testString'
-        body = [json_patch_operation_model]
+        body = sync_catalogs_model
 
         # Invoke method
         response = _service.update_sync_catalog(
@@ -11679,16 +12881,14 @@ class TestUpdateSyncCatalog:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a SyncCatalogs model
+        sync_catalogs_model = {}
+        sync_catalogs_model['auto_add_new_tables'] = True
+        sync_catalogs_model['sync_iceberg_md'] = True
 
         # Set up parameter values
         catalog_id = 'testString'
-        body = [json_patch_operation_model]
+        body = sync_catalogs_model
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -11848,7 +13048,6 @@ class TestCreateMilvusService:
 
         # Set up parameter values
         origin = 'native'
-        type = 'milvus'
         description = 'milvus service for running sql queries'
         service_display_name = 'sampleService'
         tags = ['tag1', 'tag2']
@@ -11857,7 +13056,6 @@ class TestCreateMilvusService:
         # Invoke method
         response = _service.create_milvus_service(
             origin,
-            type,
             description=description,
             service_display_name=service_display_name,
             tags=tags,
@@ -11871,7 +13069,6 @@ class TestCreateMilvusService:
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['origin'] == 'native'
-        assert req_body['type'] == 'milvus'
         assert req_body['description'] == 'milvus service for running sql queries'
         assert req_body['service_display_name'] == 'sampleService'
         assert req_body['tags'] == ['tag1', 'tag2']
@@ -11903,7 +13100,6 @@ class TestCreateMilvusService:
 
         # Set up parameter values
         origin = 'native'
-        type = 'milvus'
         description = 'milvus service for running sql queries'
         service_display_name = 'sampleService'
         tags = ['tag1', 'tag2']
@@ -11911,7 +13107,6 @@ class TestCreateMilvusService:
         # Invoke method
         response = _service.create_milvus_service(
             origin,
-            type,
             description=description,
             service_display_name=service_display_name,
             tags=tags,
@@ -11924,7 +13119,6 @@ class TestCreateMilvusService:
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['origin'] == 'native'
-        assert req_body['type'] == 'milvus'
         assert req_body['description'] == 'milvus service for running sql queries'
         assert req_body['service_display_name'] == 'sampleService'
         assert req_body['tags'] == ['tag1', 'tag2']
@@ -11956,7 +13150,6 @@ class TestCreateMilvusService:
 
         # Set up parameter values
         origin = 'native'
-        type = 'milvus'
         description = 'milvus service for running sql queries'
         service_display_name = 'sampleService'
         tags = ['tag1', 'tag2']
@@ -11964,7 +13157,6 @@ class TestCreateMilvusService:
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
             "origin": origin,
-            "type": type,
         }
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
@@ -12235,16 +13427,15 @@ class TestUpdateMilvusService:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a MilvusServicePatch model
+        milvus_service_patch_model = {}
+        milvus_service_patch_model['description'] = 'updated description for milvus service'
+        milvus_service_patch_model['service_display_name'] = 'sampleService'
+        milvus_service_patch_model['tags'] = ['tag1', 'tag2']
 
         # Set up parameter values
         service_id = 'testString'
-        body = [json_patch_operation_model]
+        body = milvus_service_patch_model
         auth_instance_id = 'testString'
 
         # Invoke method
@@ -12287,16 +13478,15 @@ class TestUpdateMilvusService:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a MilvusServicePatch model
+        milvus_service_patch_model = {}
+        milvus_service_patch_model['description'] = 'updated description for milvus service'
+        milvus_service_patch_model['service_display_name'] = 'sampleService'
+        milvus_service_patch_model['tags'] = ['tag1', 'tag2']
 
         # Set up parameter values
         service_id = 'testString'
-        body = [json_patch_operation_model]
+        body = milvus_service_patch_model
 
         # Invoke method
         response = _service.update_milvus_service(
@@ -12337,16 +13527,15 @@ class TestUpdateMilvusService:
             status=200,
         )
 
-        # Construct a dict representation of a JsonPatchOperation model
-        json_patch_operation_model = {}
-        json_patch_operation_model['op'] = 'add'
-        json_patch_operation_model['path'] = 'testString'
-        json_patch_operation_model['from'] = 'testString'
-        json_patch_operation_model['value'] = 'testString'
+        # Construct a dict representation of a MilvusServicePatch model
+        milvus_service_patch_model = {}
+        milvus_service_patch_model['description'] = 'updated description for milvus service'
+        milvus_service_patch_model['service_display_name'] = 'sampleService'
+        milvus_service_patch_model['tags'] = ['tag1', 'tag2']
 
         # Set up parameter values
         service_id = 'testString'
-        body = [json_patch_operation_model]
+        body = milvus_service_patch_model
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -12371,6 +13560,244 @@ class TestUpdateMilvusService:
 # endregion
 ##############################################################################
 # End of Service: Services
+##############################################################################
+
+##############################################################################
+# Start of Service: Ingestion
+##############################################################################
+# region
+
+
+class TestNewInstance:
+    """
+    Test Class for new_instance
+    """
+
+    def test_new_instance(self):
+        """
+        new_instance()
+        """
+        os.environ['TEST_SERVICE_AUTH_TYPE'] = 'noAuth'
+
+        service = WatsonxDataV2.new_instance(
+            service_name='TEST_SERVICE',
+        )
+
+        assert service is not None
+        assert isinstance(service, WatsonxDataV2)
+
+    def test_new_instance_without_authenticator(self):
+        """
+        new_instance_without_authenticator()
+        """
+        with pytest.raises(ValueError, match='authenticator must be provided'):
+            service = WatsonxDataV2.new_instance(
+                service_name='TEST_SERVICE_NOT_FOUND',
+            )
+
+
+class TestListIngestionJobs:
+    """
+    Test Class for list_ingestion_jobs
+    """
+
+    @responses.activate
+    def test_list_ingestion_jobs_all_params(self):
+        """
+        list_ingestion_jobs()
+        """
+        # Set up mock
+        url = preprocess_url('/ingestion_jobs')
+        mock_response = '{"ingestion_jobs": [{"create_if_not_exist": false, "csv_property": {"encoding": "utf-8", "escape_character": "|", "field_delimiter": ",", "header": true, "line_delimiter": "\n"}, "details": "Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory", "end_timestamp": "1685088775", "engine_id": "spark123", "engine_name": "sparkdemo", "execute_config": {"driver_cores": 1, "driver_memory": "2G", "executor_cores": 1, "executor_memory": "2G", "num_executors": 1}, "instance_id": "1684432229673971", "job_id": "ingestion-1699459946935", "partition_by": "col1, col2", "schema": "{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}", "source_data_files": "s3://demobucket/data/yellow_tripdata_2022-01.parquet", "source_file_type": "csv", "start_timestamp": "1685084455", "status": "running", "target_table": "demodb.test.targettable", "username": "ibmlhadmin", "validate_csv_header": false}], "first": {"href": "http://api.example.com/collection?start=eyJvZmZzZXQiOjAsImRvbmUiOnRydWV9"}, "next": {"href": "http://api.example.com/collection?start=eyJvZmZzZXQiOjAsImRvbmUiOnRydWV9"}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+        start = '1'
+        jobs_per_page = 1
+
+        # Invoke method
+        response = _service.list_ingestion_jobs(
+            auth_instance_id,
+            start=start,
+            jobs_per_page=jobs_per_page,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'start={}'.format(start) in query_string
+        assert 'jobs_per_page={}'.format(jobs_per_page) in query_string
+
+    def test_list_ingestion_jobs_all_params_with_retries(self):
+        # Enable retries and run test_list_ingestion_jobs_all_params.
+        _service.enable_retries()
+        self.test_list_ingestion_jobs_all_params()
+
+        # Disable retries and run test_list_ingestion_jobs_all_params.
+        _service.disable_retries()
+        self.test_list_ingestion_jobs_all_params()
+
+    @responses.activate
+    def test_list_ingestion_jobs_required_params(self):
+        """
+        test_list_ingestion_jobs_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/ingestion_jobs')
+        mock_response = '{"ingestion_jobs": [{"create_if_not_exist": false, "csv_property": {"encoding": "utf-8", "escape_character": "|", "field_delimiter": ",", "header": true, "line_delimiter": "\n"}, "details": "Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory", "end_timestamp": "1685088775", "engine_id": "spark123", "engine_name": "sparkdemo", "execute_config": {"driver_cores": 1, "driver_memory": "2G", "executor_cores": 1, "executor_memory": "2G", "num_executors": 1}, "instance_id": "1684432229673971", "job_id": "ingestion-1699459946935", "partition_by": "col1, col2", "schema": "{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}", "source_data_files": "s3://demobucket/data/yellow_tripdata_2022-01.parquet", "source_file_type": "csv", "start_timestamp": "1685084455", "status": "running", "target_table": "demodb.test.targettable", "username": "ibmlhadmin", "validate_csv_header": false}], "first": {"href": "http://api.example.com/collection?start=eyJvZmZzZXQiOjAsImRvbmUiOnRydWV9"}, "next": {"href": "http://api.example.com/collection?start=eyJvZmZzZXQiOjAsImRvbmUiOnRydWV9"}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.list_ingestion_jobs(
+            auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_ingestion_jobs_required_params_with_retries(self):
+        # Enable retries and run test_list_ingestion_jobs_required_params.
+        _service.enable_retries()
+        self.test_list_ingestion_jobs_required_params()
+
+        # Disable retries and run test_list_ingestion_jobs_required_params.
+        _service.disable_retries()
+        self.test_list_ingestion_jobs_required_params()
+
+    @responses.activate
+    def test_list_ingestion_jobs_value_error(self):
+        """
+        test_list_ingestion_jobs_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/ingestion_jobs')
+        mock_response = '{"ingestion_jobs": [{"create_if_not_exist": false, "csv_property": {"encoding": "utf-8", "escape_character": "|", "field_delimiter": ",", "header": true, "line_delimiter": "\n"}, "details": "Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory", "end_timestamp": "1685088775", "engine_id": "spark123", "engine_name": "sparkdemo", "execute_config": {"driver_cores": 1, "driver_memory": "2G", "executor_cores": 1, "executor_memory": "2G", "num_executors": 1}, "instance_id": "1684432229673971", "job_id": "ingestion-1699459946935", "partition_by": "col1, col2", "schema": "{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}", "source_data_files": "s3://demobucket/data/yellow_tripdata_2022-01.parquet", "source_file_type": "csv", "start_timestamp": "1685084455", "status": "running", "target_table": "demodb.test.targettable", "username": "ibmlhadmin", "validate_csv_header": false}], "first": {"href": "http://api.example.com/collection?start=eyJvZmZzZXQiOjAsImRvbmUiOnRydWV9"}, "next": {"href": "http://api.example.com/collection?start=eyJvZmZzZXQiOjAsImRvbmUiOnRydWV9"}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "auth_instance_id": auth_instance_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.list_ingestion_jobs(**req_copy)
+
+    def test_list_ingestion_jobs_value_error_with_retries(self):
+        # Enable retries and run test_list_ingestion_jobs_value_error.
+        _service.enable_retries()
+        self.test_list_ingestion_jobs_value_error()
+
+        # Disable retries and run test_list_ingestion_jobs_value_error.
+        _service.disable_retries()
+        self.test_list_ingestion_jobs_value_error()
+
+    @responses.activate
+    def test_list_ingestion_jobs_with_pager_get_next(self):
+        """
+        test_list_ingestion_jobs_with_pager_get_next()
+        """
+        # Set up a two-page mock response
+        url = preprocess_url('/ingestion_jobs')
+        mock_response1 = '{"next":{"href":"https://myhost.com/somePath?start=1"},"total_count":2,"limit":1,"ingestion_jobs":[{"create_if_not_exist":false,"csv_property":{"encoding":"utf-8","escape_character":"|","field_delimiter":",","header":true,"line_delimiter":"\n"},"details":"Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory","end_timestamp":"1685088775","engine_id":"spark123","engine_name":"sparkdemo","execute_config":{"driver_cores":1,"driver_memory":"2G","executor_cores":1,"executor_memory":"2G","num_executors":1},"instance_id":"1684432229673971","job_id":"ingestion-1699459946935","partition_by":"col1, col2","schema":"{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}","source_data_files":"s3://demobucket/data/yellow_tripdata_2022-01.parquet","source_file_type":"csv","start_timestamp":"1685084455","status":"running","target_table":"demodb.test.targettable","username":"ibmlhadmin","validate_csv_header":false}]}'
+        mock_response2 = '{"total_count":2,"limit":1,"ingestion_jobs":[{"create_if_not_exist":false,"csv_property":{"encoding":"utf-8","escape_character":"|","field_delimiter":",","header":true,"line_delimiter":"\n"},"details":"Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory","end_timestamp":"1685088775","engine_id":"spark123","engine_name":"sparkdemo","execute_config":{"driver_cores":1,"driver_memory":"2G","executor_cores":1,"executor_memory":"2G","num_executors":1},"instance_id":"1684432229673971","job_id":"ingestion-1699459946935","partition_by":"col1, col2","schema":"{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}","source_data_files":"s3://demobucket/data/yellow_tripdata_2022-01.parquet","source_file_type":"csv","start_timestamp":"1685084455","status":"running","target_table":"demodb.test.targettable","username":"ibmlhadmin","validate_csv_header":false}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response1,
+            content_type='application/json',
+            status=200,
+        )
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response2,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Exercise the pager class for this operation
+        all_results = []
+        pager = IngestionJobsPager(
+            client=_service,
+            auth_instance_id='testString',
+            jobs_per_page=1,
+        )
+        while pager.has_next():
+            next_page = pager.get_next()
+            assert next_page is not None
+            all_results.extend(next_page)
+        assert len(all_results) == 2
+
+    @responses.activate
+    def test_list_ingestion_jobs_with_pager_get_all(self):
+        """
+        test_list_ingestion_jobs_with_pager_get_all()
+        """
+        # Set up a two-page mock response
+        url = preprocess_url('/ingestion_jobs')
+        mock_response1 = '{"next":{"href":"https://myhost.com/somePath?start=1"},"total_count":2,"limit":1,"ingestion_jobs":[{"create_if_not_exist":false,"csv_property":{"encoding":"utf-8","escape_character":"|","field_delimiter":",","header":true,"line_delimiter":"\n"},"details":"Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory","end_timestamp":"1685088775","engine_id":"spark123","engine_name":"sparkdemo","execute_config":{"driver_cores":1,"driver_memory":"2G","executor_cores":1,"executor_memory":"2G","num_executors":1},"instance_id":"1684432229673971","job_id":"ingestion-1699459946935","partition_by":"col1, col2","schema":"{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}","source_data_files":"s3://demobucket/data/yellow_tripdata_2022-01.parquet","source_file_type":"csv","start_timestamp":"1685084455","status":"running","target_table":"demodb.test.targettable","username":"ibmlhadmin","validate_csv_header":false}]}'
+        mock_response2 = '{"total_count":2,"limit":1,"ingestion_jobs":[{"create_if_not_exist":false,"csv_property":{"encoding":"utf-8","escape_character":"|","field_delimiter":",","header":true,"line_delimiter":"\n"},"details":"Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory","end_timestamp":"1685088775","engine_id":"spark123","engine_name":"sparkdemo","execute_config":{"driver_cores":1,"driver_memory":"2G","executor_cores":1,"executor_memory":"2G","num_executors":1},"instance_id":"1684432229673971","job_id":"ingestion-1699459946935","partition_by":"col1, col2","schema":"{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}","source_data_files":"s3://demobucket/data/yellow_tripdata_2022-01.parquet","source_file_type":"csv","start_timestamp":"1685084455","status":"running","target_table":"demodb.test.targettable","username":"ibmlhadmin","validate_csv_header":false}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response1,
+            content_type='application/json',
+            status=200,
+        )
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response2,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Exercise the pager class for this operation
+        pager = IngestionJobsPager(
+            client=_service,
+            auth_instance_id='testString',
+            jobs_per_page=1,
+        )
+        all_results = pager.get_all()
+        assert all_results is not None
+        assert len(all_results) == 2
+
+
+# endregion
+##############################################################################
+# End of Service: Ingestion
 ##############################################################################
 
 
@@ -12424,10 +13851,10 @@ class TestModel_BucketDetails:
 
         # Construct a json representation of a BucketDetails model
         bucket_details_model_json = {}
-        bucket_details_model_json['access_key'] = '<access_key>'
+        bucket_details_model_json['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
         bucket_details_model_json['bucket_name'] = 'sample-bucket'
         bucket_details_model_json['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        bucket_details_model_json['secret_key'] = 'secret_key'
+        bucket_details_model_json['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
 
         # Construct a model instance of BucketDetails by calling from_dict on the json representation
         bucket_details_model = BucketDetails.from_dict(bucket_details_model_json)
@@ -12463,10 +13890,10 @@ class TestModel_BucketRegistration:
         bucket_catalog_model['catalog_type'] = 'hive'
 
         bucket_details_model = {}  # BucketDetails
-        bucket_details_model['access_key'] = '<access_key>'
+        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
         bucket_details_model['bucket_name'] = 'sample-bucket'
         bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        bucket_details_model['secret_key'] = 'secret_key'
+        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
 
         # Construct a json representation of a BucketRegistration model
         bucket_registration_model_json = {}
@@ -12518,24 +13945,13 @@ class TestModel_BucketRegistrationCollection:
         bucket_catalog_model['catalog_type'] = 'iceberg'
 
         bucket_details_model = {}  # BucketDetails
-        bucket_details_model['access_key'] = '<access_key>'
+        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
         bucket_details_model['bucket_name'] = 'iceberg-bucket'
         bucket_details_model['endpoint'] = 'http://xyz-minio-svc:9000'
-        bucket_details_model['secret_key'] = 'secret_key'
+        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
 
         bucket_registration_model = {}  # BucketRegistration
-        bucket_registration_model['actions'] = [
-            'browse',
-            'view',
-            'modify',
-            'create',
-            'grant',
-            'revoke',
-            'update',
-            'remove',
-            'activate',
-            'register',
-        ]
+        bucket_registration_model['actions'] = ['browse', 'view', 'modify', 'create', 'grant', 'revoke', 'update', 'remove', 'activate', 'register']
         bucket_registration_model['associated_catalog'] = bucket_catalog_model
         bucket_registration_model['bucket_details'] = bucket_details_model
         bucket_registration_model['bucket_display_name'] = 'hive-bucket'
@@ -12554,18 +13970,12 @@ class TestModel_BucketRegistrationCollection:
         bucket_registration_collection_model_json['bucket_registrations'] = [bucket_registration_model]
 
         # Construct a model instance of BucketRegistrationCollection by calling from_dict on the json representation
-        bucket_registration_collection_model = BucketRegistrationCollection.from_dict(
-            bucket_registration_collection_model_json
-        )
+        bucket_registration_collection_model = BucketRegistrationCollection.from_dict(bucket_registration_collection_model_json)
         assert bucket_registration_collection_model != False
 
         # Construct a model instance of BucketRegistrationCollection by calling from_dict on the json representation
-        bucket_registration_collection_model_dict = BucketRegistrationCollection.from_dict(
-            bucket_registration_collection_model_json
-        ).__dict__
-        bucket_registration_collection_model2 = BucketRegistrationCollection(
-            **bucket_registration_collection_model_dict
-        )
+        bucket_registration_collection_model_dict = BucketRegistrationCollection.from_dict(bucket_registration_collection_model_json).__dict__
+        bucket_registration_collection_model2 = BucketRegistrationCollection(**bucket_registration_collection_model_dict)
 
         # Verify the model instances are equivalent
         assert bucket_registration_collection_model == bucket_registration_collection_model2
@@ -12590,18 +14000,12 @@ class TestModel_BucketRegistrationObjectCollection:
         bucket_registration_object_collection_model_json['objects'] = ['testString']
 
         # Construct a model instance of BucketRegistrationObjectCollection by calling from_dict on the json representation
-        bucket_registration_object_collection_model = BucketRegistrationObjectCollection.from_dict(
-            bucket_registration_object_collection_model_json
-        )
+        bucket_registration_object_collection_model = BucketRegistrationObjectCollection.from_dict(bucket_registration_object_collection_model_json)
         assert bucket_registration_object_collection_model != False
 
         # Construct a model instance of BucketRegistrationObjectCollection by calling from_dict on the json representation
-        bucket_registration_object_collection_model_dict = BucketRegistrationObjectCollection.from_dict(
-            bucket_registration_object_collection_model_json
-        ).__dict__
-        bucket_registration_object_collection_model2 = BucketRegistrationObjectCollection(
-            **bucket_registration_object_collection_model_dict
-        )
+        bucket_registration_object_collection_model_dict = BucketRegistrationObjectCollection.from_dict(bucket_registration_object_collection_model_json).__dict__
+        bucket_registration_object_collection_model2 = BucketRegistrationObjectCollection(**bucket_registration_object_collection_model_dict)
 
         # Verify the model instances are equivalent
         assert bucket_registration_object_collection_model == bucket_registration_object_collection_model2
@@ -12611,37 +14015,45 @@ class TestModel_BucketRegistrationObjectCollection:
         assert bucket_registration_object_collection_model_json2 == bucket_registration_object_collection_model_json
 
 
-class TestModel_BucketStatusResponse:
+class TestModel_BucketRegistrationPatch:
     """
-    Test Class for BucketStatusResponse
+    Test Class for BucketRegistrationPatch
     """
 
-    def test_bucket_status_response_serialization(self):
+    def test_bucket_registration_patch_serialization(self):
         """
-        Test serialization/deserialization for BucketStatusResponse
+        Test serialization/deserialization for BucketRegistrationPatch
         """
 
-        # Construct a json representation of a BucketStatusResponse model
-        bucket_status_response_model_json = {}
-        bucket_status_response_model_json['state'] = True
-        bucket_status_response_model_json[
-            'state_message'
-        ] = 'bucket does not exist or the credentials provided are not valid.'
+        # Construct dict forms of any model objects needed in order to build this model.
 
-        # Construct a model instance of BucketStatusResponse by calling from_dict on the json representation
-        bucket_status_response_model = BucketStatusResponse.from_dict(bucket_status_response_model_json)
-        assert bucket_status_response_model != False
+        bucket_details_model = {}  # BucketDetails
+        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
+        bucket_details_model['bucket_name'] = 'sample-bucket'
+        bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
+        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
 
-        # Construct a model instance of BucketStatusResponse by calling from_dict on the json representation
-        bucket_status_response_model_dict = BucketStatusResponse.from_dict(bucket_status_response_model_json).__dict__
-        bucket_status_response_model2 = BucketStatusResponse(**bucket_status_response_model_dict)
+        # Construct a json representation of a BucketRegistrationPatch model
+        bucket_registration_patch_model_json = {}
+        bucket_registration_patch_model_json['bucket_details'] = bucket_details_model
+        bucket_registration_patch_model_json['bucket_display_name'] = 'sample-bucket-displayname'
+        bucket_registration_patch_model_json['description'] = 'COS bucket for customer data'
+        bucket_registration_patch_model_json['tags'] = ['testbucket', 'userbucket']
+
+        # Construct a model instance of BucketRegistrationPatch by calling from_dict on the json representation
+        bucket_registration_patch_model = BucketRegistrationPatch.from_dict(bucket_registration_patch_model_json)
+        assert bucket_registration_patch_model != False
+
+        # Construct a model instance of BucketRegistrationPatch by calling from_dict on the json representation
+        bucket_registration_patch_model_dict = BucketRegistrationPatch.from_dict(bucket_registration_patch_model_json).__dict__
+        bucket_registration_patch_model2 = BucketRegistrationPatch(**bucket_registration_patch_model_dict)
 
         # Verify the model instances are equivalent
-        assert bucket_status_response_model == bucket_status_response_model2
+        assert bucket_registration_patch_model == bucket_registration_patch_model2
 
         # Convert model instance back to dict and verify no loss of data
-        bucket_status_response_model_json2 = bucket_status_response_model.to_dict()
-        assert bucket_status_response_model_json2 == bucket_status_response_model_json
+        bucket_registration_patch_model_json2 = bucket_registration_patch_model.to_dict()
+        assert bucket_registration_patch_model_json2 == bucket_registration_patch_model_json
 
 
 class TestModel_Catalog:
@@ -12822,35 +14234,34 @@ class TestModel_ColumnCollection:
         assert column_collection_model_json2 == column_collection_model_json
 
 
-class TestModel_ConnectionResponse:
+class TestModel_ColumnPatch:
     """
-    Test Class for ConnectionResponse
+    Test Class for ColumnPatch
     """
 
-    def test_connection_response_serialization(self):
+    def test_column_patch_serialization(self):
         """
-        Test serialization/deserialization for ConnectionResponse
+        Test serialization/deserialization for ColumnPatch
         """
 
-        # Construct a json representation of a ConnectionResponse model
-        connection_response_model_json = {}
-        connection_response_model_json['state'] = True
-        connection_response_model_json['state_message'] = 'testString'
+        # Construct a json representation of a ColumnPatch model
+        column_patch_model_json = {}
+        column_patch_model_json['column_name'] = 'expenses'
 
-        # Construct a model instance of ConnectionResponse by calling from_dict on the json representation
-        connection_response_model = ConnectionResponse.from_dict(connection_response_model_json)
-        assert connection_response_model != False
+        # Construct a model instance of ColumnPatch by calling from_dict on the json representation
+        column_patch_model = ColumnPatch.from_dict(column_patch_model_json)
+        assert column_patch_model != False
 
-        # Construct a model instance of ConnectionResponse by calling from_dict on the json representation
-        connection_response_model_dict = ConnectionResponse.from_dict(connection_response_model_json).__dict__
-        connection_response_model2 = ConnectionResponse(**connection_response_model_dict)
+        # Construct a model instance of ColumnPatch by calling from_dict on the json representation
+        column_patch_model_dict = ColumnPatch.from_dict(column_patch_model_json).__dict__
+        column_patch_model2 = ColumnPatch(**column_patch_model_dict)
 
         # Verify the model instances are equivalent
-        assert connection_response_model == connection_response_model2
+        assert column_patch_model == column_patch_model2
 
         # Convert model instance back to dict and verify no loss of data
-        connection_response_model_json2 = connection_response_model.to_dict()
-        assert connection_response_model_json2 == connection_response_model_json
+        column_patch_model_json2 = column_patch_model.to_dict()
+        assert column_patch_model_json2 == column_patch_model_json
 
 
 class TestModel_CreateActivateBucketCreatedBody:
@@ -12874,18 +14285,12 @@ class TestModel_CreateActivateBucketCreatedBody:
         create_activate_bucket_created_body_model_json['response'] = success_response_model
 
         # Construct a model instance of CreateActivateBucketCreatedBody by calling from_dict on the json representation
-        create_activate_bucket_created_body_model = CreateActivateBucketCreatedBody.from_dict(
-            create_activate_bucket_created_body_model_json
-        )
+        create_activate_bucket_created_body_model = CreateActivateBucketCreatedBody.from_dict(create_activate_bucket_created_body_model_json)
         assert create_activate_bucket_created_body_model != False
 
         # Construct a model instance of CreateActivateBucketCreatedBody by calling from_dict on the json representation
-        create_activate_bucket_created_body_model_dict = CreateActivateBucketCreatedBody.from_dict(
-            create_activate_bucket_created_body_model_json
-        ).__dict__
-        create_activate_bucket_created_body_model2 = CreateActivateBucketCreatedBody(
-            **create_activate_bucket_created_body_model_dict
-        )
+        create_activate_bucket_created_body_model_dict = CreateActivateBucketCreatedBody.from_dict(create_activate_bucket_created_body_model_json).__dict__
+        create_activate_bucket_created_body_model2 = CreateActivateBucketCreatedBody(**create_activate_bucket_created_body_model_dict)
 
         # Verify the model instances are equivalent
         assert create_activate_bucket_created_body_model == create_activate_bucket_created_body_model2
@@ -12916,18 +14321,12 @@ class TestModel_CreateEnginePauseCreatedBody:
         create_engine_pause_created_body_model_json['response'] = success_response_model
 
         # Construct a model instance of CreateEnginePauseCreatedBody by calling from_dict on the json representation
-        create_engine_pause_created_body_model = CreateEnginePauseCreatedBody.from_dict(
-            create_engine_pause_created_body_model_json
-        )
+        create_engine_pause_created_body_model = CreateEnginePauseCreatedBody.from_dict(create_engine_pause_created_body_model_json)
         assert create_engine_pause_created_body_model != False
 
         # Construct a model instance of CreateEnginePauseCreatedBody by calling from_dict on the json representation
-        create_engine_pause_created_body_model_dict = CreateEnginePauseCreatedBody.from_dict(
-            create_engine_pause_created_body_model_json
-        ).__dict__
-        create_engine_pause_created_body_model2 = CreateEnginePauseCreatedBody(
-            **create_engine_pause_created_body_model_dict
-        )
+        create_engine_pause_created_body_model_dict = CreateEnginePauseCreatedBody.from_dict(create_engine_pause_created_body_model_json).__dict__
+        create_engine_pause_created_body_model2 = CreateEnginePauseCreatedBody(**create_engine_pause_created_body_model_dict)
 
         # Verify the model instances are equivalent
         assert create_engine_pause_created_body_model == create_engine_pause_created_body_model2
@@ -12958,18 +14357,12 @@ class TestModel_CreateEngineRestartCreatedBody:
         create_engine_restart_created_body_model_json['response'] = success_response_model
 
         # Construct a model instance of CreateEngineRestartCreatedBody by calling from_dict on the json representation
-        create_engine_restart_created_body_model = CreateEngineRestartCreatedBody.from_dict(
-            create_engine_restart_created_body_model_json
-        )
+        create_engine_restart_created_body_model = CreateEngineRestartCreatedBody.from_dict(create_engine_restart_created_body_model_json)
         assert create_engine_restart_created_body_model != False
 
         # Construct a model instance of CreateEngineRestartCreatedBody by calling from_dict on the json representation
-        create_engine_restart_created_body_model_dict = CreateEngineRestartCreatedBody.from_dict(
-            create_engine_restart_created_body_model_json
-        ).__dict__
-        create_engine_restart_created_body_model2 = CreateEngineRestartCreatedBody(
-            **create_engine_restart_created_body_model_dict
-        )
+        create_engine_restart_created_body_model_dict = CreateEngineRestartCreatedBody.from_dict(create_engine_restart_created_body_model_json).__dict__
+        create_engine_restart_created_body_model2 = CreateEngineRestartCreatedBody(**create_engine_restart_created_body_model_dict)
 
         # Verify the model instances are equivalent
         assert create_engine_restart_created_body_model == create_engine_restart_created_body_model2
@@ -13000,18 +14393,12 @@ class TestModel_CreateEngineResumeCreatedBody:
         create_engine_resume_created_body_model_json['response'] = success_response_model
 
         # Construct a model instance of CreateEngineResumeCreatedBody by calling from_dict on the json representation
-        create_engine_resume_created_body_model = CreateEngineResumeCreatedBody.from_dict(
-            create_engine_resume_created_body_model_json
-        )
+        create_engine_resume_created_body_model = CreateEngineResumeCreatedBody.from_dict(create_engine_resume_created_body_model_json)
         assert create_engine_resume_created_body_model != False
 
         # Construct a model instance of CreateEngineResumeCreatedBody by calling from_dict on the json representation
-        create_engine_resume_created_body_model_dict = CreateEngineResumeCreatedBody.from_dict(
-            create_engine_resume_created_body_model_json
-        ).__dict__
-        create_engine_resume_created_body_model2 = CreateEngineResumeCreatedBody(
-            **create_engine_resume_created_body_model_dict
-        )
+        create_engine_resume_created_body_model_dict = CreateEngineResumeCreatedBody.from_dict(create_engine_resume_created_body_model_json).__dict__
+        create_engine_resume_created_body_model2 = CreateEngineResumeCreatedBody(**create_engine_resume_created_body_model_dict)
 
         # Verify the model instances are equivalent
         assert create_engine_resume_created_body_model == create_engine_resume_created_body_model2
@@ -13042,18 +14429,12 @@ class TestModel_CreateEngineScaleCreatedBody:
         create_engine_scale_created_body_model_json['response'] = success_response_model
 
         # Construct a model instance of CreateEngineScaleCreatedBody by calling from_dict on the json representation
-        create_engine_scale_created_body_model = CreateEngineScaleCreatedBody.from_dict(
-            create_engine_scale_created_body_model_json
-        )
+        create_engine_scale_created_body_model = CreateEngineScaleCreatedBody.from_dict(create_engine_scale_created_body_model_json)
         assert create_engine_scale_created_body_model != False
 
         # Construct a model instance of CreateEngineScaleCreatedBody by calling from_dict on the json representation
-        create_engine_scale_created_body_model_dict = CreateEngineScaleCreatedBody.from_dict(
-            create_engine_scale_created_body_model_json
-        ).__dict__
-        create_engine_scale_created_body_model2 = CreateEngineScaleCreatedBody(
-            **create_engine_scale_created_body_model_dict
-        )
+        create_engine_scale_created_body_model_dict = CreateEngineScaleCreatedBody.from_dict(create_engine_scale_created_body_model_json).__dict__
+        create_engine_scale_created_body_model2 = CreateEngineScaleCreatedBody(**create_engine_scale_created_body_model_dict)
 
         # Verify the model instances are equivalent
         assert create_engine_scale_created_body_model == create_engine_scale_created_body_model2
@@ -13088,9 +14469,7 @@ class TestModel_CreateSchemaCreatedBody:
         assert create_schema_created_body_model != False
 
         # Construct a model instance of CreateSchemaCreatedBody by calling from_dict on the json representation
-        create_schema_created_body_model_dict = CreateSchemaCreatedBody.from_dict(
-            create_schema_created_body_model_json
-        ).__dict__
+        create_schema_created_body_model_dict = CreateSchemaCreatedBody.from_dict(create_schema_created_body_model_json).__dict__
         create_schema_created_body_model2 = CreateSchemaCreatedBody(**create_schema_created_body_model_dict)
 
         # Verify the model instances are equivalent
@@ -13222,9 +14601,7 @@ class TestModel_DatabaseRegistration:
         database_registration_model_json['database_details'] = database_details_model
         database_registration_model_json['database_display_name'] = 'new_database'
         database_registration_model_json['database_id'] = 'new_database_id'
-        database_registration_model_json['database_properties'] = [
-            database_registration_database_properties_items_model
-        ]
+        database_registration_model_json['database_properties'] = [database_registration_database_properties_items_model]
         database_registration_model_json['database_type'] = 'netezza'
         database_registration_model_json['description'] = 'Description of the external Database'
         database_registration_model_json['tags'] = ['testdatabase', 'userdatabase']
@@ -13301,18 +14678,12 @@ class TestModel_DatabaseRegistrationCollection:
         database_registration_collection_model_json['database_registrations'] = [database_registration_model]
 
         # Construct a model instance of DatabaseRegistrationCollection by calling from_dict on the json representation
-        database_registration_collection_model = DatabaseRegistrationCollection.from_dict(
-            database_registration_collection_model_json
-        )
+        database_registration_collection_model = DatabaseRegistrationCollection.from_dict(database_registration_collection_model_json)
         assert database_registration_collection_model != False
 
         # Construct a model instance of DatabaseRegistrationCollection by calling from_dict on the json representation
-        database_registration_collection_model_dict = DatabaseRegistrationCollection.from_dict(
-            database_registration_collection_model_json
-        ).__dict__
-        database_registration_collection_model2 = DatabaseRegistrationCollection(
-            **database_registration_collection_model_dict
-        )
+        database_registration_collection_model_dict = DatabaseRegistrationCollection.from_dict(database_registration_collection_model_json).__dict__
+        database_registration_collection_model2 = DatabaseRegistrationCollection(**database_registration_collection_model_dict)
 
         # Verify the model instances are equivalent
         assert database_registration_collection_model == database_registration_collection_model2
@@ -13339,35 +14710,89 @@ class TestModel_DatabaseRegistrationDatabasePropertiesItems:
         database_registration_database_properties_items_model_json['value'] = 'glue'
 
         # Construct a model instance of DatabaseRegistrationDatabasePropertiesItems by calling from_dict on the json representation
-        database_registration_database_properties_items_model = DatabaseRegistrationDatabasePropertiesItems.from_dict(
-            database_registration_database_properties_items_model_json
-        )
+        database_registration_database_properties_items_model = DatabaseRegistrationDatabasePropertiesItems.from_dict(database_registration_database_properties_items_model_json)
         assert database_registration_database_properties_items_model != False
 
         # Construct a model instance of DatabaseRegistrationDatabasePropertiesItems by calling from_dict on the json representation
-        database_registration_database_properties_items_model_dict = (
-            DatabaseRegistrationDatabasePropertiesItems.from_dict(
-                database_registration_database_properties_items_model_json
-            ).__dict__
-        )
-        database_registration_database_properties_items_model2 = DatabaseRegistrationDatabasePropertiesItems(
-            **database_registration_database_properties_items_model_dict
-        )
+        database_registration_database_properties_items_model_dict = DatabaseRegistrationDatabasePropertiesItems.from_dict(database_registration_database_properties_items_model_json).__dict__
+        database_registration_database_properties_items_model2 = DatabaseRegistrationDatabasePropertiesItems(**database_registration_database_properties_items_model_dict)
 
         # Verify the model instances are equivalent
-        assert (
-            database_registration_database_properties_items_model
-            == database_registration_database_properties_items_model2
-        )
+        assert database_registration_database_properties_items_model == database_registration_database_properties_items_model2
 
         # Convert model instance back to dict and verify no loss of data
-        database_registration_database_properties_items_model_json2 = (
-            database_registration_database_properties_items_model.to_dict()
-        )
-        assert (
-            database_registration_database_properties_items_model_json2
-            == database_registration_database_properties_items_model_json
-        )
+        database_registration_database_properties_items_model_json2 = database_registration_database_properties_items_model.to_dict()
+        assert database_registration_database_properties_items_model_json2 == database_registration_database_properties_items_model_json
+
+
+class TestModel_DatabaseRegistrationPatch:
+    """
+    Test Class for DatabaseRegistrationPatch
+    """
+
+    def test_database_registration_patch_serialization(self):
+        """
+        Test serialization/deserialization for DatabaseRegistrationPatch
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        database_registration_patch_database_details_model = {}  # DatabaseRegistrationPatchDatabaseDetails
+        database_registration_patch_database_details_model['password'] = 'samplepassword'
+        database_registration_patch_database_details_model['username'] = 'sampleuser'
+
+        # Construct a json representation of a DatabaseRegistrationPatch model
+        database_registration_patch_model_json = {}
+        database_registration_patch_model_json['database_details'] = database_registration_patch_database_details_model
+        database_registration_patch_model_json['database_display_name'] = 'new_database'
+        database_registration_patch_model_json['description'] = 'External database description'
+        database_registration_patch_model_json['tags'] = ['testdatabase', 'userdatabase']
+
+        # Construct a model instance of DatabaseRegistrationPatch by calling from_dict on the json representation
+        database_registration_patch_model = DatabaseRegistrationPatch.from_dict(database_registration_patch_model_json)
+        assert database_registration_patch_model != False
+
+        # Construct a model instance of DatabaseRegistrationPatch by calling from_dict on the json representation
+        database_registration_patch_model_dict = DatabaseRegistrationPatch.from_dict(database_registration_patch_model_json).__dict__
+        database_registration_patch_model2 = DatabaseRegistrationPatch(**database_registration_patch_model_dict)
+
+        # Verify the model instances are equivalent
+        assert database_registration_patch_model == database_registration_patch_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        database_registration_patch_model_json2 = database_registration_patch_model.to_dict()
+        assert database_registration_patch_model_json2 == database_registration_patch_model_json
+
+
+class TestModel_DatabaseRegistrationPatchDatabaseDetails:
+    """
+    Test Class for DatabaseRegistrationPatchDatabaseDetails
+    """
+
+    def test_database_registration_patch_database_details_serialization(self):
+        """
+        Test serialization/deserialization for DatabaseRegistrationPatchDatabaseDetails
+        """
+
+        # Construct a json representation of a DatabaseRegistrationPatchDatabaseDetails model
+        database_registration_patch_database_details_model_json = {}
+        database_registration_patch_database_details_model_json['password'] = 'samplepassword'
+        database_registration_patch_database_details_model_json['username'] = 'sampleuser'
+
+        # Construct a model instance of DatabaseRegistrationPatchDatabaseDetails by calling from_dict on the json representation
+        database_registration_patch_database_details_model = DatabaseRegistrationPatchDatabaseDetails.from_dict(database_registration_patch_database_details_model_json)
+        assert database_registration_patch_database_details_model != False
+
+        # Construct a model instance of DatabaseRegistrationPatchDatabaseDetails by calling from_dict on the json representation
+        database_registration_patch_database_details_model_dict = DatabaseRegistrationPatchDatabaseDetails.from_dict(database_registration_patch_database_details_model_json).__dict__
+        database_registration_patch_database_details_model2 = DatabaseRegistrationPatchDatabaseDetails(**database_registration_patch_database_details_model_dict)
+
+        # Verify the model instances are equivalent
+        assert database_registration_patch_database_details_model == database_registration_patch_database_details_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        database_registration_patch_database_details_model_json2 = database_registration_patch_database_details_model.to_dict()
+        assert database_registration_patch_database_details_model_json2 == database_registration_patch_database_details_model_json
 
 
 class TestModel_DatabaseRegistrationPrototypeDatabasePropertiesItems:
@@ -13387,39 +14812,19 @@ class TestModel_DatabaseRegistrationPrototypeDatabasePropertiesItems:
         database_registration_prototype_database_properties_items_model_json['value'] = 'glue'
 
         # Construct a model instance of DatabaseRegistrationPrototypeDatabasePropertiesItems by calling from_dict on the json representation
-        database_registration_prototype_database_properties_items_model = (
-            DatabaseRegistrationPrototypeDatabasePropertiesItems.from_dict(
-                database_registration_prototype_database_properties_items_model_json
-            )
-        )
+        database_registration_prototype_database_properties_items_model = DatabaseRegistrationPrototypeDatabasePropertiesItems.from_dict(database_registration_prototype_database_properties_items_model_json)
         assert database_registration_prototype_database_properties_items_model != False
 
         # Construct a model instance of DatabaseRegistrationPrototypeDatabasePropertiesItems by calling from_dict on the json representation
-        database_registration_prototype_database_properties_items_model_dict = (
-            DatabaseRegistrationPrototypeDatabasePropertiesItems.from_dict(
-                database_registration_prototype_database_properties_items_model_json
-            ).__dict__
-        )
-        database_registration_prototype_database_properties_items_model2 = (
-            DatabaseRegistrationPrototypeDatabasePropertiesItems(
-                **database_registration_prototype_database_properties_items_model_dict
-            )
-        )
+        database_registration_prototype_database_properties_items_model_dict = DatabaseRegistrationPrototypeDatabasePropertiesItems.from_dict(database_registration_prototype_database_properties_items_model_json).__dict__
+        database_registration_prototype_database_properties_items_model2 = DatabaseRegistrationPrototypeDatabasePropertiesItems(**database_registration_prototype_database_properties_items_model_dict)
 
         # Verify the model instances are equivalent
-        assert (
-            database_registration_prototype_database_properties_items_model
-            == database_registration_prototype_database_properties_items_model2
-        )
+        assert database_registration_prototype_database_properties_items_model == database_registration_prototype_database_properties_items_model2
 
         # Convert model instance back to dict and verify no loss of data
-        database_registration_prototype_database_properties_items_model_json2 = (
-            database_registration_prototype_database_properties_items_model.to_dict()
-        )
-        assert (
-            database_registration_prototype_database_properties_items_model_json2
-            == database_registration_prototype_database_properties_items_model_json
-        )
+        database_registration_prototype_database_properties_items_model_json2 = database_registration_prototype_database_properties_items_model.to_dict()
+        assert database_registration_prototype_database_properties_items_model_json2 == database_registration_prototype_database_properties_items_model_json
 
 
 class TestModel_Db2Engine:
@@ -13584,374 +14989,99 @@ class TestModel_Db2EngineDetailsBody:
         assert db2_engine_details_body_model_json2 == db2_engine_details_body_model_json
 
 
-class TestModel_Deployment:
+class TestModel_Db2EnginePatch:
     """
-    Test Class for Deployment
+    Test Class for Db2EnginePatch
     """
 
-    def test_deployment_serialization(self):
+    def test_db2_engine_patch_serialization(self):
         """
-        Test serialization/deserialization for Deployment
+        Test serialization/deserialization for Db2EnginePatch
         """
 
-        # Construct dict forms of any model objects needed in order to build this model.
+        # Construct a json representation of a Db2EnginePatch model
+        db2_engine_patch_model_json = {}
+        db2_engine_patch_model_json['description'] = 'db2 engine updated description'
+        db2_engine_patch_model_json['engine_display_name'] = 'sampleEngine'
+        db2_engine_patch_model_json['tags'] = ['tag1', 'tag2']
 
-        deployment_platform_options_model = {}  # DeploymentPlatformOptions
-        deployment_platform_options_model['backup_encryption_key_crn'] = '<backup_encryption_key_crn>'
-        deployment_platform_options_model['disk_encryption_key_crn'] = '<disk_encryption_key_crn>'
-        deployment_platform_options_model['key_protect_key_id'] = '<key_protect_key_id>'
+        # Construct a model instance of Db2EnginePatch by calling from_dict on the json representation
+        db2_engine_patch_model = Db2EnginePatch.from_dict(db2_engine_patch_model_json)
+        assert db2_engine_patch_model != False
 
-        # Construct a json representation of a Deployment model
-        deployment_model_json = {}
-        deployment_model_json['cloud_type'] = 'awq'
-        deployment_model_json['enable_private_endpoints'] = True
-        deployment_model_json['enable_public_endpoints'] = True
-        deployment_model_json['first_time_use'] = False
-        deployment_model_json['formation_id'] = 'new_form_id'
-        deployment_model_json['id'] = 'dep_id'
-        deployment_model_json['plan_id'] = 'new_plan_id'
-        deployment_model_json['platform_options'] = deployment_platform_options_model
-        deployment_model_json['region'] = 'us-south'
-        deployment_model_json[
-            'resource_group_crn'
-        ] = 'crn:v1:staging:public:resource-controller::a/hddrtnjjj27dh38xbw::resource-group:c02a6a94f16e4ca'
-        deployment_model_json['type'] = 'deployment_type'
-        deployment_model_json['version'] = '1.0.2'
-
-        # Construct a model instance of Deployment by calling from_dict on the json representation
-        deployment_model = Deployment.from_dict(deployment_model_json)
-        assert deployment_model != False
-
-        # Construct a model instance of Deployment by calling from_dict on the json representation
-        deployment_model_dict = Deployment.from_dict(deployment_model_json).__dict__
-        deployment_model2 = Deployment(**deployment_model_dict)
+        # Construct a model instance of Db2EnginePatch by calling from_dict on the json representation
+        db2_engine_patch_model_dict = Db2EnginePatch.from_dict(db2_engine_patch_model_json).__dict__
+        db2_engine_patch_model2 = Db2EnginePatch(**db2_engine_patch_model_dict)
 
         # Verify the model instances are equivalent
-        assert deployment_model == deployment_model2
+        assert db2_engine_patch_model == db2_engine_patch_model2
 
         # Convert model instance back to dict and verify no loss of data
-        deployment_model_json2 = deployment_model.to_dict()
-        assert deployment_model_json2 == deployment_model_json
+        db2_engine_patch_model_json2 = db2_engine_patch_model.to_dict()
+        assert db2_engine_patch_model_json2 == db2_engine_patch_model_json
 
 
-class TestModel_DeploymentPlatformOptions:
+class TestModel_DisplayNameInfoResponse:
     """
-    Test Class for DeploymentPlatformOptions
+    Test Class for DisplayNameInfoResponse
     """
 
-    def test_deployment_platform_options_serialization(self):
+    def test_display_name_info_response_serialization(self):
         """
-        Test serialization/deserialization for DeploymentPlatformOptions
+        Test serialization/deserialization for DisplayNameInfoResponse
         """
 
-        # Construct a json representation of a DeploymentPlatformOptions model
-        deployment_platform_options_model_json = {}
-        deployment_platform_options_model_json['backup_encryption_key_crn'] = '<backup_encryption_key_crn>'
-        deployment_platform_options_model_json['disk_encryption_key_crn'] = '<disk_encryption_key_crn>'
-        deployment_platform_options_model_json['key_protect_key_id'] = '<key_protect_key_id>'
+        # Construct a json representation of a DisplayNameInfoResponse model
+        display_name_info_response_model_json = {}
+        display_name_info_response_model_json['display_name'] = 'Instance Name'
 
-        # Construct a model instance of DeploymentPlatformOptions by calling from_dict on the json representation
-        deployment_platform_options_model = DeploymentPlatformOptions.from_dict(deployment_platform_options_model_json)
-        assert deployment_platform_options_model != False
+        # Construct a model instance of DisplayNameInfoResponse by calling from_dict on the json representation
+        display_name_info_response_model = DisplayNameInfoResponse.from_dict(display_name_info_response_model_json)
+        assert display_name_info_response_model != False
 
-        # Construct a model instance of DeploymentPlatformOptions by calling from_dict on the json representation
-        deployment_platform_options_model_dict = DeploymentPlatformOptions.from_dict(
-            deployment_platform_options_model_json
-        ).__dict__
-        deployment_platform_options_model2 = DeploymentPlatformOptions(**deployment_platform_options_model_dict)
+        # Construct a model instance of DisplayNameInfoResponse by calling from_dict on the json representation
+        display_name_info_response_model_dict = DisplayNameInfoResponse.from_dict(display_name_info_response_model_json).__dict__
+        display_name_info_response_model2 = DisplayNameInfoResponse(**display_name_info_response_model_dict)
 
         # Verify the model instances are equivalent
-        assert deployment_platform_options_model == deployment_platform_options_model2
+        assert display_name_info_response_model == display_name_info_response_model2
 
         # Convert model instance back to dict and verify no loss of data
-        deployment_platform_options_model_json2 = deployment_platform_options_model.to_dict()
-        assert deployment_platform_options_model_json2 == deployment_platform_options_model_json
+        display_name_info_response_model_json2 = display_name_info_response_model.to_dict()
+        assert display_name_info_response_model_json2 == display_name_info_response_model_json
 
 
-class TestModel_DeploymentsResponse:
+class TestModel_Driver:
     """
-    Test Class for DeploymentsResponse
+    Test Class for Driver
     """
 
-    def test_deployments_response_serialization(self):
+    def test_driver_serialization(self):
         """
-        Test serialization/deserialization for DeploymentsResponse
+        Test serialization/deserialization for Driver
         """
 
-        # Construct dict forms of any model objects needed in order to build this model.
+        # Construct a json representation of a Driver model
+        driver_model_json = {}
+        driver_model_json['connection_type'] = 'saphana'
+        driver_model_json['driver_id'] = 'saphanadriver123'
+        driver_model_json['driver_name'] = 'saphanadriver-1.2.3'
+        driver_model_json['driver_version'] = '1.2.3'
 
-        deployment_platform_options_model = {}  # DeploymentPlatformOptions
-        deployment_platform_options_model['backup_encryption_key_crn'] = '<backup_encryption_key_crn>'
-        deployment_platform_options_model['disk_encryption_key_crn'] = '<disk_encryption_key_crn>'
-        deployment_platform_options_model['key_protect_key_id'] = '<key_protect_key_id>'
+        # Construct a model instance of Driver by calling from_dict on the json representation
+        driver_model = Driver.from_dict(driver_model_json)
+        assert driver_model != False
 
-        deployment_model = {}  # Deployment
-        deployment_model['cloud_type'] = 'awq'
-        deployment_model['enable_private_endpoints'] = True
-        deployment_model['enable_public_endpoints'] = True
-        deployment_model['first_time_use'] = False
-        deployment_model['formation_id'] = 'new_form_id'
-        deployment_model['id'] = 'dep_id'
-        deployment_model['plan_id'] = 'new_plan_id'
-        deployment_model['platform_options'] = deployment_platform_options_model
-        deployment_model['region'] = 'us-south'
-        deployment_model[
-            'resource_group_crn'
-        ] = 'crn:v1:staging:public:resource-controller::a/hddrtnjjj27dh38xbw::resource-group:c02a6a94f16e4ca'
-        deployment_model['type'] = 'deployment_type'
-        deployment_model['version'] = '1.0.2'
-
-        # Construct a json representation of a DeploymentsResponse model
-        deployments_response_model_json = {}
-        deployments_response_model_json['deployment'] = deployment_model
-
-        # Construct a model instance of DeploymentsResponse by calling from_dict on the json representation
-        deployments_response_model = DeploymentsResponse.from_dict(deployments_response_model_json)
-        assert deployments_response_model != False
-
-        # Construct a model instance of DeploymentsResponse by calling from_dict on the json representation
-        deployments_response_model_dict = DeploymentsResponse.from_dict(deployments_response_model_json).__dict__
-        deployments_response_model2 = DeploymentsResponse(**deployments_response_model_dict)
+        # Construct a model instance of Driver by calling from_dict on the json representation
+        driver_model_dict = Driver.from_dict(driver_model_json).__dict__
+        driver_model2 = Driver(**driver_model_dict)
 
         # Verify the model instances are equivalent
-        assert deployments_response_model == deployments_response_model2
+        assert driver_model == driver_model2
 
         # Convert model instance back to dict and verify no loss of data
-        deployments_response_model_json2 = deployments_response_model.to_dict()
-        assert deployments_response_model_json2 == deployments_response_model_json
-
-
-class TestModel_Engine:
-    """
-    Test Class for Engine
-    """
-
-    def test_engine_serialization(self):
-        """
-        Test serialization/deserialization for Engine
-        """
-
-        # Construct dict forms of any model objects needed in order to build this model.
-
-        db2_engine_details_model = {}  # Db2EngineDetails
-        db2_engine_details_model['connection_string'] = '1.2.3.4'
-        db2_engine_details_model['metastore_host'] = '1.2.3.4'
-
-        db2_engine_model = {}  # Db2Engine
-        db2_engine_model['actions'] = ['update', 'delete']
-        db2_engine_model['build_version'] = '1.0.3.0.0'
-        db2_engine_model['created_by'] = '<username>@<domain>.com'
-        db2_engine_model['created_on'] = 38
-        db2_engine_model['description'] = 'db2 engine for running sql queries'
-        db2_engine_model['engine_details'] = db2_engine_details_model
-        db2_engine_model['engine_display_name'] = 'sampleEngine'
-        db2_engine_model['engine_id'] = 'sampleEngine123'
-        db2_engine_model['host_name'] = 'xyz-db2-01-db2-svc'
-        db2_engine_model['origin'] = 'ibm'
-        db2_engine_model['port'] = 38
-        db2_engine_model['status'] = 'REGISTERED'
-        db2_engine_model['tags'] = ['tag1', 'tag2']
-        db2_engine_model['type'] = 'db2'
-
-        milvus_service_model = {}  # MilvusService
-        milvus_service_model['actions'] = ['update', 'delete']
-        milvus_service_model['created_by'] = '<username>@<domain>.com'
-        milvus_service_model['created_on'] = 38
-        milvus_service_model['description'] = 'milvus service for running sql queries'
-        milvus_service_model['grpc_host'] = 'example.grpc.host'
-        milvus_service_model['grpc_port'] = 26
-        milvus_service_model['host_name'] = 'sampleMilvus'
-        milvus_service_model['https_host'] = 'example.https.host'
-        milvus_service_model['https_port'] = 26
-        milvus_service_model['origin'] = 'native'
-        milvus_service_model['service_display_name'] = 'sampleService'
-        milvus_service_model['service_id'] = 'sampleService123'
-        milvus_service_model['status'] = 'running'
-        milvus_service_model['status_code'] = 38
-        milvus_service_model['tags'] = ['tag1', 'tag2']
-        milvus_service_model['type'] = 'milvus'
-
-        netezza_engine_details_model = {}  # NetezzaEngineDetails
-        netezza_engine_details_model['connection_string'] = '1.2.3.4'
-        netezza_engine_details_model['metastore_host'] = '1.2.3.4'
-
-        netezza_engine_model = {}  # NetezzaEngine
-        netezza_engine_model['actions'] = ['update', 'delete']
-        netezza_engine_model['build_version'] = '1.0.3.0.0'
-        netezza_engine_model['created_by'] = '<username>@<domain>.com'
-        netezza_engine_model['created_on'] = 38
-        netezza_engine_model['description'] = 'netezza engine for running sql queries'
-        netezza_engine_model['engine_details'] = netezza_engine_details_model
-        netezza_engine_model['engine_display_name'] = 'sampleEngine'
-        netezza_engine_model['engine_id'] = 'sampleEngine123'
-        netezza_engine_model['host_name'] = 'xyz-netezza-01-netezza-svc'
-        netezza_engine_model['origin'] = 'ibm'
-        netezza_engine_model['port'] = 38
-        netezza_engine_model['status'] = 'REGISTERED'
-        netezza_engine_model['tags'] = ['tag1', 'tag2']
-        netezza_engine_model['type'] = 'netezza'
-
-        prestissimo_node_description_body_model = {}  # PrestissimoNodeDescriptionBody
-        prestissimo_node_description_body_model['node_type'] = 'worker'
-        prestissimo_node_description_body_model['quantity'] = 38
-
-        prestissimo_endpoints_model = {}  # PrestissimoEndpoints
-        prestissimo_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        prestissimo_endpoints_model[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
-        prestissimo_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        prestissimo_endpoints_model[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        prestissimo_endpoints_model[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
-        prestissimo_endpoints_model['view_history_server'] = 'testString'
-        prestissimo_endpoints_model[
-            'wxd_application_endpoint'
-        ] = '$HOST/v1/1698311655308796/engines/spark817/applications'
-
-        prestissimo_engine_details_model = {}  # PrestissimoEngineDetails
-        prestissimo_engine_details_model['api_key'] = '<api_key>'
-        prestissimo_engine_details_model['connection_string'] = '1.2.3.4'
-        prestissimo_engine_details_model['coordinator'] = prestissimo_node_description_body_model
-        prestissimo_engine_details_model['endpoints'] = prestissimo_endpoints_model
-        prestissimo_engine_details_model['instance_id'] = 'instance_id'
-        prestissimo_engine_details_model['managed_by'] = 'fully/self'
-        prestissimo_engine_details_model['metastore_host'] = '1.2.3.4'
-        prestissimo_engine_details_model['size_config'] = 'starter'
-        prestissimo_engine_details_model['worker'] = prestissimo_node_description_body_model
-
-        prestissimo_engine_model = {}  # PrestissimoEngine
-        prestissimo_engine_model['actions'] = ['update', 'delete']
-        prestissimo_engine_model['associated_catalogs'] = ['hive_data']
-        prestissimo_engine_model['build_version'] = '1.0.3.0.0'
-        prestissimo_engine_model['coordinator'] = prestissimo_node_description_body_model
-        prestissimo_engine_model['created_by'] = '<username>@<domain>.com'
-        prestissimo_engine_model['created_on'] = 38
-        prestissimo_engine_model['description'] = 'prestissimo engine for running sql queries'
-        prestissimo_engine_model['engine_details'] = prestissimo_engine_details_model
-        prestissimo_engine_model['engine_display_name'] = 'sampleEngine'
-        prestissimo_engine_model['engine_id'] = 'sampleEngine123'
-        prestissimo_engine_model['external_host_name'] = 'your-hostname.apps.your-domain.com'
-        prestissimo_engine_model['group_id'] = 'new_group_id'
-        prestissimo_engine_model['host_name'] = 'xyz-prestissimo-01-prestissimo-svc'
-        prestissimo_engine_model['origin'] = 'native'
-        prestissimo_engine_model['port'] = 38
-        prestissimo_engine_model['region'] = 'us-south'
-        prestissimo_engine_model['size_config'] = 'starter'
-        prestissimo_engine_model['status'] = 'running'
-        prestissimo_engine_model['status_code'] = 38
-        prestissimo_engine_model['tags'] = ['tag1', 'tag2']
-        prestissimo_engine_model['type'] = 'prestissimo'
-        prestissimo_engine_model['version'] = '1.2.0'
-        prestissimo_engine_model['worker'] = prestissimo_node_description_body_model
-
-        node_description_model = {}  # NodeDescription
-        node_description_model['node_type'] = 'worker'
-        node_description_model['quantity'] = 38
-
-        node_description_body_model = {}  # NodeDescriptionBody
-        node_description_body_model['node_type'] = 'worker'
-        node_description_body_model['quantity'] = 38
-
-        engine_details_body_model = {}  # EngineDetailsBody
-        engine_details_body_model['api_key'] = '<api_key>'
-        engine_details_body_model['connection_string'] = '1.2.3.4'
-        engine_details_body_model['coordinator'] = node_description_body_model
-        engine_details_body_model['instance_id'] = 'instance_id'
-        engine_details_body_model['managed_by'] = 'fully/self'
-        engine_details_body_model['size_config'] = 'starter'
-        engine_details_body_model['worker'] = node_description_body_model
-
-        presto_engine_model = {}  # PrestoEngine
-        presto_engine_model['actions'] = ['update', 'delete']
-        presto_engine_model['associated_catalogs'] = ['iceberg_data', 'hive_data']
-        presto_engine_model['build_version'] = '1.0.3.0.0'
-        presto_engine_model['coordinator'] = node_description_model
-        presto_engine_model['created_by'] = '<username>@<domain>.com'
-        presto_engine_model['created_on'] = 38
-        presto_engine_model['description'] = 'presto engine for running sql queries'
-        presto_engine_model['engine_details'] = engine_details_body_model
-        presto_engine_model['engine_display_name'] = 'sampleEngine'
-        presto_engine_model['engine_id'] = 'sampleEngine123'
-        presto_engine_model['external_host_name'] = 'your-hostname.apps.your-domain.com'
-        presto_engine_model['group_id'] = 'new_group_id'
-        presto_engine_model['host_name'] = 'ibm-lh-lakehouse-presto-01-presto-svc'
-        presto_engine_model['origin'] = 'native'
-        presto_engine_model['port'] = 38
-        presto_engine_model['region'] = 'us-south'
-        presto_engine_model['size_config'] = 'starter'
-        presto_engine_model['status'] = 'running'
-        presto_engine_model['status_code'] = 38
-        presto_engine_model['tags'] = ['tag1', 'tag2']
-        presto_engine_model['type'] = 'presto'
-        presto_engine_model['version'] = '1.2.0'
-        presto_engine_model['worker'] = node_description_model
-
-        spark_endpoints_model = {}  # SparkEndpoints
-        spark_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        spark_endpoints_model[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
-        spark_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        spark_endpoints_model[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        spark_endpoints_model[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
-        spark_endpoints_model['view_history_server'] = 'testString'
-        spark_endpoints_model['wxd_application_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications'
-
-        spark_engine_details_model = {}  # SparkEngineDetails
-        spark_engine_details_model[
-            'connection_string'
-        ] = 'https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>'
-        spark_engine_details_model['endpoints'] = spark_endpoints_model
-
-        spark_engine_model = {}  # SparkEngine
-        spark_engine_model['actions'] = ['update', 'delete']
-        spark_engine_model['build_version'] = '1.0.3.0.0'
-        spark_engine_model['created_by'] = '<username>@<domain>.com'
-        spark_engine_model['created_on'] = 38
-        spark_engine_model['description'] = 'spark engine for running sql queries'
-        spark_engine_model['engine_details'] = spark_engine_details_model
-        spark_engine_model['engine_display_name'] = 'sampleEngine'
-        spark_engine_model['engine_id'] = 'sampleEngine123'
-        spark_engine_model['origin'] = 'ibm'
-        spark_engine_model['status'] = 'Registered'
-        spark_engine_model['tags'] = ['tag1', 'tag2']
-        spark_engine_model['type'] = 'spark'
-
-        # Construct a json representation of a Engine model
-        engine_model_json = {}
-        engine_model_json['db2_engines'] = [db2_engine_model]
-        engine_model_json['milvus_services'] = [milvus_service_model]
-        engine_model_json['netezza_engines'] = [netezza_engine_model]
-        engine_model_json['prestissimo_engines'] = [prestissimo_engine_model]
-        engine_model_json['presto_engines'] = [presto_engine_model]
-        engine_model_json['spark_engines'] = [spark_engine_model]
-
-        # Construct a model instance of Engine by calling from_dict on the json representation
-        engine_model = Engine.from_dict(engine_model_json)
-        assert engine_model != False
-
-        # Construct a model instance of Engine by calling from_dict on the json representation
-        engine_model_dict = Engine.from_dict(engine_model_json).__dict__
-        engine_model2 = Engine(**engine_model_dict)
-
-        # Verify the model instances are equivalent
-        assert engine_model == engine_model2
-
-        # Convert model instance back to dict and verify no loss of data
-        engine_model_json2 = engine_model.to_dict()
-        assert engine_model_json2 == engine_model_json
+        driver_model_json2 = driver_model.to_dict()
+        assert driver_model_json2 == driver_model_json
 
 
 class TestModel_EngineDetailsBody:
@@ -13996,334 +15126,345 @@ class TestModel_EngineDetailsBody:
         assert engine_details_body_model_json2 == engine_details_body_model_json
 
 
-class TestModel_Engines:
+class TestModel_EnginePropertiesOaiGen1Configuration:
     """
-    Test Class for Engines
+    Test Class for EnginePropertiesOaiGen1Configuration
     """
 
-    def test_engines_serialization(self):
+    def test_engine_properties_oai_gen1_configuration_serialization(self):
         """
-        Test serialization/deserialization for Engines
+        Test serialization/deserialization for EnginePropertiesOaiGen1Configuration
         """
 
         # Construct dict forms of any model objects needed in order to build this model.
-
-        db2_engine_details_model = {}  # Db2EngineDetails
-        db2_engine_details_model['connection_string'] = '1.2.3.4'
-        db2_engine_details_model['metastore_host'] = '1.2.3.4'
-
-        db2_engine_model = {}  # Db2Engine
-        db2_engine_model['actions'] = ['update', 'delete']
-        db2_engine_model['build_version'] = '1.0.3.0.0'
-        db2_engine_model['created_by'] = '<username>@<domain>.com'
-        db2_engine_model['created_on'] = 38
-        db2_engine_model['description'] = 'db2 engine for running sql queries'
-        db2_engine_model['engine_details'] = db2_engine_details_model
-        db2_engine_model['engine_display_name'] = 'sampleEngine'
-        db2_engine_model['engine_id'] = 'sampleEngine123'
-        db2_engine_model['host_name'] = 'xyz-db2-01-db2-svc'
-        db2_engine_model['origin'] = 'ibm'
-        db2_engine_model['port'] = 38
-        db2_engine_model['status'] = 'REGISTERED'
-        db2_engine_model['tags'] = ['tag1', 'tag2']
-        db2_engine_model['type'] = 'db2'
-
-        milvus_service_model = {}  # MilvusService
-        milvus_service_model['actions'] = ['update', 'delete']
-        milvus_service_model['created_by'] = '<username>@<domain>.com'
-        milvus_service_model['created_on'] = 38
-        milvus_service_model['description'] = 'milvus service for running sql queries'
-        milvus_service_model['grpc_host'] = 'example.grpc.host'
-        milvus_service_model['grpc_port'] = 26
-        milvus_service_model['host_name'] = 'sampleMilvus'
-        milvus_service_model['https_host'] = 'example.https.host'
-        milvus_service_model['https_port'] = 26
-        milvus_service_model['origin'] = 'native'
-        milvus_service_model['service_display_name'] = 'sampleService'
-        milvus_service_model['service_id'] = 'sampleService123'
-        milvus_service_model['status'] = 'running'
-        milvus_service_model['status_code'] = 38
-        milvus_service_model['tags'] = ['tag1', 'tag2']
-        milvus_service_model['type'] = 'milvus'
-
-        netezza_engine_details_model = {}  # NetezzaEngineDetails
-        netezza_engine_details_model['connection_string'] = '1.2.3.4'
-        netezza_engine_details_model['metastore_host'] = '1.2.3.4'
-
-        netezza_engine_model = {}  # NetezzaEngine
-        netezza_engine_model['actions'] = ['update', 'delete']
-        netezza_engine_model['build_version'] = '1.0.3.0.0'
-        netezza_engine_model['created_by'] = '<username>@<domain>.com'
-        netezza_engine_model['created_on'] = 38
-        netezza_engine_model['description'] = 'netezza engine for running sql queries'
-        netezza_engine_model['engine_details'] = netezza_engine_details_model
-        netezza_engine_model['engine_display_name'] = 'sampleEngine'
-        netezza_engine_model['engine_id'] = 'sampleEngine123'
-        netezza_engine_model['host_name'] = 'xyz-netezza-01-netezza-svc'
-        netezza_engine_model['origin'] = 'ibm'
-        netezza_engine_model['port'] = 38
-        netezza_engine_model['status'] = 'REGISTERED'
-        netezza_engine_model['tags'] = ['tag1', 'tag2']
-        netezza_engine_model['type'] = 'netezza'
-
-        prestissimo_node_description_body_model = {}  # PrestissimoNodeDescriptionBody
-        prestissimo_node_description_body_model['node_type'] = 'worker'
-        prestissimo_node_description_body_model['quantity'] = 38
-
-        prestissimo_endpoints_model = {}  # PrestissimoEndpoints
-        prestissimo_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        prestissimo_endpoints_model[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
-        prestissimo_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        prestissimo_endpoints_model[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        prestissimo_endpoints_model[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
-        prestissimo_endpoints_model['view_history_server'] = 'testString'
-        prestissimo_endpoints_model[
-            'wxd_application_endpoint'
-        ] = '$HOST/v1/1698311655308796/engines/spark817/applications'
-
-        prestissimo_engine_details_model = {}  # PrestissimoEngineDetails
-        prestissimo_engine_details_model['api_key'] = '<api_key>'
-        prestissimo_engine_details_model['connection_string'] = '1.2.3.4'
-        prestissimo_engine_details_model['coordinator'] = prestissimo_node_description_body_model
-        prestissimo_engine_details_model['endpoints'] = prestissimo_endpoints_model
-        prestissimo_engine_details_model['instance_id'] = 'instance_id'
-        prestissimo_engine_details_model['managed_by'] = 'fully/self'
-        prestissimo_engine_details_model['metastore_host'] = '1.2.3.4'
-        prestissimo_engine_details_model['size_config'] = 'starter'
-        prestissimo_engine_details_model['worker'] = prestissimo_node_description_body_model
-
-        prestissimo_engine_model = {}  # PrestissimoEngine
-        prestissimo_engine_model['actions'] = ['update', 'delete']
-        prestissimo_engine_model['associated_catalogs'] = ['hive_data']
-        prestissimo_engine_model['build_version'] = '1.0.3.0.0'
-        prestissimo_engine_model['coordinator'] = prestissimo_node_description_body_model
-        prestissimo_engine_model['created_by'] = '<username>@<domain>.com'
-        prestissimo_engine_model['created_on'] = 38
-        prestissimo_engine_model['description'] = 'prestissimo engine for running sql queries'
-        prestissimo_engine_model['engine_details'] = prestissimo_engine_details_model
-        prestissimo_engine_model['engine_display_name'] = 'sampleEngine'
-        prestissimo_engine_model['engine_id'] = 'sampleEngine123'
-        prestissimo_engine_model['external_host_name'] = 'your-hostname.apps.your-domain.com'
-        prestissimo_engine_model['group_id'] = 'new_group_id'
-        prestissimo_engine_model['host_name'] = 'xyz-prestissimo-01-prestissimo-svc'
-        prestissimo_engine_model['origin'] = 'native'
-        prestissimo_engine_model['port'] = 38
-        prestissimo_engine_model['region'] = 'us-south'
-        prestissimo_engine_model['size_config'] = 'starter'
-        prestissimo_engine_model['status'] = 'running'
-        prestissimo_engine_model['status_code'] = 38
-        prestissimo_engine_model['tags'] = ['tag1', 'tag2']
-        prestissimo_engine_model['type'] = 'prestissimo'
-        prestissimo_engine_model['version'] = '1.2.0'
-        prestissimo_engine_model['worker'] = prestissimo_node_description_body_model
-
-        node_description_model = {}  # NodeDescription
-        node_description_model['node_type'] = 'worker'
-        node_description_model['quantity'] = 38
 
         node_description_body_model = {}  # NodeDescriptionBody
         node_description_body_model['node_type'] = 'worker'
         node_description_body_model['quantity'] = 38
 
-        engine_details_body_model = {}  # EngineDetailsBody
-        engine_details_body_model['api_key'] = '<api_key>'
-        engine_details_body_model['connection_string'] = '1.2.3.4'
-        engine_details_body_model['coordinator'] = node_description_body_model
-        engine_details_body_model['instance_id'] = 'instance_id'
-        engine_details_body_model['managed_by'] = 'fully/self'
-        engine_details_body_model['size_config'] = 'starter'
-        engine_details_body_model['worker'] = node_description_body_model
+        # Construct a json representation of a EnginePropertiesOaiGen1Configuration model
+        engine_properties_oai_gen1_configuration_model_json = {}
+        engine_properties_oai_gen1_configuration_model_json['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_configuration_model_json['worker'] = node_description_body_model
 
-        presto_engine_model = {}  # PrestoEngine
-        presto_engine_model['actions'] = ['update', 'delete']
-        presto_engine_model['associated_catalogs'] = ['iceberg_data', 'hive_data']
-        presto_engine_model['build_version'] = '1.0.3.0.0'
-        presto_engine_model['coordinator'] = node_description_model
-        presto_engine_model['created_by'] = '<username>@<domain>.com'
-        presto_engine_model['created_on'] = 38
-        presto_engine_model['description'] = 'presto engine for running sql queries'
-        presto_engine_model['engine_details'] = engine_details_body_model
-        presto_engine_model['engine_display_name'] = 'sampleEngine'
-        presto_engine_model['engine_id'] = 'sampleEngine123'
-        presto_engine_model['external_host_name'] = 'your-hostname.apps.your-domain.com'
-        presto_engine_model['group_id'] = 'new_group_id'
-        presto_engine_model['host_name'] = 'ibm-lh-lakehouse-presto-01-presto-svc'
-        presto_engine_model['origin'] = 'native'
-        presto_engine_model['port'] = 38
-        presto_engine_model['region'] = 'us-south'
-        presto_engine_model['size_config'] = 'starter'
-        presto_engine_model['status'] = 'running'
-        presto_engine_model['status_code'] = 38
-        presto_engine_model['tags'] = ['tag1', 'tag2']
-        presto_engine_model['type'] = 'presto'
-        presto_engine_model['version'] = '1.2.0'
-        presto_engine_model['worker'] = node_description_model
+        # Construct a model instance of EnginePropertiesOaiGen1Configuration by calling from_dict on the json representation
+        engine_properties_oai_gen1_configuration_model = EnginePropertiesOaiGen1Configuration.from_dict(engine_properties_oai_gen1_configuration_model_json)
+        assert engine_properties_oai_gen1_configuration_model != False
 
-        spark_endpoints_model = {}  # SparkEndpoints
-        spark_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        spark_endpoints_model[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
-        spark_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        spark_endpoints_model[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        spark_endpoints_model[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
-        spark_endpoints_model['view_history_server'] = 'testString'
-        spark_endpoints_model['wxd_application_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications'
-
-        spark_engine_details_model = {}  # SparkEngineDetails
-        spark_engine_details_model[
-            'connection_string'
-        ] = 'https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>'
-        spark_engine_details_model['endpoints'] = spark_endpoints_model
-
-        spark_engine_model = {}  # SparkEngine
-        spark_engine_model['actions'] = ['update', 'delete']
-        spark_engine_model['build_version'] = '1.0.3.0.0'
-        spark_engine_model['created_by'] = '<username>@<domain>.com'
-        spark_engine_model['created_on'] = 38
-        spark_engine_model['description'] = 'spark engine for running sql queries'
-        spark_engine_model['engine_details'] = spark_engine_details_model
-        spark_engine_model['engine_display_name'] = 'sampleEngine'
-        spark_engine_model['engine_id'] = 'sampleEngine123'
-        spark_engine_model['origin'] = 'ibm'
-        spark_engine_model['status'] = 'Registered'
-        spark_engine_model['tags'] = ['tag1', 'tag2']
-        spark_engine_model['type'] = 'spark'
-
-        engine_model = {}  # Engine
-        engine_model['db2_engines'] = [db2_engine_model]
-        engine_model['milvus_services'] = [milvus_service_model]
-        engine_model['netezza_engines'] = [netezza_engine_model]
-        engine_model['prestissimo_engines'] = [prestissimo_engine_model]
-        engine_model['presto_engines'] = [presto_engine_model]
-        engine_model['spark_engines'] = [spark_engine_model]
-
-        # Construct a json representation of a Engines model
-        engines_model_json = {}
-        engines_model_json['engines'] = engine_model
-
-        # Construct a model instance of Engines by calling from_dict on the json representation
-        engines_model = Engines.from_dict(engines_model_json)
-        assert engines_model != False
-
-        # Construct a model instance of Engines by calling from_dict on the json representation
-        engines_model_dict = Engines.from_dict(engines_model_json).__dict__
-        engines_model2 = Engines(**engines_model_dict)
+        # Construct a model instance of EnginePropertiesOaiGen1Configuration by calling from_dict on the json representation
+        engine_properties_oai_gen1_configuration_model_dict = EnginePropertiesOaiGen1Configuration.from_dict(engine_properties_oai_gen1_configuration_model_json).__dict__
+        engine_properties_oai_gen1_configuration_model2 = EnginePropertiesOaiGen1Configuration(**engine_properties_oai_gen1_configuration_model_dict)
 
         # Verify the model instances are equivalent
-        assert engines_model == engines_model2
+        assert engine_properties_oai_gen1_configuration_model == engine_properties_oai_gen1_configuration_model2
 
         # Convert model instance back to dict and verify no loss of data
-        engines_model_json2 = engines_model.to_dict()
-        assert engines_model_json2 == engines_model_json
+        engine_properties_oai_gen1_configuration_model_json2 = engine_properties_oai_gen1_configuration_model.to_dict()
+        assert engine_properties_oai_gen1_configuration_model_json2 == engine_properties_oai_gen1_configuration_model_json
 
 
-class TestModel_GetDeploymentsOKBody:
+class TestModel_EnginePropertiesOaiGen1Jvm:
     """
-    Test Class for GetDeploymentsOKBody
+    Test Class for EnginePropertiesOaiGen1Jvm
     """
 
-    def test_get_deployments_ok_body_serialization(self):
+    def test_engine_properties_oai_gen1_jvm_serialization(self):
         """
-        Test serialization/deserialization for GetDeploymentsOKBody
+        Test serialization/deserialization for EnginePropertiesOaiGen1Jvm
         """
 
         # Construct dict forms of any model objects needed in order to build this model.
 
-        deployment_platform_options_model = {}  # DeploymentPlatformOptions
-        deployment_platform_options_model['backup_encryption_key_crn'] = '2nf8f8b3kd8wknfkf'
-        deployment_platform_options_model['disk_encryption_key_crn'] = 'hjdkd8wjnnd93ujd9'
-        deployment_platform_options_model['key_protect_key_id'] = '8ndkenkwjdciendj'
+        node_description_body_model = {}  # NodeDescriptionBody
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
 
-        deployment_model = {}  # Deployment
-        deployment_model['cloud_type'] = 'aws'
-        deployment_model['enable_private_endpoints'] = True
-        deployment_model['enable_public_endpoints'] = True
-        deployment_model['first_time_use'] = False
-        deployment_model['formation_id'] = 'new_form_id'
-        deployment_model['id'] = 'dep_id'
-        deployment_model['plan_id'] = 'new_plan_id'
-        deployment_model['platform_options'] = deployment_platform_options_model
-        deployment_model['region'] = 'us-south'
-        deployment_model[
-            'resource_group_crn'
-        ] = 'crn:v1:staging:public:resource-controller::a/hddrtnjjj27dh38xbw::resource-group:c02a6a94f16e4ca'
-        deployment_model['type'] = 'deployment_type'
-        deployment_model['version'] = '1.0.2'
+        # Construct a json representation of a EnginePropertiesOaiGen1Jvm model
+        engine_properties_oai_gen1_jvm_model_json = {}
+        engine_properties_oai_gen1_jvm_model_json['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_jvm_model_json['worker'] = node_description_body_model
 
-        deployments_response_model = {}  # DeploymentsResponse
-        deployments_response_model['deployment'] = deployment_model
+        # Construct a model instance of EnginePropertiesOaiGen1Jvm by calling from_dict on the json representation
+        engine_properties_oai_gen1_jvm_model = EnginePropertiesOaiGen1Jvm.from_dict(engine_properties_oai_gen1_jvm_model_json)
+        assert engine_properties_oai_gen1_jvm_model != False
 
-        success_response_model = {}  # SuccessResponse
-        success_response_model['message'] = 'get instance'
-        success_response_model['message_code'] = 'success'
-
-        # Construct a json representation of a GetDeploymentsOKBody model
-        get_deployments_ok_body_model_json = {}
-        get_deployments_ok_body_model_json['deploymentresponse'] = deployments_response_model
-        get_deployments_ok_body_model_json['response'] = success_response_model
-
-        # Construct a model instance of GetDeploymentsOKBody by calling from_dict on the json representation
-        get_deployments_ok_body_model = GetDeploymentsOKBody.from_dict(get_deployments_ok_body_model_json)
-        assert get_deployments_ok_body_model != False
-
-        # Construct a model instance of GetDeploymentsOKBody by calling from_dict on the json representation
-        get_deployments_ok_body_model_dict = GetDeploymentsOKBody.from_dict(get_deployments_ok_body_model_json).__dict__
-        get_deployments_ok_body_model2 = GetDeploymentsOKBody(**get_deployments_ok_body_model_dict)
+        # Construct a model instance of EnginePropertiesOaiGen1Jvm by calling from_dict on the json representation
+        engine_properties_oai_gen1_jvm_model_dict = EnginePropertiesOaiGen1Jvm.from_dict(engine_properties_oai_gen1_jvm_model_json).__dict__
+        engine_properties_oai_gen1_jvm_model2 = EnginePropertiesOaiGen1Jvm(**engine_properties_oai_gen1_jvm_model_dict)
 
         # Verify the model instances are equivalent
-        assert get_deployments_ok_body_model == get_deployments_ok_body_model2
+        assert engine_properties_oai_gen1_jvm_model == engine_properties_oai_gen1_jvm_model2
 
         # Convert model instance back to dict and verify no loss of data
-        get_deployments_ok_body_model_json2 = get_deployments_ok_body_model.to_dict()
-        assert get_deployments_ok_body_model_json2 == get_deployments_ok_body_model_json
+        engine_properties_oai_gen1_jvm_model_json2 = engine_properties_oai_gen1_jvm_model.to_dict()
+        assert engine_properties_oai_gen1_jvm_model_json2 == engine_properties_oai_gen1_jvm_model_json
 
 
-class TestModel_JsonPatchOperation:
+class TestModel_EnginePropertiesOaiGenConfiguration:
     """
-    Test Class for JsonPatchOperation
+    Test Class for EnginePropertiesOaiGenConfiguration
     """
 
-    def test_json_patch_operation_serialization(self):
+    def test_engine_properties_oai_gen_configuration_serialization(self):
         """
-        Test serialization/deserialization for JsonPatchOperation
+        Test serialization/deserialization for EnginePropertiesOaiGenConfiguration
         """
 
-        # Construct a json representation of a JsonPatchOperation model
-        json_patch_operation_model_json = {}
-        json_patch_operation_model_json['op'] = 'add'
-        json_patch_operation_model_json['path'] = 'testString'
-        json_patch_operation_model_json['from'] = 'testString'
-        json_patch_operation_model_json['value'] = 'testString'
+        # Construct dict forms of any model objects needed in order to build this model.
 
-        # Construct a model instance of JsonPatchOperation by calling from_dict on the json representation
-        json_patch_operation_model = JsonPatchOperation.from_dict(json_patch_operation_model_json)
-        assert json_patch_operation_model != False
+        prestissimo_node_description_body_model = {}  # PrestissimoNodeDescriptionBody
+        prestissimo_node_description_body_model['node_type'] = 'worker'
+        prestissimo_node_description_body_model['quantity'] = 38
 
-        # Construct a model instance of JsonPatchOperation by calling from_dict on the json representation
-        json_patch_operation_model_dict = JsonPatchOperation.from_dict(json_patch_operation_model_json).__dict__
-        json_patch_operation_model2 = JsonPatchOperation(**json_patch_operation_model_dict)
+        # Construct a json representation of a EnginePropertiesOaiGenConfiguration model
+        engine_properties_oai_gen_configuration_model_json = {}
+        engine_properties_oai_gen_configuration_model_json['coordinator'] = prestissimo_node_description_body_model
+        engine_properties_oai_gen_configuration_model_json['worker'] = prestissimo_node_description_body_model
+
+        # Construct a model instance of EnginePropertiesOaiGenConfiguration by calling from_dict on the json representation
+        engine_properties_oai_gen_configuration_model = EnginePropertiesOaiGenConfiguration.from_dict(engine_properties_oai_gen_configuration_model_json)
+        assert engine_properties_oai_gen_configuration_model != False
+
+        # Construct a model instance of EnginePropertiesOaiGenConfiguration by calling from_dict on the json representation
+        engine_properties_oai_gen_configuration_model_dict = EnginePropertiesOaiGenConfiguration.from_dict(engine_properties_oai_gen_configuration_model_json).__dict__
+        engine_properties_oai_gen_configuration_model2 = EnginePropertiesOaiGenConfiguration(**engine_properties_oai_gen_configuration_model_dict)
 
         # Verify the model instances are equivalent
-        assert json_patch_operation_model == json_patch_operation_model2
+        assert engine_properties_oai_gen_configuration_model == engine_properties_oai_gen_configuration_model2
 
         # Convert model instance back to dict and verify no loss of data
-        json_patch_operation_model_json2 = json_patch_operation_model.to_dict()
-        assert json_patch_operation_model_json2 == json_patch_operation_model_json
+        engine_properties_oai_gen_configuration_model_json2 = engine_properties_oai_gen_configuration_model.to_dict()
+        assert engine_properties_oai_gen_configuration_model_json2 == engine_properties_oai_gen_configuration_model_json
+
+
+class TestModel_IngestionJob:
+    """
+    Test Class for IngestionJob
+    """
+
+    def test_ingestion_job_serialization(self):
+        """
+        Test serialization/deserialization for IngestionJob
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        ingestion_job_csv_property_model = {}  # IngestionJobCsvProperty
+        ingestion_job_csv_property_model['encoding'] = 'utf-8'
+        ingestion_job_csv_property_model['escape_character'] = '|'
+        ingestion_job_csv_property_model['field_delimiter'] = ','
+        ingestion_job_csv_property_model['header'] = True
+        ingestion_job_csv_property_model['line_delimiter'] = '\n'
+
+        ingestion_job_execute_config_model = {}  # IngestionJobExecuteConfig
+        ingestion_job_execute_config_model['driver_cores'] = 1
+        ingestion_job_execute_config_model['driver_memory'] = '2G'
+        ingestion_job_execute_config_model['executor_cores'] = 1
+        ingestion_job_execute_config_model['executor_memory'] = '2G'
+        ingestion_job_execute_config_model['num_executors'] = 1
+
+        # Construct a json representation of a IngestionJob model
+        ingestion_job_model_json = {}
+        ingestion_job_model_json['create_if_not_exist'] = False
+        ingestion_job_model_json['csv_property'] = ingestion_job_csv_property_model
+        ingestion_job_model_json['details'] = 'Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory'
+        ingestion_job_model_json['end_timestamp'] = '1685088775'
+        ingestion_job_model_json['engine_id'] = 'spark123'
+        ingestion_job_model_json['engine_name'] = 'sparkdemo'
+        ingestion_job_model_json['execute_config'] = ingestion_job_execute_config_model
+        ingestion_job_model_json['instance_id'] = '1684432229673971'
+        ingestion_job_model_json['job_id'] = 'ingestion-1699459946935'
+        ingestion_job_model_json['partition_by'] = 'col1, col2'
+        ingestion_job_model_json['schema'] = '{"type":"struct","schema-id":0,"fields":[{"id":1,"name":"ID","required":true,"type":"int"},{"id":2,"name":"Name","required":true,"type":"string"}]}'
+        ingestion_job_model_json['source_data_files'] = 's3://demobucket/data/yellow_tripdata_2022-01.parquet'
+        ingestion_job_model_json['source_file_type'] = 'csv'
+        ingestion_job_model_json['start_timestamp'] = '1685084455'
+        ingestion_job_model_json['status'] = 'running'
+        ingestion_job_model_json['target_table'] = 'demodb.test.targettable'
+        ingestion_job_model_json['username'] = 'ibmlhadmin'
+        ingestion_job_model_json['validate_csv_header'] = False
+
+        # Construct a model instance of IngestionJob by calling from_dict on the json representation
+        ingestion_job_model = IngestionJob.from_dict(ingestion_job_model_json)
+        assert ingestion_job_model != False
+
+        # Construct a model instance of IngestionJob by calling from_dict on the json representation
+        ingestion_job_model_dict = IngestionJob.from_dict(ingestion_job_model_json).__dict__
+        ingestion_job_model2 = IngestionJob(**ingestion_job_model_dict)
+
+        # Verify the model instances are equivalent
+        assert ingestion_job_model == ingestion_job_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        ingestion_job_model_json2 = ingestion_job_model.to_dict()
+        assert ingestion_job_model_json2 == ingestion_job_model_json
+
+
+class TestModel_IngestionJobCollection:
+    """
+    Test Class for IngestionJobCollection
+    """
+
+    def test_ingestion_job_collection_serialization(self):
+        """
+        Test serialization/deserialization for IngestionJobCollection
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        ingestion_job_csv_property_model = {}  # IngestionJobCsvProperty
+        ingestion_job_csv_property_model['encoding'] = 'utf-8'
+        ingestion_job_csv_property_model['escape_character'] = '|'
+        ingestion_job_csv_property_model['field_delimiter'] = ','
+        ingestion_job_csv_property_model['header'] = True
+        ingestion_job_csv_property_model['line_delimiter'] = '\\n'
+
+        ingestion_job_execute_config_model = {}  # IngestionJobExecuteConfig
+        ingestion_job_execute_config_model['driver_cores'] = 1
+        ingestion_job_execute_config_model['driver_memory'] = '2G'
+        ingestion_job_execute_config_model['executor_cores'] = 1
+        ingestion_job_execute_config_model['executor_memory'] = '2G'
+        ingestion_job_execute_config_model['num_executors'] = 1
+
+        ingestion_job_model = {}  # IngestionJob
+        ingestion_job_model['create_if_not_exist'] = False
+        ingestion_job_model['csv_property'] = ingestion_job_csv_property_model
+        ingestion_job_model['details'] = 'Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory'
+        ingestion_job_model['end_timestamp'] = '1685088775'
+        ingestion_job_model['engine_id'] = 'spark123'
+        ingestion_job_model['engine_name'] = 'sparkdemo'
+        ingestion_job_model['execute_config'] = ingestion_job_execute_config_model
+        ingestion_job_model['instance_id'] = '1684432229673971'
+        ingestion_job_model['job_id'] = 'ingestion-1699459946935'
+        ingestion_job_model['partition_by'] = 'col1, col2'
+        ingestion_job_model['schema'] = '{"type":"struct","schema-id":0,"fields":[{"id":1,"name":"ID","required":true,"type":"int"},{"id":2,"name":"Name","required":true,"type":"string"}]}'
+        ingestion_job_model['source_data_files'] = 's3://demobucket/data/yellow_tripdata_2022-01.parquet'
+        ingestion_job_model['source_file_type'] = 'csv'
+        ingestion_job_model['start_timestamp'] = '1685084455'
+        ingestion_job_model['status'] = 'running'
+        ingestion_job_model['target_table'] = 'demodb.test.targettable'
+        ingestion_job_model['username'] = 'ibmlhadmin'
+        ingestion_job_model['validate_csv_header'] = False
+
+        ingestion_job_collection_page_model = {}  # IngestionJobCollectionPage
+
+        # Construct a json representation of a IngestionJobCollection model
+        ingestion_job_collection_model_json = {}
+        ingestion_job_collection_model_json['ingestion_jobs'] = [ingestion_job_model]
+        ingestion_job_collection_model_json['first'] = ingestion_job_collection_page_model
+        ingestion_job_collection_model_json['next'] = ingestion_job_collection_page_model
+
+        # Construct a model instance of IngestionJobCollection by calling from_dict on the json representation
+        ingestion_job_collection_model = IngestionJobCollection.from_dict(ingestion_job_collection_model_json)
+        assert ingestion_job_collection_model != False
+
+        # Construct a model instance of IngestionJobCollection by calling from_dict on the json representation
+        ingestion_job_collection_model_dict = IngestionJobCollection.from_dict(ingestion_job_collection_model_json).__dict__
+        ingestion_job_collection_model2 = IngestionJobCollection(**ingestion_job_collection_model_dict)
+
+        # Verify the model instances are equivalent
+        assert ingestion_job_collection_model == ingestion_job_collection_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        ingestion_job_collection_model_json2 = ingestion_job_collection_model.to_dict()
+        assert ingestion_job_collection_model_json2 == ingestion_job_collection_model_json
+
+
+class TestModel_IngestionJobCollectionPage:
+    """
+    Test Class for IngestionJobCollectionPage
+    """
+
+    def test_ingestion_job_collection_page_serialization(self):
+        """
+        Test serialization/deserialization for IngestionJobCollectionPage
+        """
+
+        # Construct a json representation of a IngestionJobCollectionPage model
+        ingestion_job_collection_page_model_json = {}
+
+        # Construct a model instance of IngestionJobCollectionPage by calling from_dict on the json representation
+        ingestion_job_collection_page_model = IngestionJobCollectionPage.from_dict(ingestion_job_collection_page_model_json)
+        assert ingestion_job_collection_page_model != False
+
+        # Construct a model instance of IngestionJobCollectionPage by calling from_dict on the json representation
+        ingestion_job_collection_page_model_dict = IngestionJobCollectionPage.from_dict(ingestion_job_collection_page_model_json).__dict__
+        ingestion_job_collection_page_model2 = IngestionJobCollectionPage(**ingestion_job_collection_page_model_dict)
+
+        # Verify the model instances are equivalent
+        assert ingestion_job_collection_page_model == ingestion_job_collection_page_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        ingestion_job_collection_page_model_json2 = ingestion_job_collection_page_model.to_dict()
+        assert ingestion_job_collection_page_model_json2 == ingestion_job_collection_page_model_json
+
+
+class TestModel_IngestionJobCsvProperty:
+    """
+    Test Class for IngestionJobCsvProperty
+    """
+
+    def test_ingestion_job_csv_property_serialization(self):
+        """
+        Test serialization/deserialization for IngestionJobCsvProperty
+        """
+
+        # Construct a json representation of a IngestionJobCsvProperty model
+        ingestion_job_csv_property_model_json = {}
+        ingestion_job_csv_property_model_json['encoding'] = 'utf-8'
+        ingestion_job_csv_property_model_json['escape_character'] = '|'
+        ingestion_job_csv_property_model_json['field_delimiter'] = ','
+        ingestion_job_csv_property_model_json['header'] = True
+        ingestion_job_csv_property_model_json['line_delimiter'] = '\\n'
+
+        # Construct a model instance of IngestionJobCsvProperty by calling from_dict on the json representation
+        ingestion_job_csv_property_model = IngestionJobCsvProperty.from_dict(ingestion_job_csv_property_model_json)
+        assert ingestion_job_csv_property_model != False
+
+        # Construct a model instance of IngestionJobCsvProperty by calling from_dict on the json representation
+        ingestion_job_csv_property_model_dict = IngestionJobCsvProperty.from_dict(ingestion_job_csv_property_model_json).__dict__
+        ingestion_job_csv_property_model2 = IngestionJobCsvProperty(**ingestion_job_csv_property_model_dict)
+
+        # Verify the model instances are equivalent
+        assert ingestion_job_csv_property_model == ingestion_job_csv_property_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        ingestion_job_csv_property_model_json2 = ingestion_job_csv_property_model.to_dict()
+        assert ingestion_job_csv_property_model_json2 == ingestion_job_csv_property_model_json
+
+
+class TestModel_IngestionJobExecuteConfig:
+    """
+    Test Class for IngestionJobExecuteConfig
+    """
+
+    def test_ingestion_job_execute_config_serialization(self):
+        """
+        Test serialization/deserialization for IngestionJobExecuteConfig
+        """
+
+        # Construct a json representation of a IngestionJobExecuteConfig model
+        ingestion_job_execute_config_model_json = {}
+        ingestion_job_execute_config_model_json['driver_cores'] = 1
+        ingestion_job_execute_config_model_json['driver_memory'] = '2G'
+        ingestion_job_execute_config_model_json['executor_cores'] = 1
+        ingestion_job_execute_config_model_json['executor_memory'] = '2G'
+        ingestion_job_execute_config_model_json['num_executors'] = 1
+
+        # Construct a model instance of IngestionJobExecuteConfig by calling from_dict on the json representation
+        ingestion_job_execute_config_model = IngestionJobExecuteConfig.from_dict(ingestion_job_execute_config_model_json)
+        assert ingestion_job_execute_config_model != False
+
+        # Construct a model instance of IngestionJobExecuteConfig by calling from_dict on the json representation
+        ingestion_job_execute_config_model_dict = IngestionJobExecuteConfig.from_dict(ingestion_job_execute_config_model_json).__dict__
+        ingestion_job_execute_config_model2 = IngestionJobExecuteConfig(**ingestion_job_execute_config_model_dict)
+
+        # Verify the model instances are equivalent
+        assert ingestion_job_execute_config_model == ingestion_job_execute_config_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        ingestion_job_execute_config_model_json2 = ingestion_job_execute_config_model.to_dict()
+        assert ingestion_job_execute_config_model_json2 == ingestion_job_execute_config_model_json
 
 
 class TestModel_ListSchemasOKBody:
@@ -14361,6 +15502,46 @@ class TestModel_ListSchemasOKBody:
         # Convert model instance back to dict and verify no loss of data
         list_schemas_ok_body_model_json2 = list_schemas_ok_body_model.to_dict()
         assert list_schemas_ok_body_model_json2 == list_schemas_ok_body_model_json
+
+
+class TestModel_ListSparkVersionsOKBody:
+    """
+    Test Class for ListSparkVersionsOKBody
+    """
+
+    def test_list_spark_versions_ok_body_serialization(self):
+        """
+        Test serialization/deserialization for ListSparkVersionsOKBody
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        success_response_model = {}  # SuccessResponse
+        success_response_model['message'] = 'List spark versions'
+        success_response_model['message_code'] = 'success'
+
+        display_name_info_response_model = {}  # DisplayNameInfoResponse
+        display_name_info_response_model['display_name'] = '3.3'
+
+        # Construct a json representation of a ListSparkVersionsOKBody model
+        list_spark_versions_ok_body_model_json = {}
+        list_spark_versions_ok_body_model_json['response'] = success_response_model
+        list_spark_versions_ok_body_model_json['spark_versions'] = [display_name_info_response_model]
+
+        # Construct a model instance of ListSparkVersionsOKBody by calling from_dict on the json representation
+        list_spark_versions_ok_body_model = ListSparkVersionsOKBody.from_dict(list_spark_versions_ok_body_model_json)
+        assert list_spark_versions_ok_body_model != False
+
+        # Construct a model instance of ListSparkVersionsOKBody by calling from_dict on the json representation
+        list_spark_versions_ok_body_model_dict = ListSparkVersionsOKBody.from_dict(list_spark_versions_ok_body_model_json).__dict__
+        list_spark_versions_ok_body_model2 = ListSparkVersionsOKBody(**list_spark_versions_ok_body_model_dict)
+
+        # Verify the model instances are equivalent
+        assert list_spark_versions_ok_body_model == list_spark_versions_ok_body_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        list_spark_versions_ok_body_model_json2 = list_spark_versions_ok_body_model.to_dict()
+        assert list_spark_versions_ok_body_model_json2 == list_spark_versions_ok_body_model_json
 
 
 class TestModel_MilvusService:
@@ -14424,18 +15605,18 @@ class TestModel_MilvusServiceCollection:
         milvus_service_model['actions'] = ['update', 'delete']
         milvus_service_model['created_by'] = 'username@domain.com'
         milvus_service_model['created_on'] = 1700201877
-        milvus_service_model['description'] = 'milvus service for running sql queries'
-        milvus_service_model['grpc_host'] = 'example.grpc.host'
+        milvus_service_model['description'] = 'description'
+        milvus_service_model['grpc_host'] = '<formation_id>.<kubernetes_cluster>.databases.appdomain.cloud'
         milvus_service_model['grpc_port'] = 31501
-        milvus_service_model['host_name'] = '<formation_id>.<kubernetes_cluster>.databases.appdomain.cloud'
-        milvus_service_model['https_host'] = 'example.https.host'
+        milvus_service_model['host_name'] = 'sampleMilvus'
+        milvus_service_model['https_host'] = '<formation_id>.<kubernetes_cluster>.databases.appdomain.cloud'
         milvus_service_model['https_port'] = 31012
         milvus_service_model['origin'] = 'native'
         milvus_service_model['service_display_name'] = 'test-milvus'
         milvus_service_model['service_id'] = 'milvus76'
         milvus_service_model['status'] = 'running'
         milvus_service_model['status_code'] = 11
-        milvus_service_model['tags'] = ['tag1', 'tag2']
+        milvus_service_model['tags'] = []
         milvus_service_model['type'] = 'milvus'
 
         # Construct a json representation of a MilvusServiceCollection model
@@ -14447,9 +15628,7 @@ class TestModel_MilvusServiceCollection:
         assert milvus_service_collection_model != False
 
         # Construct a model instance of MilvusServiceCollection by calling from_dict on the json representation
-        milvus_service_collection_model_dict = MilvusServiceCollection.from_dict(
-            milvus_service_collection_model_json
-        ).__dict__
+        milvus_service_collection_model_dict = MilvusServiceCollection.from_dict(milvus_service_collection_model_json).__dict__
         milvus_service_collection_model2 = MilvusServiceCollection(**milvus_service_collection_model_dict)
 
         # Verify the model instances are equivalent
@@ -14458,6 +15637,38 @@ class TestModel_MilvusServiceCollection:
         # Convert model instance back to dict and verify no loss of data
         milvus_service_collection_model_json2 = milvus_service_collection_model.to_dict()
         assert milvus_service_collection_model_json2 == milvus_service_collection_model_json
+
+
+class TestModel_MilvusServicePatch:
+    """
+    Test Class for MilvusServicePatch
+    """
+
+    def test_milvus_service_patch_serialization(self):
+        """
+        Test serialization/deserialization for MilvusServicePatch
+        """
+
+        # Construct a json representation of a MilvusServicePatch model
+        milvus_service_patch_model_json = {}
+        milvus_service_patch_model_json['description'] = 'updated description for milvus service'
+        milvus_service_patch_model_json['service_display_name'] = 'sampleService'
+        milvus_service_patch_model_json['tags'] = ['tag1', 'tag2']
+
+        # Construct a model instance of MilvusServicePatch by calling from_dict on the json representation
+        milvus_service_patch_model = MilvusServicePatch.from_dict(milvus_service_patch_model_json)
+        assert milvus_service_patch_model != False
+
+        # Construct a model instance of MilvusServicePatch by calling from_dict on the json representation
+        milvus_service_patch_model_dict = MilvusServicePatch.from_dict(milvus_service_patch_model_json).__dict__
+        milvus_service_patch_model2 = MilvusServicePatch(**milvus_service_patch_model_dict)
+
+        # Verify the model instances are equivalent
+        assert milvus_service_patch_model == milvus_service_patch_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        milvus_service_patch_model_json2 = milvus_service_patch_model.to_dict()
+        assert milvus_service_patch_model_json2 == milvus_service_patch_model_json
 
 
 class TestModel_NetezzaEngine:
@@ -14550,9 +15761,7 @@ class TestModel_NetezzaEngineCollection:
         assert netezza_engine_collection_model != False
 
         # Construct a model instance of NetezzaEngineCollection by calling from_dict on the json representation
-        netezza_engine_collection_model_dict = NetezzaEngineCollection.from_dict(
-            netezza_engine_collection_model_json
-        ).__dict__
+        netezza_engine_collection_model_dict = NetezzaEngineCollection.from_dict(netezza_engine_collection_model_json).__dict__
         netezza_engine_collection_model2 = NetezzaEngineCollection(**netezza_engine_collection_model_dict)
 
         # Verify the model instances are equivalent
@@ -14613,9 +15822,7 @@ class TestModel_NetezzaEngineDetailsBody:
         assert netezza_engine_details_body_model != False
 
         # Construct a model instance of NetezzaEngineDetailsBody by calling from_dict on the json representation
-        netezza_engine_details_body_model_dict = NetezzaEngineDetailsBody.from_dict(
-            netezza_engine_details_body_model_json
-        ).__dict__
+        netezza_engine_details_body_model_dict = NetezzaEngineDetailsBody.from_dict(netezza_engine_details_body_model_json).__dict__
         netezza_engine_details_body_model2 = NetezzaEngineDetailsBody(**netezza_engine_details_body_model_dict)
 
         # Verify the model instances are equivalent
@@ -14624,6 +15831,38 @@ class TestModel_NetezzaEngineDetailsBody:
         # Convert model instance back to dict and verify no loss of data
         netezza_engine_details_body_model_json2 = netezza_engine_details_body_model.to_dict()
         assert netezza_engine_details_body_model_json2 == netezza_engine_details_body_model_json
+
+
+class TestModel_NetezzaEnginePatch:
+    """
+    Test Class for NetezzaEnginePatch
+    """
+
+    def test_netezza_engine_patch_serialization(self):
+        """
+        Test serialization/deserialization for NetezzaEnginePatch
+        """
+
+        # Construct a json representation of a NetezzaEnginePatch model
+        netezza_engine_patch_model_json = {}
+        netezza_engine_patch_model_json['description'] = 'netezza engine updated description'
+        netezza_engine_patch_model_json['engine_display_name'] = 'sampleEngine'
+        netezza_engine_patch_model_json['tags'] = ['tag1', 'tag2']
+
+        # Construct a model instance of NetezzaEnginePatch by calling from_dict on the json representation
+        netezza_engine_patch_model = NetezzaEnginePatch.from_dict(netezza_engine_patch_model_json)
+        assert netezza_engine_patch_model != False
+
+        # Construct a model instance of NetezzaEnginePatch by calling from_dict on the json representation
+        netezza_engine_patch_model_dict = NetezzaEnginePatch.from_dict(netezza_engine_patch_model_json).__dict__
+        netezza_engine_patch_model2 = NetezzaEnginePatch(**netezza_engine_patch_model_dict)
+
+        # Verify the model instances are equivalent
+        assert netezza_engine_patch_model == netezza_engine_patch_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        netezza_engine_patch_model_json2 = netezza_engine_patch_model.to_dict()
+        assert netezza_engine_patch_model_json2 == netezza_engine_patch_model_json
 
 
 class TestModel_NodeDescription:
@@ -14778,9 +16017,7 @@ class TestModel_OtherEngineCollection:
         assert other_engine_collection_model != False
 
         # Construct a model instance of OtherEngineCollection by calling from_dict on the json representation
-        other_engine_collection_model_dict = OtherEngineCollection.from_dict(
-            other_engine_collection_model_json
-        ).__dict__
+        other_engine_collection_model_dict = OtherEngineCollection.from_dict(other_engine_collection_model_json).__dict__
         other_engine_collection_model2 = OtherEngineCollection(**other_engine_collection_model_dict)
 
         # Verify the model instances are equivalent
@@ -14843,9 +16080,7 @@ class TestModel_OtherEngineDetailsBody:
         assert other_engine_details_body_model != False
 
         # Construct a model instance of OtherEngineDetailsBody by calling from_dict on the json representation
-        other_engine_details_body_model_dict = OtherEngineDetailsBody.from_dict(
-            other_engine_details_body_model_json
-        ).__dict__
+        other_engine_details_body_model_dict = OtherEngineDetailsBody.from_dict(other_engine_details_body_model_json).__dict__
         other_engine_details_body_model2 = OtherEngineDetailsBody(**other_engine_details_body_model_dict)
 
         # Verify the model instances are equivalent
@@ -14868,23 +16103,13 @@ class TestModel_PrestissimoEndpoints:
 
         # Construct a json representation of a PrestissimoEndpoints model
         prestissimo_endpoints_model_json = {}
-        prestissimo_endpoints_model_json[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        prestissimo_endpoints_model_json[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
+        prestissimo_endpoints_model_json['applications_api'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
+        prestissimo_endpoints_model_json['history_server_endpoint'] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
         prestissimo_endpoints_model_json['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        prestissimo_endpoints_model_json[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        prestissimo_endpoints_model_json[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
+        prestissimo_endpoints_model_json['spark_jobs_v4_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
+        prestissimo_endpoints_model_json['spark_kernel_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
         prestissimo_endpoints_model_json['view_history_server'] = 'testString'
-        prestissimo_endpoints_model_json[
-            'wxd_application_endpoint'
-        ] = '$HOST/v1/1698311655308796/engines/spark817/applications'
+        prestissimo_endpoints_model_json['wxd_application_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications'
 
         # Construct a model instance of PrestissimoEndpoints by calling from_dict on the json representation
         prestissimo_endpoints_model = PrestissimoEndpoints.from_dict(prestissimo_endpoints_model_json)
@@ -14919,23 +16144,13 @@ class TestModel_PrestissimoEngine:
         prestissimo_node_description_body_model['quantity'] = 1
 
         prestissimo_endpoints_model = {}  # PrestissimoEndpoints
-        prestissimo_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        prestissimo_endpoints_model[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
+        prestissimo_endpoints_model['applications_api'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
+        prestissimo_endpoints_model['history_server_endpoint'] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
         prestissimo_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        prestissimo_endpoints_model[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        prestissimo_endpoints_model[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
+        prestissimo_endpoints_model['spark_jobs_v4_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
+        prestissimo_endpoints_model['spark_kernel_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
         prestissimo_endpoints_model['view_history_server'] = 'testString'
-        prestissimo_endpoints_model[
-            'wxd_application_endpoint'
-        ] = '$HOST/v1/1698311655308796/engines/spark817/applications'
+        prestissimo_endpoints_model['wxd_application_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications'
 
         prestissimo_engine_details_model = {}  # PrestissimoEngineDetails
         prestissimo_engine_details_model['api_key'] = '<api_key>'
@@ -14947,6 +16162,39 @@ class TestModel_PrestissimoEngine:
         prestissimo_engine_details_model['metastore_host'] = '1.2.3.4'
         prestissimo_engine_details_model['size_config'] = 'starter'
         prestissimo_engine_details_model['worker'] = prestissimo_node_description_body_model
+
+        prestissimo_engine_properties_catalog_model = {}  # PrestissimoEnginePropertiesCatalog
+        prestissimo_engine_properties_catalog_model['catalog_name'] = ['testString']
+
+        engine_properties_oai_gen_configuration_model = {}  # EnginePropertiesOaiGenConfiguration
+        engine_properties_oai_gen_configuration_model['coordinator'] = prestissimo_node_description_body_model
+        engine_properties_oai_gen_configuration_model['worker'] = prestissimo_node_description_body_model
+
+        prestissimo_engine_properties_velox_model = {}  # PrestissimoEnginePropertiesVelox
+        prestissimo_engine_properties_velox_model['velox_property'] = ['testString']
+
+        node_description_body_model = {}  # NodeDescriptionBody
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        prestissimo_engine_properties_oai_gen1_jvm_model = {}  # PrestissimoEnginePropertiesOaiGen1Jvm
+        prestissimo_engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+
+        prestissimo_engine_engine_properties_model = {}  # PrestissimoEngineEngineProperties
+        prestissimo_engine_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
+        prestissimo_engine_engine_properties_model['configuration'] = engine_properties_oai_gen_configuration_model
+        prestissimo_engine_engine_properties_model['velox'] = prestissimo_engine_properties_velox_model
+        prestissimo_engine_engine_properties_model['jvm'] = prestissimo_engine_properties_oai_gen1_jvm_model
+
+        remove_engine_properties_configuration_model = {}  # RemoveEnginePropertiesConfiguration
+        remove_engine_properties_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_configuration_model['worker'] = ['testString']
+
+        remove_engine_properties_model = {}  # RemoveEngineProperties
+        remove_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
+        remove_engine_properties_model['configuration'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['velox'] = ['testString']
 
         # Construct a json representation of a PrestissimoEngine model
         prestissimo_engine_model_json = {}
@@ -14960,12 +16208,15 @@ class TestModel_PrestissimoEngine:
         prestissimo_engine_model_json['engine_details'] = prestissimo_engine_details_model
         prestissimo_engine_model_json['engine_display_name'] = 'sampleEngine'
         prestissimo_engine_model_json['engine_id'] = 'sampleEngine123'
+        prestissimo_engine_model_json['engine_properties'] = prestissimo_engine_engine_properties_model
+        prestissimo_engine_model_json['engine_restart'] = 'force'
         prestissimo_engine_model_json['external_host_name'] = 'your-hostname.apps.your-domain.com'
         prestissimo_engine_model_json['group_id'] = 'new_group_id'
         prestissimo_engine_model_json['host_name'] = 'xyz-prestissimo-01-prestissimo-svc'
         prestissimo_engine_model_json['origin'] = 'native'
         prestissimo_engine_model_json['port'] = 38
         prestissimo_engine_model_json['region'] = 'us-south'
+        prestissimo_engine_model_json['remove_engine_properties'] = remove_engine_properties_model
         prestissimo_engine_model_json['size_config'] = 'starter'
         prestissimo_engine_model_json['status'] = 'running'
         prestissimo_engine_model_json['status_code'] = 38
@@ -15007,23 +16258,13 @@ class TestModel_PrestissimoEngineCollection:
         prestissimo_node_description_body_model['quantity'] = 1
 
         prestissimo_endpoints_model = {}  # PrestissimoEndpoints
-        prestissimo_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        prestissimo_endpoints_model[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
+        prestissimo_endpoints_model['applications_api'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
+        prestissimo_endpoints_model['history_server_endpoint'] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
         prestissimo_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        prestissimo_endpoints_model[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        prestissimo_endpoints_model[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
+        prestissimo_endpoints_model['spark_jobs_v4_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
+        prestissimo_endpoints_model['spark_kernel_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
         prestissimo_endpoints_model['view_history_server'] = 'testString'
-        prestissimo_endpoints_model[
-            'wxd_application_endpoint'
-        ] = '$HOST/v1/1698311655308796/engines/spark817/applications'
+        prestissimo_endpoints_model['wxd_application_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications'
 
         prestissimo_engine_details_model = {}  # PrestissimoEngineDetails
         prestissimo_engine_details_model['api_key'] = '<api_key>'
@@ -15036,24 +16277,41 @@ class TestModel_PrestissimoEngineCollection:
         prestissimo_engine_details_model['size_config'] = 'starter'
         prestissimo_engine_details_model['worker'] = prestissimo_node_description_body_model
 
+        prestissimo_engine_properties_catalog_model = {}  # PrestissimoEnginePropertiesCatalog
+        prestissimo_engine_properties_catalog_model['catalog_name'] = ['testString']
+
+        engine_properties_oai_gen_configuration_model = {}  # EnginePropertiesOaiGenConfiguration
+        engine_properties_oai_gen_configuration_model['coordinator'] = prestissimo_node_description_body_model
+        engine_properties_oai_gen_configuration_model['worker'] = prestissimo_node_description_body_model
+
+        prestissimo_engine_properties_velox_model = {}  # PrestissimoEnginePropertiesVelox
+        prestissimo_engine_properties_velox_model['velox_property'] = ['testString']
+
+        node_description_body_model = {}  # NodeDescriptionBody
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        prestissimo_engine_properties_oai_gen1_jvm_model = {}  # PrestissimoEnginePropertiesOaiGen1Jvm
+        prestissimo_engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+
+        prestissimo_engine_engine_properties_model = {}  # PrestissimoEngineEngineProperties
+        prestissimo_engine_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
+        prestissimo_engine_engine_properties_model['configuration'] = engine_properties_oai_gen_configuration_model
+        prestissimo_engine_engine_properties_model['velox'] = prestissimo_engine_properties_velox_model
+        prestissimo_engine_engine_properties_model['jvm'] = prestissimo_engine_properties_oai_gen1_jvm_model
+
+        remove_engine_properties_configuration_model = {}  # RemoveEnginePropertiesConfiguration
+        remove_engine_properties_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_configuration_model['worker'] = ['testString']
+
+        remove_engine_properties_model = {}  # RemoveEngineProperties
+        remove_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
+        remove_engine_properties_model['configuration'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['velox'] = ['testString']
+
         prestissimo_engine_model = {}  # PrestissimoEngine
-        prestissimo_engine_model['actions'] = [
-            'view',
-            'use',
-            'update',
-            'select',
-            'access_ui',
-            'associate',
-            'disassociate',
-            'restart',
-            'pause',
-            'resume',
-            'grant',
-            'revoke',
-            'delete',
-            'create',
-            'scale',
-        ]
+        prestissimo_engine_model['actions'] = ['view', 'use', 'update', 'select', 'access_ui', 'associate', 'disassociate', 'restart', 'pause', 'resume', 'grant', 'revoke', 'delete', 'create', 'scale']
         prestissimo_engine_model['associated_catalogs'] = ['hive_data']
         prestissimo_engine_model['build_version'] = '1.1.0.0.0'
         prestissimo_engine_model['coordinator'] = prestissimo_node_description_body_model
@@ -15063,12 +16321,15 @@ class TestModel_PrestissimoEngineCollection:
         prestissimo_engine_model['engine_details'] = prestissimo_engine_details_model
         prestissimo_engine_model['engine_display_name'] = 'starter'
         prestissimo_engine_model['engine_id'] = 'prestissimo511'
+        prestissimo_engine_model['engine_properties'] = prestissimo_engine_engine_properties_model
+        prestissimo_engine_model['engine_restart'] = 'force'
         prestissimo_engine_model['external_host_name'] = 'your-hostname.apps.your-domain.com'
         prestissimo_engine_model['group_id'] = 'prestissimo511'
         prestissimo_engine_model['host_name'] = '1234-xyz456-abc4321.databases.appdomain.cloud'
         prestissimo_engine_model['origin'] = 'native'
         prestissimo_engine_model['port'] = 30156
         prestissimo_engine_model['region'] = 'us-south'
+        prestissimo_engine_model['remove_engine_properties'] = remove_engine_properties_model
         prestissimo_engine_model['size_config'] = 'starter'
         prestissimo_engine_model['status'] = 'running'
         prestissimo_engine_model['status_code'] = 0
@@ -15082,15 +16343,11 @@ class TestModel_PrestissimoEngineCollection:
         prestissimo_engine_collection_model_json['prestissimo_engines'] = [prestissimo_engine_model]
 
         # Construct a model instance of PrestissimoEngineCollection by calling from_dict on the json representation
-        prestissimo_engine_collection_model = PrestissimoEngineCollection.from_dict(
-            prestissimo_engine_collection_model_json
-        )
+        prestissimo_engine_collection_model = PrestissimoEngineCollection.from_dict(prestissimo_engine_collection_model_json)
         assert prestissimo_engine_collection_model != False
 
         # Construct a model instance of PrestissimoEngineCollection by calling from_dict on the json representation
-        prestissimo_engine_collection_model_dict = PrestissimoEngineCollection.from_dict(
-            prestissimo_engine_collection_model_json
-        ).__dict__
+        prestissimo_engine_collection_model_dict = PrestissimoEngineCollection.from_dict(prestissimo_engine_collection_model_json).__dict__
         prestissimo_engine_collection_model2 = PrestissimoEngineCollection(**prestissimo_engine_collection_model_dict)
 
         # Verify the model instances are equivalent
@@ -15118,23 +16375,13 @@ class TestModel_PrestissimoEngineDetails:
         prestissimo_node_description_body_model['quantity'] = 38
 
         prestissimo_endpoints_model = {}  # PrestissimoEndpoints
-        prestissimo_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        prestissimo_endpoints_model[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
+        prestissimo_endpoints_model['applications_api'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
+        prestissimo_endpoints_model['history_server_endpoint'] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
         prestissimo_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        prestissimo_endpoints_model[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        prestissimo_endpoints_model[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
+        prestissimo_endpoints_model['spark_jobs_v4_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
+        prestissimo_endpoints_model['spark_kernel_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
         prestissimo_endpoints_model['view_history_server'] = 'testString'
-        prestissimo_endpoints_model[
-            'wxd_application_endpoint'
-        ] = '$HOST/v1/1698311655308796/engines/spark817/applications'
+        prestissimo_endpoints_model['wxd_application_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications'
 
         # Construct a json representation of a PrestissimoEngineDetails model
         prestissimo_engine_details_model_json = {}
@@ -15153,9 +16400,7 @@ class TestModel_PrestissimoEngineDetails:
         assert prestissimo_engine_details_model != False
 
         # Construct a model instance of PrestissimoEngineDetails by calling from_dict on the json representation
-        prestissimo_engine_details_model_dict = PrestissimoEngineDetails.from_dict(
-            prestissimo_engine_details_model_json
-        ).__dict__
+        prestissimo_engine_details_model_dict = PrestissimoEngineDetails.from_dict(prestissimo_engine_details_model_json).__dict__
         prestissimo_engine_details_model2 = PrestissimoEngineDetails(**prestissimo_engine_details_model_dict)
 
         # Verify the model instances are equivalent
@@ -15164,6 +16409,232 @@ class TestModel_PrestissimoEngineDetails:
         # Convert model instance back to dict and verify no loss of data
         prestissimo_engine_details_model_json2 = prestissimo_engine_details_model.to_dict()
         assert prestissimo_engine_details_model_json2 == prestissimo_engine_details_model_json
+
+
+class TestModel_PrestissimoEngineEngineProperties:
+    """
+    Test Class for PrestissimoEngineEngineProperties
+    """
+
+    def test_prestissimo_engine_engine_properties_serialization(self):
+        """
+        Test serialization/deserialization for PrestissimoEngineEngineProperties
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        prestissimo_engine_properties_catalog_model = {}  # PrestissimoEnginePropertiesCatalog
+        prestissimo_engine_properties_catalog_model['catalog_name'] = ['testString']
+
+        prestissimo_node_description_body_model = {}  # PrestissimoNodeDescriptionBody
+        prestissimo_node_description_body_model['node_type'] = 'worker'
+        prestissimo_node_description_body_model['quantity'] = 38
+
+        engine_properties_oai_gen_configuration_model = {}  # EnginePropertiesOaiGenConfiguration
+        engine_properties_oai_gen_configuration_model['coordinator'] = prestissimo_node_description_body_model
+        engine_properties_oai_gen_configuration_model['worker'] = prestissimo_node_description_body_model
+
+        prestissimo_engine_properties_velox_model = {}  # PrestissimoEnginePropertiesVelox
+        prestissimo_engine_properties_velox_model['velox_property'] = ['testString']
+
+        node_description_body_model = {}  # NodeDescriptionBody
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        prestissimo_engine_properties_oai_gen1_jvm_model = {}  # PrestissimoEnginePropertiesOaiGen1Jvm
+        prestissimo_engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+
+        # Construct a json representation of a PrestissimoEngineEngineProperties model
+        prestissimo_engine_engine_properties_model_json = {}
+        prestissimo_engine_engine_properties_model_json['catalog'] = prestissimo_engine_properties_catalog_model
+        prestissimo_engine_engine_properties_model_json['configuration'] = engine_properties_oai_gen_configuration_model
+        prestissimo_engine_engine_properties_model_json['velox'] = prestissimo_engine_properties_velox_model
+        prestissimo_engine_engine_properties_model_json['jvm'] = prestissimo_engine_properties_oai_gen1_jvm_model
+
+        # Construct a model instance of PrestissimoEngineEngineProperties by calling from_dict on the json representation
+        prestissimo_engine_engine_properties_model = PrestissimoEngineEngineProperties.from_dict(prestissimo_engine_engine_properties_model_json)
+        assert prestissimo_engine_engine_properties_model != False
+
+        # Construct a model instance of PrestissimoEngineEngineProperties by calling from_dict on the json representation
+        prestissimo_engine_engine_properties_model_dict = PrestissimoEngineEngineProperties.from_dict(prestissimo_engine_engine_properties_model_json).__dict__
+        prestissimo_engine_engine_properties_model2 = PrestissimoEngineEngineProperties(**prestissimo_engine_engine_properties_model_dict)
+
+        # Verify the model instances are equivalent
+        assert prestissimo_engine_engine_properties_model == prestissimo_engine_engine_properties_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        prestissimo_engine_engine_properties_model_json2 = prestissimo_engine_engine_properties_model.to_dict()
+        assert prestissimo_engine_engine_properties_model_json2 == prestissimo_engine_engine_properties_model_json
+
+
+class TestModel_PrestissimoEnginePatch:
+    """
+    Test Class for PrestissimoEnginePatch
+    """
+
+    def test_prestissimo_engine_patch_serialization(self):
+        """
+        Test serialization/deserialization for PrestissimoEnginePatch
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        prestissimo_engine_properties_catalog_model = {}  # PrestissimoEnginePropertiesCatalog
+        prestissimo_engine_properties_catalog_model['catalog_name'] = ['testString']
+
+        prestissimo_node_description_body_model = {}  # PrestissimoNodeDescriptionBody
+        prestissimo_node_description_body_model['node_type'] = 'worker'
+        prestissimo_node_description_body_model['quantity'] = 38
+
+        engine_properties_oai_gen_configuration_model = {}  # EnginePropertiesOaiGenConfiguration
+        engine_properties_oai_gen_configuration_model['coordinator'] = prestissimo_node_description_body_model
+        engine_properties_oai_gen_configuration_model['worker'] = prestissimo_node_description_body_model
+
+        prestissimo_engine_properties_velox_model = {}  # PrestissimoEnginePropertiesVelox
+        prestissimo_engine_properties_velox_model['velox_property'] = ['testString']
+
+        node_description_body_model = {}  # NodeDescriptionBody
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        prestissimo_engine_properties_oai_gen1_jvm_model = {}  # PrestissimoEnginePropertiesOaiGen1Jvm
+        prestissimo_engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+
+        prestissimo_engine_engine_properties_model = {}  # PrestissimoEngineEngineProperties
+        prestissimo_engine_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
+        prestissimo_engine_engine_properties_model['configuration'] = engine_properties_oai_gen_configuration_model
+        prestissimo_engine_engine_properties_model['velox'] = prestissimo_engine_properties_velox_model
+        prestissimo_engine_engine_properties_model['jvm'] = prestissimo_engine_properties_oai_gen1_jvm_model
+
+        remove_engine_properties_configuration_model = {}  # RemoveEnginePropertiesConfiguration
+        remove_engine_properties_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_configuration_model['worker'] = ['testString']
+
+        remove_engine_properties_model = {}  # RemoveEngineProperties
+        remove_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
+        remove_engine_properties_model['configuration'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['velox'] = ['testString']
+
+        # Construct a json representation of a PrestissimoEnginePatch model
+        prestissimo_engine_patch_model_json = {}
+        prestissimo_engine_patch_model_json['description'] = 'updated description for prestissimo engine'
+        prestissimo_engine_patch_model_json['engine_display_name'] = 'sampleEngine'
+        prestissimo_engine_patch_model_json['engine_properties'] = prestissimo_engine_engine_properties_model
+        prestissimo_engine_patch_model_json['engine_restart'] = 'force'
+        prestissimo_engine_patch_model_json['remove_engine_properties'] = remove_engine_properties_model
+        prestissimo_engine_patch_model_json['tags'] = ['tag1', 'tag2']
+
+        # Construct a model instance of PrestissimoEnginePatch by calling from_dict on the json representation
+        prestissimo_engine_patch_model = PrestissimoEnginePatch.from_dict(prestissimo_engine_patch_model_json)
+        assert prestissimo_engine_patch_model != False
+
+        # Construct a model instance of PrestissimoEnginePatch by calling from_dict on the json representation
+        prestissimo_engine_patch_model_dict = PrestissimoEnginePatch.from_dict(prestissimo_engine_patch_model_json).__dict__
+        prestissimo_engine_patch_model2 = PrestissimoEnginePatch(**prestissimo_engine_patch_model_dict)
+
+        # Verify the model instances are equivalent
+        assert prestissimo_engine_patch_model == prestissimo_engine_patch_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        prestissimo_engine_patch_model_json2 = prestissimo_engine_patch_model.to_dict()
+        assert prestissimo_engine_patch_model_json2 == prestissimo_engine_patch_model_json
+
+
+class TestModel_PrestissimoEnginePropertiesCatalog:
+    """
+    Test Class for PrestissimoEnginePropertiesCatalog
+    """
+
+    def test_prestissimo_engine_properties_catalog_serialization(self):
+        """
+        Test serialization/deserialization for PrestissimoEnginePropertiesCatalog
+        """
+
+        # Construct a json representation of a PrestissimoEnginePropertiesCatalog model
+        prestissimo_engine_properties_catalog_model_json = {}
+        prestissimo_engine_properties_catalog_model_json['catalog_name'] = ['testString']
+
+        # Construct a model instance of PrestissimoEnginePropertiesCatalog by calling from_dict on the json representation
+        prestissimo_engine_properties_catalog_model = PrestissimoEnginePropertiesCatalog.from_dict(prestissimo_engine_properties_catalog_model_json)
+        assert prestissimo_engine_properties_catalog_model != False
+
+        # Construct a model instance of PrestissimoEnginePropertiesCatalog by calling from_dict on the json representation
+        prestissimo_engine_properties_catalog_model_dict = PrestissimoEnginePropertiesCatalog.from_dict(prestissimo_engine_properties_catalog_model_json).__dict__
+        prestissimo_engine_properties_catalog_model2 = PrestissimoEnginePropertiesCatalog(**prestissimo_engine_properties_catalog_model_dict)
+
+        # Verify the model instances are equivalent
+        assert prestissimo_engine_properties_catalog_model == prestissimo_engine_properties_catalog_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        prestissimo_engine_properties_catalog_model_json2 = prestissimo_engine_properties_catalog_model.to_dict()
+        assert prestissimo_engine_properties_catalog_model_json2 == prestissimo_engine_properties_catalog_model_json
+
+
+class TestModel_PrestissimoEnginePropertiesOaiGen1Jvm:
+    """
+    Test Class for PrestissimoEnginePropertiesOaiGen1Jvm
+    """
+
+    def test_prestissimo_engine_properties_oai_gen1_jvm_serialization(self):
+        """
+        Test serialization/deserialization for PrestissimoEnginePropertiesOaiGen1Jvm
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        node_description_body_model = {}  # NodeDescriptionBody
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        # Construct a json representation of a PrestissimoEnginePropertiesOaiGen1Jvm model
+        prestissimo_engine_properties_oai_gen1_jvm_model_json = {}
+        prestissimo_engine_properties_oai_gen1_jvm_model_json['coordinator'] = node_description_body_model
+
+        # Construct a model instance of PrestissimoEnginePropertiesOaiGen1Jvm by calling from_dict on the json representation
+        prestissimo_engine_properties_oai_gen1_jvm_model = PrestissimoEnginePropertiesOaiGen1Jvm.from_dict(prestissimo_engine_properties_oai_gen1_jvm_model_json)
+        assert prestissimo_engine_properties_oai_gen1_jvm_model != False
+
+        # Construct a model instance of PrestissimoEnginePropertiesOaiGen1Jvm by calling from_dict on the json representation
+        prestissimo_engine_properties_oai_gen1_jvm_model_dict = PrestissimoEnginePropertiesOaiGen1Jvm.from_dict(prestissimo_engine_properties_oai_gen1_jvm_model_json).__dict__
+        prestissimo_engine_properties_oai_gen1_jvm_model2 = PrestissimoEnginePropertiesOaiGen1Jvm(**prestissimo_engine_properties_oai_gen1_jvm_model_dict)
+
+        # Verify the model instances are equivalent
+        assert prestissimo_engine_properties_oai_gen1_jvm_model == prestissimo_engine_properties_oai_gen1_jvm_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        prestissimo_engine_properties_oai_gen1_jvm_model_json2 = prestissimo_engine_properties_oai_gen1_jvm_model.to_dict()
+        assert prestissimo_engine_properties_oai_gen1_jvm_model_json2 == prestissimo_engine_properties_oai_gen1_jvm_model_json
+
+
+class TestModel_PrestissimoEnginePropertiesVelox:
+    """
+    Test Class for PrestissimoEnginePropertiesVelox
+    """
+
+    def test_prestissimo_engine_properties_velox_serialization(self):
+        """
+        Test serialization/deserialization for PrestissimoEnginePropertiesVelox
+        """
+
+        # Construct a json representation of a PrestissimoEnginePropertiesVelox model
+        prestissimo_engine_properties_velox_model_json = {}
+        prestissimo_engine_properties_velox_model_json['velox_property'] = ['testString']
+
+        # Construct a model instance of PrestissimoEnginePropertiesVelox by calling from_dict on the json representation
+        prestissimo_engine_properties_velox_model = PrestissimoEnginePropertiesVelox.from_dict(prestissimo_engine_properties_velox_model_json)
+        assert prestissimo_engine_properties_velox_model != False
+
+        # Construct a model instance of PrestissimoEnginePropertiesVelox by calling from_dict on the json representation
+        prestissimo_engine_properties_velox_model_dict = PrestissimoEnginePropertiesVelox.from_dict(prestissimo_engine_properties_velox_model_json).__dict__
+        prestissimo_engine_properties_velox_model2 = PrestissimoEnginePropertiesVelox(**prestissimo_engine_properties_velox_model_dict)
+
+        # Verify the model instances are equivalent
+        assert prestissimo_engine_properties_velox_model == prestissimo_engine_properties_velox_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        prestissimo_engine_properties_velox_model_json2 = prestissimo_engine_properties_velox_model.to_dict()
+        assert prestissimo_engine_properties_velox_model_json2 == prestissimo_engine_properties_velox_model_json
 
 
 class TestModel_PrestissimoNodeDescriptionBody:
@@ -15182,18 +16653,12 @@ class TestModel_PrestissimoNodeDescriptionBody:
         prestissimo_node_description_body_model_json['quantity'] = 38
 
         # Construct a model instance of PrestissimoNodeDescriptionBody by calling from_dict on the json representation
-        prestissimo_node_description_body_model = PrestissimoNodeDescriptionBody.from_dict(
-            prestissimo_node_description_body_model_json
-        )
+        prestissimo_node_description_body_model = PrestissimoNodeDescriptionBody.from_dict(prestissimo_node_description_body_model_json)
         assert prestissimo_node_description_body_model != False
 
         # Construct a model instance of PrestissimoNodeDescriptionBody by calling from_dict on the json representation
-        prestissimo_node_description_body_model_dict = PrestissimoNodeDescriptionBody.from_dict(
-            prestissimo_node_description_body_model_json
-        ).__dict__
-        prestissimo_node_description_body_model2 = PrestissimoNodeDescriptionBody(
-            **prestissimo_node_description_body_model_dict
-        )
+        prestissimo_node_description_body_model_dict = PrestissimoNodeDescriptionBody.from_dict(prestissimo_node_description_body_model_json).__dict__
+        prestissimo_node_description_body_model2 = PrestissimoNodeDescriptionBody(**prestissimo_node_description_body_model_dict)
 
         # Verify the model instances are equivalent
         assert prestissimo_node_description_body_model == prestissimo_node_description_body_model2
@@ -15219,6 +16684,12 @@ class TestModel_PrestoEngine:
         node_description_model['node_type'] = 'bx2.4x16'
         node_description_model['quantity'] = 1
 
+        driver_model = {}  # Driver
+        driver_model['connection_type'] = 'saphana'
+        driver_model['driver_id'] = 'saphanadriver123'
+        driver_model['driver_name'] = 'saphanadriver-1.2.3'
+        driver_model['driver_version'] = '1.2.3'
+
         node_description_body_model = {}  # NodeDescriptionBody
         node_description_body_model['node_type'] = 'worker'
         node_description_body_model['quantity'] = 38
@@ -15232,6 +16703,39 @@ class TestModel_PrestoEngine:
         engine_details_body_model['size_config'] = 'starter'
         engine_details_body_model['worker'] = node_description_body_model
 
+        presto_engine_properties_catalog_model = {}  # PrestoEnginePropertiesCatalog
+        presto_engine_properties_catalog_model['catalog_name'] = 'testString'
+
+        engine_properties_oai_gen1_configuration_model = {}  # EnginePropertiesOaiGen1Configuration
+        engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
+
+        presto_engine_properties_global_model = {}  # PrestoEnginePropertiesGlobal
+        presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
+
+        engine_properties_oai_gen1_jvm_model = {}  # EnginePropertiesOaiGen1Jvm
+        engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
+
+        presto_engine_engine_properties_model = {}  # PrestoEngineEngineProperties
+        presto_engine_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_engine_properties_model['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model['global'] = presto_engine_properties_global_model
+        presto_engine_engine_properties_model['jvm'] = engine_properties_oai_gen1_jvm_model
+
+        remove_engine_properties_oai_gen_configuration_model = {}  # RemoveEnginePropertiesOaiGenConfiguration
+        remove_engine_properties_oai_gen_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_configuration_model['worker'] = ['testString']
+
+        remove_engine_properties_oai_gen_jvm_model = {}  # RemoveEnginePropertiesOaiGenJvm
+        remove_engine_properties_oai_gen_jvm_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_jvm_model['worker'] = ['testString']
+
+        presto_engine_patch_remove_engine_properties_model = {}  # PrestoEnginePatchRemoveEngineProperties
+        presto_engine_patch_remove_engine_properties_model['configuration'] = remove_engine_properties_oai_gen_configuration_model
+        presto_engine_patch_remove_engine_properties_model['jvm'] = remove_engine_properties_oai_gen_jvm_model
+        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+
         # Construct a json representation of a PrestoEngine model
         presto_engine_model_json = {}
         presto_engine_model_json['actions'] = ['update', 'delete']
@@ -15241,15 +16745,19 @@ class TestModel_PrestoEngine:
         presto_engine_model_json['created_by'] = '<username>@<domain>.com'
         presto_engine_model_json['created_on'] = 38
         presto_engine_model_json['description'] = 'presto engine for running sql queries'
+        presto_engine_model_json['drivers'] = [driver_model]
         presto_engine_model_json['engine_details'] = engine_details_body_model
         presto_engine_model_json['engine_display_name'] = 'sampleEngine'
         presto_engine_model_json['engine_id'] = 'sampleEngine123'
+        presto_engine_model_json['engine_properties'] = presto_engine_engine_properties_model
+        presto_engine_model_json['engine_restart'] = 'force'
         presto_engine_model_json['external_host_name'] = 'your-hostname.apps.your-domain.com'
         presto_engine_model_json['group_id'] = 'new_group_id'
         presto_engine_model_json['host_name'] = 'ibm-lh-lakehouse-presto-01-presto-svc'
         presto_engine_model_json['origin'] = 'native'
         presto_engine_model_json['port'] = 38
         presto_engine_model_json['region'] = 'us-south'
+        presto_engine_model_json['remove_engine_properties'] = presto_engine_patch_remove_engine_properties_model
         presto_engine_model_json['size_config'] = 'starter'
         presto_engine_model_json['status'] = 'running'
         presto_engine_model_json['status_code'] = 38
@@ -15290,6 +16798,12 @@ class TestModel_PrestoEngineCollection:
         node_description_model['node_type'] = 'bx2.4x16'
         node_description_model['quantity'] = 1
 
+        driver_model = {}  # Driver
+        driver_model['connection_type'] = 'saphana'
+        driver_model['driver_id'] = 'saphanadriver123'
+        driver_model['driver_name'] = 'saphanadriver-1.2.3'
+        driver_model['driver_version'] = '1.2.3'
+
         node_description_body_model = {}  # NodeDescriptionBody
         node_description_body_model['node_type'] = 'worker'
         node_description_body_model['quantity'] = 38
@@ -15303,39 +16817,60 @@ class TestModel_PrestoEngineCollection:
         engine_details_body_model['size_config'] = 'starter'
         engine_details_body_model['worker'] = node_description_body_model
 
+        presto_engine_properties_catalog_model = {}  # PrestoEnginePropertiesCatalog
+        presto_engine_properties_catalog_model['catalog_name'] = 'testString'
+
+        engine_properties_oai_gen1_configuration_model = {}  # EnginePropertiesOaiGen1Configuration
+        engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
+
+        presto_engine_properties_global_model = {}  # PrestoEnginePropertiesGlobal
+        presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
+
+        engine_properties_oai_gen1_jvm_model = {}  # EnginePropertiesOaiGen1Jvm
+        engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
+
+        presto_engine_engine_properties_model = {}  # PrestoEngineEngineProperties
+        presto_engine_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_engine_properties_model['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model['global'] = presto_engine_properties_global_model
+        presto_engine_engine_properties_model['jvm'] = engine_properties_oai_gen1_jvm_model
+
+        remove_engine_properties_oai_gen_configuration_model = {}  # RemoveEnginePropertiesOaiGenConfiguration
+        remove_engine_properties_oai_gen_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_configuration_model['worker'] = ['testString']
+
+        remove_engine_properties_oai_gen_jvm_model = {}  # RemoveEnginePropertiesOaiGenJvm
+        remove_engine_properties_oai_gen_jvm_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_jvm_model['worker'] = ['testString']
+
+        presto_engine_patch_remove_engine_properties_model = {}  # PrestoEnginePatchRemoveEngineProperties
+        presto_engine_patch_remove_engine_properties_model['configuration'] = remove_engine_properties_oai_gen_configuration_model
+        presto_engine_patch_remove_engine_properties_model['jvm'] = remove_engine_properties_oai_gen_jvm_model
+        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+
         presto_engine_model = {}  # PrestoEngine
-        presto_engine_model['actions'] = [
-            'view',
-            'use',
-            'update',
-            'select',
-            'access_ui',
-            'associate',
-            'disassociate',
-            'restart',
-            'pause',
-            'resume',
-            'grant',
-            'revoke',
-            'delete',
-            'create',
-            'scale',
-        ]
+        presto_engine_model['actions'] = ['view', 'use', 'update', 'select', 'access_ui', 'associate', 'disassociate', 'restart', 'pause', 'resume', 'grant', 'revoke', 'delete', 'create', 'scale']
         presto_engine_model['associated_catalogs'] = ['iceberg_data', 'hive_data']
         presto_engine_model['build_version'] = '1.1.0.0.0'
         presto_engine_model['coordinator'] = node_description_model
         presto_engine_model['created_by'] = '<username>@<domain>.com'
         presto_engine_model['created_on'] = 38
         presto_engine_model['description'] = 'presto engine for running sql queries'
+        presto_engine_model['drivers'] = [driver_model]
         presto_engine_model['engine_details'] = engine_details_body_model
         presto_engine_model['engine_display_name'] = 'starter'
         presto_engine_model['engine_id'] = 'presto511'
+        presto_engine_model['engine_properties'] = presto_engine_engine_properties_model
+        presto_engine_model['engine_restart'] = 'force'
         presto_engine_model['external_host_name'] = 'your-hostname.apps.your-domain.com'
         presto_engine_model['group_id'] = 'presto511'
         presto_engine_model['host_name'] = '1234-xyz456-abc4321.databases.appdomain.cloud'
         presto_engine_model['origin'] = 'native'
         presto_engine_model['port'] = 30156
         presto_engine_model['region'] = 'us-south'
+        presto_engine_model['remove_engine_properties'] = presto_engine_patch_remove_engine_properties_model
         presto_engine_model['size_config'] = 'starter'
         presto_engine_model['status'] = 'running'
         presto_engine_model['status_code'] = 0
@@ -15353,9 +16888,7 @@ class TestModel_PrestoEngineCollection:
         assert presto_engine_collection_model != False
 
         # Construct a model instance of PrestoEngineCollection by calling from_dict on the json representation
-        presto_engine_collection_model_dict = PrestoEngineCollection.from_dict(
-            presto_engine_collection_model_json
-        ).__dict__
+        presto_engine_collection_model_dict = PrestoEngineCollection.from_dict(presto_engine_collection_model_json).__dict__
         presto_engine_collection_model2 = PrestoEngineCollection(**presto_engine_collection_model_dict)
 
         # Verify the model instances are equivalent
@@ -15364,6 +16897,373 @@ class TestModel_PrestoEngineCollection:
         # Convert model instance back to dict and verify no loss of data
         presto_engine_collection_model_json2 = presto_engine_collection_model.to_dict()
         assert presto_engine_collection_model_json2 == presto_engine_collection_model_json
+
+
+class TestModel_PrestoEngineEngineProperties:
+    """
+    Test Class for PrestoEngineEngineProperties
+    """
+
+    def test_presto_engine_engine_properties_serialization(self):
+        """
+        Test serialization/deserialization for PrestoEngineEngineProperties
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        presto_engine_properties_catalog_model = {}  # PrestoEnginePropertiesCatalog
+        presto_engine_properties_catalog_model['catalog_name'] = 'testString'
+
+        node_description_body_model = {}  # NodeDescriptionBody
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        engine_properties_oai_gen1_configuration_model = {}  # EnginePropertiesOaiGen1Configuration
+        engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
+
+        presto_engine_properties_global_model = {}  # PrestoEnginePropertiesGlobal
+        presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
+
+        engine_properties_oai_gen1_jvm_model = {}  # EnginePropertiesOaiGen1Jvm
+        engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
+
+        # Construct a json representation of a PrestoEngineEngineProperties model
+        presto_engine_engine_properties_model_json = {}
+        presto_engine_engine_properties_model_json['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_engine_properties_model_json['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model_json['global'] = presto_engine_properties_global_model
+        presto_engine_engine_properties_model_json['jvm'] = engine_properties_oai_gen1_jvm_model
+
+        # Construct a model instance of PrestoEngineEngineProperties by calling from_dict on the json representation
+        presto_engine_engine_properties_model = PrestoEngineEngineProperties.from_dict(presto_engine_engine_properties_model_json)
+        assert presto_engine_engine_properties_model != False
+
+        # Construct a model instance of PrestoEngineEngineProperties by calling from_dict on the json representation
+        presto_engine_engine_properties_model_dict = PrestoEngineEngineProperties.from_dict(presto_engine_engine_properties_model_json).__dict__
+        presto_engine_engine_properties_model2 = PrestoEngineEngineProperties(**presto_engine_engine_properties_model_dict)
+
+        # Verify the model instances are equivalent
+        assert presto_engine_engine_properties_model == presto_engine_engine_properties_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        presto_engine_engine_properties_model_json2 = presto_engine_engine_properties_model.to_dict()
+        assert presto_engine_engine_properties_model_json2 == presto_engine_engine_properties_model_json
+
+
+class TestModel_PrestoEnginePatch:
+    """
+    Test Class for PrestoEnginePatch
+    """
+
+    def test_presto_engine_patch_serialization(self):
+        """
+        Test serialization/deserialization for PrestoEnginePatch
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        presto_engine_properties_catalog_model = {}  # PrestoEnginePropertiesCatalog
+        presto_engine_properties_catalog_model['catalog_name'] = 'testString'
+
+        node_description_body_model = {}  # NodeDescriptionBody
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        engine_properties_oai_gen1_configuration_model = {}  # EnginePropertiesOaiGen1Configuration
+        engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
+
+        presto_engine_properties_global_model = {}  # PrestoEnginePropertiesGlobal
+        presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
+
+        engine_properties_oai_gen1_jvm_model = {}  # EnginePropertiesOaiGen1Jvm
+        engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
+        engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
+
+        presto_engine_engine_properties_model = {}  # PrestoEngineEngineProperties
+        presto_engine_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_engine_properties_model['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model['global'] = presto_engine_properties_global_model
+        presto_engine_engine_properties_model['jvm'] = engine_properties_oai_gen1_jvm_model
+
+        remove_engine_properties_oai_gen_configuration_model = {}  # RemoveEnginePropertiesOaiGenConfiguration
+        remove_engine_properties_oai_gen_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_configuration_model['worker'] = ['testString']
+
+        remove_engine_properties_oai_gen_jvm_model = {}  # RemoveEnginePropertiesOaiGenJvm
+        remove_engine_properties_oai_gen_jvm_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_jvm_model['worker'] = ['testString']
+
+        presto_engine_patch_remove_engine_properties_model = {}  # PrestoEnginePatchRemoveEngineProperties
+        presto_engine_patch_remove_engine_properties_model['configuration'] = remove_engine_properties_oai_gen_configuration_model
+        presto_engine_patch_remove_engine_properties_model['jvm'] = remove_engine_properties_oai_gen_jvm_model
+        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+
+        # Construct a json representation of a PrestoEnginePatch model
+        presto_engine_patch_model_json = {}
+        presto_engine_patch_model_json['description'] = 'updated description for presto engine'
+        presto_engine_patch_model_json['engine_display_name'] = 'sampleEngine'
+        presto_engine_patch_model_json['engine_properties'] = presto_engine_engine_properties_model
+        presto_engine_patch_model_json['engine_restart'] = 'force'
+        presto_engine_patch_model_json['remove_engine_properties'] = presto_engine_patch_remove_engine_properties_model
+        presto_engine_patch_model_json['tags'] = ['tag1', 'tag2']
+
+        # Construct a model instance of PrestoEnginePatch by calling from_dict on the json representation
+        presto_engine_patch_model = PrestoEnginePatch.from_dict(presto_engine_patch_model_json)
+        assert presto_engine_patch_model != False
+
+        # Construct a model instance of PrestoEnginePatch by calling from_dict on the json representation
+        presto_engine_patch_model_dict = PrestoEnginePatch.from_dict(presto_engine_patch_model_json).__dict__
+        presto_engine_patch_model2 = PrestoEnginePatch(**presto_engine_patch_model_dict)
+
+        # Verify the model instances are equivalent
+        assert presto_engine_patch_model == presto_engine_patch_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        presto_engine_patch_model_json2 = presto_engine_patch_model.to_dict()
+        assert presto_engine_patch_model_json2 == presto_engine_patch_model_json
+
+
+class TestModel_PrestoEnginePatchRemoveEngineProperties:
+    """
+    Test Class for PrestoEnginePatchRemoveEngineProperties
+    """
+
+    def test_presto_engine_patch_remove_engine_properties_serialization(self):
+        """
+        Test serialization/deserialization for PrestoEnginePatchRemoveEngineProperties
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        remove_engine_properties_oai_gen_configuration_model = {}  # RemoveEnginePropertiesOaiGenConfiguration
+        remove_engine_properties_oai_gen_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_configuration_model['worker'] = ['testString']
+
+        remove_engine_properties_oai_gen_jvm_model = {}  # RemoveEnginePropertiesOaiGenJvm
+        remove_engine_properties_oai_gen_jvm_model['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_jvm_model['worker'] = ['testString']
+
+        presto_engine_properties_catalog_model = {}  # PrestoEnginePropertiesCatalog
+        presto_engine_properties_catalog_model['catalog_name'] = 'testString'
+
+        # Construct a json representation of a PrestoEnginePatchRemoveEngineProperties model
+        presto_engine_patch_remove_engine_properties_model_json = {}
+        presto_engine_patch_remove_engine_properties_model_json['configuration'] = remove_engine_properties_oai_gen_configuration_model
+        presto_engine_patch_remove_engine_properties_model_json['jvm'] = remove_engine_properties_oai_gen_jvm_model
+        presto_engine_patch_remove_engine_properties_model_json['catalog'] = presto_engine_properties_catalog_model
+
+        # Construct a model instance of PrestoEnginePatchRemoveEngineProperties by calling from_dict on the json representation
+        presto_engine_patch_remove_engine_properties_model = PrestoEnginePatchRemoveEngineProperties.from_dict(presto_engine_patch_remove_engine_properties_model_json)
+        assert presto_engine_patch_remove_engine_properties_model != False
+
+        # Construct a model instance of PrestoEnginePatchRemoveEngineProperties by calling from_dict on the json representation
+        presto_engine_patch_remove_engine_properties_model_dict = PrestoEnginePatchRemoveEngineProperties.from_dict(presto_engine_patch_remove_engine_properties_model_json).__dict__
+        presto_engine_patch_remove_engine_properties_model2 = PrestoEnginePatchRemoveEngineProperties(**presto_engine_patch_remove_engine_properties_model_dict)
+
+        # Verify the model instances are equivalent
+        assert presto_engine_patch_remove_engine_properties_model == presto_engine_patch_remove_engine_properties_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        presto_engine_patch_remove_engine_properties_model_json2 = presto_engine_patch_remove_engine_properties_model.to_dict()
+        assert presto_engine_patch_remove_engine_properties_model_json2 == presto_engine_patch_remove_engine_properties_model_json
+
+
+class TestModel_PrestoEnginePropertiesCatalog:
+    """
+    Test Class for PrestoEnginePropertiesCatalog
+    """
+
+    def test_presto_engine_properties_catalog_serialization(self):
+        """
+        Test serialization/deserialization for PrestoEnginePropertiesCatalog
+        """
+
+        # Construct a json representation of a PrestoEnginePropertiesCatalog model
+        presto_engine_properties_catalog_model_json = {}
+        presto_engine_properties_catalog_model_json['catalog_name'] = 'testString'
+
+        # Construct a model instance of PrestoEnginePropertiesCatalog by calling from_dict on the json representation
+        presto_engine_properties_catalog_model = PrestoEnginePropertiesCatalog.from_dict(presto_engine_properties_catalog_model_json)
+        assert presto_engine_properties_catalog_model != False
+
+        # Construct a model instance of PrestoEnginePropertiesCatalog by calling from_dict on the json representation
+        presto_engine_properties_catalog_model_dict = PrestoEnginePropertiesCatalog.from_dict(presto_engine_properties_catalog_model_json).__dict__
+        presto_engine_properties_catalog_model2 = PrestoEnginePropertiesCatalog(**presto_engine_properties_catalog_model_dict)
+
+        # Verify the model instances are equivalent
+        assert presto_engine_properties_catalog_model == presto_engine_properties_catalog_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        presto_engine_properties_catalog_model_json2 = presto_engine_properties_catalog_model.to_dict()
+        assert presto_engine_properties_catalog_model_json2 == presto_engine_properties_catalog_model_json
+
+
+class TestModel_PrestoEnginePropertiesGlobal:
+    """
+    Test Class for PrestoEnginePropertiesGlobal
+    """
+
+    def test_presto_engine_properties_global_serialization(self):
+        """
+        Test serialization/deserialization for PrestoEnginePropertiesGlobal
+        """
+
+        # Construct a json representation of a PrestoEnginePropertiesGlobal model
+        presto_engine_properties_global_model_json = {}
+        presto_engine_properties_global_model_json['global_property'] = 'enable-mixed-case-support:true'
+
+        # Construct a model instance of PrestoEnginePropertiesGlobal by calling from_dict on the json representation
+        presto_engine_properties_global_model = PrestoEnginePropertiesGlobal.from_dict(presto_engine_properties_global_model_json)
+        assert presto_engine_properties_global_model != False
+
+        # Construct a model instance of PrestoEnginePropertiesGlobal by calling from_dict on the json representation
+        presto_engine_properties_global_model_dict = PrestoEnginePropertiesGlobal.from_dict(presto_engine_properties_global_model_json).__dict__
+        presto_engine_properties_global_model2 = PrestoEnginePropertiesGlobal(**presto_engine_properties_global_model_dict)
+
+        # Verify the model instances are equivalent
+        assert presto_engine_properties_global_model == presto_engine_properties_global_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        presto_engine_properties_global_model_json2 = presto_engine_properties_global_model.to_dict()
+        assert presto_engine_properties_global_model_json2 == presto_engine_properties_global_model_json
+
+
+class TestModel_RemoveEngineProperties:
+    """
+    Test Class for RemoveEngineProperties
+    """
+
+    def test_remove_engine_properties_serialization(self):
+        """
+        Test serialization/deserialization for RemoveEngineProperties
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        prestissimo_engine_properties_catalog_model = {}  # PrestissimoEnginePropertiesCatalog
+        prestissimo_engine_properties_catalog_model['catalog_name'] = ['testString']
+
+        remove_engine_properties_configuration_model = {}  # RemoveEnginePropertiesConfiguration
+        remove_engine_properties_configuration_model['coordinator'] = ['testString']
+        remove_engine_properties_configuration_model['worker'] = ['testString']
+
+        # Construct a json representation of a RemoveEngineProperties model
+        remove_engine_properties_model_json = {}
+        remove_engine_properties_model_json['catalog'] = prestissimo_engine_properties_catalog_model
+        remove_engine_properties_model_json['configuration'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model_json['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model_json['velox'] = ['testString']
+
+        # Construct a model instance of RemoveEngineProperties by calling from_dict on the json representation
+        remove_engine_properties_model = RemoveEngineProperties.from_dict(remove_engine_properties_model_json)
+        assert remove_engine_properties_model != False
+
+        # Construct a model instance of RemoveEngineProperties by calling from_dict on the json representation
+        remove_engine_properties_model_dict = RemoveEngineProperties.from_dict(remove_engine_properties_model_json).__dict__
+        remove_engine_properties_model2 = RemoveEngineProperties(**remove_engine_properties_model_dict)
+
+        # Verify the model instances are equivalent
+        assert remove_engine_properties_model == remove_engine_properties_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        remove_engine_properties_model_json2 = remove_engine_properties_model.to_dict()
+        assert remove_engine_properties_model_json2 == remove_engine_properties_model_json
+
+
+class TestModel_RemoveEnginePropertiesConfiguration:
+    """
+    Test Class for RemoveEnginePropertiesConfiguration
+    """
+
+    def test_remove_engine_properties_configuration_serialization(self):
+        """
+        Test serialization/deserialization for RemoveEnginePropertiesConfiguration
+        """
+
+        # Construct a json representation of a RemoveEnginePropertiesConfiguration model
+        remove_engine_properties_configuration_model_json = {}
+        remove_engine_properties_configuration_model_json['coordinator'] = ['testString']
+        remove_engine_properties_configuration_model_json['worker'] = ['testString']
+
+        # Construct a model instance of RemoveEnginePropertiesConfiguration by calling from_dict on the json representation
+        remove_engine_properties_configuration_model = RemoveEnginePropertiesConfiguration.from_dict(remove_engine_properties_configuration_model_json)
+        assert remove_engine_properties_configuration_model != False
+
+        # Construct a model instance of RemoveEnginePropertiesConfiguration by calling from_dict on the json representation
+        remove_engine_properties_configuration_model_dict = RemoveEnginePropertiesConfiguration.from_dict(remove_engine_properties_configuration_model_json).__dict__
+        remove_engine_properties_configuration_model2 = RemoveEnginePropertiesConfiguration(**remove_engine_properties_configuration_model_dict)
+
+        # Verify the model instances are equivalent
+        assert remove_engine_properties_configuration_model == remove_engine_properties_configuration_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        remove_engine_properties_configuration_model_json2 = remove_engine_properties_configuration_model.to_dict()
+        assert remove_engine_properties_configuration_model_json2 == remove_engine_properties_configuration_model_json
+
+
+class TestModel_RemoveEnginePropertiesOaiGenConfiguration:
+    """
+    Test Class for RemoveEnginePropertiesOaiGenConfiguration
+    """
+
+    def test_remove_engine_properties_oai_gen_configuration_serialization(self):
+        """
+        Test serialization/deserialization for RemoveEnginePropertiesOaiGenConfiguration
+        """
+
+        # Construct a json representation of a RemoveEnginePropertiesOaiGenConfiguration model
+        remove_engine_properties_oai_gen_configuration_model_json = {}
+        remove_engine_properties_oai_gen_configuration_model_json['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_configuration_model_json['worker'] = ['testString']
+
+        # Construct a model instance of RemoveEnginePropertiesOaiGenConfiguration by calling from_dict on the json representation
+        remove_engine_properties_oai_gen_configuration_model = RemoveEnginePropertiesOaiGenConfiguration.from_dict(remove_engine_properties_oai_gen_configuration_model_json)
+        assert remove_engine_properties_oai_gen_configuration_model != False
+
+        # Construct a model instance of RemoveEnginePropertiesOaiGenConfiguration by calling from_dict on the json representation
+        remove_engine_properties_oai_gen_configuration_model_dict = RemoveEnginePropertiesOaiGenConfiguration.from_dict(remove_engine_properties_oai_gen_configuration_model_json).__dict__
+        remove_engine_properties_oai_gen_configuration_model2 = RemoveEnginePropertiesOaiGenConfiguration(**remove_engine_properties_oai_gen_configuration_model_dict)
+
+        # Verify the model instances are equivalent
+        assert remove_engine_properties_oai_gen_configuration_model == remove_engine_properties_oai_gen_configuration_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        remove_engine_properties_oai_gen_configuration_model_json2 = remove_engine_properties_oai_gen_configuration_model.to_dict()
+        assert remove_engine_properties_oai_gen_configuration_model_json2 == remove_engine_properties_oai_gen_configuration_model_json
+
+
+class TestModel_RemoveEnginePropertiesOaiGenJvm:
+    """
+    Test Class for RemoveEnginePropertiesOaiGenJvm
+    """
+
+    def test_remove_engine_properties_oai_gen_jvm_serialization(self):
+        """
+        Test serialization/deserialization for RemoveEnginePropertiesOaiGenJvm
+        """
+
+        # Construct a json representation of a RemoveEnginePropertiesOaiGenJvm model
+        remove_engine_properties_oai_gen_jvm_model_json = {}
+        remove_engine_properties_oai_gen_jvm_model_json['coordinator'] = ['testString']
+        remove_engine_properties_oai_gen_jvm_model_json['worker'] = ['testString']
+
+        # Construct a model instance of RemoveEnginePropertiesOaiGenJvm by calling from_dict on the json representation
+        remove_engine_properties_oai_gen_jvm_model = RemoveEnginePropertiesOaiGenJvm.from_dict(remove_engine_properties_oai_gen_jvm_model_json)
+        assert remove_engine_properties_oai_gen_jvm_model != False
+
+        # Construct a model instance of RemoveEnginePropertiesOaiGenJvm by calling from_dict on the json representation
+        remove_engine_properties_oai_gen_jvm_model_dict = RemoveEnginePropertiesOaiGenJvm.from_dict(remove_engine_properties_oai_gen_jvm_model_json).__dict__
+        remove_engine_properties_oai_gen_jvm_model2 = RemoveEnginePropertiesOaiGenJvm(**remove_engine_properties_oai_gen_jvm_model_dict)
+
+        # Verify the model instances are equivalent
+        assert remove_engine_properties_oai_gen_jvm_model == remove_engine_properties_oai_gen_jvm_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        remove_engine_properties_oai_gen_jvm_model_json2 = remove_engine_properties_oai_gen_jvm_model.to_dict()
+        assert remove_engine_properties_oai_gen_jvm_model_json2 == remove_engine_properties_oai_gen_jvm_model_json
 
 
 class TestModel_ReplaceSnapshotCreatedBody:
@@ -15387,15 +17287,11 @@ class TestModel_ReplaceSnapshotCreatedBody:
         replace_snapshot_created_body_model_json['response'] = success_response_model
 
         # Construct a model instance of ReplaceSnapshotCreatedBody by calling from_dict on the json representation
-        replace_snapshot_created_body_model = ReplaceSnapshotCreatedBody.from_dict(
-            replace_snapshot_created_body_model_json
-        )
+        replace_snapshot_created_body_model = ReplaceSnapshotCreatedBody.from_dict(replace_snapshot_created_body_model_json)
         assert replace_snapshot_created_body_model != False
 
         # Construct a model instance of ReplaceSnapshotCreatedBody by calling from_dict on the json representation
-        replace_snapshot_created_body_model_dict = ReplaceSnapshotCreatedBody.from_dict(
-            replace_snapshot_created_body_model_json
-        ).__dict__
+        replace_snapshot_created_body_model_dict = ReplaceSnapshotCreatedBody.from_dict(replace_snapshot_created_body_model_json).__dict__
         replace_snapshot_created_body_model2 = ReplaceSnapshotCreatedBody(**replace_snapshot_created_body_model_dict)
 
         # Verify the model instances are equivalent
@@ -15421,18 +17317,12 @@ class TestModel_ResultPrestissimoExplainStatement:
         result_prestissimo_explain_statement_model_json['result'] = 'testString'
 
         # Construct a model instance of ResultPrestissimoExplainStatement by calling from_dict on the json representation
-        result_prestissimo_explain_statement_model = ResultPrestissimoExplainStatement.from_dict(
-            result_prestissimo_explain_statement_model_json
-        )
+        result_prestissimo_explain_statement_model = ResultPrestissimoExplainStatement.from_dict(result_prestissimo_explain_statement_model_json)
         assert result_prestissimo_explain_statement_model != False
 
         # Construct a model instance of ResultPrestissimoExplainStatement by calling from_dict on the json representation
-        result_prestissimo_explain_statement_model_dict = ResultPrestissimoExplainStatement.from_dict(
-            result_prestissimo_explain_statement_model_json
-        ).__dict__
-        result_prestissimo_explain_statement_model2 = ResultPrestissimoExplainStatement(
-            **result_prestissimo_explain_statement_model_dict
-        )
+        result_prestissimo_explain_statement_model_dict = ResultPrestissimoExplainStatement.from_dict(result_prestissimo_explain_statement_model_json).__dict__
+        result_prestissimo_explain_statement_model2 = ResultPrestissimoExplainStatement(**result_prestissimo_explain_statement_model_dict)
 
         # Verify the model instances are equivalent
         assert result_prestissimo_explain_statement_model == result_prestissimo_explain_statement_model2
@@ -15457,35 +17347,19 @@ class TestModel_ResultRunPrestissimoExplainAnalyzeStatement:
         result_run_prestissimo_explain_analyze_statement_model_json['result'] = 'testString'
 
         # Construct a model instance of ResultRunPrestissimoExplainAnalyzeStatement by calling from_dict on the json representation
-        result_run_prestissimo_explain_analyze_statement_model = ResultRunPrestissimoExplainAnalyzeStatement.from_dict(
-            result_run_prestissimo_explain_analyze_statement_model_json
-        )
+        result_run_prestissimo_explain_analyze_statement_model = ResultRunPrestissimoExplainAnalyzeStatement.from_dict(result_run_prestissimo_explain_analyze_statement_model_json)
         assert result_run_prestissimo_explain_analyze_statement_model != False
 
         # Construct a model instance of ResultRunPrestissimoExplainAnalyzeStatement by calling from_dict on the json representation
-        result_run_prestissimo_explain_analyze_statement_model_dict = (
-            ResultRunPrestissimoExplainAnalyzeStatement.from_dict(
-                result_run_prestissimo_explain_analyze_statement_model_json
-            ).__dict__
-        )
-        result_run_prestissimo_explain_analyze_statement_model2 = ResultRunPrestissimoExplainAnalyzeStatement(
-            **result_run_prestissimo_explain_analyze_statement_model_dict
-        )
+        result_run_prestissimo_explain_analyze_statement_model_dict = ResultRunPrestissimoExplainAnalyzeStatement.from_dict(result_run_prestissimo_explain_analyze_statement_model_json).__dict__
+        result_run_prestissimo_explain_analyze_statement_model2 = ResultRunPrestissimoExplainAnalyzeStatement(**result_run_prestissimo_explain_analyze_statement_model_dict)
 
         # Verify the model instances are equivalent
-        assert (
-            result_run_prestissimo_explain_analyze_statement_model
-            == result_run_prestissimo_explain_analyze_statement_model2
-        )
+        assert result_run_prestissimo_explain_analyze_statement_model == result_run_prestissimo_explain_analyze_statement_model2
 
         # Convert model instance back to dict and verify no loss of data
-        result_run_prestissimo_explain_analyze_statement_model_json2 = (
-            result_run_prestissimo_explain_analyze_statement_model.to_dict()
-        )
-        assert (
-            result_run_prestissimo_explain_analyze_statement_model_json2
-            == result_run_prestissimo_explain_analyze_statement_model_json
-        )
+        result_run_prestissimo_explain_analyze_statement_model_json2 = result_run_prestissimo_explain_analyze_statement_model.to_dict()
+        assert result_run_prestissimo_explain_analyze_statement_model_json2 == result_run_prestissimo_explain_analyze_statement_model_json
 
 
 class TestModel_RunExplainAnalyzeStatementOKBody:
@@ -15510,18 +17384,12 @@ class TestModel_RunExplainAnalyzeStatementOKBody:
         run_explain_analyze_statement_ok_body_model_json['result'] = 'testString'
 
         # Construct a model instance of RunExplainAnalyzeStatementOKBody by calling from_dict on the json representation
-        run_explain_analyze_statement_ok_body_model = RunExplainAnalyzeStatementOKBody.from_dict(
-            run_explain_analyze_statement_ok_body_model_json
-        )
+        run_explain_analyze_statement_ok_body_model = RunExplainAnalyzeStatementOKBody.from_dict(run_explain_analyze_statement_ok_body_model_json)
         assert run_explain_analyze_statement_ok_body_model != False
 
         # Construct a model instance of RunExplainAnalyzeStatementOKBody by calling from_dict on the json representation
-        run_explain_analyze_statement_ok_body_model_dict = RunExplainAnalyzeStatementOKBody.from_dict(
-            run_explain_analyze_statement_ok_body_model_json
-        ).__dict__
-        run_explain_analyze_statement_ok_body_model2 = RunExplainAnalyzeStatementOKBody(
-            **run_explain_analyze_statement_ok_body_model_dict
-        )
+        run_explain_analyze_statement_ok_body_model_dict = RunExplainAnalyzeStatementOKBody.from_dict(run_explain_analyze_statement_ok_body_model_json).__dict__
+        run_explain_analyze_statement_ok_body_model2 = RunExplainAnalyzeStatementOKBody(**run_explain_analyze_statement_ok_body_model_dict)
 
         # Verify the model instances are equivalent
         assert run_explain_analyze_statement_ok_body_model == run_explain_analyze_statement_ok_body_model2
@@ -15553,15 +17421,11 @@ class TestModel_RunExplainStatementOKBody:
         run_explain_statement_ok_body_model_json['result'] = 'testString'
 
         # Construct a model instance of RunExplainStatementOKBody by calling from_dict on the json representation
-        run_explain_statement_ok_body_model = RunExplainStatementOKBody.from_dict(
-            run_explain_statement_ok_body_model_json
-        )
+        run_explain_statement_ok_body_model = RunExplainStatementOKBody.from_dict(run_explain_statement_ok_body_model_json)
         assert run_explain_statement_ok_body_model != False
 
         # Construct a model instance of RunExplainStatementOKBody by calling from_dict on the json representation
-        run_explain_statement_ok_body_model_dict = RunExplainStatementOKBody.from_dict(
-            run_explain_statement_ok_body_model_json
-        ).__dict__
+        run_explain_statement_ok_body_model_dict = RunExplainStatementOKBody.from_dict(run_explain_statement_ok_body_model_json).__dict__
         run_explain_statement_ok_body_model2 = RunExplainStatementOKBody(**run_explain_statement_ok_body_model_dict)
 
         # Verify the model instances are equivalent
@@ -15570,6 +17434,36 @@ class TestModel_RunExplainStatementOKBody:
         # Convert model instance back to dict and verify no loss of data
         run_explain_statement_ok_body_model_json2 = run_explain_statement_ok_body_model.to_dict()
         assert run_explain_statement_ok_body_model_json2 == run_explain_statement_ok_body_model_json
+
+
+class TestModel_SparkApplicationConfig:
+    """
+    Test Class for SparkApplicationConfig
+    """
+
+    def test_spark_application_config_serialization(self):
+        """
+        Test serialization/deserialization for SparkApplicationConfig
+        """
+
+        # Construct a json representation of a SparkApplicationConfig model
+        spark_application_config_model_json = {}
+        spark_application_config_model_json['spark_sample_config_properpty'] = 'testString'
+
+        # Construct a model instance of SparkApplicationConfig by calling from_dict on the json representation
+        spark_application_config_model = SparkApplicationConfig.from_dict(spark_application_config_model_json)
+        assert spark_application_config_model != False
+
+        # Construct a model instance of SparkApplicationConfig by calling from_dict on the json representation
+        spark_application_config_model_dict = SparkApplicationConfig.from_dict(spark_application_config_model_json).__dict__
+        spark_application_config_model2 = SparkApplicationConfig(**spark_application_config_model_dict)
+
+        # Verify the model instances are equivalent
+        assert spark_application_config_model == spark_application_config_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        spark_application_config_model_json2 = spark_application_config_model.to_dict()
+        assert spark_application_config_model_json2 == spark_application_config_model_json
 
 
 class TestModel_SparkApplicationDetails:
@@ -15584,44 +17478,32 @@ class TestModel_SparkApplicationDetails:
 
         # Construct dict forms of any model objects needed in order to build this model.
 
-        spark_application_details_conf_model = {}  # SparkApplicationDetailsConf
-        spark_application_details_conf_model['spark_app_name'] = 'MyJob'
-        spark_application_details_conf_model['spark_hive_metastore_client_auth_mode'] = 'PLAIN'
-        spark_application_details_conf_model[
-            'spark_hive_metastore_client_plain_password'
-        ] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...'
-        spark_application_details_conf_model['spark_hive_metastore_client_plain_username'] = 'ibm_lh_token_admin'
-        spark_application_details_conf_model['spark_hive_metastore_truststore_password'] = 'changeit'
-        spark_application_details_conf_model[
-            'spark_hive_metastore_truststore_path'
-        ] = 'file:///opt/ibm/jdk/lib/security/cacerts'
-        spark_application_details_conf_model['spark_hive_metastore_truststore_type'] = 'JKS'
-        spark_application_details_conf_model['spark_hive_metastore_use_ssl'] = 'true'
-        spark_application_details_conf_model['spark_sql_catalog_implementation'] = 'Spark Catalog Implementation'
-        spark_application_details_conf_model['spark_sql_catalog_lakehouse'] = 'org.apache.iceberg.spark.SparkCatalog'
-        spark_application_details_conf_model['spark_sql_catalog_lakehouse_type'] = 'Spark Catalog Type'
-        spark_application_details_conf_model['spark_sql_catalog_lakehouse_uri'] = 'Spark Catalog URI'
-        spark_application_details_conf_model[
-            'spark_sql_extensions'
-        ] = 'org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions'
-        spark_application_details_conf_model['spark_sql_iceberg_vectorization_enabled'] = 'false'
+        spark_application_config_model = {}  # SparkApplicationConfig
+        spark_application_config_model['spark_sample_config_properpty'] = 'testString'
+
+        spark_application_env_model = {}  # SparkApplicationEnv
+        spark_application_env_model['sample_env_key'] = 'testString'
 
         # Construct a json representation of a SparkApplicationDetails model
         spark_application_details_model_json = {}
         spark_application_details_model_json['application'] = 's3://mybucket/wordcount.py'
         spark_application_details_model_json['arguments'] = ['people.txt']
-        spark_application_details_model_json['conf'] = spark_application_details_conf_model
-        spark_application_details_model_json['env'] = {'anyKey': 'anyValue'}
+        spark_application_details_model_json['class'] = 'org.apache.spark.examples.SparkPi'
+        spark_application_details_model_json['conf'] = spark_application_config_model
+        spark_application_details_model_json['env'] = spark_application_env_model
+        spark_application_details_model_json['files'] = 's3://mybucket/myfile.txt'
+        spark_application_details_model_json['jars'] = 'testString'
         spark_application_details_model_json['name'] = 'SparkApplicaton1'
+        spark_application_details_model_json['packages'] = 'org.apache.spark:example_1.2.3'
+        spark_application_details_model_json['repositories'] = 'https://repo1.maven.org/maven2/'
+        spark_application_details_model_json['spark_version'] = '3.3'
 
         # Construct a model instance of SparkApplicationDetails by calling from_dict on the json representation
         spark_application_details_model = SparkApplicationDetails.from_dict(spark_application_details_model_json)
         assert spark_application_details_model != False
 
         # Construct a model instance of SparkApplicationDetails by calling from_dict on the json representation
-        spark_application_details_model_dict = SparkApplicationDetails.from_dict(
-            spark_application_details_model_json
-        ).__dict__
+        spark_application_details_model_dict = SparkApplicationDetails.from_dict(spark_application_details_model_json).__dict__
         spark_application_details_model2 = SparkApplicationDetails(**spark_application_details_model_dict)
 
         # Verify the model instances are equivalent
@@ -15632,59 +17514,65 @@ class TestModel_SparkApplicationDetails:
         assert spark_application_details_model_json2 == spark_application_details_model_json
 
 
-class TestModel_SparkApplicationDetailsConf:
+class TestModel_SparkApplicationEnv:
     """
-    Test Class for SparkApplicationDetailsConf
+    Test Class for SparkApplicationEnv
     """
 
-    def test_spark_application_details_conf_serialization(self):
+    def test_spark_application_env_serialization(self):
         """
-        Test serialization/deserialization for SparkApplicationDetailsConf
+        Test serialization/deserialization for SparkApplicationEnv
         """
 
-        # Construct a json representation of a SparkApplicationDetailsConf model
-        spark_application_details_conf_model_json = {}
-        spark_application_details_conf_model_json['spark_app_name'] = 'MyJob'
-        spark_application_details_conf_model_json['spark_hive_metastore_client_auth_mode'] = 'PLAIN'
-        spark_application_details_conf_model_json[
-            'spark_hive_metastore_client_plain_password'
-        ] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...'
-        spark_application_details_conf_model_json['spark_hive_metastore_client_plain_username'] = 'ibm_lh_token_admin'
-        spark_application_details_conf_model_json['spark_hive_metastore_truststore_password'] = 'changeit'
-        spark_application_details_conf_model_json[
-            'spark_hive_metastore_truststore_path'
-        ] = 'file:///opt/ibm/jdk/lib/security/cacerts'
-        spark_application_details_conf_model_json['spark_hive_metastore_truststore_type'] = 'JKS'
-        spark_application_details_conf_model_json['spark_hive_metastore_use_ssl'] = 'true'
-        spark_application_details_conf_model_json['spark_sql_catalog_implementation'] = 'Spark Catalog Implementation'
-        spark_application_details_conf_model_json[
-            'spark_sql_catalog_lakehouse'
-        ] = 'org.apache.iceberg.spark.SparkCatalog'
-        spark_application_details_conf_model_json['spark_sql_catalog_lakehouse_type'] = 'Spark Catalog Type'
-        spark_application_details_conf_model_json['spark_sql_catalog_lakehouse_uri'] = 'Spark Catalog URI'
-        spark_application_details_conf_model_json[
-            'spark_sql_extensions'
-        ] = 'org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions'
-        spark_application_details_conf_model_json['spark_sql_iceberg_vectorization_enabled'] = 'false'
+        # Construct a json representation of a SparkApplicationEnv model
+        spark_application_env_model_json = {}
+        spark_application_env_model_json['sample_env_key'] = 'testString'
 
-        # Construct a model instance of SparkApplicationDetailsConf by calling from_dict on the json representation
-        spark_application_details_conf_model = SparkApplicationDetailsConf.from_dict(
-            spark_application_details_conf_model_json
-        )
-        assert spark_application_details_conf_model != False
+        # Construct a model instance of SparkApplicationEnv by calling from_dict on the json representation
+        spark_application_env_model = SparkApplicationEnv.from_dict(spark_application_env_model_json)
+        assert spark_application_env_model != False
 
-        # Construct a model instance of SparkApplicationDetailsConf by calling from_dict on the json representation
-        spark_application_details_conf_model_dict = SparkApplicationDetailsConf.from_dict(
-            spark_application_details_conf_model_json
-        ).__dict__
-        spark_application_details_conf_model2 = SparkApplicationDetailsConf(**spark_application_details_conf_model_dict)
+        # Construct a model instance of SparkApplicationEnv by calling from_dict on the json representation
+        spark_application_env_model_dict = SparkApplicationEnv.from_dict(spark_application_env_model_json).__dict__
+        spark_application_env_model2 = SparkApplicationEnv(**spark_application_env_model_dict)
 
         # Verify the model instances are equivalent
-        assert spark_application_details_conf_model == spark_application_details_conf_model2
+        assert spark_application_env_model == spark_application_env_model2
 
         # Convert model instance back to dict and verify no loss of data
-        spark_application_details_conf_model_json2 = spark_application_details_conf_model.to_dict()
-        assert spark_application_details_conf_model_json2 == spark_application_details_conf_model_json
+        spark_application_env_model_json2 = spark_application_env_model.to_dict()
+        assert spark_application_env_model_json2 == spark_application_env_model_json
+
+
+class TestModel_SparkDefaultConfig:
+    """
+    Test Class for SparkDefaultConfig
+    """
+
+    def test_spark_default_config_serialization(self):
+        """
+        Test serialization/deserialization for SparkDefaultConfig
+        """
+
+        # Construct a json representation of a SparkDefaultConfig model
+        spark_default_config_model_json = {}
+        spark_default_config_model_json['config1'] = 'testString'
+        spark_default_config_model_json['config2'] = 'testString'
+
+        # Construct a model instance of SparkDefaultConfig by calling from_dict on the json representation
+        spark_default_config_model = SparkDefaultConfig.from_dict(spark_default_config_model_json)
+        assert spark_default_config_model != False
+
+        # Construct a model instance of SparkDefaultConfig by calling from_dict on the json representation
+        spark_default_config_model_dict = SparkDefaultConfig.from_dict(spark_default_config_model_json).__dict__
+        spark_default_config_model2 = SparkDefaultConfig(**spark_default_config_model_dict)
+
+        # Verify the model instances are equivalent
+        assert spark_default_config_model == spark_default_config_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        spark_default_config_model_json2 = spark_default_config_model.to_dict()
+        assert spark_default_config_model_json2 == spark_default_config_model_json
 
 
 class TestModel_SparkEndpoints:
@@ -15699,23 +17587,16 @@ class TestModel_SparkEndpoints:
 
         # Construct a json representation of a SparkEndpoints model
         spark_endpoints_model_json = {}
-        spark_endpoints_model_json[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        spark_endpoints_model_json[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
+        spark_endpoints_model_json['applications_api'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
+        spark_endpoints_model_json['history_server_endpoint'] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
         spark_endpoints_model_json['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        spark_endpoints_model_json[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        spark_endpoints_model_json[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
+        spark_endpoints_model_json['spark_jobs_v4_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
+        spark_endpoints_model_json['spark_kernel_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
         spark_endpoints_model_json['view_history_server'] = 'testString'
-        spark_endpoints_model_json[
-            'wxd_application_endpoint'
-        ] = '$HOST/v1/1698311655308796/engines/spark817/applications'
+        spark_endpoints_model_json['wxd_application_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications'
+        spark_endpoints_model_json['wxd_engine_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817'
+        spark_endpoints_model_json['wxd_history_server_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/history_server'
+        spark_endpoints_model_json['wxd_history_server_ui_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/history_server/ui'
 
         # Construct a model instance of SparkEndpoints by calling from_dict on the json representation
         spark_endpoints_model = SparkEndpoints.from_dict(spark_endpoints_model_json)
@@ -15745,32 +17626,52 @@ class TestModel_SparkEngine:
 
         # Construct dict forms of any model objects needed in order to build this model.
 
+        spark_default_config_model = {}  # SparkDefaultConfig
+        spark_default_config_model['config1'] = 'testString'
+        spark_default_config_model['config2'] = 'testString'
+
         spark_endpoints_model = {}  # SparkEndpoints
-        spark_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        spark_endpoints_model[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
+        spark_endpoints_model['applications_api'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
+        spark_endpoints_model['history_server_endpoint'] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
         spark_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        spark_endpoints_model[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        spark_endpoints_model[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
+        spark_endpoints_model['spark_jobs_v4_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
+        spark_endpoints_model['spark_kernel_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
         spark_endpoints_model['view_history_server'] = 'testString'
-        spark_endpoints_model['wxd_application_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications'
+        spark_endpoints_model['wxd_application_endpoint'] = '{$HOST}/lakehouse/api/v2/{$INSTANCE_ID}/spark_engines/spark875/applications'
+        spark_endpoints_model['wxd_engine_endpoint'] = '{$HOST}/lakehouse/api/v2/{$INSTANCE_ID}/spark_engines/spark875'
+        spark_endpoints_model['wxd_history_server_endpoint'] = '{$HOST}/lakehouse/api/v2/{$INSTANCE_ID}/spark_engines/spark875/history_server'
+        spark_endpoints_model['wxd_history_server_ui_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/history_server/ui'
+
+        spark_scale_config_model = {}  # SparkScaleConfig
+        spark_scale_config_model['auto_scale_enabled'] = True
+        spark_scale_config_model['current_number_of_nodes'] = 2
+        spark_scale_config_model['maximum_number_of_nodes'] = 5
+        spark_scale_config_model['minimum_number_of_nodes'] = 1
+        spark_scale_config_model['node_type'] = 'medium'
+        spark_scale_config_model['number_of_nodes'] = 2
 
         spark_engine_details_model = {}  # SparkEngineDetails
-        spark_engine_details_model[
-            'connection_string'
-        ] = 'https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>'
+        spark_engine_details_model['api_key'] = 'apikey'
+        spark_engine_details_model['connection_string'] = 'https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>'
+        spark_engine_details_model['default_config'] = spark_default_config_model
+        spark_engine_details_model['default_version'] = '3.3'
         spark_engine_details_model['endpoints'] = spark_endpoints_model
+        spark_engine_details_model['engine_home_bucket_display_name'] = 'test-spark-bucket'
+        spark_engine_details_model['engine_home_bucket_name'] = 'test-spark-bucket'
+        spark_engine_details_model['engine_home_path'] = 'spark/spark1234'
+        spark_engine_details_model['engine_home_volume'] = 'cpd-instance::Spark-Volume'
+        spark_engine_details_model['engine_home_volume_id'] = '1704979825978585'
+        spark_engine_details_model['engine_home_volume_name'] = 'my-volume'
+        spark_engine_details_model['engine_home_volume_storage_class'] = 'nfs-client'
+        spark_engine_details_model['engine_home_volume_storage_size'] = '5Gi'
+        spark_engine_details_model['instance_id'] = 'spark-id'
+        spark_engine_details_model['managed_by'] = 'fully/self'
+        spark_engine_details_model['scale_config'] = spark_scale_config_model
 
         # Construct a json representation of a SparkEngine model
         spark_engine_model_json = {}
         spark_engine_model_json['actions'] = ['update', 'delete']
+        spark_engine_model_json['associated_catalogs'] = ['iceberg_data', 'hive_data']
         spark_engine_model_json['build_version'] = '1.0.3.0.0'
         spark_engine_model_json['created_by'] = '<username>@<domain>.com'
         spark_engine_model_json['created_on'] = 38
@@ -15778,7 +17679,7 @@ class TestModel_SparkEngine:
         spark_engine_model_json['engine_details'] = spark_engine_details_model
         spark_engine_model_json['engine_display_name'] = 'sampleEngine'
         spark_engine_model_json['engine_id'] = 'sampleEngine123'
-        spark_engine_model_json['origin'] = 'ibm'
+        spark_engine_model_json['origin'] = 'external'
         spark_engine_model_json['status'] = 'Registered'
         spark_engine_model_json['tags'] = ['tag1', 'tag2']
         spark_engine_model_json['type'] = 'spark'
@@ -15811,54 +17712,24 @@ class TestModel_SparkEngineApplicationStatus:
 
         # Construct dict forms of any model objects needed in order to build this model.
 
-        spark_engine_application_status_application_details_conf_model = (
-            {}
-        )  # SparkEngineApplicationStatusApplicationDetailsConf
-        spark_engine_application_status_application_details_conf_model['spark_app_name'] = 'MyJob'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_client_auth_mode'
-        ] = 'PLAIN'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_client_plain_password'
-        ] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_client_plain_username'
-        ] = 'ibm_lh_token_admin'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_truststore_password'
-        ] = 'changeit'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_truststore_path'
-        ] = 'file:///opt/ibm/jdk/lib/security/cacerts'
-        spark_engine_application_status_application_details_conf_model['spark_hive_metastore_truststore_type'] = 'JKS'
-        spark_engine_application_status_application_details_conf_model['spark_hive_metastore_use_ssl'] = 'true'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_catalog_implementation'
-        ] = 'Spark Catalog Implementation'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_catalog_lakehouse'
-        ] = 'org.apache.iceberg.spark.SparkCatalog'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_catalog_lakehouse_type'
-        ] = 'Spark Catalog Type'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_catalog_lakehouse_uri'
-        ] = 'Spark Catalog URI'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_extensions'
-        ] = 'org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_iceberg_vectorization_enabled'
-        ] = 'false'
+        spark_application_config_model = {}  # SparkApplicationConfig
+        spark_application_config_model['spark_sample_config_properpty'] = 'testString'
 
-        spark_engine_application_status_application_details_model = {}  # SparkEngineApplicationStatusApplicationDetails
-        spark_engine_application_status_application_details_model['application'] = 's3://mybucket/wordcount.py'
-        spark_engine_application_status_application_details_model['arguments'] = ['people.txt']
-        spark_engine_application_status_application_details_model[
-            'conf'
-        ] = spark_engine_application_status_application_details_conf_model
-        spark_engine_application_status_application_details_model['env'] = {'anyKey': 'anyValue'}
-        spark_engine_application_status_application_details_model['name'] = 'SparkApplicaton1'
+        spark_application_env_model = {}  # SparkApplicationEnv
+        spark_application_env_model['sample_env_key'] = 'testString'
+
+        spark_application_details_model = {}  # SparkApplicationDetails
+        spark_application_details_model['application'] = 's3://mybucket/wordcount.py'
+        spark_application_details_model['arguments'] = ['people.txt']
+        spark_application_details_model['class'] = 'org.apache.spark.examples.SparkPi'
+        spark_application_details_model['conf'] = spark_application_config_model
+        spark_application_details_model['env'] = spark_application_env_model
+        spark_application_details_model['files'] = 's3://mybucket/myfile.txt'
+        spark_application_details_model['jars'] = 'testString'
+        spark_application_details_model['name'] = 'SparkApplicaton1'
+        spark_application_details_model['packages'] = 'org.apache.spark:example_1.2.3'
+        spark_application_details_model['repositories'] = 'https://repo1.maven.org/maven2/'
+        spark_application_details_model['spark_version'] = '3.3'
 
         spark_engine_application_status_runtime_model = {}  # SparkEngineApplicationStatusRuntime
         spark_engine_application_status_runtime_model['spark_version'] = '3.3'
@@ -15868,11 +17739,15 @@ class TestModel_SparkEngineApplicationStatus:
         spark_engine_application_status_state_details_items_model['message'] = 'testString'
         spark_engine_application_status_state_details_items_model['type'] = 'testString'
 
+        spark_volume_details_model = {}  # SparkVolumeDetails
+        spark_volume_details_model['mount_path'] = '/mount/path'
+        spark_volume_details_model['name'] = 'my-volume'
+        spark_volume_details_model['read_only'] = True
+        spark_volume_details_model['source_sub_path'] = '/source/path'
+
         # Construct a json representation of a SparkEngineApplicationStatus model
         spark_engine_application_status_model_json = {}
-        spark_engine_application_status_model_json[
-            'application_details'
-        ] = spark_engine_application_status_application_details_model
+        spark_engine_application_status_model_json['application_details'] = spark_application_details_model
         spark_engine_application_status_model_json['application_id'] = 'cd7cbf1f-8893-4c51-aa3d-d92729f05e99'
         spark_engine_application_status_model_json['auto_termination_time'] = '2020-12-08T10:00:00.000Z'
         spark_engine_application_status_model_json['creation_time'] = 'Saturday 28 October 2023 07:17:06.856+0000'
@@ -15881,36 +17756,29 @@ class TestModel_SparkEngineApplicationStatus:
         spark_engine_application_status_model_json['failed_time'] = 'testString'
         spark_engine_application_status_model_json['finish_time'] = 'Saturday 28 October 2023 07:17:38.966+0000'
         spark_engine_application_status_model_json['id'] = 'cd7cbf1f-8893-4c51-aa3d-d92729f05e99'
-        spark_engine_application_status_model_json[
-            'job_endpoint'
-        ] = '<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications'
+        spark_engine_application_status_model_json['job_endpoint'] = '<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications'
         spark_engine_application_status_model_json['return_code'] = '0'
         spark_engine_application_status_model_json['runtime'] = spark_engine_application_status_runtime_model
         spark_engine_application_status_model_json['service_instance_id'] = 'testString'
         spark_engine_application_status_model_json['spark_application_id'] = 'app-20231028071726-0000'
         spark_engine_application_status_model_json['spark_application_name'] = 'PythonWordCount'
+        spark_engine_application_status_model_json['spark_version'] = '3.3'
         spark_engine_application_status_model_json['start_time'] = 'Saturday 28 October 2023 07:17:26.649+0000'
         spark_engine_application_status_model_json['state'] = 'FINISHED'
-        spark_engine_application_status_model_json['state_details'] = [
-            spark_engine_application_status_state_details_items_model
-        ]
+        spark_engine_application_status_model_json['state_details'] = [spark_engine_application_status_state_details_items_model]
         spark_engine_application_status_model_json['submission_time'] = '2023-11-01T11:18:49.758Z'
         spark_engine_application_status_model_json['template_id'] = 'spark-3.3-jaas-v2-cp4d-template'
         spark_engine_application_status_model_json['type'] = 'iae'
+        spark_engine_application_status_model_json['volumes'] = [spark_volume_details_model]
+        spark_engine_application_status_model_json['wxd_application_ui_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications/c7b3fccf-badb-46b0-b1ef-9b3154424021/ui'
 
         # Construct a model instance of SparkEngineApplicationStatus by calling from_dict on the json representation
-        spark_engine_application_status_model = SparkEngineApplicationStatus.from_dict(
-            spark_engine_application_status_model_json
-        )
+        spark_engine_application_status_model = SparkEngineApplicationStatus.from_dict(spark_engine_application_status_model_json)
         assert spark_engine_application_status_model != False
 
         # Construct a model instance of SparkEngineApplicationStatus by calling from_dict on the json representation
-        spark_engine_application_status_model_dict = SparkEngineApplicationStatus.from_dict(
-            spark_engine_application_status_model_json
-        ).__dict__
-        spark_engine_application_status_model2 = SparkEngineApplicationStatus(
-            **spark_engine_application_status_model_dict
-        )
+        spark_engine_application_status_model_dict = SparkEngineApplicationStatus.from_dict(spark_engine_application_status_model_json).__dict__
+        spark_engine_application_status_model2 = SparkEngineApplicationStatus(**spark_engine_application_status_model_dict)
 
         # Verify the model instances are equivalent
         assert spark_engine_application_status_model == spark_engine_application_status_model2
@@ -15918,189 +17786,6 @@ class TestModel_SparkEngineApplicationStatus:
         # Convert model instance back to dict and verify no loss of data
         spark_engine_application_status_model_json2 = spark_engine_application_status_model.to_dict()
         assert spark_engine_application_status_model_json2 == spark_engine_application_status_model_json
-
-
-class TestModel_SparkEngineApplicationStatusApplicationDetails:
-    """
-    Test Class for SparkEngineApplicationStatusApplicationDetails
-    """
-
-    def test_spark_engine_application_status_application_details_serialization(self):
-        """
-        Test serialization/deserialization for SparkEngineApplicationStatusApplicationDetails
-        """
-
-        # Construct dict forms of any model objects needed in order to build this model.
-
-        spark_engine_application_status_application_details_conf_model = (
-            {}
-        )  # SparkEngineApplicationStatusApplicationDetailsConf
-        spark_engine_application_status_application_details_conf_model['spark_app_name'] = 'MyJob'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_client_auth_mode'
-        ] = 'PLAIN'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_client_plain_password'
-        ] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_client_plain_username'
-        ] = 'ibm_lh_token_admin'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_truststore_password'
-        ] = 'changeit'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_truststore_path'
-        ] = 'file:///opt/ibm/jdk/lib/security/cacerts'
-        spark_engine_application_status_application_details_conf_model['spark_hive_metastore_truststore_type'] = 'JKS'
-        spark_engine_application_status_application_details_conf_model['spark_hive_metastore_use_ssl'] = 'true'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_catalog_implementation'
-        ] = 'Spark Catalog Implementation'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_catalog_lakehouse'
-        ] = 'org.apache.iceberg.spark.SparkCatalog'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_catalog_lakehouse_type'
-        ] = 'Spark Catalog Type'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_catalog_lakehouse_uri'
-        ] = 'Spark Catalog URI'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_extensions'
-        ] = 'org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_iceberg_vectorization_enabled'
-        ] = 'false'
-
-        # Construct a json representation of a SparkEngineApplicationStatusApplicationDetails model
-        spark_engine_application_status_application_details_model_json = {}
-        spark_engine_application_status_application_details_model_json['application'] = 's3://mybucket/wordcount.py'
-        spark_engine_application_status_application_details_model_json['arguments'] = ['people.txt']
-        spark_engine_application_status_application_details_model_json[
-            'conf'
-        ] = spark_engine_application_status_application_details_conf_model
-        spark_engine_application_status_application_details_model_json['env'] = {'anyKey': 'anyValue'}
-        spark_engine_application_status_application_details_model_json['name'] = 'SparkApplicaton1'
-
-        # Construct a model instance of SparkEngineApplicationStatusApplicationDetails by calling from_dict on the json representation
-        spark_engine_application_status_application_details_model = (
-            SparkEngineApplicationStatusApplicationDetails.from_dict(
-                spark_engine_application_status_application_details_model_json
-            )
-        )
-        assert spark_engine_application_status_application_details_model != False
-
-        # Construct a model instance of SparkEngineApplicationStatusApplicationDetails by calling from_dict on the json representation
-        spark_engine_application_status_application_details_model_dict = (
-            SparkEngineApplicationStatusApplicationDetails.from_dict(
-                spark_engine_application_status_application_details_model_json
-            ).__dict__
-        )
-        spark_engine_application_status_application_details_model2 = SparkEngineApplicationStatusApplicationDetails(
-            **spark_engine_application_status_application_details_model_dict
-        )
-
-        # Verify the model instances are equivalent
-        assert (
-            spark_engine_application_status_application_details_model
-            == spark_engine_application_status_application_details_model2
-        )
-
-        # Convert model instance back to dict and verify no loss of data
-        spark_engine_application_status_application_details_model_json2 = (
-            spark_engine_application_status_application_details_model.to_dict()
-        )
-        assert (
-            spark_engine_application_status_application_details_model_json2
-            == spark_engine_application_status_application_details_model_json
-        )
-
-
-class TestModel_SparkEngineApplicationStatusApplicationDetailsConf:
-    """
-    Test Class for SparkEngineApplicationStatusApplicationDetailsConf
-    """
-
-    def test_spark_engine_application_status_application_details_conf_serialization(self):
-        """
-        Test serialization/deserialization for SparkEngineApplicationStatusApplicationDetailsConf
-        """
-
-        # Construct a json representation of a SparkEngineApplicationStatusApplicationDetailsConf model
-        spark_engine_application_status_application_details_conf_model_json = {}
-        spark_engine_application_status_application_details_conf_model_json['spark_app_name'] = 'MyJob'
-        spark_engine_application_status_application_details_conf_model_json[
-            'spark_hive_metastore_client_auth_mode'
-        ] = 'PLAIN'
-        spark_engine_application_status_application_details_conf_model_json[
-            'spark_hive_metastore_client_plain_password'
-        ] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...'
-        spark_engine_application_status_application_details_conf_model_json[
-            'spark_hive_metastore_client_plain_username'
-        ] = 'ibm_lh_token_admin'
-        spark_engine_application_status_application_details_conf_model_json[
-            'spark_hive_metastore_truststore_password'
-        ] = 'changeit'
-        spark_engine_application_status_application_details_conf_model_json[
-            'spark_hive_metastore_truststore_path'
-        ] = 'file:///opt/ibm/jdk/lib/security/cacerts'
-        spark_engine_application_status_application_details_conf_model_json[
-            'spark_hive_metastore_truststore_type'
-        ] = 'JKS'
-        spark_engine_application_status_application_details_conf_model_json['spark_hive_metastore_use_ssl'] = 'true'
-        spark_engine_application_status_application_details_conf_model_json[
-            'spark_sql_catalog_implementation'
-        ] = 'Spark Catalog Implementation'
-        spark_engine_application_status_application_details_conf_model_json[
-            'spark_sql_catalog_lakehouse'
-        ] = 'org.apache.iceberg.spark.SparkCatalog'
-        spark_engine_application_status_application_details_conf_model_json[
-            'spark_sql_catalog_lakehouse_type'
-        ] = 'Spark Catalog Type'
-        spark_engine_application_status_application_details_conf_model_json[
-            'spark_sql_catalog_lakehouse_uri'
-        ] = 'Spark Catalog URI'
-        spark_engine_application_status_application_details_conf_model_json[
-            'spark_sql_extensions'
-        ] = 'org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions'
-        spark_engine_application_status_application_details_conf_model_json[
-            'spark_sql_iceberg_vectorization_enabled'
-        ] = 'false'
-
-        # Construct a model instance of SparkEngineApplicationStatusApplicationDetailsConf by calling from_dict on the json representation
-        spark_engine_application_status_application_details_conf_model = (
-            SparkEngineApplicationStatusApplicationDetailsConf.from_dict(
-                spark_engine_application_status_application_details_conf_model_json
-            )
-        )
-        assert spark_engine_application_status_application_details_conf_model != False
-
-        # Construct a model instance of SparkEngineApplicationStatusApplicationDetailsConf by calling from_dict on the json representation
-        spark_engine_application_status_application_details_conf_model_dict = (
-            SparkEngineApplicationStatusApplicationDetailsConf.from_dict(
-                spark_engine_application_status_application_details_conf_model_json
-            ).__dict__
-        )
-        spark_engine_application_status_application_details_conf_model2 = (
-            SparkEngineApplicationStatusApplicationDetailsConf(
-                **spark_engine_application_status_application_details_conf_model_dict
-            )
-        )
-
-        # Verify the model instances are equivalent
-        assert (
-            spark_engine_application_status_application_details_conf_model
-            == spark_engine_application_status_application_details_conf_model2
-        )
-
-        # Convert model instance back to dict and verify no loss of data
-        spark_engine_application_status_application_details_conf_model_json2 = (
-            spark_engine_application_status_application_details_conf_model.to_dict()
-        )
-        assert (
-            spark_engine_application_status_application_details_conf_model_json2
-            == spark_engine_application_status_application_details_conf_model_json
-        )
 
 
 class TestModel_SparkEngineApplicationStatusCollection:
@@ -16115,54 +17800,24 @@ class TestModel_SparkEngineApplicationStatusCollection:
 
         # Construct dict forms of any model objects needed in order to build this model.
 
-        spark_engine_application_status_application_details_conf_model = (
-            {}
-        )  # SparkEngineApplicationStatusApplicationDetailsConf
-        spark_engine_application_status_application_details_conf_model['spark_app_name'] = 'MyJob'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_client_auth_mode'
-        ] = 'PLAIN'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_client_plain_password'
-        ] = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_client_plain_username'
-        ] = 'ibm_lh_token_admin'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_truststore_password'
-        ] = 'changeit'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_hive_metastore_truststore_path'
-        ] = 'file:///opt/ibm/jdk/lib/security/cacerts'
-        spark_engine_application_status_application_details_conf_model['spark_hive_metastore_truststore_type'] = 'JKS'
-        spark_engine_application_status_application_details_conf_model['spark_hive_metastore_use_ssl'] = 'true'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_catalog_implementation'
-        ] = 'Spark Catalog Implementation'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_catalog_lakehouse'
-        ] = 'org.apache.iceberg.spark.SparkCatalog'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_catalog_lakehouse_type'
-        ] = 'Spark Catalog Type'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_catalog_lakehouse_uri'
-        ] = 'Spark Catalog URI'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_extensions'
-        ] = 'org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions'
-        spark_engine_application_status_application_details_conf_model[
-            'spark_sql_iceberg_vectorization_enabled'
-        ] = 'false'
+        spark_application_config_model = {}  # SparkApplicationConfig
+        spark_application_config_model['spark_sample_config_properpty'] = 'testString'
 
-        spark_engine_application_status_application_details_model = {}  # SparkEngineApplicationStatusApplicationDetails
-        spark_engine_application_status_application_details_model['application'] = 's3://mybucket/wordcount.py'
-        spark_engine_application_status_application_details_model['arguments'] = ['people.txt']
-        spark_engine_application_status_application_details_model[
-            'conf'
-        ] = spark_engine_application_status_application_details_conf_model
-        spark_engine_application_status_application_details_model['env'] = {'anyKey': 'anyValue'}
-        spark_engine_application_status_application_details_model['name'] = 'SparkApplicaton1'
+        spark_application_env_model = {}  # SparkApplicationEnv
+        spark_application_env_model['sample_env_key'] = 'testString'
+
+        spark_application_details_model = {}  # SparkApplicationDetails
+        spark_application_details_model['application'] = 's3://mybucket/wordcount.py'
+        spark_application_details_model['arguments'] = ['people.txt']
+        spark_application_details_model['class'] = 'org.apache.spark.examples.SparkPi'
+        spark_application_details_model['conf'] = spark_application_config_model
+        spark_application_details_model['env'] = spark_application_env_model
+        spark_application_details_model['files'] = 's3://mybucket/myfile.txt'
+        spark_application_details_model['jars'] = 'testString'
+        spark_application_details_model['name'] = 'SparkApplicaton1'
+        spark_application_details_model['packages'] = 'org.apache.spark:example_1.2.3'
+        spark_application_details_model['repositories'] = 'https://repo1.maven.org/maven2/'
+        spark_application_details_model['spark_version'] = '3.3'
 
         spark_engine_application_status_runtime_model = {}  # SparkEngineApplicationStatusRuntime
         spark_engine_application_status_runtime_model['spark_version'] = '3.3'
@@ -16172,10 +17827,14 @@ class TestModel_SparkEngineApplicationStatusCollection:
         spark_engine_application_status_state_details_items_model['message'] = 'testString'
         spark_engine_application_status_state_details_items_model['type'] = 'testString'
 
+        spark_volume_details_model = {}  # SparkVolumeDetails
+        spark_volume_details_model['mount_path'] = '/mount/path'
+        spark_volume_details_model['name'] = 'my-volume'
+        spark_volume_details_model['read_only'] = True
+        spark_volume_details_model['source_sub_path'] = '/source/path'
+
         spark_engine_application_status_model = {}  # SparkEngineApplicationStatus
-        spark_engine_application_status_model[
-            'application_details'
-        ] = spark_engine_application_status_application_details_model
+        spark_engine_application_status_model['application_details'] = spark_application_details_model
         spark_engine_application_status_model['application_id'] = '<application_id>'
         spark_engine_application_status_model['auto_termination_time'] = '2020-12-08T10:00:00.000Z'
         spark_engine_application_status_model['creation_time'] = '2020-12-08T10:00:00.000Z'
@@ -16184,52 +17843,40 @@ class TestModel_SparkEngineApplicationStatusCollection:
         spark_engine_application_status_model['failed_time'] = '2020-12-08T10:00:00.000Z'
         spark_engine_application_status_model['finish_time'] = '2020-12-08T10:00:00.000Z'
         spark_engine_application_status_model['id'] = 'cd7cbf1f-8893-4c51-aa3d-d92729f05e99'
-        spark_engine_application_status_model[
-            'job_endpoint'
-        ] = '<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications'
+        spark_engine_application_status_model['job_endpoint'] = '<host>/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/engine_applications'
         spark_engine_application_status_model['return_code'] = '0'
         spark_engine_application_status_model['runtime'] = spark_engine_application_status_runtime_model
         spark_engine_application_status_model['service_instance_id'] = 'testString'
         spark_engine_application_status_model['spark_application_id'] = 'spark-application-16073847388_0001'
         spark_engine_application_status_model['spark_application_name'] = 'sample-application-name'
+        spark_engine_application_status_model['spark_version'] = '3.3'
         spark_engine_application_status_model['start_time'] = '2020-12-08T10:00:00.000Z'
         spark_engine_application_status_model['state'] = 'running'
-        spark_engine_application_status_model['state_details'] = [
-            spark_engine_application_status_state_details_items_model
-        ]
+        spark_engine_application_status_model['state_details'] = [spark_engine_application_status_state_details_items_model]
         spark_engine_application_status_model['submission_time'] = '2023-11-01T11:18:49.758Z'
         spark_engine_application_status_model['template_id'] = 'spark-3.3-jaas-v2-cp4d-template'
         spark_engine_application_status_model['type'] = 'iae'
+        spark_engine_application_status_model['volumes'] = [spark_volume_details_model]
+        spark_engine_application_status_model['wxd_application_ui_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications/c7b3fccf-badb-46b0-b1ef-9b3154424021/ui'
 
         # Construct a json representation of a SparkEngineApplicationStatusCollection model
         spark_engine_application_status_collection_model_json = {}
         spark_engine_application_status_collection_model_json['applications'] = [spark_engine_application_status_model]
 
         # Construct a model instance of SparkEngineApplicationStatusCollection by calling from_dict on the json representation
-        spark_engine_application_status_collection_model = SparkEngineApplicationStatusCollection.from_dict(
-            spark_engine_application_status_collection_model_json
-        )
+        spark_engine_application_status_collection_model = SparkEngineApplicationStatusCollection.from_dict(spark_engine_application_status_collection_model_json)
         assert spark_engine_application_status_collection_model != False
 
         # Construct a model instance of SparkEngineApplicationStatusCollection by calling from_dict on the json representation
-        spark_engine_application_status_collection_model_dict = SparkEngineApplicationStatusCollection.from_dict(
-            spark_engine_application_status_collection_model_json
-        ).__dict__
-        spark_engine_application_status_collection_model2 = SparkEngineApplicationStatusCollection(
-            **spark_engine_application_status_collection_model_dict
-        )
+        spark_engine_application_status_collection_model_dict = SparkEngineApplicationStatusCollection.from_dict(spark_engine_application_status_collection_model_json).__dict__
+        spark_engine_application_status_collection_model2 = SparkEngineApplicationStatusCollection(**spark_engine_application_status_collection_model_dict)
 
         # Verify the model instances are equivalent
         assert spark_engine_application_status_collection_model == spark_engine_application_status_collection_model2
 
         # Convert model instance back to dict and verify no loss of data
-        spark_engine_application_status_collection_model_json2 = (
-            spark_engine_application_status_collection_model.to_dict()
-        )
-        assert (
-            spark_engine_application_status_collection_model_json2
-            == spark_engine_application_status_collection_model_json
-        )
+        spark_engine_application_status_collection_model_json2 = spark_engine_application_status_collection_model.to_dict()
+        assert spark_engine_application_status_collection_model_json2 == spark_engine_application_status_collection_model_json
 
 
 class TestModel_SparkEngineApplicationStatusRuntime:
@@ -16247,18 +17894,12 @@ class TestModel_SparkEngineApplicationStatusRuntime:
         spark_engine_application_status_runtime_model_json['spark_version'] = '3.3'
 
         # Construct a model instance of SparkEngineApplicationStatusRuntime by calling from_dict on the json representation
-        spark_engine_application_status_runtime_model = SparkEngineApplicationStatusRuntime.from_dict(
-            spark_engine_application_status_runtime_model_json
-        )
+        spark_engine_application_status_runtime_model = SparkEngineApplicationStatusRuntime.from_dict(spark_engine_application_status_runtime_model_json)
         assert spark_engine_application_status_runtime_model != False
 
         # Construct a model instance of SparkEngineApplicationStatusRuntime by calling from_dict on the json representation
-        spark_engine_application_status_runtime_model_dict = SparkEngineApplicationStatusRuntime.from_dict(
-            spark_engine_application_status_runtime_model_json
-        ).__dict__
-        spark_engine_application_status_runtime_model2 = SparkEngineApplicationStatusRuntime(
-            **spark_engine_application_status_runtime_model_dict
-        )
+        spark_engine_application_status_runtime_model_dict = SparkEngineApplicationStatusRuntime.from_dict(spark_engine_application_status_runtime_model_json).__dict__
+        spark_engine_application_status_runtime_model2 = SparkEngineApplicationStatusRuntime(**spark_engine_application_status_runtime_model_dict)
 
         # Verify the model instances are equivalent
         assert spark_engine_application_status_runtime_model == spark_engine_application_status_runtime_model2
@@ -16285,37 +17926,19 @@ class TestModel_SparkEngineApplicationStatusStateDetailsItems:
         spark_engine_application_status_state_details_items_model_json['type'] = 'testString'
 
         # Construct a model instance of SparkEngineApplicationStatusStateDetailsItems by calling from_dict on the json representation
-        spark_engine_application_status_state_details_items_model = (
-            SparkEngineApplicationStatusStateDetailsItems.from_dict(
-                spark_engine_application_status_state_details_items_model_json
-            )
-        )
+        spark_engine_application_status_state_details_items_model = SparkEngineApplicationStatusStateDetailsItems.from_dict(spark_engine_application_status_state_details_items_model_json)
         assert spark_engine_application_status_state_details_items_model != False
 
         # Construct a model instance of SparkEngineApplicationStatusStateDetailsItems by calling from_dict on the json representation
-        spark_engine_application_status_state_details_items_model_dict = (
-            SparkEngineApplicationStatusStateDetailsItems.from_dict(
-                spark_engine_application_status_state_details_items_model_json
-            ).__dict__
-        )
-        spark_engine_application_status_state_details_items_model2 = SparkEngineApplicationStatusStateDetailsItems(
-            **spark_engine_application_status_state_details_items_model_dict
-        )
+        spark_engine_application_status_state_details_items_model_dict = SparkEngineApplicationStatusStateDetailsItems.from_dict(spark_engine_application_status_state_details_items_model_json).__dict__
+        spark_engine_application_status_state_details_items_model2 = SparkEngineApplicationStatusStateDetailsItems(**spark_engine_application_status_state_details_items_model_dict)
 
         # Verify the model instances are equivalent
-        assert (
-            spark_engine_application_status_state_details_items_model
-            == spark_engine_application_status_state_details_items_model2
-        )
+        assert spark_engine_application_status_state_details_items_model == spark_engine_application_status_state_details_items_model2
 
         # Convert model instance back to dict and verify no loss of data
-        spark_engine_application_status_state_details_items_model_json2 = (
-            spark_engine_application_status_state_details_items_model.to_dict()
-        )
-        assert (
-            spark_engine_application_status_state_details_items_model_json2
-            == spark_engine_application_status_state_details_items_model_json
-        )
+        spark_engine_application_status_state_details_items_model_json2 = spark_engine_application_status_state_details_items_model.to_dict()
+        assert spark_engine_application_status_state_details_items_model_json2 == spark_engine_application_status_state_details_items_model_json
 
 
 class TestModel_SparkEngineCollection:
@@ -16330,27 +17953,51 @@ class TestModel_SparkEngineCollection:
 
         # Construct dict forms of any model objects needed in order to build this model.
 
+        spark_default_config_model = {}  # SparkDefaultConfig
+        spark_default_config_model['config1'] = 'testString'
+        spark_default_config_model['config2'] = 'testString'
+
         spark_endpoints_model = {}  # SparkEndpoints
-        spark_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/<spark_id>/spark_applications/<application_id>'
+        spark_endpoints_model['applications_api'] = '$HOST/v4/analytics_engines/<spark_id>/spark_applications/<application_id>'
         spark_endpoints_model['history_server_endpoint'] = '$HOST/v2/spark/v3/instances/<spark_id>/spark_history_server'
         spark_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
         spark_endpoints_model['spark_jobs_v4_endpoint'] = '$HOST/v4/analytics_engines/<spark_id>/spark_applications'
         spark_endpoints_model['spark_kernel_endpoint'] = '$HOST/v4/analytics_engines/<spark_id>/jkg/api/kernels'
         spark_endpoints_model['view_history_server'] = 'View history server'
-        spark_endpoints_model[
-            'wxd_application_endpoint'
-        ] = '$HOST/v1/<wxd_instance_id>/engines/<engine_id>/applications'
+        spark_endpoints_model['wxd_application_endpoint'] = '$HOST/v1/<wxd_instance_id>/engines/<engine_id>/applications'
+        spark_endpoints_model['wxd_engine_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817'
+        spark_endpoints_model['wxd_history_server_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/history_server'
+        spark_endpoints_model['wxd_history_server_ui_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/history_server/ui'
+
+        spark_scale_config_model = {}  # SparkScaleConfig
+        spark_scale_config_model['auto_scale_enabled'] = True
+        spark_scale_config_model['current_number_of_nodes'] = 2
+        spark_scale_config_model['maximum_number_of_nodes'] = 5
+        spark_scale_config_model['minimum_number_of_nodes'] = 1
+        spark_scale_config_model['node_type'] = 'medium'
+        spark_scale_config_model['number_of_nodes'] = 2
 
         spark_engine_details_model = {}  # SparkEngineDetails
-        spark_engine_details_model[
-            'connection_string'
-        ] = 'https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>'
+        spark_engine_details_model['api_key'] = 'apikey'
+        spark_engine_details_model['connection_string'] = 'https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>'
+        spark_engine_details_model['default_config'] = spark_default_config_model
+        spark_engine_details_model['default_version'] = '4.8.3'
         spark_engine_details_model['endpoints'] = spark_endpoints_model
+        spark_engine_details_model['engine_home_bucket_display_name'] = 'test-spark-bucket'
+        spark_engine_details_model['engine_home_bucket_name'] = 'test-spark-bucket'
+        spark_engine_details_model['engine_home_path'] = 'spark/spark1234'
+        spark_engine_details_model['engine_home_volume'] = 'test-spark-volume'
+        spark_engine_details_model['engine_home_volume_id'] = '1704979825978585'
+        spark_engine_details_model['engine_home_volume_name'] = 'my-volume'
+        spark_engine_details_model['engine_home_volume_storage_class'] = 'nfs-client'
+        spark_engine_details_model['engine_home_volume_storage_size'] = '5Gi'
+        spark_engine_details_model['instance_id'] = 'spark-id'
+        spark_engine_details_model['managed_by'] = 'fully/self'
+        spark_engine_details_model['scale_config'] = spark_scale_config_model
 
         spark_engine_model = {}  # SparkEngine
         spark_engine_model['actions'] = ['update', 'delete']
+        spark_engine_model['associated_catalogs'] = ['iceberg_data', 'hive_data']
         spark_engine_model['build_version'] = '1.0.3.0.0'
         spark_engine_model['created_by'] = '<username>@<domain>.com'
         spark_engine_model['created_on'] = 163788384993
@@ -16372,9 +18019,7 @@ class TestModel_SparkEngineCollection:
         assert spark_engine_collection_model != False
 
         # Construct a model instance of SparkEngineCollection by calling from_dict on the json representation
-        spark_engine_collection_model_dict = SparkEngineCollection.from_dict(
-            spark_engine_collection_model_json
-        ).__dict__
+        spark_engine_collection_model_dict = SparkEngineCollection.from_dict(spark_engine_collection_model_json).__dict__
         spark_engine_collection_model2 = SparkEngineCollection(**spark_engine_collection_model_dict)
 
         # Verify the model instances are equivalent
@@ -16397,29 +18042,48 @@ class TestModel_SparkEngineDetails:
 
         # Construct dict forms of any model objects needed in order to build this model.
 
+        spark_default_config_model = {}  # SparkDefaultConfig
+        spark_default_config_model['config1'] = 'testString'
+        spark_default_config_model['config2'] = 'testString'
+
         spark_endpoints_model = {}  # SparkEndpoints
-        spark_endpoints_model[
-            'applications_api'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
-        spark_endpoints_model[
-            'history_server_endpoint'
-        ] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
+        spark_endpoints_model['applications_api'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>'
+        spark_endpoints_model['history_server_endpoint'] = '$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server'
         spark_endpoints_model['spark_access_endpoint'] = '$HOST/analytics-engine/details/spark-<instance_id>'
-        spark_endpoints_model[
-            'spark_jobs_v4_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
-        spark_endpoints_model[
-            'spark_kernel_endpoint'
-        ] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
+        spark_endpoints_model['spark_jobs_v4_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications'
+        spark_endpoints_model['spark_kernel_endpoint'] = '$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels'
         spark_endpoints_model['view_history_server'] = 'testString'
         spark_endpoints_model['wxd_application_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/applications'
+        spark_endpoints_model['wxd_engine_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817'
+        spark_endpoints_model['wxd_history_server_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/history_server'
+        spark_endpoints_model['wxd_history_server_ui_endpoint'] = '$HOST/v1/1698311655308796/engines/spark817/history_server/ui'
+
+        spark_scale_config_model = {}  # SparkScaleConfig
+        spark_scale_config_model['auto_scale_enabled'] = True
+        spark_scale_config_model['current_number_of_nodes'] = 2
+        spark_scale_config_model['maximum_number_of_nodes'] = 5
+        spark_scale_config_model['minimum_number_of_nodes'] = 1
+        spark_scale_config_model['node_type'] = 'medium'
+        spark_scale_config_model['number_of_nodes'] = 2
 
         # Construct a json representation of a SparkEngineDetails model
         spark_engine_details_model_json = {}
-        spark_engine_details_model_json[
-            'connection_string'
-        ] = 'https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>'
+        spark_engine_details_model_json['api_key'] = 'apikey'
+        spark_engine_details_model_json['connection_string'] = 'https://xyz.<region>.ae.cloud.123.com/v3/analytics_engines/<spark_iae_id>'
+        spark_engine_details_model_json['default_config'] = spark_default_config_model
+        spark_engine_details_model_json['default_version'] = '4.8.3'
         spark_engine_details_model_json['endpoints'] = spark_endpoints_model
+        spark_engine_details_model_json['engine_home_bucket_display_name'] = 'test-spark-bucket'
+        spark_engine_details_model_json['engine_home_bucket_name'] = 'test-spark-bucket'
+        spark_engine_details_model_json['engine_home_path'] = 'spark/spark1234'
+        spark_engine_details_model_json['engine_home_volume'] = 'test-spark-volume'
+        spark_engine_details_model_json['engine_home_volume_id'] = '1704979825978585'
+        spark_engine_details_model_json['engine_home_volume_name'] = 'my-volume'
+        spark_engine_details_model_json['engine_home_volume_storage_class'] = 'nfs-client'
+        spark_engine_details_model_json['engine_home_volume_storage_size'] = '5Gi'
+        spark_engine_details_model_json['instance_id'] = 'spark-id'
+        spark_engine_details_model_json['managed_by'] = 'fully/self'
+        spark_engine_details_model_json['scale_config'] = spark_scale_config_model
 
         # Construct a model instance of SparkEngineDetails by calling from_dict on the json representation
         spark_engine_details_model = SparkEngineDetails.from_dict(spark_engine_details_model_json)
@@ -16447,23 +18111,43 @@ class TestModel_SparkEngineDetailsPrototype:
         Test serialization/deserialization for SparkEngineDetailsPrototype
         """
 
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        spark_default_config_model = {}  # SparkDefaultConfig
+        spark_default_config_model['config1'] = 'testString'
+        spark_default_config_model['config2'] = 'testString'
+
+        spark_scale_config_model = {}  # SparkScaleConfig
+        spark_scale_config_model['auto_scale_enabled'] = True
+        spark_scale_config_model['current_number_of_nodes'] = 2
+        spark_scale_config_model['maximum_number_of_nodes'] = 5
+        spark_scale_config_model['minimum_number_of_nodes'] = 1
+        spark_scale_config_model['node_type'] = 'medium'
+        spark_scale_config_model['number_of_nodes'] = 2
+
         # Construct a json representation of a SparkEngineDetailsPrototype model
         spark_engine_details_prototype_model_json = {}
         spark_engine_details_prototype_model_json['api_key'] = 'apikey'
         spark_engine_details_prototype_model_json['connection_string'] = '1.2.3.4'
+        spark_engine_details_prototype_model_json['default_config'] = spark_default_config_model
+        spark_engine_details_prototype_model_json['default_version'] = '4.8.3'
+        spark_engine_details_prototype_model_json['engine_home_bucket_display_name'] = 'test-spark-bucket'
+        spark_engine_details_prototype_model_json['engine_home_bucket_name'] = 'test-spark-bucket'
+        spark_engine_details_prototype_model_json['engine_home_path'] = 'spark/spark1234'
+        spark_engine_details_prototype_model_json['engine_home_volume_id'] = '1704979825978585'
+        spark_engine_details_prototype_model_json['engine_home_volume_name'] = 'my-volume'
+        spark_engine_details_prototype_model_json['engine_home_volume_storage_class'] = 'nfs-client'
+        spark_engine_details_prototype_model_json['engine_home_volume_storage_size'] = '5Gi'
         spark_engine_details_prototype_model_json['instance_id'] = 'spark-id'
         spark_engine_details_prototype_model_json['managed_by'] = 'fully/self'
+        spark_engine_details_prototype_model_json['scale_config'] = spark_scale_config_model
 
         # Construct a model instance of SparkEngineDetailsPrototype by calling from_dict on the json representation
-        spark_engine_details_prototype_model = SparkEngineDetailsPrototype.from_dict(
-            spark_engine_details_prototype_model_json
-        )
+        spark_engine_details_prototype_model = SparkEngineDetailsPrototype.from_dict(spark_engine_details_prototype_model_json)
         assert spark_engine_details_prototype_model != False
 
         # Construct a model instance of SparkEngineDetailsPrototype by calling from_dict on the json representation
-        spark_engine_details_prototype_model_dict = SparkEngineDetailsPrototype.from_dict(
-            spark_engine_details_prototype_model_json
-        ).__dict__
+        spark_engine_details_prototype_model_dict = SparkEngineDetailsPrototype.from_dict(spark_engine_details_prototype_model_json).__dict__
         spark_engine_details_prototype_model2 = SparkEngineDetailsPrototype(**spark_engine_details_prototype_model_dict)
 
         # Verify the model instances are equivalent
@@ -16472,6 +18156,108 @@ class TestModel_SparkEngineDetailsPrototype:
         # Convert model instance back to dict and verify no loss of data
         spark_engine_details_prototype_model_json2 = spark_engine_details_prototype_model.to_dict()
         assert spark_engine_details_prototype_model_json2 == spark_engine_details_prototype_model_json
+
+
+class TestModel_SparkHistoryServer:
+    """
+    Test Class for SparkHistoryServer
+    """
+
+    def test_spark_history_server_serialization(self):
+        """
+        Test serialization/deserialization for SparkHistoryServer
+        """
+
+        # Construct a json representation of a SparkHistoryServer model
+        spark_history_server_model_json = {}
+        spark_history_server_model_json['auto_termination_time'] = '2022-02-24T07:37:47Z'
+        spark_history_server_model_json['cores'] = '1'
+        spark_history_server_model_json['memory'] = '4G'
+        spark_history_server_model_json['start_time'] = '2022-02-21T07:37:47Z'
+        spark_history_server_model_json['state'] = 'started'
+
+        # Construct a model instance of SparkHistoryServer by calling from_dict on the json representation
+        spark_history_server_model = SparkHistoryServer.from_dict(spark_history_server_model_json)
+        assert spark_history_server_model != False
+
+        # Construct a model instance of SparkHistoryServer by calling from_dict on the json representation
+        spark_history_server_model_dict = SparkHistoryServer.from_dict(spark_history_server_model_json).__dict__
+        spark_history_server_model2 = SparkHistoryServer(**spark_history_server_model_dict)
+
+        # Verify the model instances are equivalent
+        assert spark_history_server_model == spark_history_server_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        spark_history_server_model_json2 = spark_history_server_model.to_dict()
+        assert spark_history_server_model_json2 == spark_history_server_model_json
+
+
+class TestModel_SparkScaleConfig:
+    """
+    Test Class for SparkScaleConfig
+    """
+
+    def test_spark_scale_config_serialization(self):
+        """
+        Test serialization/deserialization for SparkScaleConfig
+        """
+
+        # Construct a json representation of a SparkScaleConfig model
+        spark_scale_config_model_json = {}
+        spark_scale_config_model_json['auto_scale_enabled'] = True
+        spark_scale_config_model_json['current_number_of_nodes'] = 2
+        spark_scale_config_model_json['maximum_number_of_nodes'] = 5
+        spark_scale_config_model_json['minimum_number_of_nodes'] = 1
+        spark_scale_config_model_json['node_type'] = 'medium'
+        spark_scale_config_model_json['number_of_nodes'] = 2
+
+        # Construct a model instance of SparkScaleConfig by calling from_dict on the json representation
+        spark_scale_config_model = SparkScaleConfig.from_dict(spark_scale_config_model_json)
+        assert spark_scale_config_model != False
+
+        # Construct a model instance of SparkScaleConfig by calling from_dict on the json representation
+        spark_scale_config_model_dict = SparkScaleConfig.from_dict(spark_scale_config_model_json).__dict__
+        spark_scale_config_model2 = SparkScaleConfig(**spark_scale_config_model_dict)
+
+        # Verify the model instances are equivalent
+        assert spark_scale_config_model == spark_scale_config_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        spark_scale_config_model_json2 = spark_scale_config_model.to_dict()
+        assert spark_scale_config_model_json2 == spark_scale_config_model_json
+
+
+class TestModel_SparkVolumeDetails:
+    """
+    Test Class for SparkVolumeDetails
+    """
+
+    def test_spark_volume_details_serialization(self):
+        """
+        Test serialization/deserialization for SparkVolumeDetails
+        """
+
+        # Construct a json representation of a SparkVolumeDetails model
+        spark_volume_details_model_json = {}
+        spark_volume_details_model_json['mount_path'] = '/mount/path'
+        spark_volume_details_model_json['name'] = 'my-volume'
+        spark_volume_details_model_json['read_only'] = True
+        spark_volume_details_model_json['source_sub_path'] = '/source/path'
+
+        # Construct a model instance of SparkVolumeDetails by calling from_dict on the json representation
+        spark_volume_details_model = SparkVolumeDetails.from_dict(spark_volume_details_model_json)
+        assert spark_volume_details_model != False
+
+        # Construct a model instance of SparkVolumeDetails by calling from_dict on the json representation
+        spark_volume_details_model_dict = SparkVolumeDetails.from_dict(spark_volume_details_model_json).__dict__
+        spark_volume_details_model2 = SparkVolumeDetails(**spark_volume_details_model_dict)
+
+        # Verify the model instances are equivalent
+        assert spark_volume_details_model == spark_volume_details_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        spark_volume_details_model_json2 = spark_volume_details_model.to_dict()
+        assert spark_volume_details_model_json2 == spark_volume_details_model_json
 
 
 class TestModel_SuccessResponse:
@@ -16503,6 +18289,37 @@ class TestModel_SuccessResponse:
         # Convert model instance back to dict and verify no loss of data
         success_response_model_json2 = success_response_model.to_dict()
         assert success_response_model_json2 == success_response_model_json
+
+
+class TestModel_SyncCatalogs:
+    """
+    Test Class for SyncCatalogs
+    """
+
+    def test_sync_catalogs_serialization(self):
+        """
+        Test serialization/deserialization for SyncCatalogs
+        """
+
+        # Construct a json representation of a SyncCatalogs model
+        sync_catalogs_model_json = {}
+        sync_catalogs_model_json['auto_add_new_tables'] = True
+        sync_catalogs_model_json['sync_iceberg_md'] = True
+
+        # Construct a model instance of SyncCatalogs by calling from_dict on the json representation
+        sync_catalogs_model = SyncCatalogs.from_dict(sync_catalogs_model_json)
+        assert sync_catalogs_model != False
+
+        # Construct a model instance of SyncCatalogs by calling from_dict on the json representation
+        sync_catalogs_model_dict = SyncCatalogs.from_dict(sync_catalogs_model_json).__dict__
+        sync_catalogs_model2 = SyncCatalogs(**sync_catalogs_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sync_catalogs_model == sync_catalogs_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sync_catalogs_model_json2 = sync_catalogs_model.to_dict()
+        assert sync_catalogs_model_json2 == sync_catalogs_model_json
 
 
 class TestModel_Table:
@@ -16576,6 +18393,36 @@ class TestModel_TableCollection:
         assert table_collection_model_json2 == table_collection_model_json
 
 
+class TestModel_TablePatch:
+    """
+    Test Class for TablePatch
+    """
+
+    def test_table_patch_serialization(self):
+        """
+        Test serialization/deserialization for TablePatch
+        """
+
+        # Construct a json representation of a TablePatch model
+        table_patch_model_json = {}
+        table_patch_model_json['table_name'] = 'updated_table_name'
+
+        # Construct a model instance of TablePatch by calling from_dict on the json representation
+        table_patch_model = TablePatch.from_dict(table_patch_model_json)
+        assert table_patch_model != False
+
+        # Construct a model instance of TablePatch by calling from_dict on the json representation
+        table_patch_model_dict = TablePatch.from_dict(table_patch_model_json).__dict__
+        table_patch_model2 = TablePatch(**table_patch_model_dict)
+
+        # Verify the model instances are equivalent
+        assert table_patch_model == table_patch_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        table_patch_model_json2 = table_patch_model.to_dict()
+        assert table_patch_model_json2 == table_patch_model_json
+
+
 class TestModel_TableSnapshot:
     """
     Test Class for TableSnapshot
@@ -16591,7 +18438,7 @@ class TestModel_TableSnapshot:
         table_snapshot_model_json['committed_at'] = '1609379392'
         table_snapshot_model_json['operation'] = 'alter'
         table_snapshot_model_json['snapshot_id'] = '2332342122211222'
-        table_snapshot_model_json['summary'] = {'anyKey': 'anyValue'}
+        table_snapshot_model_json['summary'] = 'testString'
 
         # Construct a model instance of TableSnapshot by calling from_dict on the json representation
         table_snapshot_model = TableSnapshot.from_dict(table_snapshot_model_json)
@@ -16625,7 +18472,7 @@ class TestModel_TableSnapshotCollection:
         table_snapshot_model['committed_at'] = '1609379392'
         table_snapshot_model['operation'] = 'alter'
         table_snapshot_model['snapshot_id'] = '2332342122211222'
-        table_snapshot_model['summary'] = {}
+        table_snapshot_model['summary'] = 'testString'
 
         # Construct a json representation of a TableSnapshotCollection model
         table_snapshot_collection_model_json = {}
@@ -16636,9 +18483,7 @@ class TestModel_TableSnapshotCollection:
         assert table_snapshot_collection_model != False
 
         # Construct a model instance of TableSnapshotCollection by calling from_dict on the json representation
-        table_snapshot_collection_model_dict = TableSnapshotCollection.from_dict(
-            table_snapshot_collection_model_json
-        ).__dict__
+        table_snapshot_collection_model_dict = TableSnapshotCollection.from_dict(table_snapshot_collection_model_json).__dict__
         table_snapshot_collection_model2 = TableSnapshotCollection(**table_snapshot_collection_model_dict)
 
         # Verify the model instances are equivalent
@@ -16649,91 +18494,74 @@ class TestModel_TableSnapshotCollection:
         assert table_snapshot_collection_model_json2 == table_snapshot_collection_model_json
 
 
-class TestModel_TestBucketConnectionOKBody:
+class TestModel_UpdateSparkEngineBody:
     """
-    Test Class for TestBucketConnectionOKBody
+    Test Class for UpdateSparkEngineBody
     """
 
-    def test_test_bucket_connection_ok_body_serialization(self):
+    def test_update_spark_engine_body_serialization(self):
         """
-        Test serialization/deserialization for TestBucketConnectionOKBody
-        """
-
-        # Construct dict forms of any model objects needed in order to build this model.
-
-        bucket_status_response_model = {}  # BucketStatusResponse
-        bucket_status_response_model['state'] = True
-        bucket_status_response_model['state_message'] = 'Credentials provided for <bucket-name> bucket are correct.'
-
-        success_response_model = {}  # SuccessResponse
-        success_response_model['message'] = 'Test bucket connection'
-        success_response_model['message_code'] = 'success'
-
-        # Construct a json representation of a TestBucketConnectionOKBody model
-        test_bucket_connection_ok_body_model_json = {}
-        test_bucket_connection_ok_body_model_json['bucket_status'] = bucket_status_response_model
-        test_bucket_connection_ok_body_model_json['response'] = success_response_model
-
-        # Construct a model instance of TestBucketConnectionOKBody by calling from_dict on the json representation
-        test_bucket_connection_ok_body_model = TestBucketConnectionOKBody.from_dict(
-            test_bucket_connection_ok_body_model_json
-        )
-        assert test_bucket_connection_ok_body_model != False
-
-        # Construct a model instance of TestBucketConnectionOKBody by calling from_dict on the json representation
-        test_bucket_connection_ok_body_model_dict = TestBucketConnectionOKBody.from_dict(
-            test_bucket_connection_ok_body_model_json
-        ).__dict__
-        test_bucket_connection_ok_body_model2 = TestBucketConnectionOKBody(**test_bucket_connection_ok_body_model_dict)
-
-        # Verify the model instances are equivalent
-        assert test_bucket_connection_ok_body_model == test_bucket_connection_ok_body_model2
-
-        # Convert model instance back to dict and verify no loss of data
-        test_bucket_connection_ok_body_model_json2 = test_bucket_connection_ok_body_model.to_dict()
-        assert test_bucket_connection_ok_body_model_json2 == test_bucket_connection_ok_body_model_json
-
-
-class TestModel_TestDatabaseConnectionResponse:
-    """
-    Test Class for TestDatabaseConnectionResponse
-    """
-
-    def test_test_database_connection_response_serialization(self):
-        """
-        Test serialization/deserialization for TestDatabaseConnectionResponse
+        Test serialization/deserialization for UpdateSparkEngineBody
         """
 
         # Construct dict forms of any model objects needed in order to build this model.
 
-        connection_response_model = {}  # ConnectionResponse
-        connection_response_model['state'] = True
-        connection_response_model['state_message'] = 'connection successful'
+        update_spark_engine_body_engine_details_model = {}  # UpdateSparkEngineBodyEngineDetails
+        update_spark_engine_body_engine_details_model['default_config'] = {'key1': 'testString'}
+        update_spark_engine_body_engine_details_model['default_version'] = '4.8.3'
 
-        # Construct a json representation of a TestDatabaseConnectionResponse model
-        test_database_connection_response_model_json = {}
-        test_database_connection_response_model_json['connection_response'] = connection_response_model
+        # Construct a json representation of a UpdateSparkEngineBody model
+        update_spark_engine_body_model_json = {}
+        update_spark_engine_body_model_json['description'] = 'updated description for spark engine'
+        update_spark_engine_body_model_json['engine_details'] = update_spark_engine_body_engine_details_model
+        update_spark_engine_body_model_json['engine_display_name'] = 'sampleEngine'
+        update_spark_engine_body_model_json['tags'] = ['tag1', 'tag2']
 
-        # Construct a model instance of TestDatabaseConnectionResponse by calling from_dict on the json representation
-        test_database_connection_response_model = TestDatabaseConnectionResponse.from_dict(
-            test_database_connection_response_model_json
-        )
-        assert test_database_connection_response_model != False
+        # Construct a model instance of UpdateSparkEngineBody by calling from_dict on the json representation
+        update_spark_engine_body_model = UpdateSparkEngineBody.from_dict(update_spark_engine_body_model_json)
+        assert update_spark_engine_body_model != False
 
-        # Construct a model instance of TestDatabaseConnectionResponse by calling from_dict on the json representation
-        test_database_connection_response_model_dict = TestDatabaseConnectionResponse.from_dict(
-            test_database_connection_response_model_json
-        ).__dict__
-        test_database_connection_response_model2 = TestDatabaseConnectionResponse(
-            **test_database_connection_response_model_dict
-        )
+        # Construct a model instance of UpdateSparkEngineBody by calling from_dict on the json representation
+        update_spark_engine_body_model_dict = UpdateSparkEngineBody.from_dict(update_spark_engine_body_model_json).__dict__
+        update_spark_engine_body_model2 = UpdateSparkEngineBody(**update_spark_engine_body_model_dict)
 
         # Verify the model instances are equivalent
-        assert test_database_connection_response_model == test_database_connection_response_model2
+        assert update_spark_engine_body_model == update_spark_engine_body_model2
 
         # Convert model instance back to dict and verify no loss of data
-        test_database_connection_response_model_json2 = test_database_connection_response_model.to_dict()
-        assert test_database_connection_response_model_json2 == test_database_connection_response_model_json
+        update_spark_engine_body_model_json2 = update_spark_engine_body_model.to_dict()
+        assert update_spark_engine_body_model_json2 == update_spark_engine_body_model_json
+
+
+class TestModel_UpdateSparkEngineBodyEngineDetails:
+    """
+    Test Class for UpdateSparkEngineBodyEngineDetails
+    """
+
+    def test_update_spark_engine_body_engine_details_serialization(self):
+        """
+        Test serialization/deserialization for UpdateSparkEngineBodyEngineDetails
+        """
+
+        # Construct a json representation of a UpdateSparkEngineBodyEngineDetails model
+        update_spark_engine_body_engine_details_model_json = {}
+        update_spark_engine_body_engine_details_model_json['default_config'] = {'key1': 'testString'}
+        update_spark_engine_body_engine_details_model_json['default_version'] = '4.8.3'
+
+        # Construct a model instance of UpdateSparkEngineBodyEngineDetails by calling from_dict on the json representation
+        update_spark_engine_body_engine_details_model = UpdateSparkEngineBodyEngineDetails.from_dict(update_spark_engine_body_engine_details_model_json)
+        assert update_spark_engine_body_engine_details_model != False
+
+        # Construct a model instance of UpdateSparkEngineBodyEngineDetails by calling from_dict on the json representation
+        update_spark_engine_body_engine_details_model_dict = UpdateSparkEngineBodyEngineDetails.from_dict(update_spark_engine_body_engine_details_model_json).__dict__
+        update_spark_engine_body_engine_details_model2 = UpdateSparkEngineBodyEngineDetails(**update_spark_engine_body_engine_details_model_dict)
+
+        # Verify the model instances are equivalent
+        assert update_spark_engine_body_engine_details_model == update_spark_engine_body_engine_details_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        update_spark_engine_body_engine_details_model_json2 = update_spark_engine_body_engine_details_model.to_dict()
+        assert update_spark_engine_body_engine_details_model_json2 == update_spark_engine_body_engine_details_model_json
 
 
 class TestModel_UpdateSyncCatalogOKBody:
@@ -16761,9 +18589,7 @@ class TestModel_UpdateSyncCatalogOKBody:
         assert update_sync_catalog_ok_body_model != False
 
         # Construct a model instance of UpdateSyncCatalogOKBody by calling from_dict on the json representation
-        update_sync_catalog_ok_body_model_dict = UpdateSyncCatalogOKBody.from_dict(
-            update_sync_catalog_ok_body_model_json
-        ).__dict__
+        update_sync_catalog_ok_body_model_dict = UpdateSyncCatalogOKBody.from_dict(update_sync_catalog_ok_body_model_json).__dict__
         update_sync_catalog_ok_body_model2 = UpdateSyncCatalogOKBody(**update_sync_catalog_ok_body_model_dict)
 
         # Verify the model instances are equivalent
@@ -16772,50 +18598,6 @@ class TestModel_UpdateSyncCatalogOKBody:
         # Convert model instance back to dict and verify no loss of data
         update_sync_catalog_ok_body_model_json2 = update_sync_catalog_ok_body_model.to_dict()
         assert update_sync_catalog_ok_body_model_json2 == update_sync_catalog_ok_body_model_json
-
-
-class TestModel_ValidateDatabaseBodyDatabaseDetails:
-    """
-    Test Class for ValidateDatabaseBodyDatabaseDetails
-    """
-
-    def test_validate_database_body_database_details_serialization(self):
-        """
-        Test serialization/deserialization for ValidateDatabaseBodyDatabaseDetails
-        """
-
-        # Construct a json representation of a ValidateDatabaseBodyDatabaseDetails model
-        validate_database_body_database_details_model_json = {}
-        validate_database_body_database_details_model_json['database_name'] = 'sampledatabase'
-        validate_database_body_database_details_model_json['hostname'] = 'db2@hostname.com'
-        validate_database_body_database_details_model_json['password'] = 'samplepassword'
-        validate_database_body_database_details_model_json['port'] = 4553
-        validate_database_body_database_details_model_json['sasl'] = True
-        validate_database_body_database_details_model_json['ssl'] = True
-        validate_database_body_database_details_model_json['tables'] = 'kafka_table_name'
-        validate_database_body_database_details_model_json['username'] = 'sampleuser'
-        validate_database_body_database_details_model_json['validate_server_certificate'] = True
-
-        # Construct a model instance of ValidateDatabaseBodyDatabaseDetails by calling from_dict on the json representation
-        validate_database_body_database_details_model = ValidateDatabaseBodyDatabaseDetails.from_dict(
-            validate_database_body_database_details_model_json
-        )
-        assert validate_database_body_database_details_model != False
-
-        # Construct a model instance of ValidateDatabaseBodyDatabaseDetails by calling from_dict on the json representation
-        validate_database_body_database_details_model_dict = ValidateDatabaseBodyDatabaseDetails.from_dict(
-            validate_database_body_database_details_model_json
-        ).__dict__
-        validate_database_body_database_details_model2 = ValidateDatabaseBodyDatabaseDetails(
-            **validate_database_body_database_details_model_dict
-        )
-
-        # Verify the model instances are equivalent
-        assert validate_database_body_database_details_model == validate_database_body_database_details_model2
-
-        # Convert model instance back to dict and verify no loss of data
-        validate_database_body_database_details_model_json2 = validate_database_body_database_details_model.to_dict()
-        assert validate_database_body_database_details_model_json2 == validate_database_body_database_details_model_json
 
 
 # endregion
