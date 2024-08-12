@@ -19,12 +19,14 @@ Unit Tests for WatsonxDataV2
 
 from ibm_cloud_sdk_core.authenticators.no_auth_authenticator import NoAuthAuthenticator
 import inspect
+import io
 import json
 import os
 import pytest
 import re
 import requests
 import responses
+import tempfile
 import urllib
 from ibm_watsonxdata.watsonx_data_v2 import *
 
@@ -13619,13 +13621,13 @@ class TestListIngestionJobs:
 
         # Set up parameter values
         auth_instance_id = 'testString'
-        start = '1'
+        page = 1
         jobs_per_page = 1
 
         # Invoke method
         response = _service.list_ingestion_jobs(
             auth_instance_id,
-            start=start,
+            page=page,
             jobs_per_page=jobs_per_page,
             headers={},
         )
@@ -13636,7 +13638,7 @@ class TestListIngestionJobs:
         # Validate query params
         query_string = responses.calls[0].request.url.split('?', 1)[1]
         query_string = urllib.parse.unquote_plus(query_string)
-        assert 'start={}'.format(start) in query_string
+        assert 'page={}'.format(page) in query_string
         assert 'jobs_per_page={}'.format(jobs_per_page) in query_string
 
     def test_list_ingestion_jobs_all_params_with_retries(self):
@@ -13723,76 +13725,605 @@ class TestListIngestionJobs:
         _service.disable_retries()
         self.test_list_ingestion_jobs_value_error()
 
-    @responses.activate
-    def test_list_ingestion_jobs_with_pager_get_next(self):
-        """
-        test_list_ingestion_jobs_with_pager_get_next()
-        """
-        # Set up a two-page mock response
-        url = preprocess_url('/ingestion_jobs')
-        mock_response1 = '{"next":{"href":"https://myhost.com/somePath?start=1"},"total_count":2,"limit":1,"ingestion_jobs":[{"create_if_not_exist":false,"csv_property":{"encoding":"utf-8","escape_character":"|","field_delimiter":",","header":true,"line_delimiter":"\n"},"details":"Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory","end_timestamp":"1685088775","engine_id":"spark123","engine_name":"sparkdemo","execute_config":{"driver_cores":1,"driver_memory":"2G","executor_cores":1,"executor_memory":"2G","num_executors":1},"instance_id":"1684432229673971","job_id":"ingestion-1699459946935","partition_by":"col1, col2","schema":"{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}","source_data_files":"s3://demobucket/data/yellow_tripdata_2022-01.parquet","source_file_type":"csv","start_timestamp":"1685084455","status":"running","target_table":"demodb.test.targettable","username":"ibmlhadmin","validate_csv_header":false}]}'
-        mock_response2 = '{"total_count":2,"limit":1,"ingestion_jobs":[{"create_if_not_exist":false,"csv_property":{"encoding":"utf-8","escape_character":"|","field_delimiter":",","header":true,"line_delimiter":"\n"},"details":"Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory","end_timestamp":"1685088775","engine_id":"spark123","engine_name":"sparkdemo","execute_config":{"driver_cores":1,"driver_memory":"2G","executor_cores":1,"executor_memory":"2G","num_executors":1},"instance_id":"1684432229673971","job_id":"ingestion-1699459946935","partition_by":"col1, col2","schema":"{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}","source_data_files":"s3://demobucket/data/yellow_tripdata_2022-01.parquet","source_file_type":"csv","start_timestamp":"1685084455","status":"running","target_table":"demodb.test.targettable","username":"ibmlhadmin","validate_csv_header":false}]}'
-        responses.add(
-            responses.GET,
-            url,
-            body=mock_response1,
-            content_type='application/json',
-            status=200,
-        )
-        responses.add(
-            responses.GET,
-            url,
-            body=mock_response2,
-            content_type='application/json',
-            status=200,
-        )
 
-        # Exercise the pager class for this operation
-        all_results = []
-        pager = IngestionJobsPager(
-            client=_service,
-            auth_instance_id='testString',
-            jobs_per_page=1,
-        )
-        while pager.has_next():
-            next_page = pager.get_next()
-            assert next_page is not None
-            all_results.extend(next_page)
-        assert len(all_results) == 2
+class TestCreateIngestionJobs:
+    """
+    Test Class for create_ingestion_jobs
+    """
 
     @responses.activate
-    def test_list_ingestion_jobs_with_pager_get_all(self):
+    def test_create_ingestion_jobs_all_params(self):
         """
-        test_list_ingestion_jobs_with_pager_get_all()
+        create_ingestion_jobs()
         """
-        # Set up a two-page mock response
+        # Set up mock
         url = preprocess_url('/ingestion_jobs')
-        mock_response1 = '{"next":{"href":"https://myhost.com/somePath?start=1"},"total_count":2,"limit":1,"ingestion_jobs":[{"create_if_not_exist":false,"csv_property":{"encoding":"utf-8","escape_character":"|","field_delimiter":",","header":true,"line_delimiter":"\n"},"details":"Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory","end_timestamp":"1685088775","engine_id":"spark123","engine_name":"sparkdemo","execute_config":{"driver_cores":1,"driver_memory":"2G","executor_cores":1,"executor_memory":"2G","num_executors":1},"instance_id":"1684432229673971","job_id":"ingestion-1699459946935","partition_by":"col1, col2","schema":"{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}","source_data_files":"s3://demobucket/data/yellow_tripdata_2022-01.parquet","source_file_type":"csv","start_timestamp":"1685084455","status":"running","target_table":"demodb.test.targettable","username":"ibmlhadmin","validate_csv_header":false}]}'
-        mock_response2 = '{"total_count":2,"limit":1,"ingestion_jobs":[{"create_if_not_exist":false,"csv_property":{"encoding":"utf-8","escape_character":"|","field_delimiter":",","header":true,"line_delimiter":"\n"},"details":"Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory","end_timestamp":"1685088775","engine_id":"spark123","engine_name":"sparkdemo","execute_config":{"driver_cores":1,"driver_memory":"2G","executor_cores":1,"executor_memory":"2G","num_executors":1},"instance_id":"1684432229673971","job_id":"ingestion-1699459946935","partition_by":"col1, col2","schema":"{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}","source_data_files":"s3://demobucket/data/yellow_tripdata_2022-01.parquet","source_file_type":"csv","start_timestamp":"1685084455","status":"running","target_table":"demodb.test.targettable","username":"ibmlhadmin","validate_csv_header":false}]}'
+        mock_response = '{"create_if_not_exist": false, "csv_property": {"encoding": "utf-8", "escape_character": "|", "field_delimiter": ",", "header": true, "line_delimiter": "\n"}, "details": "Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory", "end_timestamp": "1685088775", "engine_id": "spark123", "engine_name": "sparkdemo", "execute_config": {"driver_cores": 1, "driver_memory": "2G", "executor_cores": 1, "executor_memory": "2G", "num_executors": 1}, "instance_id": "1684432229673971", "job_id": "ingestion-1699459946935", "partition_by": "col1, col2", "schema": "{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}", "source_data_files": "s3://demobucket/data/yellow_tripdata_2022-01.parquet", "source_file_type": "csv", "start_timestamp": "1685084455", "status": "running", "target_table": "demodb.test.targettable", "username": "ibmlhadmin", "validate_csv_header": false}'
         responses.add(
-            responses.GET,
+            responses.POST,
             url,
-            body=mock_response1,
+            body=mock_response,
             content_type='application/json',
-            status=200,
+            status=202,
         )
+
+        # Construct a dict representation of a IngestionJobPrototypeCsvProperty model
+        ingestion_job_prototype_csv_property_model = {}
+        ingestion_job_prototype_csv_property_model['encoding'] = 'utf-8'
+        ingestion_job_prototype_csv_property_model['escape_character'] = '\\\\'
+        ingestion_job_prototype_csv_property_model['field_delimiter'] = ','
+        ingestion_job_prototype_csv_property_model['header'] = True
+        ingestion_job_prototype_csv_property_model['line_delimiter'] = '\\n'
+
+        # Construct a dict representation of a IngestionJobPrototypeExecuteConfig model
+        ingestion_job_prototype_execute_config_model = {}
+        ingestion_job_prototype_execute_config_model['driver_cores'] = 1
+        ingestion_job_prototype_execute_config_model['driver_memory'] = '2G'
+        ingestion_job_prototype_execute_config_model['executor_cores'] = 1
+        ingestion_job_prototype_execute_config_model['executor_memory'] = '2G'
+        ingestion_job_prototype_execute_config_model['num_executors'] = 1
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+        job_id = 'ingestion-1699459946935'
+        source_data_files = 's3://demobucket/data/yellow_tripdata_2022-01.parquet'
+        target_table = 'demodb.test.targettable'
+        username = 'user1'
+        create_if_not_exist = False
+        csv_property = ingestion_job_prototype_csv_property_model
+        engine_id = 'spark123'
+        execute_config = ingestion_job_prototype_execute_config_model
+        partition_by = 'col1, col2'
+        schema = '{"type":"struct","schema-id":0,"fields":[{"id":1,"name":"ID","required":true,"type":"int"},{"id":2,"name":"Name","required":true,"type":"string"}]}'
+        source_file_type = 'csv'
+        validate_csv_header = False
+
+        # Invoke method
+        response = _service.create_ingestion_jobs(
+            auth_instance_id,
+            job_id,
+            source_data_files,
+            target_table,
+            username,
+            create_if_not_exist=create_if_not_exist,
+            csv_property=csv_property,
+            engine_id=engine_id,
+            execute_config=execute_config,
+            partition_by=partition_by,
+            schema=schema,
+            source_file_type=source_file_type,
+            validate_csv_header=validate_csv_header,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 202
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['job_id'] == 'ingestion-1699459946935'
+        assert req_body['source_data_files'] == 's3://demobucket/data/yellow_tripdata_2022-01.parquet'
+        assert req_body['target_table'] == 'demodb.test.targettable'
+        assert req_body['username'] == 'user1'
+        assert req_body['create_if_not_exist'] == False
+        assert req_body['csv_property'] == ingestion_job_prototype_csv_property_model
+        assert req_body['engine_id'] == 'spark123'
+        assert req_body['execute_config'] == ingestion_job_prototype_execute_config_model
+        assert req_body['partition_by'] == 'col1, col2'
+        assert req_body['schema'] == '{"type":"struct","schema-id":0,"fields":[{"id":1,"name":"ID","required":true,"type":"int"},{"id":2,"name":"Name","required":true,"type":"string"}]}'
+        assert req_body['source_file_type'] == 'csv'
+        assert req_body['validate_csv_header'] == False
+
+    def test_create_ingestion_jobs_all_params_with_retries(self):
+        # Enable retries and run test_create_ingestion_jobs_all_params.
+        _service.enable_retries()
+        self.test_create_ingestion_jobs_all_params()
+
+        # Disable retries and run test_create_ingestion_jobs_all_params.
+        _service.disable_retries()
+        self.test_create_ingestion_jobs_all_params()
+
+    @responses.activate
+    def test_create_ingestion_jobs_value_error(self):
+        """
+        test_create_ingestion_jobs_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/ingestion_jobs')
+        mock_response = '{"create_if_not_exist": false, "csv_property": {"encoding": "utf-8", "escape_character": "|", "field_delimiter": ",", "header": true, "line_delimiter": "\n"}, "details": "Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory", "end_timestamp": "1685088775", "engine_id": "spark123", "engine_name": "sparkdemo", "execute_config": {"driver_cores": 1, "driver_memory": "2G", "executor_cores": 1, "executor_memory": "2G", "num_executors": 1}, "instance_id": "1684432229673971", "job_id": "ingestion-1699459946935", "partition_by": "col1, col2", "schema": "{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}", "source_data_files": "s3://demobucket/data/yellow_tripdata_2022-01.parquet", "source_file_type": "csv", "start_timestamp": "1685084455", "status": "running", "target_table": "demodb.test.targettable", "username": "ibmlhadmin", "validate_csv_header": false}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=202,
+        )
+
+        # Construct a dict representation of a IngestionJobPrototypeCsvProperty model
+        ingestion_job_prototype_csv_property_model = {}
+        ingestion_job_prototype_csv_property_model['encoding'] = 'utf-8'
+        ingestion_job_prototype_csv_property_model['escape_character'] = '\\\\'
+        ingestion_job_prototype_csv_property_model['field_delimiter'] = ','
+        ingestion_job_prototype_csv_property_model['header'] = True
+        ingestion_job_prototype_csv_property_model['line_delimiter'] = '\\n'
+
+        # Construct a dict representation of a IngestionJobPrototypeExecuteConfig model
+        ingestion_job_prototype_execute_config_model = {}
+        ingestion_job_prototype_execute_config_model['driver_cores'] = 1
+        ingestion_job_prototype_execute_config_model['driver_memory'] = '2G'
+        ingestion_job_prototype_execute_config_model['executor_cores'] = 1
+        ingestion_job_prototype_execute_config_model['executor_memory'] = '2G'
+        ingestion_job_prototype_execute_config_model['num_executors'] = 1
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+        job_id = 'ingestion-1699459946935'
+        source_data_files = 's3://demobucket/data/yellow_tripdata_2022-01.parquet'
+        target_table = 'demodb.test.targettable'
+        username = 'user1'
+        create_if_not_exist = False
+        csv_property = ingestion_job_prototype_csv_property_model
+        engine_id = 'spark123'
+        execute_config = ingestion_job_prototype_execute_config_model
+        partition_by = 'col1, col2'
+        schema = '{"type":"struct","schema-id":0,"fields":[{"id":1,"name":"ID","required":true,"type":"int"},{"id":2,"name":"Name","required":true,"type":"string"}]}'
+        source_file_type = 'csv'
+        validate_csv_header = False
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "auth_instance_id": auth_instance_id,
+            "job_id": job_id,
+            "source_data_files": source_data_files,
+            "target_table": target_table,
+            "username": username,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_ingestion_jobs(**req_copy)
+
+    def test_create_ingestion_jobs_value_error_with_retries(self):
+        # Enable retries and run test_create_ingestion_jobs_value_error.
+        _service.enable_retries()
+        self.test_create_ingestion_jobs_value_error()
+
+        # Disable retries and run test_create_ingestion_jobs_value_error.
+        _service.disable_retries()
+        self.test_create_ingestion_jobs_value_error()
+
+
+class TestCreateIngestionJobsLocalFiles:
+    """
+    Test Class for create_ingestion_jobs_local_files
+    """
+
+    @responses.activate
+    def test_create_ingestion_jobs_local_files_all_params(self):
+        """
+        create_ingestion_jobs_local_files()
+        """
+        # Set up mock
+        url = preprocess_url('/ingestion_jobs_local_files')
+        mock_response = '{"create_if_not_exist": false, "csv_property": {"encoding": "utf-8", "escape_character": "|", "field_delimiter": ",", "header": true, "line_delimiter": "\n"}, "details": "Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory", "end_timestamp": "1685088775", "engine_id": "spark123", "engine_name": "sparkdemo", "execute_config": {"driver_cores": 1, "driver_memory": "2G", "executor_cores": 1, "executor_memory": "2G", "num_executors": 1}, "instance_id": "1684432229673971", "job_id": "ingestion-1699459946935", "partition_by": "col1, col2", "schema": "{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}", "source_data_files": "s3://demobucket/data/yellow_tripdata_2022-01.parquet", "source_file_type": "csv", "start_timestamp": "1685084455", "status": "running", "target_table": "demodb.test.targettable", "username": "ibmlhadmin", "validate_csv_header": false}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=202,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+        source_data_file = io.BytesIO(b'This is a mock file.').getvalue()
+        target_table = 'testString'
+        job_id = 'testString'
+        username = 'testString'
+        source_data_file_content_type = 'testString'
+        source_file_type = 'csv'
+        csv_property = 'testString'
+        create_if_not_exist = False
+        validate_csv_header = False
+        execute_config = 'testString'
+        engine_id = 'testString'
+
+        # Invoke method
+        response = _service.create_ingestion_jobs_local_files(
+            auth_instance_id,
+            source_data_file,
+            target_table,
+            job_id,
+            username,
+            source_data_file_content_type=source_data_file_content_type,
+            source_file_type=source_file_type,
+            csv_property=csv_property,
+            create_if_not_exist=create_if_not_exist,
+            validate_csv_header=validate_csv_header,
+            execute_config=execute_config,
+            engine_id=engine_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 202
+
+    def test_create_ingestion_jobs_local_files_all_params_with_retries(self):
+        # Enable retries and run test_create_ingestion_jobs_local_files_all_params.
+        _service.enable_retries()
+        self.test_create_ingestion_jobs_local_files_all_params()
+
+        # Disable retries and run test_create_ingestion_jobs_local_files_all_params.
+        _service.disable_retries()
+        self.test_create_ingestion_jobs_local_files_all_params()
+
+    @responses.activate
+    def test_create_ingestion_jobs_local_files_required_params(self):
+        """
+        test_create_ingestion_jobs_local_files_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/ingestion_jobs_local_files')
+        mock_response = '{"create_if_not_exist": false, "csv_property": {"encoding": "utf-8", "escape_character": "|", "field_delimiter": ",", "header": true, "line_delimiter": "\n"}, "details": "Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory", "end_timestamp": "1685088775", "engine_id": "spark123", "engine_name": "sparkdemo", "execute_config": {"driver_cores": 1, "driver_memory": "2G", "executor_cores": 1, "executor_memory": "2G", "num_executors": 1}, "instance_id": "1684432229673971", "job_id": "ingestion-1699459946935", "partition_by": "col1, col2", "schema": "{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}", "source_data_files": "s3://demobucket/data/yellow_tripdata_2022-01.parquet", "source_file_type": "csv", "start_timestamp": "1685084455", "status": "running", "target_table": "demodb.test.targettable", "username": "ibmlhadmin", "validate_csv_header": false}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=202,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+        source_data_file = io.BytesIO(b'This is a mock file.').getvalue()
+        target_table = 'testString'
+        job_id = 'testString'
+        username = 'testString'
+
+        # Invoke method
+        response = _service.create_ingestion_jobs_local_files(
+            auth_instance_id,
+            source_data_file,
+            target_table,
+            job_id,
+            username,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 202
+
+    def test_create_ingestion_jobs_local_files_required_params_with_retries(self):
+        # Enable retries and run test_create_ingestion_jobs_local_files_required_params.
+        _service.enable_retries()
+        self.test_create_ingestion_jobs_local_files_required_params()
+
+        # Disable retries and run test_create_ingestion_jobs_local_files_required_params.
+        _service.disable_retries()
+        self.test_create_ingestion_jobs_local_files_required_params()
+
+    @responses.activate
+    def test_create_ingestion_jobs_local_files_value_error(self):
+        """
+        test_create_ingestion_jobs_local_files_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/ingestion_jobs_local_files')
+        mock_response = '{"create_if_not_exist": false, "csv_property": {"encoding": "utf-8", "escape_character": "|", "field_delimiter": ",", "header": true, "line_delimiter": "\n"}, "details": "Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory", "end_timestamp": "1685088775", "engine_id": "spark123", "engine_name": "sparkdemo", "execute_config": {"driver_cores": 1, "driver_memory": "2G", "executor_cores": 1, "executor_memory": "2G", "num_executors": 1}, "instance_id": "1684432229673971", "job_id": "ingestion-1699459946935", "partition_by": "col1, col2", "schema": "{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}", "source_data_files": "s3://demobucket/data/yellow_tripdata_2022-01.parquet", "source_file_type": "csv", "start_timestamp": "1685084455", "status": "running", "target_table": "demodb.test.targettable", "username": "ibmlhadmin", "validate_csv_header": false}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=202,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+        source_data_file = io.BytesIO(b'This is a mock file.').getvalue()
+        target_table = 'testString'
+        job_id = 'testString'
+        username = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "auth_instance_id": auth_instance_id,
+            "source_data_file": source_data_file,
+            "target_table": target_table,
+            "job_id": job_id,
+            "username": username,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_ingestion_jobs_local_files(**req_copy)
+
+    def test_create_ingestion_jobs_local_files_value_error_with_retries(self):
+        # Enable retries and run test_create_ingestion_jobs_local_files_value_error.
+        _service.enable_retries()
+        self.test_create_ingestion_jobs_local_files_value_error()
+
+        # Disable retries and run test_create_ingestion_jobs_local_files_value_error.
+        _service.disable_retries()
+        self.test_create_ingestion_jobs_local_files_value_error()
+
+
+class TestGetIngestionJob:
+    """
+    Test Class for get_ingestion_job
+    """
+
+    @responses.activate
+    def test_get_ingestion_job_all_params(self):
+        """
+        get_ingestion_job()
+        """
+        # Set up mock
+        url = preprocess_url('/ingestion_jobs/testString')
+        mock_response = '{"create_if_not_exist": false, "csv_property": {"encoding": "utf-8", "escape_character": "|", "field_delimiter": ",", "header": true, "line_delimiter": "\n"}, "details": "Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory", "end_timestamp": "1685088775", "engine_id": "spark123", "engine_name": "sparkdemo", "execute_config": {"driver_cores": 1, "driver_memory": "2G", "executor_cores": 1, "executor_memory": "2G", "num_executors": 1}, "instance_id": "1684432229673971", "job_id": "ingestion-1699459946935", "partition_by": "col1, col2", "schema": "{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}", "source_data_files": "s3://demobucket/data/yellow_tripdata_2022-01.parquet", "source_file_type": "csv", "start_timestamp": "1685084455", "status": "running", "target_table": "demodb.test.targettable", "username": "ibmlhadmin", "validate_csv_header": false}'
         responses.add(
             responses.GET,
             url,
-            body=mock_response2,
+            body=mock_response,
             content_type='application/json',
             status=200,
         )
 
-        # Exercise the pager class for this operation
-        pager = IngestionJobsPager(
-            client=_service,
-            auth_instance_id='testString',
-            jobs_per_page=1,
+        # Set up parameter values
+        job_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_ingestion_job(
+            job_id,
+            auth_instance_id,
+            headers={},
         )
-        all_results = pager.get_all()
-        assert all_results is not None
-        assert len(all_results) == 2
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_ingestion_job_all_params_with_retries(self):
+        # Enable retries and run test_get_ingestion_job_all_params.
+        _service.enable_retries()
+        self.test_get_ingestion_job_all_params()
+
+        # Disable retries and run test_get_ingestion_job_all_params.
+        _service.disable_retries()
+        self.test_get_ingestion_job_all_params()
+
+    @responses.activate
+    def test_get_ingestion_job_value_error(self):
+        """
+        test_get_ingestion_job_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/ingestion_jobs/testString')
+        mock_response = '{"create_if_not_exist": false, "csv_property": {"encoding": "utf-8", "escape_character": "|", "field_delimiter": ",", "header": true, "line_delimiter": "\n"}, "details": "Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory", "end_timestamp": "1685088775", "engine_id": "spark123", "engine_name": "sparkdemo", "execute_config": {"driver_cores": 1, "driver_memory": "2G", "executor_cores": 1, "executor_memory": "2G", "num_executors": 1}, "instance_id": "1684432229673971", "job_id": "ingestion-1699459946935", "partition_by": "col1, col2", "schema": "{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}", "source_data_files": "s3://demobucket/data/yellow_tripdata_2022-01.parquet", "source_file_type": "csv", "start_timestamp": "1685084455", "status": "running", "target_table": "demodb.test.targettable", "username": "ibmlhadmin", "validate_csv_header": false}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        job_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "job_id": job_id,
+            "auth_instance_id": auth_instance_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.get_ingestion_job(**req_copy)
+
+    def test_get_ingestion_job_value_error_with_retries(self):
+        # Enable retries and run test_get_ingestion_job_value_error.
+        _service.enable_retries()
+        self.test_get_ingestion_job_value_error()
+
+        # Disable retries and run test_get_ingestion_job_value_error.
+        _service.disable_retries()
+        self.test_get_ingestion_job_value_error()
+
+
+class TestDeleteIngestionJobs:
+    """
+    Test Class for delete_ingestion_jobs
+    """
+
+    @responses.activate
+    def test_delete_ingestion_jobs_all_params(self):
+        """
+        delete_ingestion_jobs()
+        """
+        # Set up mock
+        url = preprocess_url('/ingestion_jobs/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        job_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_ingestion_jobs(
+            job_id,
+            auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+
+    def test_delete_ingestion_jobs_all_params_with_retries(self):
+        # Enable retries and run test_delete_ingestion_jobs_all_params.
+        _service.enable_retries()
+        self.test_delete_ingestion_jobs_all_params()
+
+        # Disable retries and run test_delete_ingestion_jobs_all_params.
+        _service.disable_retries()
+        self.test_delete_ingestion_jobs_all_params()
+
+    @responses.activate
+    def test_delete_ingestion_jobs_value_error(self):
+        """
+        test_delete_ingestion_jobs_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/ingestion_jobs/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        job_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "job_id": job_id,
+            "auth_instance_id": auth_instance_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.delete_ingestion_jobs(**req_copy)
+
+    def test_delete_ingestion_jobs_value_error_with_retries(self):
+        # Enable retries and run test_delete_ingestion_jobs_value_error.
+        _service.enable_retries()
+        self.test_delete_ingestion_jobs_value_error()
+
+        # Disable retries and run test_delete_ingestion_jobs_value_error.
+        _service.disable_retries()
+        self.test_delete_ingestion_jobs_value_error()
+
+
+class TestCreatePreviewIngestionFile:
+    """
+    Test Class for create_preview_ingestion_file
+    """
+
+    @responses.activate
+    def test_create_preview_ingestion_file_all_params(self):
+        """
+        create_preview_ingestion_file()
+        """
+        # Set up mock
+        url = preprocess_url('/preview_ingestion_file')
+        mock_response = '{"column_names": ["col1"], "column_types": ["int"], "file_name": "s3://demobucket/data/yellow_tripdata_2022-01.parquet", "rows": {"row_eight": ["Jane Doe"], "row_five": ["Jane Doe"], "row_four": ["Jane Doe"], "row_nine": ["Jane Doe"], "row_one": ["Jane Doe"], "row_seven": ["Jane Doe"], "row_six": ["Jane Doe"], "row_ten": ["Jane Doe"], "row_three": ["Jane Doe"], "row_two": ["Jane Doe"]}}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a PreviewIngestionFilePrototypeCsvProperty model
+        preview_ingestion_file_prototype_csv_property_model = {}
+        preview_ingestion_file_prototype_csv_property_model['encoding'] = 'utf-8'
+        preview_ingestion_file_prototype_csv_property_model['escape_character'] = '\\\\'
+        preview_ingestion_file_prototype_csv_property_model['field_delimiter'] = ','
+        preview_ingestion_file_prototype_csv_property_model['header'] = True
+        preview_ingestion_file_prototype_csv_property_model['line_delimiter'] = '\\n'
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+        source_data_files = 's3://demobucket/data/yellow_tripdata_2022-01.parquet'
+        csv_property = preview_ingestion_file_prototype_csv_property_model
+        source_file_type = 'csv'
+
+        # Invoke method
+        response = _service.create_preview_ingestion_file(
+            auth_instance_id,
+            source_data_files,
+            csv_property=csv_property,
+            source_file_type=source_file_type,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['source_data_files'] == 's3://demobucket/data/yellow_tripdata_2022-01.parquet'
+        assert req_body['csv_property'] == preview_ingestion_file_prototype_csv_property_model
+        assert req_body['source_file_type'] == 'csv'
+
+    def test_create_preview_ingestion_file_all_params_with_retries(self):
+        # Enable retries and run test_create_preview_ingestion_file_all_params.
+        _service.enable_retries()
+        self.test_create_preview_ingestion_file_all_params()
+
+        # Disable retries and run test_create_preview_ingestion_file_all_params.
+        _service.disable_retries()
+        self.test_create_preview_ingestion_file_all_params()
+
+    @responses.activate
+    def test_create_preview_ingestion_file_value_error(self):
+        """
+        test_create_preview_ingestion_file_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/preview_ingestion_file')
+        mock_response = '{"column_names": ["col1"], "column_types": ["int"], "file_name": "s3://demobucket/data/yellow_tripdata_2022-01.parquet", "rows": {"row_eight": ["Jane Doe"], "row_five": ["Jane Doe"], "row_four": ["Jane Doe"], "row_nine": ["Jane Doe"], "row_one": ["Jane Doe"], "row_seven": ["Jane Doe"], "row_six": ["Jane Doe"], "row_ten": ["Jane Doe"], "row_three": ["Jane Doe"], "row_two": ["Jane Doe"]}}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a PreviewIngestionFilePrototypeCsvProperty model
+        preview_ingestion_file_prototype_csv_property_model = {}
+        preview_ingestion_file_prototype_csv_property_model['encoding'] = 'utf-8'
+        preview_ingestion_file_prototype_csv_property_model['escape_character'] = '\\\\'
+        preview_ingestion_file_prototype_csv_property_model['field_delimiter'] = ','
+        preview_ingestion_file_prototype_csv_property_model['header'] = True
+        preview_ingestion_file_prototype_csv_property_model['line_delimiter'] = '\\n'
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+        source_data_files = 's3://demobucket/data/yellow_tripdata_2022-01.parquet'
+        csv_property = preview_ingestion_file_prototype_csv_property_model
+        source_file_type = 'csv'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "auth_instance_id": auth_instance_id,
+            "source_data_files": source_data_files,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_preview_ingestion_file(**req_copy)
+
+    def test_create_preview_ingestion_file_value_error_with_retries(self):
+        # Enable retries and run test_create_preview_ingestion_file_value_error.
+        _service.enable_retries()
+        self.test_create_preview_ingestion_file_value_error()
+
+        # Disable retries and run test_create_preview_ingestion_file_value_error.
+        _service.disable_retries()
+        self.test_create_preview_ingestion_file_value_error()
 
 
 # endregion
@@ -15467,6 +15998,74 @@ class TestModel_IngestionJobExecuteConfig:
         assert ingestion_job_execute_config_model_json2 == ingestion_job_execute_config_model_json
 
 
+class TestModel_IngestionJobPrototypeCsvProperty:
+    """
+    Test Class for IngestionJobPrototypeCsvProperty
+    """
+
+    def test_ingestion_job_prototype_csv_property_serialization(self):
+        """
+        Test serialization/deserialization for IngestionJobPrototypeCsvProperty
+        """
+
+        # Construct a json representation of a IngestionJobPrototypeCsvProperty model
+        ingestion_job_prototype_csv_property_model_json = {}
+        ingestion_job_prototype_csv_property_model_json['encoding'] = 'utf-8'
+        ingestion_job_prototype_csv_property_model_json['escape_character'] = '\\\\'
+        ingestion_job_prototype_csv_property_model_json['field_delimiter'] = ','
+        ingestion_job_prototype_csv_property_model_json['header'] = True
+        ingestion_job_prototype_csv_property_model_json['line_delimiter'] = '\\n'
+
+        # Construct a model instance of IngestionJobPrototypeCsvProperty by calling from_dict on the json representation
+        ingestion_job_prototype_csv_property_model = IngestionJobPrototypeCsvProperty.from_dict(ingestion_job_prototype_csv_property_model_json)
+        assert ingestion_job_prototype_csv_property_model != False
+
+        # Construct a model instance of IngestionJobPrototypeCsvProperty by calling from_dict on the json representation
+        ingestion_job_prototype_csv_property_model_dict = IngestionJobPrototypeCsvProperty.from_dict(ingestion_job_prototype_csv_property_model_json).__dict__
+        ingestion_job_prototype_csv_property_model2 = IngestionJobPrototypeCsvProperty(**ingestion_job_prototype_csv_property_model_dict)
+
+        # Verify the model instances are equivalent
+        assert ingestion_job_prototype_csv_property_model == ingestion_job_prototype_csv_property_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        ingestion_job_prototype_csv_property_model_json2 = ingestion_job_prototype_csv_property_model.to_dict()
+        assert ingestion_job_prototype_csv_property_model_json2 == ingestion_job_prototype_csv_property_model_json
+
+
+class TestModel_IngestionJobPrototypeExecuteConfig:
+    """
+    Test Class for IngestionJobPrototypeExecuteConfig
+    """
+
+    def test_ingestion_job_prototype_execute_config_serialization(self):
+        """
+        Test serialization/deserialization for IngestionJobPrototypeExecuteConfig
+        """
+
+        # Construct a json representation of a IngestionJobPrototypeExecuteConfig model
+        ingestion_job_prototype_execute_config_model_json = {}
+        ingestion_job_prototype_execute_config_model_json['driver_cores'] = 1
+        ingestion_job_prototype_execute_config_model_json['driver_memory'] = '2G'
+        ingestion_job_prototype_execute_config_model_json['executor_cores'] = 1
+        ingestion_job_prototype_execute_config_model_json['executor_memory'] = '2G'
+        ingestion_job_prototype_execute_config_model_json['num_executors'] = 1
+
+        # Construct a model instance of IngestionJobPrototypeExecuteConfig by calling from_dict on the json representation
+        ingestion_job_prototype_execute_config_model = IngestionJobPrototypeExecuteConfig.from_dict(ingestion_job_prototype_execute_config_model_json)
+        assert ingestion_job_prototype_execute_config_model != False
+
+        # Construct a model instance of IngestionJobPrototypeExecuteConfig by calling from_dict on the json representation
+        ingestion_job_prototype_execute_config_model_dict = IngestionJobPrototypeExecuteConfig.from_dict(ingestion_job_prototype_execute_config_model_json).__dict__
+        ingestion_job_prototype_execute_config_model2 = IngestionJobPrototypeExecuteConfig(**ingestion_job_prototype_execute_config_model_dict)
+
+        # Verify the model instances are equivalent
+        assert ingestion_job_prototype_execute_config_model == ingestion_job_prototype_execute_config_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        ingestion_job_prototype_execute_config_model_json2 = ingestion_job_prototype_execute_config_model.to_dict()
+        assert ingestion_job_prototype_execute_config_model_json2 == ingestion_job_prototype_execute_config_model_json
+
+
 class TestModel_ListSchemasOKBody:
     """
     Test Class for ListSchemasOKBody
@@ -17129,6 +17728,126 @@ class TestModel_PrestoEnginePropertiesGlobal:
         # Convert model instance back to dict and verify no loss of data
         presto_engine_properties_global_model_json2 = presto_engine_properties_global_model.to_dict()
         assert presto_engine_properties_global_model_json2 == presto_engine_properties_global_model_json
+
+
+class TestModel_PreviewIngestionFile:
+    """
+    Test Class for PreviewIngestionFile
+    """
+
+    def test_preview_ingestion_file_serialization(self):
+        """
+        Test serialization/deserialization for PreviewIngestionFile
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        preview_ingestion_file_rows_model = {}  # PreviewIngestionFileRows
+        preview_ingestion_file_rows_model['row_eight'] = ['8', 'Jane Doe', '63.00']
+        preview_ingestion_file_rows_model['row_five'] = ['5', 'Jane Doe', '57.00']
+        preview_ingestion_file_rows_model['row_four'] = ['4', 'Jane Doe', '55.00']
+        preview_ingestion_file_rows_model['row_nine'] = ['9', 'Jane Doe', '65.00']
+        preview_ingestion_file_rows_model['row_one'] = ['1', 'Jane Doe', '49.00']
+        preview_ingestion_file_rows_model['row_seven'] = ['7', 'Jane Doe', '61.00']
+        preview_ingestion_file_rows_model['row_six'] = ['6', 'Jane Doe', '59.00']
+        preview_ingestion_file_rows_model['row_ten'] = ['10', 'Jane Doe', '67.00']
+        preview_ingestion_file_rows_model['row_three'] = ['3', 'Jane Doe', '53.00']
+        preview_ingestion_file_rows_model['row_two'] = ['2', 'Jane Doe', '51.00']
+
+        # Construct a json representation of a PreviewIngestionFile model
+        preview_ingestion_file_model_json = {}
+        preview_ingestion_file_model_json['column_names'] = ['col1', 'col2', 'col3']
+        preview_ingestion_file_model_json['column_types'] = ['int', 'string', 'float']
+        preview_ingestion_file_model_json['file_name'] = 's3://demobucket/data/yellow_tripdata_2022-01.parquet'
+        preview_ingestion_file_model_json['rows'] = preview_ingestion_file_rows_model
+
+        # Construct a model instance of PreviewIngestionFile by calling from_dict on the json representation
+        preview_ingestion_file_model = PreviewIngestionFile.from_dict(preview_ingestion_file_model_json)
+        assert preview_ingestion_file_model != False
+
+        # Construct a model instance of PreviewIngestionFile by calling from_dict on the json representation
+        preview_ingestion_file_model_dict = PreviewIngestionFile.from_dict(preview_ingestion_file_model_json).__dict__
+        preview_ingestion_file_model2 = PreviewIngestionFile(**preview_ingestion_file_model_dict)
+
+        # Verify the model instances are equivalent
+        assert preview_ingestion_file_model == preview_ingestion_file_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        preview_ingestion_file_model_json2 = preview_ingestion_file_model.to_dict()
+        assert preview_ingestion_file_model_json2 == preview_ingestion_file_model_json
+
+
+class TestModel_PreviewIngestionFilePrototypeCsvProperty:
+    """
+    Test Class for PreviewIngestionFilePrototypeCsvProperty
+    """
+
+    def test_preview_ingestion_file_prototype_csv_property_serialization(self):
+        """
+        Test serialization/deserialization for PreviewIngestionFilePrototypeCsvProperty
+        """
+
+        # Construct a json representation of a PreviewIngestionFilePrototypeCsvProperty model
+        preview_ingestion_file_prototype_csv_property_model_json = {}
+        preview_ingestion_file_prototype_csv_property_model_json['encoding'] = 'utf-8'
+        preview_ingestion_file_prototype_csv_property_model_json['escape_character'] = '\\\\'
+        preview_ingestion_file_prototype_csv_property_model_json['field_delimiter'] = ','
+        preview_ingestion_file_prototype_csv_property_model_json['header'] = True
+        preview_ingestion_file_prototype_csv_property_model_json['line_delimiter'] = '\\n'
+
+        # Construct a model instance of PreviewIngestionFilePrototypeCsvProperty by calling from_dict on the json representation
+        preview_ingestion_file_prototype_csv_property_model = PreviewIngestionFilePrototypeCsvProperty.from_dict(preview_ingestion_file_prototype_csv_property_model_json)
+        assert preview_ingestion_file_prototype_csv_property_model != False
+
+        # Construct a model instance of PreviewIngestionFilePrototypeCsvProperty by calling from_dict on the json representation
+        preview_ingestion_file_prototype_csv_property_model_dict = PreviewIngestionFilePrototypeCsvProperty.from_dict(preview_ingestion_file_prototype_csv_property_model_json).__dict__
+        preview_ingestion_file_prototype_csv_property_model2 = PreviewIngestionFilePrototypeCsvProperty(**preview_ingestion_file_prototype_csv_property_model_dict)
+
+        # Verify the model instances are equivalent
+        assert preview_ingestion_file_prototype_csv_property_model == preview_ingestion_file_prototype_csv_property_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        preview_ingestion_file_prototype_csv_property_model_json2 = preview_ingestion_file_prototype_csv_property_model.to_dict()
+        assert preview_ingestion_file_prototype_csv_property_model_json2 == preview_ingestion_file_prototype_csv_property_model_json
+
+
+class TestModel_PreviewIngestionFileRows:
+    """
+    Test Class for PreviewIngestionFileRows
+    """
+
+    def test_preview_ingestion_file_rows_serialization(self):
+        """
+        Test serialization/deserialization for PreviewIngestionFileRows
+        """
+
+        # Construct a json representation of a PreviewIngestionFileRows model
+        preview_ingestion_file_rows_model_json = {}
+        preview_ingestion_file_rows_model_json['row_eight'] = ['8', 'Jane Doe', '63.00']
+        preview_ingestion_file_rows_model_json['row_five'] = ['5', 'Jane Doe', '57.00']
+        preview_ingestion_file_rows_model_json['row_four'] = ['4', 'Jane Doe', '55.00']
+        preview_ingestion_file_rows_model_json['row_nine'] = ['9', 'Jane Doe', '65.00']
+        preview_ingestion_file_rows_model_json['row_one'] = ['1', 'Jane Doe', '49.00']
+        preview_ingestion_file_rows_model_json['row_seven'] = ['7', 'Jane Doe', '61.00']
+        preview_ingestion_file_rows_model_json['row_six'] = ['6', 'Jane Doe', '59.00']
+        preview_ingestion_file_rows_model_json['row_ten'] = ['10', 'Jane Doe', '67.00']
+        preview_ingestion_file_rows_model_json['row_three'] = ['3', 'Jane Doe', '53.00']
+        preview_ingestion_file_rows_model_json['row_two'] = ['2', 'Jane Doe', '51.00']
+
+        # Construct a model instance of PreviewIngestionFileRows by calling from_dict on the json representation
+        preview_ingestion_file_rows_model = PreviewIngestionFileRows.from_dict(preview_ingestion_file_rows_model_json)
+        assert preview_ingestion_file_rows_model != False
+
+        # Construct a model instance of PreviewIngestionFileRows by calling from_dict on the json representation
+        preview_ingestion_file_rows_model_dict = PreviewIngestionFileRows.from_dict(preview_ingestion_file_rows_model_json).__dict__
+        preview_ingestion_file_rows_model2 = PreviewIngestionFileRows(**preview_ingestion_file_rows_model_dict)
+
+        # Verify the model instances are equivalent
+        assert preview_ingestion_file_rows_model == preview_ingestion_file_rows_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        preview_ingestion_file_rows_model_json2 = preview_ingestion_file_rows_model.to_dict()
+        assert preview_ingestion_file_rows_model_json2 == preview_ingestion_file_rows_model_json
 
 
 class TestModel_RemoveEngineProperties:

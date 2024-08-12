@@ -23,10 +23,10 @@ API Version: 2.0.0
 """
 
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import BinaryIO, Dict, List, Optional
 import json
 
-from ibm_cloud_sdk_core import BaseService, DetailedResponse, get_query_param
+from ibm_cloud_sdk_core import BaseService, DetailedResponse
 from ibm_cloud_sdk_core.authenticators.authenticator import Authenticator
 from ibm_cloud_sdk_core.get_authenticator import get_authenticator_from_environment
 from ibm_cloud_sdk_core.utils import convert_list, convert_model
@@ -5522,7 +5522,7 @@ class WatsonxDataV2(BaseService):
         self,
         auth_instance_id: str,
         *,
-        start: Optional[str] = None,
+        page: Optional[int] = None,
         jobs_per_page: Optional[int] = None,
         **kwargs,
     ) -> DetailedResponse:
@@ -5532,7 +5532,7 @@ class WatsonxDataV2(BaseService):
         Get list of ingestion jobs.
 
         :param str auth_instance_id: watsonx.data instance ID.
-        :param str start: (optional) Page number of requested ingestion jobs.
+        :param int page: (optional) Page number of requested ingestion jobs.
         :param int jobs_per_page: (optional) Number of requested ingestion jobs.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
@@ -5552,7 +5552,7 @@ class WatsonxDataV2(BaseService):
         headers.update(sdk_headers)
 
         params = {
-            'start': start,
+            'page': page,
             'jobs_per_page': jobs_per_page,
         }
 
@@ -5571,6 +5571,393 @@ class WatsonxDataV2(BaseService):
 
         response = self.send(request, **kwargs)
         return response
+
+    def create_ingestion_jobs(
+        self,
+        auth_instance_id: str,
+        job_id: str,
+        source_data_files: str,
+        target_table: str,
+        username: str,
+        *,
+        create_if_not_exist: Optional[bool] = None,
+        csv_property: Optional['IngestionJobPrototypeCsvProperty'] = None,
+        engine_id: Optional[str] = None,
+        execute_config: Optional['IngestionJobPrototypeExecuteConfig'] = None,
+        partition_by: Optional[str] = None,
+        schema: Optional[str] = None,
+        source_file_type: Optional[str] = None,
+        validate_csv_header: Optional[bool] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Create an ingestion job.
+
+        Create an ingestion job.
+
+        :param str auth_instance_id: watsonx.data instance ID.
+        :param str job_id: Job ID of the job.
+        :param str source_data_files: Comma separated source file or directory
+               path.
+        :param str target_table: Target table name in format catalog.schema.table.
+        :param str username: User submitting ingestion job.
+        :param bool create_if_not_exist: (optional) Create new target table (if
+               True); Insert into pre-existing target table (if False).
+        :param IngestionJobPrototypeCsvProperty csv_property: (optional) Ingestion
+               CSV properties.
+        :param str engine_id: (optional) ID of the spark engine to be used for
+               ingestion.
+        :param IngestionJobPrototypeExecuteConfig execute_config: (optional)
+               Ingestion engine configuration.
+        :param str partition_by: (optional) Partition by expression of the target
+               table.
+        :param str schema: (optional) Schema definition of the source table.
+        :param str source_file_type: (optional) Source file types (parquet or csv
+               or json).
+        :param bool validate_csv_header: (optional) Validate CSV header if the
+               target table exist.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `IngestionJob` object
+        """
+
+        if not auth_instance_id:
+            raise ValueError('auth_instance_id must be provided')
+        if job_id is None:
+            raise ValueError('job_id must be provided')
+        if source_data_files is None:
+            raise ValueError('source_data_files must be provided')
+        if target_table is None:
+            raise ValueError('target_table must be provided')
+        if username is None:
+            raise ValueError('username must be provided')
+        if csv_property is not None:
+            csv_property = convert_model(csv_property)
+        if execute_config is not None:
+            execute_config = convert_model(execute_config)
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_ingestion_jobs',
+        )
+        headers.update(sdk_headers)
+
+        data = {
+            'job_id': job_id,
+            'source_data_files': source_data_files,
+            'target_table': target_table,
+            'username': username,
+            'create_if_not_exist': create_if_not_exist,
+            'csv_property': csv_property,
+            'engine_id': engine_id,
+            'execute_config': execute_config,
+            'partition_by': partition_by,
+            'schema': schema,
+            'source_file_type': source_file_type,
+            'validate_csv_header': validate_csv_header,
+        }
+        data = {k: v for (k, v) in data.items() if v is not None}
+        data = json.dumps(data)
+        headers['content-type'] = 'application/json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/ingestion_jobs'
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_ingestion_jobs_local_files(
+        self,
+        auth_instance_id: str,
+        source_data_file: BinaryIO,
+        target_table: str,
+        job_id: str,
+        username: str,
+        *,
+        source_data_file_content_type: Optional[str] = None,
+        source_file_type: Optional[str] = None,
+        csv_property: Optional[str] = None,
+        create_if_not_exist: Optional[bool] = None,
+        validate_csv_header: Optional[bool] = None,
+        execute_config: Optional[str] = None,
+        engine_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Create an ingestion job for user local files.
+
+        Create an ingestion job for user local files.
+
+        :param str auth_instance_id: watsonx.data instance ID.
+        :param BinaryIO source_data_file: The user local file submitted for
+               ingestion.
+        :param str target_table: Target table name in format catalog.schema.table.
+        :param str job_id: Job ID of the job.
+        :param str username: User submitting ingestion job.
+        :param str source_data_file_content_type: (optional) The content type of
+               source_data_file.
+        :param str source_file_type: (optional) File format of source file.
+        :param str csv_property: (optional) Ingestion CSV properties (base64
+               encoding of a stringifed json).
+        :param bool create_if_not_exist: (optional) Create new target table (if
+               true); Insert into pre-existing target table (if false).
+        :param bool validate_csv_header: (optional) Validate CSV header if the
+               target table exist.
+        :param str execute_config: (optional) Ingestion engine configuration
+               (base64 encoding of a stringifed json).
+        :param str engine_id: (optional) ID of the spark engine to be used for
+               ingestion.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `IngestionJob` object
+        """
+
+        if not auth_instance_id:
+            raise ValueError('auth_instance_id must be provided')
+        if source_data_file is None:
+            raise ValueError('source_data_file must be provided')
+        if not target_table:
+            raise ValueError('target_table must be provided')
+        if not job_id:
+            raise ValueError('job_id must be provided')
+        if not username:
+            raise ValueError('username must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_ingestion_jobs_local_files',
+        )
+        headers.update(sdk_headers)
+
+        form_data = []
+        form_data.append(('source_data_file', (None, source_data_file, source_data_file_content_type or 'application/octet-stream')))
+        form_data.append(('target_table', (None, target_table, 'text/plain')))
+        form_data.append(('job_id', (None, job_id, 'text/plain')))
+        form_data.append(('username', (None, username, 'text/plain')))
+        if source_file_type:
+            form_data.append(('source_file_type', (None, source_file_type, 'text/plain')))
+        if csv_property:
+            form_data.append(('csv_property', (None, csv_property, 'text/plain')))
+        if create_if_not_exist:
+            form_data.append(('create_if_not_exist', (None, str(create_if_not_exist), 'text/plain')))
+        if validate_csv_header:
+            form_data.append(('validate_csv_header', (None, str(validate_csv_header), 'text/plain')))
+        if execute_config:
+            form_data.append(('execute_config', (None, execute_config, 'text/plain')))
+        if engine_id:
+            form_data.append(('engine_id', (None, engine_id, 'text/plain')))
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/ingestion_jobs_local_files'
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            files=form_data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_ingestion_job(
+        self,
+        job_id: str,
+        auth_instance_id: str,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get ingestion job.
+
+        Get a submitted ingestion job.
+
+        :param str job_id: ingestion job id.
+        :param str auth_instance_id: watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `IngestionJob` object
+        """
+
+        if not job_id:
+            raise ValueError('job_id must be provided')
+        if not auth_instance_id:
+            raise ValueError('auth_instance_id must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_ingestion_job',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        path_param_keys = ['job_id']
+        path_param_values = self.encode_path_vars(job_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/ingestion_jobs/{job_id}'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def delete_ingestion_jobs(
+        self,
+        job_id: str,
+        auth_instance_id: str,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Delete an ingestion job.
+
+        Delete an ingestion job.
+
+        :param str job_id: ingestion job id.
+        :param str auth_instance_id: watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse
+        """
+
+        if not job_id:
+            raise ValueError('job_id must be provided')
+        if not auth_instance_id:
+            raise ValueError('auth_instance_id must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='delete_ingestion_jobs',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+
+        path_param_keys = ['job_id']
+        path_param_values = self.encode_path_vars(job_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/ingestion_jobs/{job_id}'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='DELETE',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_preview_ingestion_file(
+        self,
+        auth_instance_id: str,
+        source_data_files: str,
+        *,
+        csv_property: Optional['PreviewIngestionFilePrototypeCsvProperty'] = None,
+        source_file_type: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Generate a preview of source file(s).
+
+        Generate a preview of source file(s).
+
+        :param str auth_instance_id: watsonx.data instance ID.
+        :param str source_data_files: Comma separated source file or directory
+               path.
+        :param PreviewIngestionFilePrototypeCsvProperty csv_property: (optional)
+               CSV properties of source file(s).
+        :param str source_file_type: (optional) File format of source file(s).
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `PreviewIngestionFile` object
+        """
+
+        if not auth_instance_id:
+            raise ValueError('auth_instance_id must be provided')
+        if source_data_files is None:
+            raise ValueError('source_data_files must be provided')
+        if csv_property is not None:
+            csv_property = convert_model(csv_property)
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_preview_ingestion_file',
+        )
+        headers.update(sdk_headers)
+
+        data = {
+            'source_data_files': source_data_files,
+            'csv_property': csv_property,
+            'source_file_type': source_file_type,
+        }
+        data = {k: v for (k, v) in data.items() if v is not None}
+        data = json.dumps(data)
+        headers['content-type'] = 'application/json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/preview_ingestion_file'
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+
+class CreateIngestionJobsLocalFilesEnums:
+    """
+    Enums for create_ingestion_jobs_local_files parameters.
+    """
+
+    class SourceFileType(str, Enum):
+        """
+        File format of source file.
+        """
+
+        CSV = 'csv'
+        PARQUET = 'parquet'
+        JSON = 'json'
 
 
 ##############################################################################
@@ -9295,6 +9682,196 @@ class IngestionJobExecuteConfig:
         return not self == other
 
 
+class IngestionJobPrototypeCsvProperty:
+    """
+    Ingestion CSV properties.
+
+    :param str encoding: (optional) Encoding used in CSV file.
+    :param str escape_character: (optional) Escape character of CSV file.
+    :param str field_delimiter: (optional) Field delimiter of CSV file.
+    :param bool header: (optional) Identify if header exists in CSV file.
+    :param str line_delimiter: (optional) Line delimiter of CSV file.
+    """
+
+    def __init__(
+        self,
+        *,
+        encoding: Optional[str] = None,
+        escape_character: Optional[str] = None,
+        field_delimiter: Optional[str] = None,
+        header: Optional[bool] = None,
+        line_delimiter: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a IngestionJobPrototypeCsvProperty object.
+
+        :param str encoding: (optional) Encoding used in CSV file.
+        :param str escape_character: (optional) Escape character of CSV file.
+        :param str field_delimiter: (optional) Field delimiter of CSV file.
+        :param bool header: (optional) Identify if header exists in CSV file.
+        :param str line_delimiter: (optional) Line delimiter of CSV file.
+        """
+        self.encoding = encoding
+        self.escape_character = escape_character
+        self.field_delimiter = field_delimiter
+        self.header = header
+        self.line_delimiter = line_delimiter
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'IngestionJobPrototypeCsvProperty':
+        """Initialize a IngestionJobPrototypeCsvProperty object from a json dictionary."""
+        args = {}
+        if (encoding := _dict.get('encoding')) is not None:
+            args['encoding'] = encoding
+        if (escape_character := _dict.get('escape_character')) is not None:
+            args['escape_character'] = escape_character
+        if (field_delimiter := _dict.get('field_delimiter')) is not None:
+            args['field_delimiter'] = field_delimiter
+        if (header := _dict.get('header')) is not None:
+            args['header'] = header
+        if (line_delimiter := _dict.get('line_delimiter')) is not None:
+            args['line_delimiter'] = line_delimiter
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a IngestionJobPrototypeCsvProperty object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'encoding') and self.encoding is not None:
+            _dict['encoding'] = self.encoding
+        if hasattr(self, 'escape_character') and self.escape_character is not None:
+            _dict['escape_character'] = self.escape_character
+        if hasattr(self, 'field_delimiter') and self.field_delimiter is not None:
+            _dict['field_delimiter'] = self.field_delimiter
+        if hasattr(self, 'header') and self.header is not None:
+            _dict['header'] = self.header
+        if hasattr(self, 'line_delimiter') and self.line_delimiter is not None:
+            _dict['line_delimiter'] = self.line_delimiter
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this IngestionJobPrototypeCsvProperty object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'IngestionJobPrototypeCsvProperty') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'IngestionJobPrototypeCsvProperty') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class IngestionJobPrototypeExecuteConfig:
+    """
+    Ingestion engine configuration.
+
+    :param int driver_cores: (optional) Driver core(s) configuration for Spark
+          engine.
+    :param str driver_memory: (optional) Driver memory configuration (in GB) for
+          Spark engine.
+    :param int executor_cores: (optional) Executor core(s) configuration for Spark
+          engine.
+    :param str executor_memory: (optional) Executor memory configuration (in GB) for
+          Spark engine.
+    :param int num_executors: (optional) Number of executors to assign for Spark
+          engine.
+    """
+
+    def __init__(
+        self,
+        *,
+        driver_cores: Optional[int] = None,
+        driver_memory: Optional[str] = None,
+        executor_cores: Optional[int] = None,
+        executor_memory: Optional[str] = None,
+        num_executors: Optional[int] = None,
+    ) -> None:
+        """
+        Initialize a IngestionJobPrototypeExecuteConfig object.
+
+        :param int driver_cores: (optional) Driver core(s) configuration for Spark
+               engine.
+        :param str driver_memory: (optional) Driver memory configuration (in GB)
+               for Spark engine.
+        :param int executor_cores: (optional) Executor core(s) configuration for
+               Spark engine.
+        :param str executor_memory: (optional) Executor memory configuration (in
+               GB) for Spark engine.
+        :param int num_executors: (optional) Number of executors to assign for
+               Spark engine.
+        """
+        self.driver_cores = driver_cores
+        self.driver_memory = driver_memory
+        self.executor_cores = executor_cores
+        self.executor_memory = executor_memory
+        self.num_executors = num_executors
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'IngestionJobPrototypeExecuteConfig':
+        """Initialize a IngestionJobPrototypeExecuteConfig object from a json dictionary."""
+        args = {}
+        if (driver_cores := _dict.get('driver_cores')) is not None:
+            args['driver_cores'] = driver_cores
+        if (driver_memory := _dict.get('driver_memory')) is not None:
+            args['driver_memory'] = driver_memory
+        if (executor_cores := _dict.get('executor_cores')) is not None:
+            args['executor_cores'] = executor_cores
+        if (executor_memory := _dict.get('executor_memory')) is not None:
+            args['executor_memory'] = executor_memory
+        if (num_executors := _dict.get('num_executors')) is not None:
+            args['num_executors'] = num_executors
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a IngestionJobPrototypeExecuteConfig object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'driver_cores') and self.driver_cores is not None:
+            _dict['driver_cores'] = self.driver_cores
+        if hasattr(self, 'driver_memory') and self.driver_memory is not None:
+            _dict['driver_memory'] = self.driver_memory
+        if hasattr(self, 'executor_cores') and self.executor_cores is not None:
+            _dict['executor_cores'] = self.executor_cores
+        if hasattr(self, 'executor_memory') and self.executor_memory is not None:
+            _dict['executor_memory'] = self.executor_memory
+        if hasattr(self, 'num_executors') and self.num_executors is not None:
+            _dict['num_executors'] = self.num_executors
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this IngestionJobPrototypeExecuteConfig object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'IngestionJobPrototypeExecuteConfig') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'IngestionJobPrototypeExecuteConfig') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
 class ListSchemasOKBody:
     """
     GetSchemas OK.
@@ -12621,6 +13198,318 @@ class PrestoEnginePropertiesGlobal:
         return not self == other
 
 
+class PreviewIngestionFile:
+    """
+    Schema of the data in the source file.
+
+    :param List[str] column_names: Array of column names of the table.
+    :param List[str] column_types: Array of column types of the table.
+    :param str file_name: Name of the file being previewed.
+    :param PreviewIngestionFileRows rows: First 10 rows of the table.
+    """
+
+    def __init__(
+        self,
+        column_names: List[str],
+        column_types: List[str],
+        file_name: str,
+        rows: 'PreviewIngestionFileRows',
+    ) -> None:
+        """
+        Initialize a PreviewIngestionFile object.
+
+        :param List[str] column_names: Array of column names of the table.
+        :param List[str] column_types: Array of column types of the table.
+        :param str file_name: Name of the file being previewed.
+        :param PreviewIngestionFileRows rows: First 10 rows of the table.
+        """
+        self.column_names = column_names
+        self.column_types = column_types
+        self.file_name = file_name
+        self.rows = rows
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'PreviewIngestionFile':
+        """Initialize a PreviewIngestionFile object from a json dictionary."""
+        args = {}
+        if (column_names := _dict.get('column_names')) is not None:
+            args['column_names'] = column_names
+        else:
+            raise ValueError('Required property \'column_names\' not present in PreviewIngestionFile JSON')
+        if (column_types := _dict.get('column_types')) is not None:
+            args['column_types'] = column_types
+        else:
+            raise ValueError('Required property \'column_types\' not present in PreviewIngestionFile JSON')
+        if (file_name := _dict.get('file_name')) is not None:
+            args['file_name'] = file_name
+        else:
+            raise ValueError('Required property \'file_name\' not present in PreviewIngestionFile JSON')
+        if (rows := _dict.get('rows')) is not None:
+            args['rows'] = PreviewIngestionFileRows.from_dict(rows)
+        else:
+            raise ValueError('Required property \'rows\' not present in PreviewIngestionFile JSON')
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a PreviewIngestionFile object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'column_names') and self.column_names is not None:
+            _dict['column_names'] = self.column_names
+        if hasattr(self, 'column_types') and self.column_types is not None:
+            _dict['column_types'] = self.column_types
+        if hasattr(self, 'file_name') and self.file_name is not None:
+            _dict['file_name'] = self.file_name
+        if hasattr(self, 'rows') and self.rows is not None:
+            if isinstance(self.rows, dict):
+                _dict['rows'] = self.rows
+            else:
+                _dict['rows'] = self.rows.to_dict()
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this PreviewIngestionFile object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'PreviewIngestionFile') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'PreviewIngestionFile') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class PreviewIngestionFilePrototypeCsvProperty:
+    """
+    CSV properties of source file(s).
+
+    :param str encoding: (optional) Encoding used in CSV file.
+    :param str escape_character: (optional) Escape character of CSV file.
+    :param str field_delimiter: (optional) Field delimiter of CSV file.
+    :param bool header: (optional) Identify if header exists in CSV file.
+    :param str line_delimiter: (optional) Line delimiter of CSV file.
+    """
+
+    def __init__(
+        self,
+        *,
+        encoding: Optional[str] = None,
+        escape_character: Optional[str] = None,
+        field_delimiter: Optional[str] = None,
+        header: Optional[bool] = None,
+        line_delimiter: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a PreviewIngestionFilePrototypeCsvProperty object.
+
+        :param str encoding: (optional) Encoding used in CSV file.
+        :param str escape_character: (optional) Escape character of CSV file.
+        :param str field_delimiter: (optional) Field delimiter of CSV file.
+        :param bool header: (optional) Identify if header exists in CSV file.
+        :param str line_delimiter: (optional) Line delimiter of CSV file.
+        """
+        self.encoding = encoding
+        self.escape_character = escape_character
+        self.field_delimiter = field_delimiter
+        self.header = header
+        self.line_delimiter = line_delimiter
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'PreviewIngestionFilePrototypeCsvProperty':
+        """Initialize a PreviewIngestionFilePrototypeCsvProperty object from a json dictionary."""
+        args = {}
+        if (encoding := _dict.get('encoding')) is not None:
+            args['encoding'] = encoding
+        if (escape_character := _dict.get('escape_character')) is not None:
+            args['escape_character'] = escape_character
+        if (field_delimiter := _dict.get('field_delimiter')) is not None:
+            args['field_delimiter'] = field_delimiter
+        if (header := _dict.get('header')) is not None:
+            args['header'] = header
+        if (line_delimiter := _dict.get('line_delimiter')) is not None:
+            args['line_delimiter'] = line_delimiter
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a PreviewIngestionFilePrototypeCsvProperty object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'encoding') and self.encoding is not None:
+            _dict['encoding'] = self.encoding
+        if hasattr(self, 'escape_character') and self.escape_character is not None:
+            _dict['escape_character'] = self.escape_character
+        if hasattr(self, 'field_delimiter') and self.field_delimiter is not None:
+            _dict['field_delimiter'] = self.field_delimiter
+        if hasattr(self, 'header') and self.header is not None:
+            _dict['header'] = self.header
+        if hasattr(self, 'line_delimiter') and self.line_delimiter is not None:
+            _dict['line_delimiter'] = self.line_delimiter
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this PreviewIngestionFilePrototypeCsvProperty object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'PreviewIngestionFilePrototypeCsvProperty') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'PreviewIngestionFilePrototypeCsvProperty') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class PreviewIngestionFileRows:
+    """
+    First 10 rows of the table.
+
+    :param List[str] row_eight: (optional) Each rows slice.
+    :param List[str] row_five: (optional) Each rows slice.
+    :param List[str] row_four: (optional) Each rows slice.
+    :param List[str] row_nine: (optional) Each rows slice.
+    :param List[str] row_one: (optional) Each rows slice.
+    :param List[str] row_seven: (optional) Each rows slice.
+    :param List[str] row_six: (optional) Each rows slice.
+    :param List[str] row_ten: (optional) Each rows slice.
+    :param List[str] row_three: (optional) Each rows slice.
+    :param List[str] row_two: (optional) Each rows slice.
+    """
+
+    def __init__(
+        self,
+        *,
+        row_eight: Optional[List[str]] = None,
+        row_five: Optional[List[str]] = None,
+        row_four: Optional[List[str]] = None,
+        row_nine: Optional[List[str]] = None,
+        row_one: Optional[List[str]] = None,
+        row_seven: Optional[List[str]] = None,
+        row_six: Optional[List[str]] = None,
+        row_ten: Optional[List[str]] = None,
+        row_three: Optional[List[str]] = None,
+        row_two: Optional[List[str]] = None,
+    ) -> None:
+        """
+        Initialize a PreviewIngestionFileRows object.
+
+        :param List[str] row_eight: (optional) Each rows slice.
+        :param List[str] row_five: (optional) Each rows slice.
+        :param List[str] row_four: (optional) Each rows slice.
+        :param List[str] row_nine: (optional) Each rows slice.
+        :param List[str] row_one: (optional) Each rows slice.
+        :param List[str] row_seven: (optional) Each rows slice.
+        :param List[str] row_six: (optional) Each rows slice.
+        :param List[str] row_ten: (optional) Each rows slice.
+        :param List[str] row_three: (optional) Each rows slice.
+        :param List[str] row_two: (optional) Each rows slice.
+        """
+        self.row_eight = row_eight
+        self.row_five = row_five
+        self.row_four = row_four
+        self.row_nine = row_nine
+        self.row_one = row_one
+        self.row_seven = row_seven
+        self.row_six = row_six
+        self.row_ten = row_ten
+        self.row_three = row_three
+        self.row_two = row_two
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'PreviewIngestionFileRows':
+        """Initialize a PreviewIngestionFileRows object from a json dictionary."""
+        args = {}
+        if (row_eight := _dict.get('row_eight')) is not None:
+            args['row_eight'] = row_eight
+        if (row_five := _dict.get('row_five')) is not None:
+            args['row_five'] = row_five
+        if (row_four := _dict.get('row_four')) is not None:
+            args['row_four'] = row_four
+        if (row_nine := _dict.get('row_nine')) is not None:
+            args['row_nine'] = row_nine
+        if (row_one := _dict.get('row_one')) is not None:
+            args['row_one'] = row_one
+        if (row_seven := _dict.get('row_seven')) is not None:
+            args['row_seven'] = row_seven
+        if (row_six := _dict.get('row_six')) is not None:
+            args['row_six'] = row_six
+        if (row_ten := _dict.get('row_ten')) is not None:
+            args['row_ten'] = row_ten
+        if (row_three := _dict.get('row_three')) is not None:
+            args['row_three'] = row_three
+        if (row_two := _dict.get('row_two')) is not None:
+            args['row_two'] = row_two
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a PreviewIngestionFileRows object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'row_eight') and self.row_eight is not None:
+            _dict['row_eight'] = self.row_eight
+        if hasattr(self, 'row_five') and self.row_five is not None:
+            _dict['row_five'] = self.row_five
+        if hasattr(self, 'row_four') and self.row_four is not None:
+            _dict['row_four'] = self.row_four
+        if hasattr(self, 'row_nine') and self.row_nine is not None:
+            _dict['row_nine'] = self.row_nine
+        if hasattr(self, 'row_one') and self.row_one is not None:
+            _dict['row_one'] = self.row_one
+        if hasattr(self, 'row_seven') and self.row_seven is not None:
+            _dict['row_seven'] = self.row_seven
+        if hasattr(self, 'row_six') and self.row_six is not None:
+            _dict['row_six'] = self.row_six
+        if hasattr(self, 'row_ten') and self.row_ten is not None:
+            _dict['row_ten'] = self.row_ten
+        if hasattr(self, 'row_three') and self.row_three is not None:
+            _dict['row_three'] = self.row_three
+        if hasattr(self, 'row_two') and self.row_two is not None:
+            _dict['row_two'] = self.row_two
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this PreviewIngestionFileRows object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'PreviewIngestionFileRows') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'PreviewIngestionFileRows') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
 class RemoveEngineProperties:
     """
     RemoveEngine properties.
@@ -15753,75 +16642,3 @@ class UpdateSyncCatalogOKBody:
     def __ne__(self, other: 'UpdateSyncCatalogOKBody') -> bool:
         """Return `true` when self and other are not equal, false otherwise."""
         return not self == other
-
-##############################################################################
-# Pagers
-##############################################################################
-
-
-class IngestionJobsPager:
-    """
-    IngestionJobsPager can be used to simplify the use of the "list_ingestion_jobs" method.
-    """
-
-    def __init__(
-        self,
-        *,
-        client: WatsonxDataV2,
-        auth_instance_id: str,
-        jobs_per_page: int = None,
-    ) -> None:
-        """
-        Initialize a IngestionJobsPager object.
-        :param str auth_instance_id: watsonx.data instance ID.
-        :param int jobs_per_page: (optional) Number of requested ingestion jobs.
-        """
-        self._has_next = True
-        self._client = client
-        self._page_context = {'next': None}
-        self._auth_instance_id = auth_instance_id
-        self._jobs_per_page = jobs_per_page
-
-    def has_next(self) -> bool:
-        """
-        Returns true if there are potentially more results to be retrieved.
-        """
-        return self._has_next
-
-    def get_next(self) -> List[dict]:
-        """
-        Returns the next page of results.
-        :return: A List[dict], where each element is a dict that represents an instance of IngestionJob.
-        :rtype: List[dict]
-        """
-        if not self.has_next():
-            raise StopIteration(message='No more results available')
-
-        result = self._client.list_ingestion_jobs(
-            auth_instance_id=self._auth_instance_id,
-            jobs_per_page=self._jobs_per_page,
-            start=self._page_context.get('next'),
-        ).get_result()
-
-        next = None
-        next_page_link = result.get('next')
-        if next_page_link is not None:
-            next = get_query_param(next_page_link.get('href'), 'start')
-        self._page_context['next'] = next
-        if next is None:
-            self._has_next = False
-
-        return result.get('ingestion_jobs')
-
-    def get_all(self) -> List[dict]:
-        """
-        Returns all results by invoking get_next() repeatedly
-        until all pages of results have been retrieved.
-        :return: A List[dict], where each element is a dict that represents an instance of IngestionJob.
-        :rtype: List[dict]
-        """
-        results = []
-        while self.has_next():
-            next_page = self.get_next()
-            results.extend(next_page)
-        return results

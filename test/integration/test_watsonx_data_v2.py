@@ -18,6 +18,7 @@ Integration Tests for WatsonxDataV2
 """
 
 from ibm_cloud_sdk_core import *
+import io
 import os
 import pytest
 from ibm_watsonxdata.watsonx_data_v2 import *
@@ -1391,7 +1392,7 @@ class TestWatsonxDataV2:
     def test_list_ingestion_jobs(self):
         response = self.watsonx_data_service.list_ingestion_jobs(
             auth_instance_id='testString',
-            start='1',
+            page=1,
             jobs_per_page=1,
         )
 
@@ -1400,31 +1401,97 @@ class TestWatsonxDataV2:
         assert ingestion_job_collection is not None
 
     @needscredentials
-    def test_list_ingestion_jobs_with_pager(self):
-        all_results = []
+    def test_create_ingestion_jobs(self):
+        # Construct a dict representation of a IngestionJobPrototypeCsvProperty model
+        ingestion_job_prototype_csv_property_model = {
+            'encoding': 'utf-8',
+            'escape_character': '\\\\',
+            'field_delimiter': ',',
+            'header': True,
+            'line_delimiter': '\\n',
+        }
+        # Construct a dict representation of a IngestionJobPrototypeExecuteConfig model
+        ingestion_job_prototype_execute_config_model = {
+            'driver_cores': 1,
+            'driver_memory': '2G',
+            'executor_cores': 1,
+            'executor_memory': '2G',
+            'num_executors': 1,
+        }
 
-        # Test get_next().
-        pager = IngestionJobsPager(
-            client=self.watsonx_data_service,
+        response = self.watsonx_data_service.create_ingestion_jobs(
             auth_instance_id='testString',
-            jobs_per_page=1,
+            job_id='ingestion-1699459946935',
+            source_data_files='s3://demobucket/data/yellow_tripdata_2022-01.parquet',
+            target_table='demodb.test.targettable',
+            username='user1',
+            create_if_not_exist=False,
+            csv_property=ingestion_job_prototype_csv_property_model,
+            engine_id='spark123',
+            execute_config=ingestion_job_prototype_execute_config_model,
+            partition_by='col1, col2',
+            schema='{"type":"struct","schema-id":0,"fields":[{"id":1,"name":"ID","required":true,"type":"int"},{"id":2,"name":"Name","required":true,"type":"string"}]}',
+            source_file_type='csv',
+            validate_csv_header=False,
         )
-        while pager.has_next():
-            next_page = pager.get_next()
-            assert next_page is not None
-            all_results.extend(next_page)
 
-        # Test get_all().
-        pager = IngestionJobsPager(
-            client=self.watsonx_data_service,
+        assert response.get_status_code() == 202
+        ingestion_job = response.get_result()
+        assert ingestion_job is not None
+
+    @needscredentials
+    def test_create_ingestion_jobs_local_files(self):
+        response = self.watsonx_data_service.create_ingestion_jobs_local_files(
             auth_instance_id='testString',
-            jobs_per_page=1,
+            source_data_file=io.BytesIO(b'This is a mock file.').getvalue(),
+            target_table='testString',
+            job_id='testString',
+            username='testString',
+            source_data_file_content_type='testString',
+            source_file_type='csv',
+            csv_property='testString',
+            create_if_not_exist=False,
+            validate_csv_header=False,
+            execute_config='testString',
+            engine_id='testString',
         )
-        all_items = pager.get_all()
-        assert all_items is not None
 
-        assert len(all_results) == len(all_items)
-        print(f'\nlist_ingestion_jobs() returned a total of {len(all_results)} items(s) using IngestionJobsPager.')
+        assert response.get_status_code() == 202
+        ingestion_job = response.get_result()
+        assert ingestion_job is not None
+
+    @needscredentials
+    def test_get_ingestion_job(self):
+        response = self.watsonx_data_service.get_ingestion_job(
+            job_id='testString',
+            auth_instance_id='testString',
+        )
+
+        assert response.get_status_code() == 200
+        ingestion_job = response.get_result()
+        assert ingestion_job is not None
+
+    @needscredentials
+    def test_create_preview_ingestion_file(self):
+        # Construct a dict representation of a PreviewIngestionFilePrototypeCsvProperty model
+        preview_ingestion_file_prototype_csv_property_model = {
+            'encoding': 'utf-8',
+            'escape_character': '\\\\',
+            'field_delimiter': ',',
+            'header': True,
+            'line_delimiter': '\\n',
+        }
+
+        response = self.watsonx_data_service.create_preview_ingestion_file(
+            auth_instance_id='testString',
+            source_data_files='s3://demobucket/data/yellow_tripdata_2022-01.parquet',
+            csv_property=preview_ingestion_file_prototype_csv_property_model,
+            source_file_type='csv',
+        )
+
+        assert response.get_status_code() == 201
+        preview_ingestion_file = response.get_result()
+        assert preview_ingestion_file is not None
 
     @needscredentials
     def test_deregister_bucket(self):
@@ -1597,6 +1664,15 @@ class TestWatsonxDataV2:
     def test_delete_milvus_service(self):
         response = self.watsonx_data_service.delete_milvus_service(
             service_id='testString',
+            auth_instance_id='testString',
+        )
+
+        assert response.get_status_code() == 204
+
+    @needscredentials
+    def test_delete_ingestion_jobs(self):
+        response = self.watsonx_data_service.delete_ingestion_jobs(
+            job_id='testString',
             auth_instance_id='testString',
         )
 
