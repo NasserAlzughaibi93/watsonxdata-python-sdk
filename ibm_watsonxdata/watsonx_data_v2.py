@@ -26,7 +26,7 @@ from enum import Enum
 from typing import BinaryIO, Dict, List, Optional
 import json
 
-from ibm_cloud_sdk_core import BaseService, DetailedResponse
+from ibm_cloud_sdk_core import BaseService, DetailedResponse, get_query_param
 from ibm_cloud_sdk_core.authenticators.authenticator import Authenticator
 from ibm_cloud_sdk_core.get_authenticator import get_authenticator_from_environment
 from ibm_cloud_sdk_core.utils import convert_list, convert_model
@@ -88,7 +88,7 @@ class WatsonxDataV2(BaseService):
 
         Get list of registered buckets.
 
-        :param str auth_instance_id: (optional) CRN.
+        :param str auth_instance_id: (optional) Instance ID.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
         :rtype: DetailedResponse with `dict` result representing a `BucketRegistrationCollection` object
@@ -121,14 +121,15 @@ class WatsonxDataV2(BaseService):
 
     def create_bucket_registration(
         self,
-        bucket_details: 'BucketDetails',
         bucket_type: str,
         description: str,
         managed_by: str,
         *,
         associated_catalog: Optional['BucketCatalog'] = None,
+        bucket_details: Optional['BucketDetails'] = None,
         bucket_display_name: Optional[str] = None,
         region: Optional[str] = None,
+        storage_details: Optional['StorageDetails'] = None,
         tags: Optional[List[str]] = None,
         auth_instance_id: Optional[str] = None,
         **kwargs,
@@ -138,31 +139,33 @@ class WatsonxDataV2(BaseService):
 
         Register a new bucket.
 
-        :param BucketDetails bucket_details: bucket details.
         :param str bucket_type: bucket type.
         :param str description: bucket description.
         :param str managed_by: managed by.
         :param BucketCatalog associated_catalog: (optional) bucket catalog.
+        :param BucketDetails bucket_details: (optional) bucket details.
         :param str bucket_display_name: (optional) bucket display name.
         :param str region: (optional) region where the bucket is located.
+        :param StorageDetails storage_details: (optional) storage details.
         :param List[str] tags: (optional) tags.
-        :param str auth_instance_id: (optional) CRN.
+        :param str auth_instance_id: (optional) Instance ID.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
         :rtype: DetailedResponse with `dict` result representing a `BucketRegistration` object
         """
 
-        if bucket_details is None:
-            raise ValueError('bucket_details must be provided')
         if bucket_type is None:
             raise ValueError('bucket_type must be provided')
         if description is None:
             raise ValueError('description must be provided')
         if managed_by is None:
             raise ValueError('managed_by must be provided')
-        bucket_details = convert_model(bucket_details)
         if associated_catalog is not None:
             associated_catalog = convert_model(associated_catalog)
+        if bucket_details is not None:
+            bucket_details = convert_model(bucket_details)
+        if storage_details is not None:
+            storage_details = convert_model(storage_details)
         headers = {
             'AuthInstanceId': auth_instance_id,
         }
@@ -174,13 +177,14 @@ class WatsonxDataV2(BaseService):
         headers.update(sdk_headers)
 
         data = {
-            'bucket_details': bucket_details,
             'bucket_type': bucket_type,
             'description': description,
             'managed_by': managed_by,
             'associated_catalog': associated_catalog,
+            'bucket_details': bucket_details,
             'bucket_display_name': bucket_display_name,
             'region': region,
+            'storage_details': storage_details,
             'tags': tags,
         }
         data = {k: v for (k, v) in data.items() if v is not None}
@@ -252,7 +256,7 @@ class WatsonxDataV2(BaseService):
         response = self.send(request, **kwargs)
         return response
 
-    def deregister_bucket(
+    def delete_bucket_registration(
         self,
         bucket_id: str,
         *,
@@ -279,7 +283,7 @@ class WatsonxDataV2(BaseService):
         sdk_headers = get_sdk_headers(
             service_name=self.DEFAULT_SERVICE_NAME,
             service_version='V2',
-            operation_id='deregister_bucket',
+            operation_id='delete_bucket_registration',
         )
         headers.update(sdk_headers)
 
@@ -315,7 +319,7 @@ class WatsonxDataV2(BaseService):
 
         :param str bucket_id: bucket id.
         :param BucketRegistrationPatch body: Request body.
-        :param str auth_instance_id: (optional) CRN.
+        :param str auth_instance_id: (optional) Instance ID.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
         :rtype: DetailedResponse with `dict` result representing a `BucketRegistration` object
@@ -461,6 +465,7 @@ class WatsonxDataV2(BaseService):
         bucket_id: str,
         *,
         auth_instance_id: Optional[str] = None,
+        path: Optional[str] = None,
         **kwargs,
     ) -> DetailedResponse:
         """
@@ -469,7 +474,8 @@ class WatsonxDataV2(BaseService):
         Fetch all objects from a given bucket.
 
         :param str bucket_id: bucket id.
-        :param str auth_instance_id: (optional) CRN.
+        :param str auth_instance_id: (optional) Instance ID.
+        :param str path: (optional) path.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
         :rtype: DetailedResponse with `dict` result representing a `BucketRegistrationObjectCollection` object
@@ -487,6 +493,10 @@ class WatsonxDataV2(BaseService):
         )
         headers.update(sdk_headers)
 
+        params = {
+            'path': path,
+        }
+
         if 'headers' in kwargs:
             headers.update(kwargs.get('headers'))
             del kwargs['headers']
@@ -500,6 +510,196 @@ class WatsonxDataV2(BaseService):
             method='GET',
             url=url,
             headers=headers,
+            params=params,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_bucket_object_properties(
+        self,
+        bucket_id: str,
+        *,
+        paths: Optional[List['Path']] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get bucket object properties.
+
+        Get bucket object properties.
+
+        :param str bucket_id: bucket id.
+        :param List[Path] paths: (optional) bucket object size.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `BucketObjectProperties` object
+        """
+
+        if not bucket_id:
+            raise ValueError('bucket_id must be provided')
+        if paths is not None:
+            paths = [convert_model(x) for x in paths]
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_bucket_object_properties',
+        )
+        headers.update(sdk_headers)
+
+        data = {
+            'paths': paths,
+        }
+        data = {k: v for (k, v) in data.items() if v is not None}
+        data = json.dumps(data)
+        headers['content-type'] = 'application/json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        path_param_keys = ['bucket_id']
+        path_param_values = self.encode_path_vars(bucket_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/bucket_registrations/{bucket_id}/object_properties'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_hdfs_storage(
+        self,
+        bucket_display_name: str,
+        bucket_type: str,
+        hms_thrift_uri: str,
+        hms_thrift_port: int,
+        core_site: str,
+        hdfs_site: str,
+        kerberos: str,
+        catalog_name: str,
+        catalog_type: str,
+        *,
+        krb5_config: Optional[str] = None,
+        hive_keytab: Optional[BinaryIO] = None,
+        hive_keytab_content_type: Optional[str] = None,
+        hdfs_keytab: Optional[BinaryIO] = None,
+        hdfs_keytab_content_type: Optional[str] = None,
+        hive_server_principal: Optional[str] = None,
+        hive_client_principal: Optional[str] = None,
+        hdfs_principal: Optional[str] = None,
+        description: Optional[str] = None,
+        created_on: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Add/Create HDFS storage.
+
+        Add or create a new HDFS database.
+
+        :param str bucket_display_name: Bucket display name.
+        :param str bucket_type: Bucket type.
+        :param str hms_thrift_uri: HMS Thrift URI.
+        :param int hms_thrift_port: HMS Thrift Port.
+        :param str core_site: contents of core-site.xml file.
+        :param str hdfs_site: contents of hdfs-site.xml file.
+        :param str kerberos: Kerberos Flag.
+        :param str catalog_name: Catalog name.
+        :param str catalog_type: Catalog type.
+        :param str krb5_config: (optional) Kerberos config file.
+        :param BinaryIO hive_keytab: (optional) Hive keytab file.
+        :param str hive_keytab_content_type: (optional) The content type of
+               hive_keytab.
+        :param BinaryIO hdfs_keytab: (optional) HDFS keytab file.
+        :param str hdfs_keytab_content_type: (optional) The content type of
+               hdfs_keytab.
+        :param str hive_server_principal: (optional) Hive server principal.
+        :param str hive_client_principal: (optional) Hive client principal.
+        :param str hdfs_principal: (optional) HDFS principal.
+        :param str description: (optional) Database description.
+        :param str created_on: (optional) Created on.
+        :param str auth_instance_id: (optional) Instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `HdfsStorageRegistration` object
+        """
+
+        if not bucket_display_name:
+            raise ValueError('bucket_display_name must be provided')
+        if not bucket_type:
+            raise ValueError('bucket_type must be provided')
+        if not hms_thrift_uri:
+            raise ValueError('hms_thrift_uri must be provided')
+        if hms_thrift_port is None:
+            raise ValueError('hms_thrift_port must be provided')
+        if not core_site:
+            raise ValueError('core_site must be provided')
+        if not hdfs_site:
+            raise ValueError('hdfs_site must be provided')
+        if not kerberos:
+            raise ValueError('kerberos must be provided')
+        if not catalog_name:
+            raise ValueError('catalog_name must be provided')
+        if not catalog_type:
+            raise ValueError('catalog_type must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_hdfs_storage',
+        )
+        headers.update(sdk_headers)
+
+        form_data = []
+        form_data.append(('bucket_display_name', (None, bucket_display_name, 'text/plain')))
+        form_data.append(('bucket_type', (None, bucket_type, 'text/plain')))
+        form_data.append(('hms_thrift_uri', (None, hms_thrift_uri, 'text/plain')))
+        form_data.append(('hms_thrift_port', (None, str(hms_thrift_port), 'text/plain')))
+        form_data.append(('core_site', (None, core_site, 'text/plain')))
+        form_data.append(('hdfs_site', (None, hdfs_site, 'text/plain')))
+        form_data.append(('kerberos', (None, kerberos, 'text/plain')))
+        form_data.append(('catalog_name', (None, catalog_name, 'text/plain')))
+        form_data.append(('catalog_type', (None, catalog_type, 'text/plain')))
+        if krb5_config:
+            form_data.append(('krb5_config', (None, krb5_config, 'text/plain')))
+        if hive_keytab:
+            form_data.append(('hive_keytab', (None, hive_keytab, hive_keytab_content_type or 'application/octet-stream')))
+        if hdfs_keytab:
+            form_data.append(('hdfs_keytab', (None, hdfs_keytab, hdfs_keytab_content_type or 'application/octet-stream')))
+        if hive_server_principal:
+            form_data.append(('hive_server_principal', (None, hive_server_principal, 'text/plain')))
+        if hive_client_principal:
+            form_data.append(('hive_client_principal', (None, hive_client_principal, 'text/plain')))
+        if hdfs_principal:
+            form_data.append(('hdfs_principal', (None, hdfs_principal, 'text/plain')))
+        if description:
+            form_data.append(('description', (None, description, 'text/plain')))
+        if created_on:
+            form_data.append(('created_on', (None, created_on, 'text/plain')))
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/storage_hdfs_registrations'
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            files=form_data,
         )
 
         response = self.send(request, **kwargs)
@@ -520,7 +720,7 @@ class WatsonxDataV2(BaseService):
 
         Get list of databases.
 
-        :param str auth_instance_id: (optional) CRN.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
         :rtype: DetailedResponse with `dict` result representing a `DatabaseRegistrationCollection` object
@@ -580,7 +780,7 @@ class WatsonxDataV2(BaseService):
                custom database.
         :param str description: (optional) Database description.
         :param List[str] tags: (optional) tags.
-        :param str auth_instance_id: (optional) CRN.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
         :rtype: DetailedResponse with `dict` result representing a `DatabaseRegistration` object
@@ -793,6 +993,283 @@ class WatsonxDataV2(BaseService):
         return response
 
     #########################
+    # drivers
+    #########################
+
+    def list_driver_registration(
+        self,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get drivers.
+
+        Get all driver details.
+
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `DriverRegistrationCollection` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='list_driver_registration',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/driver_registrations'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_driver_registration(
+        self,
+        driver: BinaryIO,
+        driver_name: str,
+        connection_type: str,
+        *,
+        driver_content_type: Optional[str] = None,
+        version: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Register driver.
+
+        Register a new driver.
+
+        :param BinaryIO driver: Driver file to upload.
+        :param str driver_name: Driver name.
+        :param str connection_type: Driver connection type.
+        :param str driver_content_type: (optional) The content type of driver.
+        :param str version: (optional) Driver status.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `DriverRegistration` object
+        """
+
+        if driver is None:
+            raise ValueError('driver must be provided')
+        if not driver_name:
+            raise ValueError('driver_name must be provided')
+        if not connection_type:
+            raise ValueError('connection_type must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_driver_registration',
+        )
+        headers.update(sdk_headers)
+
+        form_data = []
+        form_data.append(('driver', (None, driver, driver_content_type or 'application/octet-stream')))
+        form_data.append(('driver_name', (None, driver_name, 'text/plain')))
+        form_data.append(('connection_type', (None, connection_type, 'text/plain')))
+        if version:
+            form_data.append(('version', (None, version, 'text/plain')))
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/driver_registrations'
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            files=form_data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def delete_driver_registration(
+        self,
+        driver_id: str,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Delete driver.
+
+        Delete a driver.
+
+        :param str driver_id: Driver ID.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse
+        """
+
+        if not driver_id:
+            raise ValueError('driver_id must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='delete_driver_registration',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+
+        path_param_keys = ['driver_id']
+        path_param_values = self.encode_path_vars(driver_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/driver_registrations/{driver_id}'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='DELETE',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def delete_driver_engines(
+        self,
+        driver_id: str,
+        engine_ids: str,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Disassociate engines from driver.
+
+        Disassociate one or more engines from a driver.
+
+        :param str driver_id: driver id.
+        :param str engine_ids: Engine id(s) to be disassociated from the driver,
+               comma separated.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse
+        """
+
+        if not driver_id:
+            raise ValueError('driver_id must be provided')
+        if not engine_ids:
+            raise ValueError('engine_ids must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='delete_driver_engines',
+        )
+        headers.update(sdk_headers)
+
+        params = {
+            'engine_ids': engine_ids,
+        }
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+
+        path_param_keys = ['driver_id']
+        path_param_values = self.encode_path_vars(driver_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/driver_registrations/{driver_id}/engines'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='DELETE',
+            url=url,
+            headers=headers,
+            params=params,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def update_driver_engines(
+        self,
+        driver_id: str,
+        body: 'DriverRegistrationEnginePrototype',
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Associate engines to driver.
+
+        Associate one or more engines to a driver.
+
+        :param str driver_id: driver id.
+        :param DriverRegistrationEnginePrototype body: Engine details.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `DriverRegistrationEngine` object
+        """
+
+        if not driver_id:
+            raise ValueError('driver_id must be provided')
+        if body is None:
+            raise ValueError('body must be provided')
+        if isinstance(body, DriverRegistrationEnginePrototype):
+            body = convert_model(body)
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='update_driver_engines',
+        )
+        headers.update(sdk_headers)
+
+        data = json.dumps(body)
+        headers['content-type'] = 'application/merge-patch+json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        path_param_keys = ['driver_id']
+        path_param_values = self.encode_path_vars(driver_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/driver_registrations/{driver_id}/engines'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='PATCH',
+            url=url,
+            headers=headers,
+            data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    #########################
     # other_engines
     #########################
 
@@ -846,7 +1323,6 @@ class WatsonxDataV2(BaseService):
         description: Optional[str] = None,
         origin: Optional[str] = None,
         tags: Optional[List[str]] = None,
-        type: Optional[str] = None,
         auth_instance_id: Optional[str] = None,
         **kwargs,
     ) -> DetailedResponse:
@@ -860,7 +1336,6 @@ class WatsonxDataV2(BaseService):
         :param str description: (optional) engine description.
         :param str origin: (optional) Origin - created or registered.
         :param List[str] tags: (optional) other engine tags.
-        :param str type: (optional) Engine type.
         :param str auth_instance_id: (optional) CRN.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
@@ -888,7 +1363,6 @@ class WatsonxDataV2(BaseService):
             'description': description,
             'origin': origin,
             'tags': tags,
-            'type': type,
         }
         data = {k: v for (k, v) in data.items() if v is not None}
         data = json.dumps(data)
@@ -953,6 +1427,299 @@ class WatsonxDataV2(BaseService):
             method='DELETE',
             url=url,
             headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    #########################
+    # integrations
+    #########################
+
+    def list_all_integrations(
+        self,
+        *,
+        auth_instance_id: Optional[str] = None,
+        secret: Optional[str] = None,
+        service_type: Optional[str] = None,
+        state: Optional[List[str]] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get all existing Integrations.
+
+        Get all existing Integrations.
+
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param str secret: (optional) API Authentication service token.
+        :param str service_type: (optional) service_type.
+        :param List[str] state: (optional) state.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `IntegrationCollection` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+            'Secret': secret,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='list_all_integrations',
+        )
+        headers.update(sdk_headers)
+
+        params = {
+            'service_type': service_type,
+            'state': convert_list(state),
+        }
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/integrations'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+            params=params,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_integration(
+        self,
+        *,
+        apikey: Optional[str] = None,
+        enable_data_policy_within_wxd: Optional[bool] = None,
+        password: Optional[str] = None,
+        resource: Optional[str] = None,
+        service_type: Optional[str] = None,
+        storage_catalogs: Optional[List[str]] = None,
+        url: Optional[str] = None,
+        username: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        To register an integration.
+
+        To register an integration.
+
+        :param str apikey: (optional) Integration APIKEY.
+        :param bool enable_data_policy_within_wxd: (optional) data policy enabler
+               with wxd for ranger.
+        :param str password: (optional) Integration password.
+        :param str resource: (optional) resouce for ranger.
+        :param str service_type: (optional) Integration type.
+        :param List[str] storage_catalogs: (optional) Comma separated list of
+               bucket catalogs which have ikc enabled.
+        :param str url: (optional) Integration Connection URL.
+        :param str username: (optional) Integration username.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `Integration` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_integration',
+        )
+        headers.update(sdk_headers)
+
+        data = {
+            'apikey': apikey,
+            'enable_data_policy_within_wxd': enable_data_policy_within_wxd,
+            'password': password,
+            'resource': resource,
+            'service_type': service_type,
+            'storage_catalogs': storage_catalogs,
+            'url': url,
+            'username': username,
+        }
+        data = {k: v for (k, v) in data.items() if v is not None}
+        data = json.dumps(data)
+        headers['content-type'] = 'application/json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/integrations'
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_integrations(
+        self,
+        integration_id: str,
+        *,
+        auth_instance_id: Optional[str] = None,
+        secret: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get an Integration.
+
+        Get an Integration.
+
+        :param str integration_id: integration_id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param str secret: (optional) API Authentication service token.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `Integration` object
+        """
+
+        if not integration_id:
+            raise ValueError('integration_id must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+            'Secret': secret,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_integrations',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        path_param_keys = ['integration_id']
+        path_param_values = self.encode_path_vars(integration_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/integrations/{integration_id}'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def delete_integration(
+        self,
+        integration_id: str,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Remove an Integration.
+
+        Remove an Integration.
+
+        :param str integration_id: integration_id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse
+        """
+
+        if not integration_id:
+            raise ValueError('integration_id must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='delete_integration',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+
+        path_param_keys = ['integration_id']
+        path_param_values = self.encode_path_vars(integration_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/integrations/{integration_id}'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='DELETE',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def update_integration(
+        self,
+        integration_id: str,
+        integration_patch: 'IntegrationPatch',
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Update an existing Integration.
+
+        Update an existing Integration.
+
+        :param str integration_id: integration_id.
+        :param IntegrationPatch integration_patch: Integration update parameters.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `Integration` object
+        """
+
+        if not integration_id:
+            raise ValueError('integration_id must be provided')
+        if integration_patch is None:
+            raise ValueError('integration_patch must be provided')
+        if isinstance(integration_patch, IntegrationPatch):
+            integration_patch = convert_model(integration_patch)
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='update_integration',
+        )
+        headers.update(sdk_headers)
+
+        data = json.dumps(integration_patch)
+        headers['content-type'] = 'application/merge-patch+json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        path_param_keys = ['integration_id']
+        path_param_values = self.encode_path_vars(integration_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/integrations/{integration_id}'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='PATCH',
+            url=url,
+            headers=headers,
+            data=data,
         )
 
         response = self.send(request, **kwargs)
@@ -1403,6 +2170,77 @@ class WatsonxDataV2(BaseService):
         return response
 
     #########################
+    # queries
+    #########################
+
+    def create_execute_query(
+        self,
+        engine_id: str,
+        sql_string: str,
+        *,
+        catalog_name: Optional[str] = None,
+        schema_name: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Execute a query.
+
+        Execute a query.
+
+        :param str engine_id: Engine name.
+        :param str sql_string: query to be executed.
+        :param str catalog_name: (optional) Name of the catalog.
+        :param str schema_name: (optional) Schema name.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `ExecuteQueryCreatedBody` object
+        """
+
+        if not engine_id:
+            raise ValueError('engine_id must be provided')
+        if sql_string is None:
+            raise ValueError('sql_string must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_execute_query',
+        )
+        headers.update(sdk_headers)
+
+        data = {
+            'sql_string': sql_string,
+            'catalog_name': catalog_name,
+            'schema_name': schema_name,
+        }
+        data = {k: v for (k, v) in data.items() if v is not None}
+        data = json.dumps(data)
+        headers['content-type'] = 'application/json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        path_param_keys = ['engine_id']
+        path_param_values = self.encode_path_vars(engine_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/queries/execute/{engine_id}'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    #########################
     # prestissimo_engines
     #########################
 
@@ -1731,11 +2569,11 @@ class WatsonxDataV2(BaseService):
         response = self.send(request, **kwargs)
         return response
 
-    def add_prestissimo_engine_catalogs(
+    def create_prestissimo_engine_catalogs(
         self,
         engine_id: str,
         *,
-        catalog_names: Optional[str] = None,
+        catalog_name: Optional[str] = None,
         auth_instance_id: Optional[str] = None,
         **kwargs,
     ) -> DetailedResponse:
@@ -1745,11 +2583,11 @@ class WatsonxDataV2(BaseService):
         Associate one or more catalogs to a prestissimo engine.
 
         :param str engine_id: engine id.
-        :param str catalog_names: (optional) catalog names.
+        :param str catalog_name: (optional) catalog names.
         :param str auth_instance_id: (optional) CRN.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
-        :rtype: DetailedResponse with `dict` result representing a `CatalogCollection` object
+        :rtype: DetailedResponse with `dict` result representing a `Catalog` object
         """
 
         if not engine_id:
@@ -1760,12 +2598,12 @@ class WatsonxDataV2(BaseService):
         sdk_headers = get_sdk_headers(
             service_name=self.DEFAULT_SERVICE_NAME,
             service_version='V2',
-            operation_id='add_prestissimo_engine_catalogs',
+            operation_id='create_prestissimo_engine_catalogs',
         )
         headers.update(sdk_headers)
 
         data = {
-            'catalog_names': catalog_names,
+            'catalog_name': catalog_name,
         }
         data = {k: v for (k, v) in data.items() if v is not None}
         data = json.dumps(data)
@@ -2193,8 +3031,10 @@ class WatsonxDataV2(BaseService):
         Scale an existing prestissimo engine.
 
         :param str engine_id: engine id.
-        :param PrestissimoNodeDescriptionBody coordinator: (optional) Node details.
-        :param PrestissimoNodeDescriptionBody worker: (optional) Node details.
+        :param PrestissimoNodeDescriptionBody coordinator: (optional)
+               coordinator/worker property settings.
+        :param PrestissimoNodeDescriptionBody worker: (optional) coordinator/worker
+               property settings.
         :param str auth_instance_id: (optional) CRN.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
@@ -2572,11 +3412,11 @@ class WatsonxDataV2(BaseService):
         response = self.send(request, **kwargs)
         return response
 
-    def add_presto_engine_catalogs(
+    def create_presto_engine_catalogs(
         self,
         engine_id: str,
         *,
-        catalog_names: Optional[str] = None,
+        catalog_name: Optional[str] = None,
         auth_instance_id: Optional[str] = None,
         **kwargs,
     ) -> DetailedResponse:
@@ -2586,11 +3426,11 @@ class WatsonxDataV2(BaseService):
         Associate one or more catalogs to a presto engine.
 
         :param str engine_id: engine id.
-        :param str catalog_names: (optional) catalog names.
+        :param str catalog_name: (optional) catalog names.
         :param str auth_instance_id: (optional) CRN.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
-        :rtype: DetailedResponse with `dict` result representing a `CatalogCollection` object
+        :rtype: DetailedResponse with `dict` result representing a `Catalog` object
         """
 
         if not engine_id:
@@ -2601,12 +3441,12 @@ class WatsonxDataV2(BaseService):
         sdk_headers = get_sdk_headers(
             service_name=self.DEFAULT_SERVICE_NAME,
             service_version='V2',
-            operation_id='add_presto_engine_catalogs',
+            operation_id='create_presto_engine_catalogs',
         )
         headers.update(sdk_headers)
 
         data = {
-            'catalog_names': catalog_names,
+            'catalog_name': catalog_name,
         }
         data = {k: v for (k, v) in data.items() if v is not None}
         data = json.dumps(data)
@@ -3080,6 +3920,942 @@ class WatsonxDataV2(BaseService):
             url=url,
             headers=headers,
             data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    #########################
+    # semantic_automation_layer
+    #########################
+
+    def get_sal_integration(
+        self,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get SAL Integrations.
+
+        Get SAL Integration.
+
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegration` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_sal_integration',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_sal_integration(
+        self,
+        apikey: str,
+        engine_id: str,
+        *,
+        storage_resource_crn: Optional[str] = None,
+        storage_type: Optional[str] = None,
+        trial_plan: Optional[bool] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Create sal integration with wxd.
+
+        Add or create a new sal integration.
+
+        :param str apikey: IAM apikey.
+        :param str engine_id: engine ID.
+        :param str storage_resource_crn: (optional) COS storage resource crn.
+        :param str storage_type: (optional) COS storage type.
+        :param bool trial_plan: (optional) COS storage type.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegration` object
+        """
+
+        if apikey is None:
+            raise ValueError('apikey must be provided')
+        if engine_id is None:
+            raise ValueError('engine_id must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_sal_integration',
+        )
+        headers.update(sdk_headers)
+
+        data = {
+            'apikey': apikey,
+            'engine_id': engine_id,
+            'storage_resource_crn': storage_resource_crn,
+            'storage_type': storage_type,
+            'trial_plan': trial_plan,
+        }
+        data = {k: v for (k, v) in data.items() if v is not None}
+        data = json.dumps(data)
+        headers['content-type'] = 'application/json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations'
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def delete_sal_integration(
+        self,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Delete sal-wxd integration.
+
+        Delete a sal-wxd integration.
+
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse
+        """
+
+        headers = {}
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='delete_sal_integration',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+
+        url = '/sal_integrations'
+        request = self.prepare_request(
+            method='DELETE',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def update_sal_integration(
+        self,
+        body: 'SalIntegrationPatch',
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Update sal-wxd integration.
+
+        Update sal-wxd integration details.
+
+        :param SalIntegrationPatch body: Request body.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegration` object
+        """
+
+        if body is None:
+            raise ValueError('body must be provided')
+        if isinstance(body, SalIntegrationPatch):
+            body = convert_model(body)
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='update_sal_integration',
+        )
+        headers.update(sdk_headers)
+
+        data = json.dumps(body)
+        headers['content-type'] = 'application/merge-patch+json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations'
+        request = self.prepare_request(
+            method='PATCH',
+            url=url,
+            headers=headers,
+            data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_sal_integration_enrichment(
+        self,
+        *,
+        enrichment_prototype: Optional['EnrichmentObj'] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Trigger enrichment jobs on schemas and tables.
+
+        Trigger enrichment jobs on schemas and tables.
+
+        :param EnrichmentObj enrichment_prototype: (optional) Encrichment api
+               object.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse
+        """
+
+        if enrichment_prototype is not None:
+            enrichment_prototype = convert_model(enrichment_prototype)
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_sal_integration_enrichment',
+        )
+        headers.update(sdk_headers)
+
+        data = {
+            'enrichment_prototype': enrichment_prototype,
+        }
+        data = {k: v for (k, v) in data.items() if v is not None}
+        data = json.dumps(data)
+        headers['content-type'] = 'application/json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+
+        url = '/sal_integrations/enrichment'
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_sal_integration_enrichment_assets(
+        self,
+        *,
+        project_id: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get semantic enrichment assets associated with the schema.
+
+        Get semantic enrichment job runs associated with the schema.
+
+        :param str project_id: (optional) enrichment project id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegrationEnrichmentAssets` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_sal_integration_enrichment_assets',
+        )
+        headers.update(sdk_headers)
+
+        params = {
+            'project_id': project_id,
+        }
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations/enrichment_assets'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+            params=params,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_sal_integration_enrichment_data_asset(
+        self,
+        *,
+        project_id: Optional[str] = None,
+        asset_id: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get semantic enrichment data asset associated with the table.
+
+        Get semantic enrichment data asset associated with the table.
+
+        :param str project_id: (optional) enrichment project id.
+        :param str asset_id: (optional) enrichment data asset id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegrationEnrichmentDataAsset` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_sal_integration_enrichment_data_asset',
+        )
+        headers.update(sdk_headers)
+
+        params = {
+            'project_id': project_id,
+            'asset_id': asset_id,
+        }
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations/enrichment_data_asset'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+            params=params,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_sal_integration_enrichment_job_run_logs(
+        self,
+        *,
+        job_id: Optional[str] = None,
+        job_run_id: Optional[str] = None,
+        project_id: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get semantic enrichment job run logs associated with the job run.
+
+        Get semantic enrichment job run logs associated with the job run.
+
+        :param str job_id: (optional) enrichment job id.
+        :param str job_run_id: (optional) enrichment job run id.
+        :param str project_id: (optional) enrichment project id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegrationEnrichmentJobRunLogs` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_sal_integration_enrichment_job_run_logs',
+        )
+        headers.update(sdk_headers)
+
+        params = {
+            'job_id': job_id,
+            'job_run_id': job_run_id,
+            'project_id': project_id,
+        }
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations/enrichment_job_run_logs'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+            params=params,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_sal_integration_enrichment_job_runs(
+        self,
+        *,
+        job_id: Optional[str] = None,
+        project_id: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get semantic enrichment job runs associated with the schema.
+
+        Get semantic enrichment job runs associated with the schema.
+
+        :param str job_id: (optional) enrichment job id.
+        :param str project_id: (optional) enrichment project id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegrationEnrichmentJobRun` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_sal_integration_enrichment_job_runs',
+        )
+        headers.update(sdk_headers)
+
+        params = {
+            'job_id': job_id,
+            'project_id': project_id,
+        }
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations/enrichment_job_runs'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+            params=params,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_sal_integration_enrichment_jobs(
+        self,
+        *,
+        wkc_project_id: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get semantic enrichment jobs associated with the schema.
+
+        Get semantic enrichment jobs associated with the schema.
+
+        :param str wkc_project_id: (optional) ikc project id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegrationEnrichmentJobs` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_sal_integration_enrichment_jobs',
+        )
+        headers.update(sdk_headers)
+
+        params = {
+            'wkc_project_id': wkc_project_id,
+        }
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations/enrichment_jobs'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+            params=params,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_sal_integration_glossary_terms(
+        self,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get list of uploaded glossary terms.
+
+        Get list of uploaded glossary terms.
+
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegrationGlossaryTerms` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_sal_integration_glossary_terms',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations/glossary_terms'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_sal_integration_mappings(
+        self,
+        catalog_name: str,
+        schema_name: str,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get wkc catalog and project mapped to the schema.
+
+        Get wkc catalog and project mapped to the schema.
+
+        :param str catalog_name: catalog name.
+        :param str schema_name: schema name.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegrationMappings` object
+        """
+
+        if not catalog_name:
+            raise ValueError('catalog_name must be provided')
+        if not schema_name:
+            raise ValueError('schema_name must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_sal_integration_mappings',
+        )
+        headers.update(sdk_headers)
+
+        params = {
+            'catalog_name': catalog_name,
+            'schema_name': schema_name,
+        }
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations/mappings'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+            params=params,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_sal_integration_enrichment_global_settings(
+        self,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get metadata enrichment global settings.
+
+        Get metadata enrichment global settings.
+
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegrationEnrichmentSettings` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_sal_integration_enrichment_global_settings',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations/metadata_enrichment_global_settings'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_sal_integration_enrichment_global_settings(
+        self,
+        *,
+        semantic_expansion: Optional['SalIntegrationEnrichmentSettingsSemanticExpansion'] = None,
+        term_assignment: Optional['SalIntegrationEnrichmentSettingsTermAssignment'] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Add metadata enrichment global settings.
+
+        Add metadata enrichment global settings.
+
+        :param SalIntegrationEnrichmentSettingsSemanticExpansion
+               semantic_expansion: (optional) semantic expansion.
+        :param SalIntegrationEnrichmentSettingsTermAssignment term_assignment:
+               (optional) semantic expansion.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegrationEnrichmentSettings` object
+        """
+
+        if semantic_expansion is not None:
+            semantic_expansion = convert_model(semantic_expansion)
+        if term_assignment is not None:
+            term_assignment = convert_model(term_assignment)
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_sal_integration_enrichment_global_settings',
+        )
+        headers.update(sdk_headers)
+
+        data = {
+            'semantic_expansion': semantic_expansion,
+            'term_assignment': term_assignment,
+        }
+        data = {k: v for (k, v) in data.items() if v is not None}
+        data = json.dumps(data)
+        headers['content-type'] = 'application/json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations/metadata_enrichment_global_settings'
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_sal_integration_enrichment_settings(
+        self,
+        *,
+        project_id: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        get metadata enrichment settings for a project.
+
+        get metadata enrichment settings for a project.
+
+        :param str project_id: (optional) wkc project id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegrationEnrichmentSettings` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_sal_integration_enrichment_settings',
+        )
+        headers.update(sdk_headers)
+
+        params = {
+            'project_id': project_id,
+        }
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations/metadata_enrichment_settings'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+            params=params,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_sal_integration_enrichment_settings(
+        self,
+        *,
+        semantic_expansion: Optional['SalIntegrationEnrichmentSettingsSemanticExpansion'] = None,
+        term_assignment: Optional['SalIntegrationEnrichmentSettingsTermAssignment'] = None,
+        project_id: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Add metadata enrichment settings for a project.
+
+        Add metadata enrichment settings for a project.
+
+        :param SalIntegrationEnrichmentSettingsSemanticExpansion
+               semantic_expansion: (optional) semantic expansion.
+        :param SalIntegrationEnrichmentSettingsTermAssignment term_assignment:
+               (optional) semantic expansion.
+        :param str project_id: (optional) wkc project id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse
+        """
+
+        if semantic_expansion is not None:
+            semantic_expansion = convert_model(semantic_expansion)
+        if term_assignment is not None:
+            term_assignment = convert_model(term_assignment)
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_sal_integration_enrichment_settings',
+        )
+        headers.update(sdk_headers)
+
+        params = {
+            'project_id': project_id,
+        }
+
+        data = {
+            'semantic_expansion': semantic_expansion,
+            'term_assignment': term_assignment,
+        }
+        data = {k: v for (k, v) in data.items() if v is not None}
+        data = json.dumps(data)
+        headers['content-type'] = 'application/json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+
+        url = '/sal_integrations/metadata_enrichment_settings'
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            params=params,
+            data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_sal_integration_upload_glossary(
+        self,
+        replace_option: str,
+        *,
+        glossary_csv: Optional[BinaryIO] = None,
+        glossary_csv_content_type: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Upload semantic enrichment business terms glossary.
+
+        Upload semantic enrichment business terms glossary.
+
+        :param str replace_option: glossary upload replace option.
+        :param BinaryIO glossary_csv: (optional) Glossary CSV file.
+        :param str glossary_csv_content_type: (optional) The content type of
+               glossary_csv.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegrationUploadGlossary` object
+        """
+
+        if not replace_option:
+            raise ValueError('replace_option must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_sal_integration_upload_glossary',
+        )
+        headers.update(sdk_headers)
+
+        form_data = []
+        form_data.append(('replace_option', (None, replace_option, 'text/plain')))
+        if glossary_csv:
+            form_data.append(('glossary_csv', (None, glossary_csv, glossary_csv_content_type or 'application/octet-stream')))
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations/upload_glossary'
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            files=form_data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def get_sal_integration_upload_glossary_status(
+        self,
+        *,
+        process_id: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get status of upload glossary job.
+
+        Get status of upload glossary job.
+
+        :param str process_id: (optional) upload process id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SalIntegrationUploadGlossaryStatus` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_sal_integration_upload_glossary_status',
+        )
+        headers.update(sdk_headers)
+
+        params = {
+            'process_id': process_id,
+        }
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/sal_integrations/upload_glossary_status'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+            params=params,
         )
 
         response = self.send(request, **kwargs)
@@ -3664,11 +5440,11 @@ class WatsonxDataV2(BaseService):
         response = self.send(request, **kwargs)
         return response
 
-    def add_spark_engine_catalogs(
+    def create_spark_engine_catalogs(
         self,
         engine_id: str,
         *,
-        catalog_names: Optional[str] = None,
+        catalog_name: Optional[str] = None,
         auth_instance_id: Optional[str] = None,
         **kwargs,
     ) -> DetailedResponse:
@@ -3678,11 +5454,11 @@ class WatsonxDataV2(BaseService):
         Associate one or more catalogs to a spark engine.
 
         :param str engine_id: engine id.
-        :param str catalog_names: (optional) catalog names.
+        :param str catalog_name: (optional) catalog names.
         :param str auth_instance_id: (optional) CRN.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
-        :rtype: DetailedResponse with `dict` result representing a `CatalogCollection` object
+        :rtype: DetailedResponse with `dict` result representing a `Catalog` object
         """
 
         if not engine_id:
@@ -3693,12 +5469,12 @@ class WatsonxDataV2(BaseService):
         sdk_headers = get_sdk_headers(
             service_name=self.DEFAULT_SERVICE_NAME,
             service_version='V2',
-            operation_id='add_spark_engine_catalogs',
+            operation_id='create_spark_engine_catalogs',
         )
         headers.update(sdk_headers)
 
         data = {
-            'catalog_names': catalog_names,
+            'catalog_name': catalog_name,
         }
         data = {k: v for (k, v) in data.items() if v is not None}
         data = json.dumps(data)
@@ -3992,7 +5768,7 @@ class WatsonxDataV2(BaseService):
         response = self.send(request, **kwargs)
         return response
 
-    def create_spark_engine_pause(
+    def pause_spark_engine(
         self,
         engine_id: str,
         *,
@@ -4019,7 +5795,7 @@ class WatsonxDataV2(BaseService):
         sdk_headers = get_sdk_headers(
             service_name=self.DEFAULT_SERVICE_NAME,
             service_version='V2',
-            operation_id='create_spark_engine_pause',
+            operation_id='pause_spark_engine',
         )
         headers.update(sdk_headers)
 
@@ -4041,7 +5817,7 @@ class WatsonxDataV2(BaseService):
         response = self.send(request, **kwargs)
         return response
 
-    def create_spark_engine_resume(
+    def resume_spark_engine(
         self,
         engine_id: str,
         *,
@@ -4068,7 +5844,7 @@ class WatsonxDataV2(BaseService):
         sdk_headers = get_sdk_headers(
             service_name=self.DEFAULT_SERVICE_NAME,
             service_version='V2',
-            operation_id='create_spark_engine_resume',
+            operation_id='resume_spark_engine',
         )
         headers.update(sdk_headers)
 
@@ -4090,7 +5866,7 @@ class WatsonxDataV2(BaseService):
         response = self.send(request, **kwargs)
         return response
 
-    def create_spark_engine_scale(
+    def scale_spark_engine(
         self,
         engine_id: str,
         *,
@@ -4119,7 +5895,7 @@ class WatsonxDataV2(BaseService):
         sdk_headers = get_sdk_headers(
             service_name=self.DEFAULT_SERVICE_NAME,
             service_version='V2',
-            operation_id='create_spark_engine_scale',
+            operation_id='scale_spark_engine',
         )
         headers.update(sdk_headers)
 
@@ -4352,6 +6128,8 @@ class WatsonxDataV2(BaseService):
         schema_name: str,
         *,
         bucket_name: Optional[str] = None,
+        hostname: Optional[str] = None,
+        port: Optional[int] = None,
         auth_instance_id: Optional[str] = None,
         **kwargs,
     ) -> DetailedResponse:
@@ -4366,7 +6144,9 @@ class WatsonxDataV2(BaseService):
         :param str schema_name: Schema name.
         :param str bucket_name: (optional) Bucket associated to metastore where
                schema will be added.
-        :param str auth_instance_id: (optional) CRN.
+        :param str hostname: (optional) Host name.
+        :param int port: (optional) Port.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
         :rtype: DetailedResponse with `dict` result representing a `CreateSchemaCreatedBody` object
@@ -4398,6 +6178,8 @@ class WatsonxDataV2(BaseService):
             'custom_path': custom_path,
             'schema_name': schema_name,
             'bucket_name': bucket_name,
+            'hostname': hostname,
+            'port': port,
         }
         data = {k: v for (k, v) in data.items() if v is not None}
         data = json.dumps(data)
@@ -4553,6 +6335,7 @@ class WatsonxDataV2(BaseService):
         table_id: str,
         engine_id: str,
         *,
+        type: Optional[str] = None,
         auth_instance_id: Optional[str] = None,
         **kwargs,
     ) -> DetailedResponse:
@@ -4565,6 +6348,7 @@ class WatsonxDataV2(BaseService):
         :param str schema_id: URL encoded schema name.
         :param str table_id: URL encoded table name.
         :param str engine_id: engine id.
+        :param str type: (optional) URL encoded table type.
         :param str auth_instance_id: (optional) CRN.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
@@ -4591,6 +6375,7 @@ class WatsonxDataV2(BaseService):
 
         params = {
             'engine_id': engine_id,
+            'type': type,
         }
 
         if 'headers' in kwargs:
@@ -4619,6 +6404,7 @@ class WatsonxDataV2(BaseService):
         table_id: str,
         engine_id: str,
         *,
+        type: Optional[str] = None,
         auth_instance_id: Optional[str] = None,
         **kwargs,
     ) -> DetailedResponse:
@@ -4631,6 +6417,7 @@ class WatsonxDataV2(BaseService):
         :param str schema_id: URL encoded schema name.
         :param str table_id: URL encoded table name.
         :param str engine_id: engine id.
+        :param str type: (optional) URL encoded table type.
         :param str auth_instance_id: (optional) CRN.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
@@ -4657,6 +6444,7 @@ class WatsonxDataV2(BaseService):
 
         params = {
             'engine_id': engine_id,
+            'type': type,
         }
 
         if 'headers' in kwargs:
@@ -4677,7 +6465,7 @@ class WatsonxDataV2(BaseService):
         response = self.send(request, **kwargs)
         return response
 
-    def rename_table(
+    def update_table(
         self,
         catalog_id: str,
         schema_id: str,
@@ -4685,6 +6473,7 @@ class WatsonxDataV2(BaseService):
         engine_id: str,
         body: 'TablePatch',
         *,
+        type: Optional[str] = None,
         auth_instance_id: Optional[str] = None,
         **kwargs,
     ) -> DetailedResponse:
@@ -4698,6 +6487,7 @@ class WatsonxDataV2(BaseService):
         :param str table_id: URL encoded table name.
         :param str engine_id: engine id.
         :param TablePatch body: Request body.
+        :param str type: (optional) URL encoded table type.
         :param str auth_instance_id: (optional) CRN.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
@@ -4722,12 +6512,13 @@ class WatsonxDataV2(BaseService):
         sdk_headers = get_sdk_headers(
             service_name=self.DEFAULT_SERVICE_NAME,
             service_version='V2',
-            operation_id='rename_table',
+            operation_id='update_table',
         )
         headers.update(sdk_headers)
 
         params = {
             'engine_id': engine_id,
+            'type': type,
         }
 
         data = json.dumps(body)
@@ -4772,7 +6563,7 @@ class WatsonxDataV2(BaseService):
         :param str catalog_id: catalog id.
         :param str schema_id: URL encoded schema name.
         :param str table_id: URL encoded schema name.
-        :param str auth_instance_id: (optional) CRN.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
         :rtype: DetailedResponse with `dict` result representing a `ColumnCollection` object
@@ -4841,7 +6632,7 @@ class WatsonxDataV2(BaseService):
         :param str table_id: URL encoded schema name.
         :param List[Column] columns: (optional) List of the tables present in the
                schema.
-        :param str auth_instance_id: (optional) CRN.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
         :rtype: DetailedResponse with `dict` result representing a `ColumnCollection` object
@@ -5066,7 +6857,7 @@ class WatsonxDataV2(BaseService):
         :param str catalog_id: Catalog ID.
         :param str schema_id: Schema ID.
         :param str table_id: Table ID.
-        :param str auth_instance_id: (optional) CRN.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
         :rtype: DetailedResponse with `dict` result representing a `TableSnapshotCollection` object
@@ -5264,7 +7055,7 @@ class WatsonxDataV2(BaseService):
 
         Get list milvus services.
 
-        :param str auth_instance_id: (optional) CRN.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
         :rtype: DetailedResponse with `dict` result representing a `MilvusServiceCollection` object
@@ -5297,11 +7088,15 @@ class WatsonxDataV2(BaseService):
 
     def create_milvus_service(
         self,
+        bucket_name: str,
         origin: str,
+        root_path: str,
+        service_display_name: str,
         *,
+        bucket_type: Optional[str] = None,
         description: Optional[str] = None,
-        service_display_name: Optional[str] = None,
         tags: Optional[List[str]] = None,
+        tshirt_size: Optional[str] = None,
         auth_instance_id: Optional[str] = None,
         **kwargs,
     ) -> DetailedResponse:
@@ -5310,18 +7105,28 @@ class WatsonxDataV2(BaseService):
 
         Create milvus service.
 
+        :param str bucket_name: bucket name.
         :param str origin: Origin - place holder.
+        :param str root_path: root path.
+        :param str service_display_name: Service display name.
+        :param str bucket_type: (optional) bucket type.
         :param str description: (optional) Service description.
-        :param str service_display_name: (optional) Service display name.
         :param List[str] tags: (optional) Tags.
-        :param str auth_instance_id: (optional) CRN.
+        :param str tshirt_size: (optional) tshirt size.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
         :rtype: DetailedResponse with `dict` result representing a `MilvusService` object
         """
 
+        if bucket_name is None:
+            raise ValueError('bucket_name must be provided')
         if origin is None:
             raise ValueError('origin must be provided')
+        if root_path is None:
+            raise ValueError('root_path must be provided')
+        if service_display_name is None:
+            raise ValueError('service_display_name must be provided')
         headers = {
             'AuthInstanceId': auth_instance_id,
         }
@@ -5333,10 +7138,14 @@ class WatsonxDataV2(BaseService):
         headers.update(sdk_headers)
 
         data = {
+            'bucket_name': bucket_name,
             'origin': origin,
-            'description': description,
+            'root_path': root_path,
             'service_display_name': service_display_name,
+            'bucket_type': bucket_type,
+            'description': description,
             'tags': tags,
+            'tshirt_size': tshirt_size,
         }
         data = {k: v for (k, v) in data.items() if v is not None}
         data = json.dumps(data)
@@ -5514,6 +7323,265 @@ class WatsonxDataV2(BaseService):
         response = self.send(request, **kwargs)
         return response
 
+    def list_milvus_service_databases(
+        self,
+        service_id: str,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get milvus service databases.
+
+        Get milvus service databases.
+
+        :param str service_id: service id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `MilvusServiceDatabases` object
+        """
+
+        if not service_id:
+            raise ValueError('service_id must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='list_milvus_service_databases',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        path_param_keys = ['service_id']
+        path_param_values = self.encode_path_vars(service_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/milvus_services/{service_id}/databases'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def list_milvus_database_collections(
+        self,
+        service_id: str,
+        database_id: str,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get milvus database collections.
+
+        Get milvus database collections.
+
+        :param str service_id: service id.
+        :param str database_id: database id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `MilvusDatabaseCollections` object
+        """
+
+        if not service_id:
+            raise ValueError('service_id must be provided')
+        if not database_id:
+            raise ValueError('database_id must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='list_milvus_database_collections',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        path_param_keys = ['service_id', 'database_id']
+        path_param_values = self.encode_path_vars(service_id, database_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/milvus_services/{service_id}/databases/{database_id}/collections'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_milvus_service_pause(
+        self,
+        service_id: str,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Pause milvus service.
+
+        Pause a running milvus service.
+
+        :param str service_id: service id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SuccessResponse` object
+        """
+
+        if not service_id:
+            raise ValueError('service_id must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_milvus_service_pause',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        path_param_keys = ['service_id']
+        path_param_values = self.encode_path_vars(service_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/milvus_services/{service_id}/pause'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_milvus_service_resume(
+        self,
+        service_id: str,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Resume milvus service.
+
+        Resume a paused milvus service.
+
+        :param str service_id: service id.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SuccessResponse` object
+        """
+
+        if not service_id:
+            raise ValueError('service_id must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_milvus_service_resume',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        path_param_keys = ['service_id']
+        path_param_values = self.encode_path_vars(service_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/milvus_services/{service_id}/resume'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+    def create_milvus_service_scale(
+        self,
+        service_id: str,
+        *,
+        tshirt_size: Optional[str] = None,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Scale a milvus service.
+
+        Scale an existing milvus service.
+
+        :param str service_id: service id.
+        :param str tshirt_size: (optional) tshirt size.
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `SuccessResponse` object
+        """
+
+        if not service_id:
+            raise ValueError('service_id must be provided')
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='create_milvus_service_scale',
+        )
+        headers.update(sdk_headers)
+
+        data = {
+            'tshirt_size': tshirt_size,
+        }
+        data = {k: v for (k, v) in data.items() if v is not None}
+        data = json.dumps(data)
+        headers['content-type'] = 'application/json'
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        path_param_keys = ['service_id']
+        path_param_values = self.encode_path_vars(service_id)
+        path_param_dict = dict(zip(path_param_keys, path_param_values))
+        url = '/milvus_services/{service_id}/scale'.format(**path_param_dict)
+        request = self.prepare_request(
+            method='POST',
+            url=url,
+            headers=headers,
+            data=data,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
     #########################
     # ingestion
     #########################
@@ -5522,7 +7590,7 @@ class WatsonxDataV2(BaseService):
         self,
         auth_instance_id: str,
         *,
-        page: Optional[int] = None,
+        start: Optional[str] = None,
         jobs_per_page: Optional[int] = None,
         **kwargs,
     ) -> DetailedResponse:
@@ -5532,7 +7600,7 @@ class WatsonxDataV2(BaseService):
         Get list of ingestion jobs.
 
         :param str auth_instance_id: watsonx.data instance ID.
-        :param int page: (optional) Page number of requested ingestion jobs.
+        :param str start: (optional) Page number of requested ingestion jobs.
         :param int jobs_per_page: (optional) Number of requested ingestion jobs.
         :param dict headers: A `dict` containing the request headers
         :return: A `DetailedResponse` containing the result, headers and HTTP status code.
@@ -5552,7 +7620,7 @@ class WatsonxDataV2(BaseService):
         headers.update(sdk_headers)
 
         params = {
-            'page': page,
+            'start': start,
             'jobs_per_page': jobs_per_page,
         }
 
@@ -5944,6 +8012,67 @@ class WatsonxDataV2(BaseService):
         response = self.send(request, **kwargs)
         return response
 
+    #########################
+    # endpoints
+    #########################
+
+    def get_endpoints(
+        self,
+        *,
+        auth_instance_id: Optional[str] = None,
+        **kwargs,
+    ) -> DetailedResponse:
+        """
+        Get CPG and CAS endpoints.
+
+        Get Common policy gateway (CPG) and  Data Access Service(CAS) endpoints.
+
+        :param str auth_instance_id: (optional) watsonx.data instance ID.
+        :param dict headers: A `dict` containing the request headers
+        :return: A `DetailedResponse` containing the result, headers and HTTP status code.
+        :rtype: DetailedResponse with `dict` result representing a `EndpointCollection` object
+        """
+
+        headers = {
+            'AuthInstanceId': auth_instance_id,
+        }
+        sdk_headers = get_sdk_headers(
+            service_name=self.DEFAULT_SERVICE_NAME,
+            service_version='V2',
+            operation_id='get_endpoints',
+        )
+        headers.update(sdk_headers)
+
+        if 'headers' in kwargs:
+            headers.update(kwargs.get('headers'))
+            del kwargs['headers']
+        headers['Accept'] = 'application/json'
+
+        url = '/endpoints'
+        request = self.prepare_request(
+            method='GET',
+            url=url,
+            headers=headers,
+        )
+
+        response = self.send(request, **kwargs)
+        return response
+
+
+class CreateSalIntegrationUploadGlossaryEnums:
+    """
+    Enums for create_sal_integration_upload_glossary parameters.
+    """
+
+    class ReplaceOption(str, Enum):
+        """
+        glossary upload replace option.
+        """
+
+        ALL = 'all'
+        SPECIFIED = 'specified'
+        EMPTY = 'empty'
+
 
 class CreateIngestionJobsLocalFilesEnums:
     """
@@ -6047,6 +8176,9 @@ class BucketDetails:
           registration.
     :param str bucket_name: actual bucket name.
     :param str endpoint: (optional) Cos endpoint.
+    :param str key_file: (optional) Key file, encrypted during bucket registration.
+    :param str provider: (optional) bucket provider.
+    :param str region: (optional) Region where the bucket is located.
     :param str secret_key: (optional) Secret access key, encrypted during bucket
           registration.
     """
@@ -6057,6 +8189,9 @@ class BucketDetails:
         *,
         access_key: Optional[str] = None,
         endpoint: Optional[str] = None,
+        key_file: Optional[str] = None,
+        provider: Optional[str] = None,
+        region: Optional[str] = None,
         secret_key: Optional[str] = None,
     ) -> None:
         """
@@ -6066,12 +8201,19 @@ class BucketDetails:
         :param str access_key: (optional) Access key ID, encrypted during bucket
                registration.
         :param str endpoint: (optional) Cos endpoint.
+        :param str key_file: (optional) Key file, encrypted during bucket
+               registration.
+        :param str provider: (optional) bucket provider.
+        :param str region: (optional) Region where the bucket is located.
         :param str secret_key: (optional) Secret access key, encrypted during
                bucket registration.
         """
         self.access_key = access_key
         self.bucket_name = bucket_name
         self.endpoint = endpoint
+        self.key_file = key_file
+        self.provider = provider
+        self.region = region
         self.secret_key = secret_key
 
     @classmethod
@@ -6086,6 +8228,12 @@ class BucketDetails:
             raise ValueError('Required property \'bucket_name\' not present in BucketDetails JSON')
         if (endpoint := _dict.get('endpoint')) is not None:
             args['endpoint'] = endpoint
+        if (key_file := _dict.get('key_file')) is not None:
+            args['key_file'] = key_file
+        if (provider := _dict.get('provider')) is not None:
+            args['provider'] = provider
+        if (region := _dict.get('region')) is not None:
+            args['region'] = region
         if (secret_key := _dict.get('secret_key')) is not None:
             args['secret_key'] = secret_key
         return cls(**args)
@@ -6104,6 +8252,12 @@ class BucketDetails:
             _dict['bucket_name'] = self.bucket_name
         if hasattr(self, 'endpoint') and self.endpoint is not None:
             _dict['endpoint'] = self.endpoint
+        if hasattr(self, 'key_file') and self.key_file is not None:
+            _dict['key_file'] = self.key_file
+        if hasattr(self, 'provider') and self.provider is not None:
+            _dict['provider'] = self.provider
+        if hasattr(self, 'region') and self.region is not None:
+            _dict['region'] = self.region
         if hasattr(self, 'secret_key') and self.secret_key is not None:
             _dict['secret_key'] = self.secret_key
         return _dict
@@ -6127,6 +8281,72 @@ class BucketDetails:
         return not self == other
 
 
+class BucketObjectProperties:
+    """
+    muliple bucket object properties.
+
+    :param List[BucketRegistrationObjectSizeCollection] object_properties:
+          (optional) muliple bucket object properties.
+    """
+
+    def __init__(
+        self,
+        *,
+        object_properties: Optional[List['BucketRegistrationObjectSizeCollection']] = None,
+    ) -> None:
+        """
+        Initialize a BucketObjectProperties object.
+
+        :param List[BucketRegistrationObjectSizeCollection] object_properties:
+               (optional) muliple bucket object properties.
+        """
+        self.object_properties = object_properties
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'BucketObjectProperties':
+        """Initialize a BucketObjectProperties object from a json dictionary."""
+        args = {}
+        if (object_properties := _dict.get('object_properties')) is not None:
+            args['object_properties'] = [BucketRegistrationObjectSizeCollection.from_dict(v) for v in object_properties]
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a BucketObjectProperties object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'object_properties') and self.object_properties is not None:
+            object_properties_list = []
+            for v in self.object_properties:
+                if isinstance(v, dict):
+                    object_properties_list.append(v)
+                else:
+                    object_properties_list.append(v.to_dict())
+            _dict['object_properties'] = object_properties_list
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this BucketObjectProperties object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'BucketObjectProperties') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'BucketObjectProperties') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
 class BucketRegistration:
     """
     Bucket.
@@ -6144,6 +8364,7 @@ class BucketRegistration:
     :param str managed_by: managed by.
     :param str region: (optional) Region where the bucket is located.
     :param str state: mark bucket active or inactive.
+    :param StorageDetails storage_details: (optional) storage details.
     :param List[str] tags: (optional) tags.
     """
 
@@ -6162,6 +8383,7 @@ class BucketRegistration:
         bucket_display_name: Optional[str] = None,
         bucket_id: Optional[str] = None,
         region: Optional[str] = None,
+        storage_details: Optional['StorageDetails'] = None,
         tags: Optional[List[str]] = None,
     ) -> None:
         """
@@ -6180,6 +8402,7 @@ class BucketRegistration:
         :param str bucket_id: (optional) bucket ID auto generated during bucket
                registration.
         :param str region: (optional) Region where the bucket is located.
+        :param StorageDetails storage_details: (optional) storage details.
         :param List[str] tags: (optional) tags.
         """
         self.actions = actions
@@ -6194,6 +8417,7 @@ class BucketRegistration:
         self.managed_by = managed_by
         self.region = region
         self.state = state
+        self.storage_details = storage_details
         self.tags = tags
 
     @classmethod
@@ -6238,6 +8462,8 @@ class BucketRegistration:
             args['state'] = state
         else:
             raise ValueError('Required property \'state\' not present in BucketRegistration JSON')
+        if (storage_details := _dict.get('storage_details')) is not None:
+            args['storage_details'] = StorageDetails.from_dict(storage_details)
         if (tags := _dict.get('tags')) is not None:
             args['tags'] = tags
         return cls(**args)
@@ -6280,6 +8506,11 @@ class BucketRegistration:
             _dict['region'] = self.region
         if hasattr(self, 'state') and self.state is not None:
             _dict['state'] = self.state
+        if hasattr(self, 'storage_details') and self.storage_details is not None:
+            if isinstance(self.storage_details, dict):
+                _dict['storage_details'] = self.storage_details
+            else:
+                _dict['storage_details'] = self.storage_details.to_dict()
         if hasattr(self, 'tags') and self.tags is not None:
             _dict['tags'] = self.tags
         return _dict
@@ -6312,6 +8543,9 @@ class BucketRegistration:
         MINIO = 'minio'
         IBM_COS = 'ibm_cos'
         IBM_CEPH = 'ibm_ceph'
+        ADLS_GEN1 = 'adls_gen1'
+        ADLS_GEN2 = 'adls_gen2'
+        GOOGLE_CS = 'google_cs'
 
 
     class ManagedByEnum(str, Enum):
@@ -6451,6 +8685,105 @@ class BucketRegistrationObjectCollection:
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other: 'BucketRegistrationObjectCollection') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class BucketRegistrationObjectSizeCollection:
+    """
+    Bucket object size.
+
+    :param str content_type: (optional) content type.
+    :param str file_type: (optional) file type.
+    :param str last_modified: (optional) bucket last modified.
+    :param dict metadata: (optional) Additional metadata associated with the object.
+    :param str path: (optional) bucket last modified.
+    :param str size: (optional) size of the bucket objects.
+    """
+
+    def __init__(
+        self,
+        *,
+        content_type: Optional[str] = None,
+        file_type: Optional[str] = None,
+        last_modified: Optional[str] = None,
+        metadata: Optional[dict] = None,
+        path: Optional[str] = None,
+        size: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a BucketRegistrationObjectSizeCollection object.
+
+        :param str content_type: (optional) content type.
+        :param str file_type: (optional) file type.
+        :param str last_modified: (optional) bucket last modified.
+        :param dict metadata: (optional) Additional metadata associated with the
+               object.
+        :param str path: (optional) bucket last modified.
+        :param str size: (optional) size of the bucket objects.
+        """
+        self.content_type = content_type
+        self.file_type = file_type
+        self.last_modified = last_modified
+        self.metadata = metadata
+        self.path = path
+        self.size = size
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'BucketRegistrationObjectSizeCollection':
+        """Initialize a BucketRegistrationObjectSizeCollection object from a json dictionary."""
+        args = {}
+        if (content_type := _dict.get('content_type')) is not None:
+            args['content_type'] = content_type
+        if (file_type := _dict.get('file_type')) is not None:
+            args['file_type'] = file_type
+        if (last_modified := _dict.get('last_modified')) is not None:
+            args['last_modified'] = last_modified
+        if (metadata := _dict.get('metadata')) is not None:
+            args['metadata'] = metadata
+        if (path := _dict.get('path')) is not None:
+            args['path'] = path
+        if (size := _dict.get('size')) is not None:
+            args['size'] = size
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a BucketRegistrationObjectSizeCollection object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'content_type') and self.content_type is not None:
+            _dict['content_type'] = self.content_type
+        if hasattr(self, 'file_type') and self.file_type is not None:
+            _dict['file_type'] = self.file_type
+        if hasattr(self, 'last_modified') and self.last_modified is not None:
+            _dict['last_modified'] = self.last_modified
+        if hasattr(self, 'metadata') and self.metadata is not None:
+            _dict['metadata'] = self.metadata
+        if hasattr(self, 'path') and self.path is not None:
+            _dict['path'] = self.path
+        if hasattr(self, 'size') and self.size is not None:
+            _dict['size'] = self.size
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this BucketRegistrationObjectSizeCollection object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'BucketRegistrationObjectSizeCollection') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'BucketRegistrationObjectSizeCollection') -> bool:
         """Return `true` when self and other are not equal, false otherwise."""
         return not self == other
 
@@ -6835,6 +9168,7 @@ class Column:
     :param str extra: (optional) Extra.
     :param str length: (optional) length.
     :param str scale: (optional) scale.
+    :param str precision: (optional) precision.
     :param str type: (optional) Data type.
     """
 
@@ -6846,6 +9180,7 @@ class Column:
         extra: Optional[str] = None,
         length: Optional[str] = None,
         scale: Optional[str] = None,
+        precision: Optional[str] = None,
         type: Optional[str] = None,
     ) -> None:
         """
@@ -6856,6 +9191,7 @@ class Column:
         :param str extra: (optional) Extra.
         :param str length: (optional) length.
         :param str scale: (optional) scale.
+        :param str precision: (optional) precision.
         :param str type: (optional) Data type.
         """
         self.column_name = column_name
@@ -6863,6 +9199,7 @@ class Column:
         self.extra = extra
         self.length = length
         self.scale = scale
+        self.precision = precision
         self.type = type
 
     @classmethod
@@ -6879,6 +9216,8 @@ class Column:
             args['length'] = length
         if (scale := _dict.get('scale')) is not None:
             args['scale'] = scale
+        if (precision := _dict.get('precision')) is not None:
+            args['precision'] = precision
         if (type := _dict.get('type')) is not None:
             args['type'] = type
         return cls(**args)
@@ -6901,6 +9240,8 @@ class Column:
             _dict['length'] = self.length
         if hasattr(self, 'scale') and self.scale is not None:
             _dict['scale'] = self.scale
+        if hasattr(self, 'precision') and self.precision is not None:
+            _dict['precision'] = self.precision
         if hasattr(self, 'type') and self.type is not None:
             _dict['type'] = self.type
         return _dict
@@ -7492,96 +9833,238 @@ class DatabaseDetails:
     """
     database details.
 
+    :param str authentication_type: (optional) Authentication method.
+    :param str broker_authentication_password: (optional) Broker authentication
+          password.
+    :param str broker_authentication_type: (optional) Broker authentication type.
+    :param str broker_authentication_user: (optional) Broker authentication user.
     :param str certificate: (optional) contents of a pem/crt file.
     :param str certificate_extension: (optional) extension of the certificate file.
+    :param str connection_method: (optional) connection mode.
+    :param str connection_mode: (optional) connection mode.
+    :param str connection_mode_value: (optional) connection mode value.
+    :param str connection_type: (optional) Connection type.
+    :param str controller_authentication_password: (optional) Controller
+          authentication password.
+    :param str controller_authentication_type: (optional) Controller authentication
+          type.
+    :param str controller_authentication_user: (optional) Controller authentication
+          user.
+    :param str cpd_hostname: (optional) CPD Hostname.
+    :param str credentials_key: (optional) Base 64 encoded json file.
     :param str database_name: (optional) Database name.
-    :param str hostname: Host name.
+    :param str hostname: (optional) Host name.
     :param str hostname_in_certificate: (optional) Hostname in certificate.
     :param str hosts: (optional) String of hostname:port.
+    :param str informix_server: (optional) informix server value.
     :param str password: (optional) Psssword.
-    :param int port: Port.
+    :param int port: (optional) Port.
+    :param str project_id: (optional) Project ID.
     :param bool sasl: (optional) SASL Mode.
+    :param str service_api_key: (optional) service api key.
+    :param str service_hostname: (optional) service hostname.
+    :param str service_password: (optional) service password.
+    :param int service_port: (optional) Service Port.
+    :param bool service_ssl: (optional) Service SSL Mode.
+    :param str service_token_url: (optional) service token url.
+    :param str service_username: (optional) service username.
     :param bool ssl: (optional) SSL Mode.
     :param str tables: (optional) Only for Kafka - Add kafka tables.
     :param str username: (optional) Username.
     :param bool validate_server_certificate: (optional) Verify certificate.
+    :param bool verify_host_name: (optional) Verify host name.
     """
 
     def __init__(
         self,
-        hostname: str,
-        port: int,
         *,
+        authentication_type: Optional[str] = None,
+        broker_authentication_password: Optional[str] = None,
+        broker_authentication_type: Optional[str] = None,
+        broker_authentication_user: Optional[str] = None,
         certificate: Optional[str] = None,
         certificate_extension: Optional[str] = None,
+        connection_method: Optional[str] = None,
+        connection_mode: Optional[str] = None,
+        connection_mode_value: Optional[str] = None,
+        connection_type: Optional[str] = None,
+        controller_authentication_password: Optional[str] = None,
+        controller_authentication_type: Optional[str] = None,
+        controller_authentication_user: Optional[str] = None,
+        cpd_hostname: Optional[str] = None,
+        credentials_key: Optional[str] = None,
         database_name: Optional[str] = None,
+        hostname: Optional[str] = None,
         hostname_in_certificate: Optional[str] = None,
         hosts: Optional[str] = None,
+        informix_server: Optional[str] = None,
         password: Optional[str] = None,
+        port: Optional[int] = None,
+        project_id: Optional[str] = None,
         sasl: Optional[bool] = None,
+        service_api_key: Optional[str] = None,
+        service_hostname: Optional[str] = None,
+        service_password: Optional[str] = None,
+        service_port: Optional[int] = None,
+        service_ssl: Optional[bool] = None,
+        service_token_url: Optional[str] = None,
+        service_username: Optional[str] = None,
         ssl: Optional[bool] = None,
         tables: Optional[str] = None,
         username: Optional[str] = None,
         validate_server_certificate: Optional[bool] = None,
+        verify_host_name: Optional[bool] = None,
     ) -> None:
         """
         Initialize a DatabaseDetails object.
 
-        :param str hostname: Host name.
-        :param int port: Port.
+        :param str authentication_type: (optional) Authentication method.
+        :param str broker_authentication_password: (optional) Broker authentication
+               password.
+        :param str broker_authentication_type: (optional) Broker authentication
+               type.
+        :param str broker_authentication_user: (optional) Broker authentication
+               user.
         :param str certificate: (optional) contents of a pem/crt file.
         :param str certificate_extension: (optional) extension of the certificate
                file.
+        :param str connection_method: (optional) connection mode.
+        :param str connection_mode: (optional) connection mode.
+        :param str connection_mode_value: (optional) connection mode value.
+        :param str connection_type: (optional) Connection type.
+        :param str controller_authentication_password: (optional) Controller
+               authentication password.
+        :param str controller_authentication_type: (optional) Controller
+               authentication type.
+        :param str controller_authentication_user: (optional) Controller
+               authentication user.
+        :param str cpd_hostname: (optional) CPD Hostname.
+        :param str credentials_key: (optional) Base 64 encoded json file.
         :param str database_name: (optional) Database name.
+        :param str hostname: (optional) Host name.
         :param str hostname_in_certificate: (optional) Hostname in certificate.
         :param str hosts: (optional) String of hostname:port.
+        :param str informix_server: (optional) informix server value.
         :param str password: (optional) Psssword.
+        :param int port: (optional) Port.
+        :param str project_id: (optional) Project ID.
         :param bool sasl: (optional) SASL Mode.
+        :param str service_api_key: (optional) service api key.
+        :param str service_hostname: (optional) service hostname.
+        :param str service_password: (optional) service password.
+        :param int service_port: (optional) Service Port.
+        :param bool service_ssl: (optional) Service SSL Mode.
+        :param str service_token_url: (optional) service token url.
+        :param str service_username: (optional) service username.
         :param bool ssl: (optional) SSL Mode.
         :param str tables: (optional) Only for Kafka - Add kafka tables.
         :param str username: (optional) Username.
         :param bool validate_server_certificate: (optional) Verify certificate.
+        :param bool verify_host_name: (optional) Verify host name.
         """
+        self.authentication_type = authentication_type
+        self.broker_authentication_password = broker_authentication_password
+        self.broker_authentication_type = broker_authentication_type
+        self.broker_authentication_user = broker_authentication_user
         self.certificate = certificate
         self.certificate_extension = certificate_extension
+        self.connection_method = connection_method
+        self.connection_mode = connection_mode
+        self.connection_mode_value = connection_mode_value
+        self.connection_type = connection_type
+        self.controller_authentication_password = controller_authentication_password
+        self.controller_authentication_type = controller_authentication_type
+        self.controller_authentication_user = controller_authentication_user
+        self.cpd_hostname = cpd_hostname
+        self.credentials_key = credentials_key
         self.database_name = database_name
         self.hostname = hostname
         self.hostname_in_certificate = hostname_in_certificate
         self.hosts = hosts
+        self.informix_server = informix_server
         self.password = password
         self.port = port
+        self.project_id = project_id
         self.sasl = sasl
+        self.service_api_key = service_api_key
+        self.service_hostname = service_hostname
+        self.service_password = service_password
+        self.service_port = service_port
+        self.service_ssl = service_ssl
+        self.service_token_url = service_token_url
+        self.service_username = service_username
         self.ssl = ssl
         self.tables = tables
         self.username = username
         self.validate_server_certificate = validate_server_certificate
+        self.verify_host_name = verify_host_name
 
     @classmethod
     def from_dict(cls, _dict: Dict) -> 'DatabaseDetails':
         """Initialize a DatabaseDetails object from a json dictionary."""
         args = {}
+        if (authentication_type := _dict.get('authentication_type')) is not None:
+            args['authentication_type'] = authentication_type
+        if (broker_authentication_password := _dict.get('broker_authentication_password')) is not None:
+            args['broker_authentication_password'] = broker_authentication_password
+        if (broker_authentication_type := _dict.get('broker_authentication_type')) is not None:
+            args['broker_authentication_type'] = broker_authentication_type
+        if (broker_authentication_user := _dict.get('broker_authentication_user')) is not None:
+            args['broker_authentication_user'] = broker_authentication_user
         if (certificate := _dict.get('certificate')) is not None:
             args['certificate'] = certificate
         if (certificate_extension := _dict.get('certificate_extension')) is not None:
             args['certificate_extension'] = certificate_extension
+        if (connection_method := _dict.get('connection_method')) is not None:
+            args['connection_method'] = connection_method
+        if (connection_mode := _dict.get('connection_mode')) is not None:
+            args['connection_mode'] = connection_mode
+        if (connection_mode_value := _dict.get('connection_mode_value')) is not None:
+            args['connection_mode_value'] = connection_mode_value
+        if (connection_type := _dict.get('connection_type')) is not None:
+            args['connection_type'] = connection_type
+        if (controller_authentication_password := _dict.get('controller_authentication_password')) is not None:
+            args['controller_authentication_password'] = controller_authentication_password
+        if (controller_authentication_type := _dict.get('controller_authentication_type')) is not None:
+            args['controller_authentication_type'] = controller_authentication_type
+        if (controller_authentication_user := _dict.get('controller_authentication_user')) is not None:
+            args['controller_authentication_user'] = controller_authentication_user
+        if (cpd_hostname := _dict.get('cpd_hostname')) is not None:
+            args['cpd_hostname'] = cpd_hostname
+        if (credentials_key := _dict.get('credentials_key')) is not None:
+            args['credentials_key'] = credentials_key
         if (database_name := _dict.get('database_name')) is not None:
             args['database_name'] = database_name
         if (hostname := _dict.get('hostname')) is not None:
             args['hostname'] = hostname
-        else:
-            raise ValueError('Required property \'hostname\' not present in DatabaseDetails JSON')
         if (hostname_in_certificate := _dict.get('hostname_in_certificate')) is not None:
             args['hostname_in_certificate'] = hostname_in_certificate
         if (hosts := _dict.get('hosts')) is not None:
             args['hosts'] = hosts
+        if (informix_server := _dict.get('informix_server')) is not None:
+            args['informix_server'] = informix_server
         if (password := _dict.get('password')) is not None:
             args['password'] = password
         if (port := _dict.get('port')) is not None:
             args['port'] = port
-        else:
-            raise ValueError('Required property \'port\' not present in DatabaseDetails JSON')
+        if (project_id := _dict.get('project_id')) is not None:
+            args['project_id'] = project_id
         if (sasl := _dict.get('sasl')) is not None:
             args['sasl'] = sasl
+        if (service_api_key := _dict.get('service_api_key')) is not None:
+            args['service_api_key'] = service_api_key
+        if (service_hostname := _dict.get('service_hostname')) is not None:
+            args['service_hostname'] = service_hostname
+        if (service_password := _dict.get('service_password')) is not None:
+            args['service_password'] = service_password
+        if (service_port := _dict.get('service_port')) is not None:
+            args['service_port'] = service_port
+        if (service_ssl := _dict.get('service_ssl')) is not None:
+            args['service_ssl'] = service_ssl
+        if (service_token_url := _dict.get('service_token_url')) is not None:
+            args['service_token_url'] = service_token_url
+        if (service_username := _dict.get('service_username')) is not None:
+            args['service_username'] = service_username
         if (ssl := _dict.get('ssl')) is not None:
             args['ssl'] = ssl
         if (tables := _dict.get('tables')) is not None:
@@ -7590,6 +10073,8 @@ class DatabaseDetails:
             args['username'] = username
         if (validate_server_certificate := _dict.get('validate_server_certificate')) is not None:
             args['validate_server_certificate'] = validate_server_certificate
+        if (verify_host_name := _dict.get('verify_host_name')) is not None:
+            args['verify_host_name'] = verify_host_name
         return cls(**args)
 
     @classmethod
@@ -7600,10 +10085,36 @@ class DatabaseDetails:
     def to_dict(self) -> Dict:
         """Return a json dictionary representing this model."""
         _dict = {}
+        if hasattr(self, 'authentication_type') and self.authentication_type is not None:
+            _dict['authentication_type'] = self.authentication_type
+        if hasattr(self, 'broker_authentication_password') and self.broker_authentication_password is not None:
+            _dict['broker_authentication_password'] = self.broker_authentication_password
+        if hasattr(self, 'broker_authentication_type') and self.broker_authentication_type is not None:
+            _dict['broker_authentication_type'] = self.broker_authentication_type
+        if hasattr(self, 'broker_authentication_user') and self.broker_authentication_user is not None:
+            _dict['broker_authentication_user'] = self.broker_authentication_user
         if hasattr(self, 'certificate') and self.certificate is not None:
             _dict['certificate'] = self.certificate
         if hasattr(self, 'certificate_extension') and self.certificate_extension is not None:
             _dict['certificate_extension'] = self.certificate_extension
+        if hasattr(self, 'connection_method') and self.connection_method is not None:
+            _dict['connection_method'] = self.connection_method
+        if hasattr(self, 'connection_mode') and self.connection_mode is not None:
+            _dict['connection_mode'] = self.connection_mode
+        if hasattr(self, 'connection_mode_value') and self.connection_mode_value is not None:
+            _dict['connection_mode_value'] = self.connection_mode_value
+        if hasattr(self, 'connection_type') and self.connection_type is not None:
+            _dict['connection_type'] = self.connection_type
+        if hasattr(self, 'controller_authentication_password') and self.controller_authentication_password is not None:
+            _dict['controller_authentication_password'] = self.controller_authentication_password
+        if hasattr(self, 'controller_authentication_type') and self.controller_authentication_type is not None:
+            _dict['controller_authentication_type'] = self.controller_authentication_type
+        if hasattr(self, 'controller_authentication_user') and self.controller_authentication_user is not None:
+            _dict['controller_authentication_user'] = self.controller_authentication_user
+        if hasattr(self, 'cpd_hostname') and self.cpd_hostname is not None:
+            _dict['cpd_hostname'] = self.cpd_hostname
+        if hasattr(self, 'credentials_key') and self.credentials_key is not None:
+            _dict['credentials_key'] = self.credentials_key
         if hasattr(self, 'database_name') and self.database_name is not None:
             _dict['database_name'] = self.database_name
         if hasattr(self, 'hostname') and self.hostname is not None:
@@ -7612,12 +10123,30 @@ class DatabaseDetails:
             _dict['hostname_in_certificate'] = self.hostname_in_certificate
         if hasattr(self, 'hosts') and self.hosts is not None:
             _dict['hosts'] = self.hosts
+        if hasattr(self, 'informix_server') and self.informix_server is not None:
+            _dict['informix_server'] = self.informix_server
         if hasattr(self, 'password') and self.password is not None:
             _dict['password'] = self.password
         if hasattr(self, 'port') and self.port is not None:
             _dict['port'] = self.port
+        if hasattr(self, 'project_id') and self.project_id is not None:
+            _dict['project_id'] = self.project_id
         if hasattr(self, 'sasl') and self.sasl is not None:
             _dict['sasl'] = self.sasl
+        if hasattr(self, 'service_api_key') and self.service_api_key is not None:
+            _dict['service_api_key'] = self.service_api_key
+        if hasattr(self, 'service_hostname') and self.service_hostname is not None:
+            _dict['service_hostname'] = self.service_hostname
+        if hasattr(self, 'service_password') and self.service_password is not None:
+            _dict['service_password'] = self.service_password
+        if hasattr(self, 'service_port') and self.service_port is not None:
+            _dict['service_port'] = self.service_port
+        if hasattr(self, 'service_ssl') and self.service_ssl is not None:
+            _dict['service_ssl'] = self.service_ssl
+        if hasattr(self, 'service_token_url') and self.service_token_url is not None:
+            _dict['service_token_url'] = self.service_token_url
+        if hasattr(self, 'service_username') and self.service_username is not None:
+            _dict['service_username'] = self.service_username
         if hasattr(self, 'ssl') and self.ssl is not None:
             _dict['ssl'] = self.ssl
         if hasattr(self, 'tables') and self.tables is not None:
@@ -7626,6 +10155,8 @@ class DatabaseDetails:
             _dict['username'] = self.username
         if hasattr(self, 'validate_server_certificate') and self.validate_server_certificate is not None:
             _dict['validate_server_certificate'] = self.validate_server_certificate
+        if hasattr(self, 'verify_host_name') and self.verify_host_name is not None:
+            _dict['verify_host_name'] = self.verify_host_name
         return _dict
 
     def _to_dict(self):
@@ -7664,6 +10195,7 @@ class DatabaseRegistration:
     :param str database_type: Connector type.
     :param str description: (optional) Database description.
     :param List[str] tags: (optional) tags.
+    :param List[DatabaseRegistrationTopicsItems] topics: (optional) List of topics.
     """
 
     def __init__(
@@ -7681,6 +10213,7 @@ class DatabaseRegistration:
         database_properties: Optional[List['DatabaseRegistrationDatabasePropertiesItems']] = None,
         description: Optional[str] = None,
         tags: Optional[List[str]] = None,
+        topics: Optional[List['DatabaseRegistrationTopicsItems']] = None,
     ) -> None:
         """
         Initialize a DatabaseRegistration object.
@@ -7699,6 +10232,8 @@ class DatabaseRegistration:
                custom database.
         :param str description: (optional) Database description.
         :param List[str] tags: (optional) tags.
+        :param List[DatabaseRegistrationTopicsItems] topics: (optional) List of
+               topics.
         """
         self.actions = actions
         self.associated_catalog = associated_catalog
@@ -7712,6 +10247,7 @@ class DatabaseRegistration:
         self.database_type = database_type
         self.description = description
         self.tags = tags
+        self.topics = topics
 
     @classmethod
     def from_dict(cls, _dict: Dict) -> 'DatabaseRegistration':
@@ -7747,6 +10283,8 @@ class DatabaseRegistration:
             args['description'] = description
         if (tags := _dict.get('tags')) is not None:
             args['tags'] = tags
+        if (topics := _dict.get('topics')) is not None:
+            args['topics'] = [DatabaseRegistrationTopicsItems.from_dict(v) for v in topics]
         return cls(**args)
 
     @classmethod
@@ -7793,6 +10331,14 @@ class DatabaseRegistration:
             _dict['description'] = self.description
         if hasattr(self, 'tags') and self.tags is not None:
             _dict['tags'] = self.tags
+        if hasattr(self, 'topics') and self.topics is not None:
+            topics_list = []
+            for v in self.topics:
+                if isinstance(v, dict):
+                    topics_list.append(v)
+                else:
+                    topics_list.append(v.to_dict())
+            _dict['topics'] = topics_list
         return _dict
 
     def _to_dict(self):
@@ -7968,6 +10514,8 @@ class DatabaseRegistrationPatch:
     :param str database_display_name: (optional) New database display name.
     :param str description: (optional) New database description.
     :param List[str] tags: (optional) New tags.
+    :param List[DatabaseRegistrationPatchTopicsItems] topics: (optional) List of
+          topics.
     """
 
     def __init__(
@@ -7977,6 +10525,7 @@ class DatabaseRegistrationPatch:
         database_display_name: Optional[str] = None,
         description: Optional[str] = None,
         tags: Optional[List[str]] = None,
+        topics: Optional[List['DatabaseRegistrationPatchTopicsItems']] = None,
     ) -> None:
         """
         Initialize a DatabaseRegistrationPatch object.
@@ -7986,11 +10535,14 @@ class DatabaseRegistrationPatch:
         :param str database_display_name: (optional) New database display name.
         :param str description: (optional) New database description.
         :param List[str] tags: (optional) New tags.
+        :param List[DatabaseRegistrationPatchTopicsItems] topics: (optional) List
+               of topics.
         """
         self.database_details = database_details
         self.database_display_name = database_display_name
         self.description = description
         self.tags = tags
+        self.topics = topics
 
     @classmethod
     def from_dict(cls, _dict: Dict) -> 'DatabaseRegistrationPatch':
@@ -8004,6 +10556,8 @@ class DatabaseRegistrationPatch:
             args['description'] = description
         if (tags := _dict.get('tags')) is not None:
             args['tags'] = tags
+        if (topics := _dict.get('topics')) is not None:
+            args['topics'] = [DatabaseRegistrationPatchTopicsItems.from_dict(v) for v in topics]
         return cls(**args)
 
     @classmethod
@@ -8025,6 +10579,14 @@ class DatabaseRegistrationPatch:
             _dict['description'] = self.description
         if hasattr(self, 'tags') and self.tags is not None:
             _dict['tags'] = self.tags
+        if hasattr(self, 'topics') and self.topics is not None:
+            topics_list = []
+            for v in self.topics:
+                if isinstance(v, dict):
+                    topics_list.append(v)
+                else:
+                    topics_list.append(v.to_dict())
+            _dict['topics'] = topics_list
         return _dict
 
     def _to_dict(self):
@@ -8112,6 +10674,88 @@ class DatabaseRegistrationPatchDatabaseDetails:
         return not self == other
 
 
+class DatabaseRegistrationPatchTopicsItems:
+    """
+    Topic.
+
+    :param str created_on: (optional) Created on.
+    :param str file_contents: (optional) file contents.
+    :param str file_name: (optional) file name.
+    :param str topic_name: (optional) topic name.
+    """
+
+    def __init__(
+        self,
+        *,
+        created_on: Optional[str] = None,
+        file_contents: Optional[str] = None,
+        file_name: Optional[str] = None,
+        topic_name: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a DatabaseRegistrationPatchTopicsItems object.
+
+        :param str created_on: (optional) Created on.
+        :param str file_contents: (optional) file contents.
+        :param str file_name: (optional) file name.
+        :param str topic_name: (optional) topic name.
+        """
+        self.created_on = created_on
+        self.file_contents = file_contents
+        self.file_name = file_name
+        self.topic_name = topic_name
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'DatabaseRegistrationPatchTopicsItems':
+        """Initialize a DatabaseRegistrationPatchTopicsItems object from a json dictionary."""
+        args = {}
+        if (created_on := _dict.get('created_on')) is not None:
+            args['created_on'] = created_on
+        if (file_contents := _dict.get('file_contents')) is not None:
+            args['file_contents'] = file_contents
+        if (file_name := _dict.get('file_name')) is not None:
+            args['file_name'] = file_name
+        if (topic_name := _dict.get('topic_name')) is not None:
+            args['topic_name'] = topic_name
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a DatabaseRegistrationPatchTopicsItems object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'created_on') and self.created_on is not None:
+            _dict['created_on'] = self.created_on
+        if hasattr(self, 'file_contents') and self.file_contents is not None:
+            _dict['file_contents'] = self.file_contents
+        if hasattr(self, 'file_name') and self.file_name is not None:
+            _dict['file_name'] = self.file_name
+        if hasattr(self, 'topic_name') and self.topic_name is not None:
+            _dict['topic_name'] = self.topic_name
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this DatabaseRegistrationPatchTopicsItems object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'DatabaseRegistrationPatchTopicsItems') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'DatabaseRegistrationPatchTopicsItems') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
 class DatabaseRegistrationPrototypeDatabasePropertiesItems:
     """
     Key value object.
@@ -8187,6 +10831,88 @@ class DatabaseRegistrationPrototypeDatabasePropertiesItems:
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other: 'DatabaseRegistrationPrototypeDatabasePropertiesItems') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class DatabaseRegistrationTopicsItems:
+    """
+    Topic.
+
+    :param str created_on: (optional) Created on.
+    :param str file_contents: (optional) file content.
+    :param str file_name: (optional) file name.
+    :param str topic_name: (optional) topic name.
+    """
+
+    def __init__(
+        self,
+        *,
+        created_on: Optional[str] = None,
+        file_contents: Optional[str] = None,
+        file_name: Optional[str] = None,
+        topic_name: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a DatabaseRegistrationTopicsItems object.
+
+        :param str created_on: (optional) Created on.
+        :param str file_contents: (optional) file content.
+        :param str file_name: (optional) file name.
+        :param str topic_name: (optional) topic name.
+        """
+        self.created_on = created_on
+        self.file_contents = file_contents
+        self.file_name = file_name
+        self.topic_name = topic_name
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'DatabaseRegistrationTopicsItems':
+        """Initialize a DatabaseRegistrationTopicsItems object from a json dictionary."""
+        args = {}
+        if (created_on := _dict.get('created_on')) is not None:
+            args['created_on'] = created_on
+        if (file_contents := _dict.get('file_contents')) is not None:
+            args['file_contents'] = file_contents
+        if (file_name := _dict.get('file_name')) is not None:
+            args['file_name'] = file_name
+        if (topic_name := _dict.get('topic_name')) is not None:
+            args['topic_name'] = topic_name
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a DatabaseRegistrationTopicsItems object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'created_on') and self.created_on is not None:
+            _dict['created_on'] = self.created_on
+        if hasattr(self, 'file_contents') and self.file_contents is not None:
+            _dict['file_contents'] = self.file_contents
+        if hasattr(self, 'file_name') and self.file_name is not None:
+            _dict['file_name'] = self.file_name
+        if hasattr(self, 'topic_name') and self.topic_name is not None:
+            _dict['topic_name'] = self.topic_name
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this DatabaseRegistrationTopicsItems object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'DatabaseRegistrationTopicsItems') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'DatabaseRegistrationTopicsItems') -> bool:
         """Return `true` when self and other are not equal, false otherwise."""
         return not self == other
 
@@ -8761,19 +11487,447 @@ class Driver:
         return not self == other
 
 
+class DriverRegistration:
+    """
+    Driver registration.
+
+    :param List[str] associated_engines: (optional) Associated engines.
+    :param str connection_type: (optional) Driver connection type.
+    :param str driver_id: (optional) Driver ID auto generated during driver
+          registration.
+    :param str driver_name: (optional) Driver name.
+    :param str modified_at: (optional) Created on.
+    :param str modified_by: (optional) Created by.
+    :param str status: (optional) Driver status.
+    :param str version: (optional) Driver version.
+    """
+
+    def __init__(
+        self,
+        *,
+        associated_engines: Optional[List[str]] = None,
+        connection_type: Optional[str] = None,
+        driver_id: Optional[str] = None,
+        driver_name: Optional[str] = None,
+        modified_at: Optional[str] = None,
+        modified_by: Optional[str] = None,
+        status: Optional[str] = None,
+        version: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a DriverRegistration object.
+
+        :param List[str] associated_engines: (optional) Associated engines.
+        :param str connection_type: (optional) Driver connection type.
+        :param str driver_id: (optional) Driver ID auto generated during driver
+               registration.
+        :param str driver_name: (optional) Driver name.
+        :param str modified_at: (optional) Created on.
+        :param str modified_by: (optional) Created by.
+        :param str status: (optional) Driver status.
+        :param str version: (optional) Driver version.
+        """
+        self.associated_engines = associated_engines
+        self.connection_type = connection_type
+        self.driver_id = driver_id
+        self.driver_name = driver_name
+        self.modified_at = modified_at
+        self.modified_by = modified_by
+        self.status = status
+        self.version = version
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'DriverRegistration':
+        """Initialize a DriverRegistration object from a json dictionary."""
+        args = {}
+        if (associated_engines := _dict.get('associated_engines')) is not None:
+            args['associated_engines'] = associated_engines
+        if (connection_type := _dict.get('connection_type')) is not None:
+            args['connection_type'] = connection_type
+        if (driver_id := _dict.get('driver_id')) is not None:
+            args['driver_id'] = driver_id
+        if (driver_name := _dict.get('driver_name')) is not None:
+            args['driver_name'] = driver_name
+        if (modified_at := _dict.get('modified_at')) is not None:
+            args['modified_at'] = modified_at
+        if (modified_by := _dict.get('modified_by')) is not None:
+            args['modified_by'] = modified_by
+        if (status := _dict.get('status')) is not None:
+            args['status'] = status
+        if (version := _dict.get('version')) is not None:
+            args['version'] = version
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a DriverRegistration object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'associated_engines') and self.associated_engines is not None:
+            _dict['associated_engines'] = self.associated_engines
+        if hasattr(self, 'connection_type') and self.connection_type is not None:
+            _dict['connection_type'] = self.connection_type
+        if hasattr(self, 'driver_id') and self.driver_id is not None:
+            _dict['driver_id'] = self.driver_id
+        if hasattr(self, 'driver_name') and self.driver_name is not None:
+            _dict['driver_name'] = self.driver_name
+        if hasattr(self, 'modified_at') and self.modified_at is not None:
+            _dict['modified_at'] = self.modified_at
+        if hasattr(self, 'modified_by') and self.modified_by is not None:
+            _dict['modified_by'] = self.modified_by
+        if hasattr(self, 'status') and self.status is not None:
+            _dict['status'] = self.status
+        if hasattr(self, 'version') and self.version is not None:
+            _dict['version'] = self.version
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this DriverRegistration object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'DriverRegistration') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'DriverRegistration') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class DriverRegistrationCollection:
+    """
+    list driver registrations.
+
+    :param List[DriverRegistration] driver_registrations: (optional) Driver
+          collection body.
+    """
+
+    def __init__(
+        self,
+        *,
+        driver_registrations: Optional[List['DriverRegistration']] = None,
+    ) -> None:
+        """
+        Initialize a DriverRegistrationCollection object.
+
+        :param List[DriverRegistration] driver_registrations: (optional) Driver
+               collection body.
+        """
+        self.driver_registrations = driver_registrations
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'DriverRegistrationCollection':
+        """Initialize a DriverRegistrationCollection object from a json dictionary."""
+        args = {}
+        if (driver_registrations := _dict.get('driver_registrations')) is not None:
+            args['driver_registrations'] = [DriverRegistration.from_dict(v) for v in driver_registrations]
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a DriverRegistrationCollection object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'driver_registrations') and self.driver_registrations is not None:
+            driver_registrations_list = []
+            for v in self.driver_registrations:
+                if isinstance(v, dict):
+                    driver_registrations_list.append(v)
+                else:
+                    driver_registrations_list.append(v.to_dict())
+            _dict['driver_registrations'] = driver_registrations_list
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this DriverRegistrationCollection object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'DriverRegistrationCollection') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'DriverRegistrationCollection') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class DriverRegistrationEngine:
+    """
+    Engines associated to the driver.
+
+    :param List[str] engines: (optional) List of engine IDs.
+    """
+
+    def __init__(
+        self,
+        *,
+        engines: Optional[List[str]] = None,
+    ) -> None:
+        """
+        Initialize a DriverRegistrationEngine object.
+
+        :param List[str] engines: (optional) List of engine IDs.
+        """
+        self.engines = engines
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'DriverRegistrationEngine':
+        """Initialize a DriverRegistrationEngine object from a json dictionary."""
+        args = {}
+        if (engines := _dict.get('engines')) is not None:
+            args['engines'] = engines
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a DriverRegistrationEngine object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'engines') and self.engines is not None:
+            _dict['engines'] = self.engines
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this DriverRegistrationEngine object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'DriverRegistrationEngine') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'DriverRegistrationEngine') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class DriverRegistrationEnginePrototype:
+    """
+    Engines associated to the driver.
+
+    :param List[str] engines: (optional) List of engine IDs.
+    """
+
+    def __init__(
+        self,
+        *,
+        engines: Optional[List[str]] = None,
+    ) -> None:
+        """
+        Initialize a DriverRegistrationEnginePrototype object.
+
+        :param List[str] engines: (optional) List of engine IDs.
+        """
+        self.engines = engines
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'DriverRegistrationEnginePrototype':
+        """Initialize a DriverRegistrationEnginePrototype object from a json dictionary."""
+        args = {}
+        if (engines := _dict.get('engines')) is not None:
+            args['engines'] = engines
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a DriverRegistrationEnginePrototype object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'engines') and self.engines is not None:
+            _dict['engines'] = self.engines
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this DriverRegistrationEnginePrototype object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'DriverRegistrationEnginePrototype') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'DriverRegistrationEnginePrototype') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class Endpoint:
+    """
+    The service endpoint.
+
+    :param str external_host: (optional) The external host of the service.
+    :param str service_type: (optional) The service type.
+    """
+
+    def __init__(
+        self,
+        *,
+        external_host: Optional[str] = None,
+        service_type: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a Endpoint object.
+
+        :param str external_host: (optional) The external host of the service.
+        :param str service_type: (optional) The service type.
+        """
+        self.external_host = external_host
+        self.service_type = service_type
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'Endpoint':
+        """Initialize a Endpoint object from a json dictionary."""
+        args = {}
+        if (external_host := _dict.get('external_host')) is not None:
+            args['external_host'] = external_host
+        if (service_type := _dict.get('service_type')) is not None:
+            args['service_type'] = service_type
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a Endpoint object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'external_host') and self.external_host is not None:
+            _dict['external_host'] = self.external_host
+        if hasattr(self, 'service_type') and self.service_type is not None:
+            _dict['service_type'] = self.service_type
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this Endpoint object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'Endpoint') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'Endpoint') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class EndpointCollection:
+    """
+    List endpoints.
+
+    :param List[Endpoint] endpoints: (optional) List of the endpoints CPG and CAS.
+    """
+
+    def __init__(
+        self,
+        *,
+        endpoints: Optional[List['Endpoint']] = None,
+    ) -> None:
+        """
+        Initialize a EndpointCollection object.
+
+        :param List[Endpoint] endpoints: (optional) List of the endpoints CPG and
+               CAS.
+        """
+        self.endpoints = endpoints
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'EndpointCollection':
+        """Initialize a EndpointCollection object from a json dictionary."""
+        args = {}
+        if (endpoints := _dict.get('endpoints')) is not None:
+            args['endpoints'] = [Endpoint.from_dict(v) for v in endpoints]
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a EndpointCollection object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'endpoints') and self.endpoints is not None:
+            endpoints_list = []
+            for v in self.endpoints:
+                if isinstance(v, dict):
+                    endpoints_list.append(v)
+                else:
+                    endpoints_list.append(v.to_dict())
+            _dict['endpoints'] = endpoints_list
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this EndpointCollection object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'EndpointCollection') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'EndpointCollection') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
 class EngineDetailsBody:
     """
     Node details.
 
     :param str api_key: (optional) api key to work with the saas IAE instance.
     :param str connection_string: (optional) External engine connection string.
-    :param NodeDescriptionBody coordinator: (optional) coordinator/worker property
-          settings.
+    :param NodeDescriptionBody coordinator: (optional) Coordinator/ worker
+          properties.
     :param str instance_id: (optional) Instance to access the instance.
     :param str managed_by: (optional) How is the spark instance managed.
     :param str size_config: (optional) Size config.
-    :param NodeDescriptionBody worker: (optional) coordinator/worker property
-          settings.
+    :param NodeDescriptionBody worker: (optional) Coordinator/ worker properties.
     """
 
     def __init__(
@@ -8792,13 +11946,13 @@ class EngineDetailsBody:
 
         :param str api_key: (optional) api key to work with the saas IAE instance.
         :param str connection_string: (optional) External engine connection string.
-        :param NodeDescriptionBody coordinator: (optional) coordinator/worker
-               property settings.
+        :param NodeDescriptionBody coordinator: (optional) Coordinator/ worker
+               properties.
         :param str instance_id: (optional) Instance to access the instance.
         :param str managed_by: (optional) How is the spark instance managed.
         :param str size_config: (optional) Size config.
-        :param NodeDescriptionBody worker: (optional) coordinator/worker property
-               settings.
+        :param NodeDescriptionBody worker: (optional) Coordinator/ worker
+               properties.
         """
         self.api_key = api_key
         self.connection_string = connection_string
@@ -8891,14 +12045,88 @@ class EngineDetailsBody:
 
 
 
+class EnginePropertiesLogConfiguration:
+    """
+    Log Configuration settings.
+
+    :param NodeDescriptionBody coordinator: (optional) Coordinator/ worker
+          properties.
+    :param NodeDescriptionBody worker: (optional) Coordinator/ worker properties.
+    """
+
+    def __init__(
+        self,
+        *,
+        coordinator: Optional['NodeDescriptionBody'] = None,
+        worker: Optional['NodeDescriptionBody'] = None,
+    ) -> None:
+        """
+        Initialize a EnginePropertiesLogConfiguration object.
+
+        :param NodeDescriptionBody coordinator: (optional) Coordinator/ worker
+               properties.
+        :param NodeDescriptionBody worker: (optional) Coordinator/ worker
+               properties.
+        """
+        self.coordinator = coordinator
+        self.worker = worker
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'EnginePropertiesLogConfiguration':
+        """Initialize a EnginePropertiesLogConfiguration object from a json dictionary."""
+        args = {}
+        if (coordinator := _dict.get('coordinator')) is not None:
+            args['coordinator'] = NodeDescriptionBody.from_dict(coordinator)
+        if (worker := _dict.get('worker')) is not None:
+            args['worker'] = NodeDescriptionBody.from_dict(worker)
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a EnginePropertiesLogConfiguration object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'coordinator') and self.coordinator is not None:
+            if isinstance(self.coordinator, dict):
+                _dict['coordinator'] = self.coordinator
+            else:
+                _dict['coordinator'] = self.coordinator.to_dict()
+        if hasattr(self, 'worker') and self.worker is not None:
+            if isinstance(self.worker, dict):
+                _dict['worker'] = self.worker
+            else:
+                _dict['worker'] = self.worker.to_dict()
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this EnginePropertiesLogConfiguration object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'EnginePropertiesLogConfiguration') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'EnginePropertiesLogConfiguration') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
 class EnginePropertiesOaiGen1Configuration:
     """
     Configuration settings.
 
-    :param NodeDescriptionBody coordinator: (optional) coordinator/worker property
-          settings.
-    :param NodeDescriptionBody worker: (optional) coordinator/worker property
-          settings.
+    :param NodeDescriptionBody coordinator: (optional) Coordinator/ worker
+          properties.
+    :param NodeDescriptionBody worker: (optional) Coordinator/ worker properties.
     """
 
     def __init__(
@@ -8910,10 +12138,10 @@ class EnginePropertiesOaiGen1Configuration:
         """
         Initialize a EnginePropertiesOaiGen1Configuration object.
 
-        :param NodeDescriptionBody coordinator: (optional) coordinator/worker
-               property settings.
-        :param NodeDescriptionBody worker: (optional) coordinator/worker property
-               settings.
+        :param NodeDescriptionBody coordinator: (optional) Coordinator/ worker
+               properties.
+        :param NodeDescriptionBody worker: (optional) Coordinator/ worker
+               properties.
         """
         self.coordinator = coordinator
         self.worker = worker
@@ -8971,10 +12199,9 @@ class EnginePropertiesOaiGen1Jvm:
     """
     JVM settings.
 
-    :param NodeDescriptionBody coordinator: (optional) coordinator/worker property
-          settings.
-    :param NodeDescriptionBody worker: (optional) coordinator/worker property
-          settings.
+    :param NodeDescriptionBody coordinator: (optional) Coordinator/ worker
+          properties.
+    :param NodeDescriptionBody worker: (optional) Coordinator/ worker properties.
     """
 
     def __init__(
@@ -8986,10 +12213,10 @@ class EnginePropertiesOaiGen1Jvm:
         """
         Initialize a EnginePropertiesOaiGen1Jvm object.
 
-        :param NodeDescriptionBody coordinator: (optional) coordinator/worker
-               property settings.
-        :param NodeDescriptionBody worker: (optional) coordinator/worker property
-               settings.
+        :param NodeDescriptionBody coordinator: (optional) Coordinator/ worker
+               properties.
+        :param NodeDescriptionBody worker: (optional) Coordinator/ worker
+               properties.
         """
         self.coordinator = coordinator
         self.worker = worker
@@ -9047,8 +12274,10 @@ class EnginePropertiesOaiGenConfiguration:
     """
     Configuration settings for the engine properties.
 
-    :param PrestissimoNodeDescriptionBody coordinator: (optional) Node details.
-    :param PrestissimoNodeDescriptionBody worker: (optional) Node details.
+    :param PrestissimoNodeDescriptionBody coordinator: (optional) coordinator/worker
+          property settings.
+    :param PrestissimoNodeDescriptionBody worker: (optional) coordinator/worker
+          property settings.
     """
 
     def __init__(
@@ -9060,8 +12289,10 @@ class EnginePropertiesOaiGenConfiguration:
         """
         Initialize a EnginePropertiesOaiGenConfiguration object.
 
-        :param PrestissimoNodeDescriptionBody coordinator: (optional) Node details.
-        :param PrestissimoNodeDescriptionBody worker: (optional) Node details.
+        :param PrestissimoNodeDescriptionBody coordinator: (optional)
+               coordinator/worker property settings.
+        :param PrestissimoNodeDescriptionBody worker: (optional) coordinator/worker
+               property settings.
         """
         self.coordinator = coordinator
         self.worker = worker
@@ -9113,6 +12344,559 @@ class EnginePropertiesOaiGenConfiguration:
     def __ne__(self, other: 'EnginePropertiesOaiGenConfiguration') -> bool:
         """Return `true` when self and other are not equal, false otherwise."""
         return not self == other
+
+
+class EnrichmentAsset:
+    """
+    Encrichment asset.
+
+    :param List[str] asset_attributes: (optional) schema name.
+    :param str asset_id: (optional) data asset id.
+    :param str asset_name: (optional) asset name.
+    :param str resource_key: (optional) resource name.
+    :param str schema_name: (optional) schema.
+    """
+
+    def __init__(
+        self,
+        *,
+        asset_attributes: Optional[List[str]] = None,
+        asset_id: Optional[str] = None,
+        asset_name: Optional[str] = None,
+        resource_key: Optional[str] = None,
+        schema_name: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a EnrichmentAsset object.
+
+        :param List[str] asset_attributes: (optional) schema name.
+        :param str asset_id: (optional) data asset id.
+        :param str asset_name: (optional) asset name.
+        :param str resource_key: (optional) resource name.
+        :param str schema_name: (optional) schema.
+        """
+        self.asset_attributes = asset_attributes
+        self.asset_id = asset_id
+        self.asset_name = asset_name
+        self.resource_key = resource_key
+        self.schema_name = schema_name
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'EnrichmentAsset':
+        """Initialize a EnrichmentAsset object from a json dictionary."""
+        args = {}
+        if (asset_attributes := _dict.get('asset_attributes')) is not None:
+            args['asset_attributes'] = asset_attributes
+        if (asset_id := _dict.get('asset_id')) is not None:
+            args['asset_id'] = asset_id
+        if (asset_name := _dict.get('asset_name')) is not None:
+            args['asset_name'] = asset_name
+        if (resource_key := _dict.get('resource_key')) is not None:
+            args['resource_key'] = resource_key
+        if (schema_name := _dict.get('schema_name')) is not None:
+            args['schema_name'] = schema_name
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a EnrichmentAsset object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'asset_attributes') and self.asset_attributes is not None:
+            _dict['asset_attributes'] = self.asset_attributes
+        if hasattr(self, 'asset_id') and self.asset_id is not None:
+            _dict['asset_id'] = self.asset_id
+        if hasattr(self, 'asset_name') and self.asset_name is not None:
+            _dict['asset_name'] = self.asset_name
+        if hasattr(self, 'resource_key') and self.resource_key is not None:
+            _dict['resource_key'] = self.resource_key
+        if hasattr(self, 'schema_name') and self.schema_name is not None:
+            _dict['schema_name'] = self.schema_name
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this EnrichmentAsset object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'EnrichmentAsset') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'EnrichmentAsset') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class EnrichmentObj:
+    """
+    Encrichment api object.
+
+    :param str catalog: catalog name.
+    :param str operation: operation type.
+    :param str schema: schema name.
+    :param List[str] tables: (optional) schema name.
+    """
+
+    def __init__(
+        self,
+        catalog: str,
+        operation: str,
+        schema: str,
+        *,
+        tables: Optional[List[str]] = None,
+    ) -> None:
+        """
+        Initialize a EnrichmentObj object.
+
+        :param str catalog: catalog name.
+        :param str operation: operation type.
+        :param str schema: schema name.
+        :param List[str] tables: (optional) schema name.
+        """
+        self.catalog = catalog
+        self.operation = operation
+        self.schema = schema
+        self.tables = tables
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'EnrichmentObj':
+        """Initialize a EnrichmentObj object from a json dictionary."""
+        args = {}
+        if (catalog := _dict.get('catalog')) is not None:
+            args['catalog'] = catalog
+        else:
+            raise ValueError('Required property \'catalog\' not present in EnrichmentObj JSON')
+        if (operation := _dict.get('operation')) is not None:
+            args['operation'] = operation
+        else:
+            raise ValueError('Required property \'operation\' not present in EnrichmentObj JSON')
+        if (schema := _dict.get('schema')) is not None:
+            args['schema'] = schema
+        else:
+            raise ValueError('Required property \'schema\' not present in EnrichmentObj JSON')
+        if (tables := _dict.get('tables')) is not None:
+            args['tables'] = tables
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a EnrichmentObj object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'catalog') and self.catalog is not None:
+            _dict['catalog'] = self.catalog
+        if hasattr(self, 'operation') and self.operation is not None:
+            _dict['operation'] = self.operation
+        if hasattr(self, 'schema') and self.schema is not None:
+            _dict['schema'] = self.schema
+        if hasattr(self, 'tables') and self.tables is not None:
+            _dict['tables'] = self.tables
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this EnrichmentObj object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'EnrichmentObj') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'EnrichmentObj') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class ErrorObj:
+    """
+    integration error object.
+
+    :param str code: (optional) error code.
+    :param str message: (optional) error message.
+    """
+
+    def __init__(
+        self,
+        *,
+        code: Optional[str] = None,
+        message: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a ErrorObj object.
+
+        :param str code: (optional) error code.
+        :param str message: (optional) error message.
+        """
+        self.code = code
+        self.message = message
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'ErrorObj':
+        """Initialize a ErrorObj object from a json dictionary."""
+        args = {}
+        if (code := _dict.get('code')) is not None:
+            args['code'] = code
+        if (message := _dict.get('message')) is not None:
+            args['message'] = message
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a ErrorObj object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'code') and self.code is not None:
+            _dict['code'] = self.code
+        if hasattr(self, 'message') and self.message is not None:
+            _dict['message'] = self.message
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this ErrorObj object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'ErrorObj') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'ErrorObj') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class ExecuteQueryCreatedBody:
+    """
+    success response.
+
+    :param ResultExecuteQuery response: (optional) ResultExecuteQuery OK.
+    """
+
+    def __init__(
+        self,
+        *,
+        response: Optional['ResultExecuteQuery'] = None,
+    ) -> None:
+        """
+        Initialize a ExecuteQueryCreatedBody object.
+
+        :param ResultExecuteQuery response: (optional) ResultExecuteQuery OK.
+        """
+        self.response = response
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'ExecuteQueryCreatedBody':
+        """Initialize a ExecuteQueryCreatedBody object from a json dictionary."""
+        args = {}
+        if (response := _dict.get('response')) is not None:
+            args['response'] = ResultExecuteQuery.from_dict(response)
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a ExecuteQueryCreatedBody object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'response') and self.response is not None:
+            if isinstance(self.response, dict):
+                _dict['response'] = self.response
+            else:
+                _dict['response'] = self.response.to_dict()
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this ExecuteQueryCreatedBody object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'ExecuteQueryCreatedBody') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'ExecuteQueryCreatedBody') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class GlossaryObject:
+    """
+    glossary object.
+
+    :param str description: (optional) description.
+    :param str name: (optional) glossary term.
+    """
+
+    def __init__(
+        self,
+        *,
+        description: Optional[str] = None,
+        name: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a GlossaryObject object.
+
+        :param str description: (optional) description.
+        :param str name: (optional) glossary term.
+        """
+        self.description = description
+        self.name = name
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'GlossaryObject':
+        """Initialize a GlossaryObject object from a json dictionary."""
+        args = {}
+        if (description := _dict.get('description')) is not None:
+            args['description'] = description
+        if (name := _dict.get('name')) is not None:
+            args['name'] = name
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a GlossaryObject object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'description') and self.description is not None:
+            _dict['description'] = self.description
+        if hasattr(self, 'name') and self.name is not None:
+            _dict['name'] = self.name
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this GlossaryObject object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'GlossaryObject') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'GlossaryObject') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class HdfsStorageRegistration:
+    """
+    HDFS storage registration.
+
+    :param List[str] actions: (optional) Actions.
+    :param BucketCatalog associated_catalog: bucket catalog.
+    :param str bucket_display_name: (optional) HDFS storage display name.
+    :param str bucket_id: (optional) HDFS Storage ID auto generated during
+          registration.
+    :param str bucket_type: HDFS type.
+    :param str created_by: Username who created the HDFS storage.
+    :param str created_on: Creation date.
+    :param str description: HDFS description.
+    :param str managed_by: managed by.
+    :param str state: mark hdfs active or inactive.
+    :param List[str] tags: (optional) tags.
+    """
+
+    def __init__(
+        self,
+        associated_catalog: 'BucketCatalog',
+        bucket_type: str,
+        created_by: str,
+        created_on: str,
+        description: str,
+        managed_by: str,
+        state: str,
+        *,
+        actions: Optional[List[str]] = None,
+        bucket_display_name: Optional[str] = None,
+        bucket_id: Optional[str] = None,
+        tags: Optional[List[str]] = None,
+    ) -> None:
+        """
+        Initialize a HdfsStorageRegistration object.
+
+        :param BucketCatalog associated_catalog: bucket catalog.
+        :param str bucket_type: HDFS type.
+        :param str created_by: Username who created the HDFS storage.
+        :param str created_on: Creation date.
+        :param str description: HDFS description.
+        :param str managed_by: managed by.
+        :param str state: mark hdfs active or inactive.
+        :param List[str] actions: (optional) Actions.
+        :param str bucket_display_name: (optional) HDFS storage display name.
+        :param str bucket_id: (optional) HDFS Storage ID auto generated during
+               registration.
+        :param List[str] tags: (optional) tags.
+        """
+        self.actions = actions
+        self.associated_catalog = associated_catalog
+        self.bucket_display_name = bucket_display_name
+        self.bucket_id = bucket_id
+        self.bucket_type = bucket_type
+        self.created_by = created_by
+        self.created_on = created_on
+        self.description = description
+        self.managed_by = managed_by
+        self.state = state
+        self.tags = tags
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'HdfsStorageRegistration':
+        """Initialize a HdfsStorageRegistration object from a json dictionary."""
+        args = {}
+        if (actions := _dict.get('actions')) is not None:
+            args['actions'] = actions
+        if (associated_catalog := _dict.get('associated_catalog')) is not None:
+            args['associated_catalog'] = BucketCatalog.from_dict(associated_catalog)
+        else:
+            raise ValueError('Required property \'associated_catalog\' not present in HdfsStorageRegistration JSON')
+        if (bucket_display_name := _dict.get('bucket_display_name')) is not None:
+            args['bucket_display_name'] = bucket_display_name
+        if (bucket_id := _dict.get('bucket_id')) is not None:
+            args['bucket_id'] = bucket_id
+        if (bucket_type := _dict.get('bucket_type')) is not None:
+            args['bucket_type'] = bucket_type
+        else:
+            raise ValueError('Required property \'bucket_type\' not present in HdfsStorageRegistration JSON')
+        if (created_by := _dict.get('created_by')) is not None:
+            args['created_by'] = created_by
+        else:
+            raise ValueError('Required property \'created_by\' not present in HdfsStorageRegistration JSON')
+        if (created_on := _dict.get('created_on')) is not None:
+            args['created_on'] = created_on
+        else:
+            raise ValueError('Required property \'created_on\' not present in HdfsStorageRegistration JSON')
+        if (description := _dict.get('description')) is not None:
+            args['description'] = description
+        else:
+            raise ValueError('Required property \'description\' not present in HdfsStorageRegistration JSON')
+        if (managed_by := _dict.get('managed_by')) is not None:
+            args['managed_by'] = managed_by
+        else:
+            raise ValueError('Required property \'managed_by\' not present in HdfsStorageRegistration JSON')
+        if (state := _dict.get('state')) is not None:
+            args['state'] = state
+        else:
+            raise ValueError('Required property \'state\' not present in HdfsStorageRegistration JSON')
+        if (tags := _dict.get('tags')) is not None:
+            args['tags'] = tags
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a HdfsStorageRegistration object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'actions') and self.actions is not None:
+            _dict['actions'] = self.actions
+        if hasattr(self, 'associated_catalog') and self.associated_catalog is not None:
+            if isinstance(self.associated_catalog, dict):
+                _dict['associated_catalog'] = self.associated_catalog
+            else:
+                _dict['associated_catalog'] = self.associated_catalog.to_dict()
+        if hasattr(self, 'bucket_display_name') and self.bucket_display_name is not None:
+            _dict['bucket_display_name'] = self.bucket_display_name
+        if hasattr(self, 'bucket_id') and self.bucket_id is not None:
+            _dict['bucket_id'] = self.bucket_id
+        if hasattr(self, 'bucket_type') and self.bucket_type is not None:
+            _dict['bucket_type'] = self.bucket_type
+        if hasattr(self, 'created_by') and self.created_by is not None:
+            _dict['created_by'] = self.created_by
+        if hasattr(self, 'created_on') and self.created_on is not None:
+            _dict['created_on'] = self.created_on
+        if hasattr(self, 'description') and self.description is not None:
+            _dict['description'] = self.description
+        if hasattr(self, 'managed_by') and self.managed_by is not None:
+            _dict['managed_by'] = self.managed_by
+        if hasattr(self, 'state') and self.state is not None:
+            _dict['state'] = self.state
+        if hasattr(self, 'tags') and self.tags is not None:
+            _dict['tags'] = self.tags
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this HdfsStorageRegistration object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'HdfsStorageRegistration') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'HdfsStorageRegistration') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+    class BucketTypeEnum(str, Enum):
+        """
+        HDFS type.
+        """
+
+        HDFS = 'hdfs'
+
+
+    class ManagedByEnum(str, Enum):
+        """
+        managed by.
+        """
+
+        CUSTOMER = 'customer'
+
+
+    class StateEnum(str, Enum):
+        """
+        mark hdfs active or inactive.
+        """
+
+        ACTIVE = 'active'
+        INACTIVE = 'inactive'
+
 
 
 class IngestionJob:
@@ -9872,6 +13656,346 @@ class IngestionJobPrototypeExecuteConfig:
         return not self == other
 
 
+class Integration:
+    """
+    Integration.
+
+    :param str apikey: (optional) Integration APIKEY.
+    :param str config_properties: (optional) Properties.
+    :param bool enable_data_policy_within_wxd: (optional) data policy enabler with
+          wxd for ranger.
+    :param str governance_properties: (optional) Properties.
+    :param str integration_id: (optional) resouce for ranger.
+    :param int modified_at: (optional) modified time in epoch format.
+    :param str modified_by: (optional) modified user name.
+    :param str password: (optional) Integration password.
+    :param str resource: (optional) resouce for ranger.
+    :param str service_type: (optional) Integration type.
+    :param str state: (optional) current state.
+    :param List[str] storage_catalogs: (optional) Comma separated list of storage
+          catalogs for which ikc needs to be enabled.
+    :param str url: (optional) Integration Connection URL.
+    :param str username: (optional) Username.
+    """
+
+    def __init__(
+        self,
+        *,
+        apikey: Optional[str] = None,
+        config_properties: Optional[str] = None,
+        enable_data_policy_within_wxd: Optional[bool] = None,
+        governance_properties: Optional[str] = None,
+        integration_id: Optional[str] = None,
+        modified_at: Optional[int] = None,
+        modified_by: Optional[str] = None,
+        password: Optional[str] = None,
+        resource: Optional[str] = None,
+        service_type: Optional[str] = None,
+        state: Optional[str] = None,
+        storage_catalogs: Optional[List[str]] = None,
+        url: Optional[str] = None,
+        username: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a Integration object.
+
+        :param str apikey: (optional) Integration APIKEY.
+        :param str config_properties: (optional) Properties.
+        :param bool enable_data_policy_within_wxd: (optional) data policy enabler
+               with wxd for ranger.
+        :param str governance_properties: (optional) Properties.
+        :param str integration_id: (optional) resouce for ranger.
+        :param int modified_at: (optional) modified time in epoch format.
+        :param str modified_by: (optional) modified user name.
+        :param str password: (optional) Integration password.
+        :param str resource: (optional) resouce for ranger.
+        :param str service_type: (optional) Integration type.
+        :param str state: (optional) current state.
+        :param List[str] storage_catalogs: (optional) Comma separated list of
+               storage catalogs for which ikc needs to be enabled.
+        :param str url: (optional) Integration Connection URL.
+        :param str username: (optional) Username.
+        """
+        self.apikey = apikey
+        self.config_properties = config_properties
+        self.enable_data_policy_within_wxd = enable_data_policy_within_wxd
+        self.governance_properties = governance_properties
+        self.integration_id = integration_id
+        self.modified_at = modified_at
+        self.modified_by = modified_by
+        self.password = password
+        self.resource = resource
+        self.service_type = service_type
+        self.state = state
+        self.storage_catalogs = storage_catalogs
+        self.url = url
+        self.username = username
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'Integration':
+        """Initialize a Integration object from a json dictionary."""
+        args = {}
+        if (apikey := _dict.get('apikey')) is not None:
+            args['apikey'] = apikey
+        if (config_properties := _dict.get('config_properties')) is not None:
+            args['config_properties'] = config_properties
+        if (enable_data_policy_within_wxd := _dict.get('enable_data_policy_within_wxd')) is not None:
+            args['enable_data_policy_within_wxd'] = enable_data_policy_within_wxd
+        if (governance_properties := _dict.get('governance_properties')) is not None:
+            args['governance_properties'] = governance_properties
+        if (integration_id := _dict.get('integration_id')) is not None:
+            args['integration_id'] = integration_id
+        if (modified_at := _dict.get('modified_at')) is not None:
+            args['modified_at'] = modified_at
+        if (modified_by := _dict.get('modified_by')) is not None:
+            args['modified_by'] = modified_by
+        if (password := _dict.get('password')) is not None:
+            args['password'] = password
+        if (resource := _dict.get('resource')) is not None:
+            args['resource'] = resource
+        if (service_type := _dict.get('service_type')) is not None:
+            args['service_type'] = service_type
+        if (state := _dict.get('state')) is not None:
+            args['state'] = state
+        if (storage_catalogs := _dict.get('storage_catalogs')) is not None:
+            args['storage_catalogs'] = storage_catalogs
+        if (url := _dict.get('url')) is not None:
+            args['url'] = url
+        if (username := _dict.get('username')) is not None:
+            args['username'] = username
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a Integration object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'apikey') and self.apikey is not None:
+            _dict['apikey'] = self.apikey
+        if hasattr(self, 'config_properties') and self.config_properties is not None:
+            _dict['config_properties'] = self.config_properties
+        if hasattr(self, 'enable_data_policy_within_wxd') and self.enable_data_policy_within_wxd is not None:
+            _dict['enable_data_policy_within_wxd'] = self.enable_data_policy_within_wxd
+        if hasattr(self, 'governance_properties') and self.governance_properties is not None:
+            _dict['governance_properties'] = self.governance_properties
+        if hasattr(self, 'integration_id') and self.integration_id is not None:
+            _dict['integration_id'] = self.integration_id
+        if hasattr(self, 'modified_at') and self.modified_at is not None:
+            _dict['modified_at'] = self.modified_at
+        if hasattr(self, 'modified_by') and self.modified_by is not None:
+            _dict['modified_by'] = self.modified_by
+        if hasattr(self, 'password') and self.password is not None:
+            _dict['password'] = self.password
+        if hasattr(self, 'resource') and self.resource is not None:
+            _dict['resource'] = self.resource
+        if hasattr(self, 'service_type') and self.service_type is not None:
+            _dict['service_type'] = self.service_type
+        if hasattr(self, 'state') and self.state is not None:
+            _dict['state'] = self.state
+        if hasattr(self, 'storage_catalogs') and self.storage_catalogs is not None:
+            _dict['storage_catalogs'] = self.storage_catalogs
+        if hasattr(self, 'url') and self.url is not None:
+            _dict['url'] = self.url
+        if hasattr(self, 'username') and self.username is not None:
+            _dict['username'] = self.username
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this Integration object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'Integration') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'Integration') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class IntegrationCollection:
+    """
+    list all existing integrations.
+
+    :param List[Integration] integrations: (optional) Database body.
+    """
+
+    def __init__(
+        self,
+        *,
+        integrations: Optional[List['Integration']] = None,
+    ) -> None:
+        """
+        Initialize a IntegrationCollection object.
+
+        :param List[Integration] integrations: (optional) Database body.
+        """
+        self.integrations = integrations
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'IntegrationCollection':
+        """Initialize a IntegrationCollection object from a json dictionary."""
+        args = {}
+        if (integrations := _dict.get('integrations')) is not None:
+            args['integrations'] = [Integration.from_dict(v) for v in integrations]
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a IntegrationCollection object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'integrations') and self.integrations is not None:
+            integrations_list = []
+            for v in self.integrations:
+                if isinstance(v, dict):
+                    integrations_list.append(v)
+                else:
+                    integrations_list.append(v.to_dict())
+            _dict['integrations'] = integrations_list
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this IntegrationCollection object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'IntegrationCollection') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'IntegrationCollection') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class IntegrationPatch:
+    """
+    Update an Integration body.
+
+    :param str apikey: (optional) Integration APIKEY.
+    :param bool enable_data_policy_within_wxd: (optional) data policy enabler with
+          wxd for ranger.
+    :param str password: (optional) Integration password.
+    :param str resource: (optional) resouce for ranger.
+    :param List[str] storage_catalogs: (optional) Comma separated list of bucket
+          catalogs which have ikc enabled.
+    :param str url: (optional) Integration Connection URL.
+    :param str username: (optional) Integration username.
+    """
+
+    def __init__(
+        self,
+        *,
+        apikey: Optional[str] = None,
+        enable_data_policy_within_wxd: Optional[bool] = None,
+        password: Optional[str] = None,
+        resource: Optional[str] = None,
+        storage_catalogs: Optional[List[str]] = None,
+        url: Optional[str] = None,
+        username: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a IntegrationPatch object.
+
+        :param str apikey: (optional) Integration APIKEY.
+        :param bool enable_data_policy_within_wxd: (optional) data policy enabler
+               with wxd for ranger.
+        :param str password: (optional) Integration password.
+        :param str resource: (optional) resouce for ranger.
+        :param List[str] storage_catalogs: (optional) Comma separated list of
+               bucket catalogs which have ikc enabled.
+        :param str url: (optional) Integration Connection URL.
+        :param str username: (optional) Integration username.
+        """
+        self.apikey = apikey
+        self.enable_data_policy_within_wxd = enable_data_policy_within_wxd
+        self.password = password
+        self.resource = resource
+        self.storage_catalogs = storage_catalogs
+        self.url = url
+        self.username = username
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'IntegrationPatch':
+        """Initialize a IntegrationPatch object from a json dictionary."""
+        args = {}
+        if (apikey := _dict.get('apikey')) is not None:
+            args['apikey'] = apikey
+        if (enable_data_policy_within_wxd := _dict.get('enable_data_policy_within_wxd')) is not None:
+            args['enable_data_policy_within_wxd'] = enable_data_policy_within_wxd
+        if (password := _dict.get('password')) is not None:
+            args['password'] = password
+        if (resource := _dict.get('resource')) is not None:
+            args['resource'] = resource
+        if (storage_catalogs := _dict.get('storage_catalogs')) is not None:
+            args['storage_catalogs'] = storage_catalogs
+        if (url := _dict.get('url')) is not None:
+            args['url'] = url
+        if (username := _dict.get('username')) is not None:
+            args['username'] = username
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a IntegrationPatch object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'apikey') and self.apikey is not None:
+            _dict['apikey'] = self.apikey
+        if hasattr(self, 'enable_data_policy_within_wxd') and self.enable_data_policy_within_wxd is not None:
+            _dict['enable_data_policy_within_wxd'] = self.enable_data_policy_within_wxd
+        if hasattr(self, 'password') and self.password is not None:
+            _dict['password'] = self.password
+        if hasattr(self, 'resource') and self.resource is not None:
+            _dict['resource'] = self.resource
+        if hasattr(self, 'storage_catalogs') and self.storage_catalogs is not None:
+            _dict['storage_catalogs'] = self.storage_catalogs
+        if hasattr(self, 'url') and self.url is not None:
+            _dict['url'] = self.url
+        if hasattr(self, 'username') and self.username is not None:
+            _dict['username'] = self.username
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this IntegrationPatch object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'IntegrationPatch') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'IntegrationPatch') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
 class ListSchemasOKBody:
     """
     GetSchemas OK.
@@ -10022,25 +14146,97 @@ class ListSparkVersionsOKBody:
         return not self == other
 
 
+class MilvusDatabaseCollections:
+    """
+    List milvus collections.
+
+    :param List[Milvusdbcollection] collections: (optional) milvus collections.
+    """
+
+    def __init__(
+        self,
+        *,
+        collections: Optional[List['Milvusdbcollection']] = None,
+    ) -> None:
+        """
+        Initialize a MilvusDatabaseCollections object.
+
+        :param List[Milvusdbcollection] collections: (optional) milvus collections.
+        """
+        self.collections = collections
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'MilvusDatabaseCollections':
+        """Initialize a MilvusDatabaseCollections object from a json dictionary."""
+        args = {}
+        if (collections := _dict.get('collections')) is not None:
+            args['collections'] = [Milvusdbcollection.from_dict(v) for v in collections]
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a MilvusDatabaseCollections object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'collections') and self.collections is not None:
+            collections_list = []
+            for v in self.collections:
+                if isinstance(v, dict):
+                    collections_list.append(v)
+                else:
+                    collections_list.append(v.to_dict())
+            _dict['collections'] = collections_list
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this MilvusDatabaseCollections object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'MilvusDatabaseCollections') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'MilvusDatabaseCollections') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
 class MilvusService:
     """
     milvus service details.
 
+    :param str access_key: (optional) bucket access key.
     :param List[str] actions: (optional) Actions.
-    :param str created_by: (optional) Created user name.
+    :param str bucket_name: (optional) bucket name.
+    :param str bucket_type: (optional) bucket type.
+    :param str created_by: (optional) Username of the user who created the
+          watsonx.data instance.
     :param int created_on: (optional) Created time in epoch format.
     :param str description: (optional) Service description.
+    :param str endpoint: (optional) bucket endpoint.
     :param str grpc_host: (optional) milvus grpc_host.
     :param int grpc_port: (optional) milvus port.
     :param str host_name: (optional) milvus display name.
     :param str https_host: (optional) milvus https_host.
     :param int https_port: (optional) milvus port.
     :param str origin: (optional) Origin - place holder.
+    :param str root_path: (optional) root path.
+    :param str secret_key: (optional) bucket secret access key.
     :param str service_display_name: (optional) Service display name.
     :param str service_id: (optional) Service programmatic name.
     :param str status: (optional) milvus status.
     :param int status_code: milvus status code.
     :param List[str] tags: (optional) Tags.
+    :param str tshirt_size: (optional) tshirt size.
     :param str type: (optional) service type.
     """
 
@@ -10048,71 +14244,101 @@ class MilvusService:
         self,
         status_code: int,
         *,
+        access_key: Optional[str] = None,
         actions: Optional[List[str]] = None,
+        bucket_name: Optional[str] = None,
+        bucket_type: Optional[str] = None,
         created_by: Optional[str] = None,
         created_on: Optional[int] = None,
         description: Optional[str] = None,
+        endpoint: Optional[str] = None,
         grpc_host: Optional[str] = None,
         grpc_port: Optional[int] = None,
         host_name: Optional[str] = None,
         https_host: Optional[str] = None,
         https_port: Optional[int] = None,
         origin: Optional[str] = None,
+        root_path: Optional[str] = None,
+        secret_key: Optional[str] = None,
         service_display_name: Optional[str] = None,
         service_id: Optional[str] = None,
         status: Optional[str] = None,
         tags: Optional[List[str]] = None,
+        tshirt_size: Optional[str] = None,
         type: Optional[str] = None,
     ) -> None:
         """
         Initialize a MilvusService object.
 
         :param int status_code: milvus status code.
+        :param str access_key: (optional) bucket access key.
         :param List[str] actions: (optional) Actions.
-        :param str created_by: (optional) Created user name.
+        :param str bucket_name: (optional) bucket name.
+        :param str bucket_type: (optional) bucket type.
+        :param str created_by: (optional) Username of the user who created the
+               watsonx.data instance.
         :param int created_on: (optional) Created time in epoch format.
         :param str description: (optional) Service description.
+        :param str endpoint: (optional) bucket endpoint.
         :param str grpc_host: (optional) milvus grpc_host.
         :param int grpc_port: (optional) milvus port.
         :param str host_name: (optional) milvus display name.
         :param str https_host: (optional) milvus https_host.
         :param int https_port: (optional) milvus port.
         :param str origin: (optional) Origin - place holder.
+        :param str root_path: (optional) root path.
+        :param str secret_key: (optional) bucket secret access key.
         :param str service_display_name: (optional) Service display name.
         :param str service_id: (optional) Service programmatic name.
         :param str status: (optional) milvus status.
         :param List[str] tags: (optional) Tags.
+        :param str tshirt_size: (optional) tshirt size.
         :param str type: (optional) service type.
         """
+        self.access_key = access_key
         self.actions = actions
+        self.bucket_name = bucket_name
+        self.bucket_type = bucket_type
         self.created_by = created_by
         self.created_on = created_on
         self.description = description
+        self.endpoint = endpoint
         self.grpc_host = grpc_host
         self.grpc_port = grpc_port
         self.host_name = host_name
         self.https_host = https_host
         self.https_port = https_port
         self.origin = origin
+        self.root_path = root_path
+        self.secret_key = secret_key
         self.service_display_name = service_display_name
         self.service_id = service_id
         self.status = status
         self.status_code = status_code
         self.tags = tags
+        self.tshirt_size = tshirt_size
         self.type = type
 
     @classmethod
     def from_dict(cls, _dict: Dict) -> 'MilvusService':
         """Initialize a MilvusService object from a json dictionary."""
         args = {}
+        if (access_key := _dict.get('access_key')) is not None:
+            args['access_key'] = access_key
         if (actions := _dict.get('actions')) is not None:
             args['actions'] = actions
+        if (bucket_name := _dict.get('bucket_name')) is not None:
+            args['bucket_name'] = bucket_name
+        if (bucket_type := _dict.get('bucket_type')) is not None:
+            args['bucket_type'] = bucket_type
         if (created_by := _dict.get('created_by')) is not None:
             args['created_by'] = created_by
         if (created_on := _dict.get('created_on')) is not None:
             args['created_on'] = created_on
         if (description := _dict.get('description')) is not None:
             args['description'] = description
+        if (endpoint := _dict.get('endpoint')) is not None:
+            args['endpoint'] = endpoint
         if (grpc_host := _dict.get('grpc_host')) is not None:
             args['grpc_host'] = grpc_host
         if (grpc_port := _dict.get('grpc_port')) is not None:
@@ -10125,6 +14351,10 @@ class MilvusService:
             args['https_port'] = https_port
         if (origin := _dict.get('origin')) is not None:
             args['origin'] = origin
+        if (root_path := _dict.get('root_path')) is not None:
+            args['root_path'] = root_path
+        if (secret_key := _dict.get('secret_key')) is not None:
+            args['secret_key'] = secret_key
         if (service_display_name := _dict.get('service_display_name')) is not None:
             args['service_display_name'] = service_display_name
         if (service_id := _dict.get('service_id')) is not None:
@@ -10137,6 +14367,8 @@ class MilvusService:
             raise ValueError('Required property \'status_code\' not present in MilvusService JSON')
         if (tags := _dict.get('tags')) is not None:
             args['tags'] = tags
+        if (tshirt_size := _dict.get('tshirt_size')) is not None:
+            args['tshirt_size'] = tshirt_size
         if (type := _dict.get('type')) is not None:
             args['type'] = type
         return cls(**args)
@@ -10149,14 +14381,22 @@ class MilvusService:
     def to_dict(self) -> Dict:
         """Return a json dictionary representing this model."""
         _dict = {}
+        if hasattr(self, 'access_key') and self.access_key is not None:
+            _dict['access_key'] = self.access_key
         if hasattr(self, 'actions') and self.actions is not None:
             _dict['actions'] = self.actions
+        if hasattr(self, 'bucket_name') and self.bucket_name is not None:
+            _dict['bucket_name'] = self.bucket_name
+        if hasattr(self, 'bucket_type') and self.bucket_type is not None:
+            _dict['bucket_type'] = self.bucket_type
         if hasattr(self, 'created_by') and self.created_by is not None:
             _dict['created_by'] = self.created_by
         if hasattr(self, 'created_on') and self.created_on is not None:
             _dict['created_on'] = self.created_on
         if hasattr(self, 'description') and self.description is not None:
             _dict['description'] = self.description
+        if hasattr(self, 'endpoint') and self.endpoint is not None:
+            _dict['endpoint'] = self.endpoint
         if hasattr(self, 'grpc_host') and self.grpc_host is not None:
             _dict['grpc_host'] = self.grpc_host
         if hasattr(self, 'grpc_port') and self.grpc_port is not None:
@@ -10169,6 +14409,10 @@ class MilvusService:
             _dict['https_port'] = self.https_port
         if hasattr(self, 'origin') and self.origin is not None:
             _dict['origin'] = self.origin
+        if hasattr(self, 'root_path') and self.root_path is not None:
+            _dict['root_path'] = self.root_path
+        if hasattr(self, 'secret_key') and self.secret_key is not None:
+            _dict['secret_key'] = self.secret_key
         if hasattr(self, 'service_display_name') and self.service_display_name is not None:
             _dict['service_display_name'] = self.service_display_name
         if hasattr(self, 'service_id') and self.service_id is not None:
@@ -10179,6 +14423,8 @@ class MilvusService:
             _dict['status_code'] = self.status_code
         if hasattr(self, 'tags') and self.tags is not None:
             _dict['tags'] = self.tags
+        if hasattr(self, 'tshirt_size') and self.tshirt_size is not None:
+            _dict['tshirt_size'] = self.tshirt_size
         if hasattr(self, 'type') and self.type is not None:
             _dict['type'] = self.type
         return _dict
@@ -10276,6 +14522,64 @@ class MilvusServiceCollection:
         return not self == other
 
 
+class MilvusServiceDatabases:
+    """
+    List milvus databases.
+
+    :param List[str] databases: (optional) milvus database body.
+    """
+
+    def __init__(
+        self,
+        *,
+        databases: Optional[List[str]] = None,
+    ) -> None:
+        """
+        Initialize a MilvusServiceDatabases object.
+
+        :param List[str] databases: (optional) milvus database body.
+        """
+        self.databases = databases
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'MilvusServiceDatabases':
+        """Initialize a MilvusServiceDatabases object from a json dictionary."""
+        args = {}
+        if (databases := _dict.get('databases')) is not None:
+            args['databases'] = databases
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a MilvusServiceDatabases object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'databases') and self.databases is not None:
+            _dict['databases'] = self.databases
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this MilvusServiceDatabases object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'MilvusServiceDatabases') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'MilvusServiceDatabases') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
 class MilvusServicePatch:
     """
     UpdateService body.
@@ -10346,6 +14650,88 @@ class MilvusServicePatch:
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other: 'MilvusServicePatch') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class Milvusdbcollection:
+    """
+    milvus service details.
+
+    :param int collection_id: (optional) milvus collection id.
+    :param str collection_name: (optional) milvus status.
+    :param List[str] physical_channels: (optional) milvus physical channels.
+    :param List[str] virtual_channels: (optional) milvus virtual channels.
+    """
+
+    def __init__(
+        self,
+        *,
+        collection_id: Optional[int] = None,
+        collection_name: Optional[str] = None,
+        physical_channels: Optional[List[str]] = None,
+        virtual_channels: Optional[List[str]] = None,
+    ) -> None:
+        """
+        Initialize a Milvusdbcollection object.
+
+        :param int collection_id: (optional) milvus collection id.
+        :param str collection_name: (optional) milvus status.
+        :param List[str] physical_channels: (optional) milvus physical channels.
+        :param List[str] virtual_channels: (optional) milvus virtual channels.
+        """
+        self.collection_id = collection_id
+        self.collection_name = collection_name
+        self.physical_channels = physical_channels
+        self.virtual_channels = virtual_channels
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'Milvusdbcollection':
+        """Initialize a Milvusdbcollection object from a json dictionary."""
+        args = {}
+        if (collection_id := _dict.get('collection_id')) is not None:
+            args['collection_id'] = collection_id
+        if (collection_name := _dict.get('collection_name')) is not None:
+            args['collection_name'] = collection_name
+        if (physical_channels := _dict.get('physical_channels')) is not None:
+            args['physical_channels'] = physical_channels
+        if (virtual_channels := _dict.get('virtual_channels')) is not None:
+            args['virtual_channels'] = virtual_channels
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a Milvusdbcollection object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'collection_id') and self.collection_id is not None:
+            _dict['collection_id'] = self.collection_id
+        if hasattr(self, 'collection_name') and self.collection_name is not None:
+            _dict['collection_name'] = self.collection_name
+        if hasattr(self, 'physical_channels') and self.physical_channels is not None:
+            _dict['physical_channels'] = self.physical_channels
+        if hasattr(self, 'virtual_channels') and self.virtual_channels is not None:
+            _dict['virtual_channels'] = self.virtual_channels
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this Milvusdbcollection object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'Milvusdbcollection') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'Milvusdbcollection') -> bool:
         """Return `true` when self and other are not equal, false otherwise."""
         return not self == other
 
@@ -10849,7 +15235,7 @@ class NodeDescription:
 
 class NodeDescriptionBody:
     """
-    coordinator/worker property settings.
+    Coordinator/ worker properties.
 
     :param str node_type: (optional) Node Type, r5, m, i..
     :param int quantity: (optional) Number of nodes.
@@ -11286,6 +15672,64 @@ class OtherEngineDetailsBody:
         return not self == other
 
 
+class Path:
+    """
+    Bucket object size.
+
+    :param str path: (optional) object path.
+    """
+
+    def __init__(
+        self,
+        *,
+        path: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a Path object.
+
+        :param str path: (optional) object path.
+        """
+        self.path = path
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'Path':
+        """Initialize a Path object from a json dictionary."""
+        args = {}
+        if (path := _dict.get('path')) is not None:
+            args['path'] = path
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a Path object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'path') and self.path is not None:
+            _dict['path'] = self.path
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this Path object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'Path') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'Path') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
 class PrestissimoEndpoints:
     """
     Endpoints.
@@ -11399,7 +15843,8 @@ class PrestissimoEngine:
     :param List[str] actions: (optional) Actions.
     :param List[str] associated_catalogs: (optional) Associated catalog.
     :param str build_version: (optional) watsonx.data build version.
-    :param PrestissimoNodeDescriptionBody coordinator: (optional) Node details.
+    :param PrestissimoNodeDescriptionBody coordinator: (optional) coordinator/worker
+          property settings.
     :param str created_by: (optional) Created user name.
     :param int created_on: (optional) Created time in epoch format.
     :param str description: (optional) Engine description.
@@ -11426,7 +15871,8 @@ class PrestissimoEngine:
     :param List[str] tags: (optional) Tags.
     :param str type: (optional) Engine type.
     :param str version: (optional) Version of the engine.
-    :param PrestissimoNodeDescriptionBody worker: (optional) Node details.
+    :param PrestissimoNodeDescriptionBody worker: (optional) coordinator/worker
+          property settings.
     """
 
     def __init__(
@@ -11468,7 +15914,8 @@ class PrestissimoEngine:
         :param List[str] actions: (optional) Actions.
         :param List[str] associated_catalogs: (optional) Associated catalog.
         :param str build_version: (optional) watsonx.data build version.
-        :param PrestissimoNodeDescriptionBody coordinator: (optional) Node details.
+        :param PrestissimoNodeDescriptionBody coordinator: (optional)
+               coordinator/worker property settings.
         :param str created_by: (optional) Created user name.
         :param int created_on: (optional) Created time in epoch format.
         :param str description: (optional) Engine description.
@@ -11493,7 +15940,8 @@ class PrestissimoEngine:
         :param List[str] tags: (optional) Tags.
         :param str type: (optional) Engine type.
         :param str version: (optional) Version of the engine.
-        :param PrestissimoNodeDescriptionBody worker: (optional) Node details.
+        :param PrestissimoNodeDescriptionBody worker: (optional) coordinator/worker
+               property settings.
         """
         self.actions = actions
         self.associated_catalogs = associated_catalogs
@@ -11781,13 +16229,15 @@ class PrestissimoEngineDetails:
 
     :param str api_key: (optional) api key to work with the saas IAE instance.
     :param str connection_string: (optional) External engine connection string.
-    :param PrestissimoNodeDescriptionBody coordinator: (optional) Node details.
+    :param PrestissimoNodeDescriptionBody coordinator: (optional) coordinator/worker
+          property settings.
     :param PrestissimoEndpoints endpoints: (optional) Endpoints.
     :param str instance_id: (optional) Instance to access the instance.
     :param str managed_by: (optional) How is the spark instance managed.
     :param str metastore_host: (optional) Metastore host.
     :param str size_config: (optional) Size config.
-    :param PrestissimoNodeDescriptionBody worker: (optional) Node details.
+    :param PrestissimoNodeDescriptionBody worker: (optional) coordinator/worker
+          property settings.
     """
 
     def __init__(
@@ -11808,13 +16258,15 @@ class PrestissimoEngineDetails:
 
         :param str api_key: (optional) api key to work with the saas IAE instance.
         :param str connection_string: (optional) External engine connection string.
-        :param PrestissimoNodeDescriptionBody coordinator: (optional) Node details.
+        :param PrestissimoNodeDescriptionBody coordinator: (optional)
+               coordinator/worker property settings.
         :param PrestissimoEndpoints endpoints: (optional) Endpoints.
         :param str instance_id: (optional) Instance to access the instance.
         :param str managed_by: (optional) How is the spark instance managed.
         :param str metastore_host: (optional) Metastore host.
         :param str size_config: (optional) Size config.
-        :param PrestissimoNodeDescriptionBody worker: (optional) Node details.
+        :param PrestissimoNodeDescriptionBody worker: (optional) coordinator/worker
+               property settings.
         """
         self.api_key = api_key
         self.connection_string = connection_string
@@ -11924,11 +16376,10 @@ class PrestissimoEngineEngineProperties:
     """
     Engine properties.
 
-    :param PrestissimoEnginePropertiesCatalog catalog: (optional) catalog
-          properties.
+    :param PrestissimoEnginePropertiesCatalog catalog: (optional) Catalog settings.
     :param EnginePropertiesOaiGenConfiguration configuration: (optional)
           Configuration settings for the engine properties.
-    :param PrestissimoEnginePropertiesVelox velox: (optional) velox properties.
+    :param PrestissimoEnginePropertiesVelox velox: (optional) velox settings.
     :param PrestissimoEnginePropertiesOaiGen1Jvm jvm: (optional) JVM settings.
     """
 
@@ -11943,11 +16394,11 @@ class PrestissimoEngineEngineProperties:
         """
         Initialize a PrestissimoEngineEngineProperties object.
 
-        :param PrestissimoEnginePropertiesCatalog catalog: (optional) catalog
-               properties.
+        :param PrestissimoEnginePropertiesCatalog catalog: (optional) Catalog
+               settings.
         :param EnginePropertiesOaiGenConfiguration configuration: (optional)
                Configuration settings for the engine properties.
-        :param PrestissimoEnginePropertiesVelox velox: (optional) velox properties.
+        :param PrestissimoEnginePropertiesVelox velox: (optional) velox settings.
         :param PrestissimoEnginePropertiesOaiGen1Jvm jvm: (optional) JVM settings.
         """
         self.catalog = catalog
@@ -12138,7 +16589,7 @@ class PrestissimoEnginePatch:
 
 class PrestissimoEnginePropertiesCatalog:
     """
-    catalog properties.
+    Catalog settings.
 
     :param List[str] catalog_name: (optional) catalog name.
     """
@@ -12198,8 +16649,8 @@ class PrestissimoEnginePropertiesOaiGen1Jvm:
     """
     JVM settings.
 
-    :param NodeDescriptionBody coordinator: (optional) coordinator/worker property
-          settings.
+    :param NodeDescriptionBody coordinator: (optional) Coordinator/ worker
+          properties.
     """
 
     def __init__(
@@ -12210,8 +16661,8 @@ class PrestissimoEnginePropertiesOaiGen1Jvm:
         """
         Initialize a PrestissimoEnginePropertiesOaiGen1Jvm object.
 
-        :param NodeDescriptionBody coordinator: (optional) coordinator/worker
-               property settings.
+        :param NodeDescriptionBody coordinator: (optional) Coordinator/ worker
+               properties.
         """
         self.coordinator = coordinator
 
@@ -12259,7 +16710,7 @@ class PrestissimoEnginePropertiesOaiGen1Jvm:
 
 class PrestissimoEnginePropertiesVelox:
     """
-    velox properties.
+    velox settings.
 
     :param List[str] velox_property: (optional) velox property.
     """
@@ -12317,7 +16768,7 @@ class PrestissimoEnginePropertiesVelox:
 
 class PrestissimoNodeDescriptionBody:
     """
-    Node details.
+    coordinator/worker property settings.
 
     :param str node_type: (optional) Node Type, r5, m, i..
     :param int quantity: (optional) Number of nodes.
@@ -12778,14 +17229,17 @@ class PrestoEngineEngineProperties:
     """
     Engine properties.
 
-    :param PrestoEnginePropertiesCatalog catalog: (optional) Catalog configuration
-          settings.
+    :param PrestoEnginePropertiesCatalog catalog: (optional) Catalog settings.
     :param EnginePropertiesOaiGen1Configuration configuration: (optional)
           Configuration settings.
+    :param PrestoEnginePropertiesEventListener event_listener: (optional) Event
+          Listener settings.
     :param PrestoEnginePropertiesGlobal global_: (optional) Global session is to
           accomodate all the custom properties that can be applicable for both coordinator
           and worker.
     :param EnginePropertiesOaiGen1Jvm jvm: (optional) JVM settings.
+    :param EnginePropertiesLogConfiguration log_config: (optional) Log Configuration
+          settings.
     """
 
     def __init__(
@@ -12793,25 +17247,32 @@ class PrestoEngineEngineProperties:
         *,
         catalog: Optional['PrestoEnginePropertiesCatalog'] = None,
         configuration: Optional['EnginePropertiesOaiGen1Configuration'] = None,
+        event_listener: Optional['PrestoEnginePropertiesEventListener'] = None,
         global_: Optional['PrestoEnginePropertiesGlobal'] = None,
         jvm: Optional['EnginePropertiesOaiGen1Jvm'] = None,
+        log_config: Optional['EnginePropertiesLogConfiguration'] = None,
     ) -> None:
         """
         Initialize a PrestoEngineEngineProperties object.
 
-        :param PrestoEnginePropertiesCatalog catalog: (optional) Catalog
-               configuration settings.
+        :param PrestoEnginePropertiesCatalog catalog: (optional) Catalog settings.
         :param EnginePropertiesOaiGen1Configuration configuration: (optional)
                Configuration settings.
+        :param PrestoEnginePropertiesEventListener event_listener: (optional) Event
+               Listener settings.
         :param PrestoEnginePropertiesGlobal global_: (optional) Global session is
                to accomodate all the custom properties that can be applicable for both
                coordinator and worker.
         :param EnginePropertiesOaiGen1Jvm jvm: (optional) JVM settings.
+        :param EnginePropertiesLogConfiguration log_config: (optional) Log
+               Configuration settings.
         """
         self.catalog = catalog
         self.configuration = configuration
+        self.event_listener = event_listener
         self.global_ = global_
         self.jvm = jvm
+        self.log_config = log_config
 
     @classmethod
     def from_dict(cls, _dict: Dict) -> 'PrestoEngineEngineProperties':
@@ -12821,10 +17282,14 @@ class PrestoEngineEngineProperties:
             args['catalog'] = PrestoEnginePropertiesCatalog.from_dict(catalog)
         if (configuration := _dict.get('configuration')) is not None:
             args['configuration'] = EnginePropertiesOaiGen1Configuration.from_dict(configuration)
+        if (event_listener := _dict.get('event_listener')) is not None:
+            args['event_listener'] = PrestoEnginePropertiesEventListener.from_dict(event_listener)
         if (global_ := _dict.get('global')) is not None:
             args['global_'] = PrestoEnginePropertiesGlobal.from_dict(global_)
         if (jvm := _dict.get('jvm')) is not None:
             args['jvm'] = EnginePropertiesOaiGen1Jvm.from_dict(jvm)
+        if (log_config := _dict.get('log_config')) is not None:
+            args['log_config'] = EnginePropertiesLogConfiguration.from_dict(log_config)
         return cls(**args)
 
     @classmethod
@@ -12845,6 +17310,11 @@ class PrestoEngineEngineProperties:
                 _dict['configuration'] = self.configuration
             else:
                 _dict['configuration'] = self.configuration.to_dict()
+        if hasattr(self, 'event_listener') and self.event_listener is not None:
+            if isinstance(self.event_listener, dict):
+                _dict['event_listener'] = self.event_listener
+            else:
+                _dict['event_listener'] = self.event_listener.to_dict()
         if hasattr(self, 'global_') and self.global_ is not None:
             if isinstance(self.global_, dict):
                 _dict['global'] = self.global_
@@ -12855,6 +17325,11 @@ class PrestoEngineEngineProperties:
                 _dict['jvm'] = self.jvm
             else:
                 _dict['jvm'] = self.jvm.to_dict()
+        if hasattr(self, 'log_config') and self.log_config is not None:
+            if isinstance(self.log_config, dict):
+                _dict['log_config'] = self.log_config
+            else:
+                _dict['log_config'] = self.log_config.to_dict()
         return _dict
 
     def _to_dict(self):
@@ -12998,43 +17473,47 @@ class PrestoEnginePatchRemoveEngineProperties:
     """
     RemoveEngine properties.
 
+    :param PrestoEnginePropertiesCatalog catalog: (optional) Catalog settings.
     :param RemoveEnginePropertiesOaiGenConfiguration configuration: (optional)
           Configuration settings for removing engine properties.
     :param RemoveEnginePropertiesOaiGenJvm jvm: (optional) JVM properties.
-    :param PrestoEnginePropertiesCatalog catalog: (optional) Catalog configuration
-          settings.
+    :param List[str] event_listener: (optional) Event Listener properties.
     """
 
     def __init__(
         self,
         *,
+        catalog: Optional['PrestoEnginePropertiesCatalog'] = None,
         configuration: Optional['RemoveEnginePropertiesOaiGenConfiguration'] = None,
         jvm: Optional['RemoveEnginePropertiesOaiGenJvm'] = None,
-        catalog: Optional['PrestoEnginePropertiesCatalog'] = None,
+        event_listener: Optional[List[str]] = None,
     ) -> None:
         """
         Initialize a PrestoEnginePatchRemoveEngineProperties object.
 
+        :param PrestoEnginePropertiesCatalog catalog: (optional) Catalog settings.
         :param RemoveEnginePropertiesOaiGenConfiguration configuration: (optional)
                Configuration settings for removing engine properties.
         :param RemoveEnginePropertiesOaiGenJvm jvm: (optional) JVM properties.
-        :param PrestoEnginePropertiesCatalog catalog: (optional) Catalog
-               configuration settings.
+        :param List[str] event_listener: (optional) Event Listener properties.
         """
+        self.catalog = catalog
         self.configuration = configuration
         self.jvm = jvm
-        self.catalog = catalog
+        self.event_listener = event_listener
 
     @classmethod
     def from_dict(cls, _dict: Dict) -> 'PrestoEnginePatchRemoveEngineProperties':
         """Initialize a PrestoEnginePatchRemoveEngineProperties object from a json dictionary."""
         args = {}
+        if (catalog := _dict.get('catalog')) is not None:
+            args['catalog'] = PrestoEnginePropertiesCatalog.from_dict(catalog)
         if (configuration := _dict.get('configuration')) is not None:
             args['configuration'] = RemoveEnginePropertiesOaiGenConfiguration.from_dict(configuration)
         if (jvm := _dict.get('jvm')) is not None:
             args['jvm'] = RemoveEnginePropertiesOaiGenJvm.from_dict(jvm)
-        if (catalog := _dict.get('catalog')) is not None:
-            args['catalog'] = PrestoEnginePropertiesCatalog.from_dict(catalog)
+        if (event_listener := _dict.get('event_listener')) is not None:
+            args['event_listener'] = event_listener
         return cls(**args)
 
     @classmethod
@@ -13045,6 +17524,11 @@ class PrestoEnginePatchRemoveEngineProperties:
     def to_dict(self) -> Dict:
         """Return a json dictionary representing this model."""
         _dict = {}
+        if hasattr(self, 'catalog') and self.catalog is not None:
+            if isinstance(self.catalog, dict):
+                _dict['catalog'] = self.catalog
+            else:
+                _dict['catalog'] = self.catalog.to_dict()
         if hasattr(self, 'configuration') and self.configuration is not None:
             if isinstance(self.configuration, dict):
                 _dict['configuration'] = self.configuration
@@ -13055,11 +17539,8 @@ class PrestoEnginePatchRemoveEngineProperties:
                 _dict['jvm'] = self.jvm
             else:
                 _dict['jvm'] = self.jvm.to_dict()
-        if hasattr(self, 'catalog') and self.catalog is not None:
-            if isinstance(self.catalog, dict):
-                _dict['catalog'] = self.catalog
-            else:
-                _dict['catalog'] = self.catalog.to_dict()
+        if hasattr(self, 'event_listener') and self.event_listener is not None:
+            _dict['event_listener'] = self.event_listener
         return _dict
 
     def _to_dict(self):
@@ -13083,7 +17564,7 @@ class PrestoEnginePatchRemoveEngineProperties:
 
 class PrestoEnginePropertiesCatalog:
     """
-    Catalog configuration settings.
+    Catalog settings.
 
     :param str catalog_name: (optional) Name of the catalog.
     """
@@ -13135,6 +17616,64 @@ class PrestoEnginePropertiesCatalog:
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other: 'PrestoEnginePropertiesCatalog') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class PrestoEnginePropertiesEventListener:
+    """
+    Event Listener settings.
+
+    :param str event_listener_property: (optional) Event listener properties.
+    """
+
+    def __init__(
+        self,
+        *,
+        event_listener_property: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a PrestoEnginePropertiesEventListener object.
+
+        :param str event_listener_property: (optional) Event listener properties.
+        """
+        self.event_listener_property = event_listener_property
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'PrestoEnginePropertiesEventListener':
+        """Initialize a PrestoEnginePropertiesEventListener object from a json dictionary."""
+        args = {}
+        if (event_listener_property := _dict.get('event_listener_property')) is not None:
+            args['event_listener_property'] = event_listener_property
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a PrestoEnginePropertiesEventListener object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'event_listener_property') and self.event_listener_property is not None:
+            _dict['event_listener_property'] = self.event_listener_property
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this PrestoEnginePropertiesEventListener object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'PrestoEnginePropertiesEventListener') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'PrestoEnginePropertiesEventListener') -> bool:
         """Return `true` when self and other are not equal, false otherwise."""
         return not self == other
 
@@ -13514,12 +18053,11 @@ class RemoveEngineProperties:
     """
     RemoveEngine properties.
 
-    :param PrestissimoEnginePropertiesCatalog catalog: (optional) catalog
-          properties.
+    :param PrestissimoEnginePropertiesCatalog catalog: (optional) Catalog settings.
     :param RemoveEnginePropertiesConfiguration configuration: (optional) remove
           engine properties configuration.
-    :param RemoveEnginePropertiesConfiguration jvm: (optional) remove engine
-          properties configuration.
+    :param RemoveEnginePropertiesPrestissimoOaiGenJvm jvm: (optional) JVM
+          properties.
     :param List[str] velox: (optional) velox description.
     """
 
@@ -13528,18 +18066,18 @@ class RemoveEngineProperties:
         *,
         catalog: Optional['PrestissimoEnginePropertiesCatalog'] = None,
         configuration: Optional['RemoveEnginePropertiesConfiguration'] = None,
-        jvm: Optional['RemoveEnginePropertiesConfiguration'] = None,
+        jvm: Optional['RemoveEnginePropertiesPrestissimoOaiGenJvm'] = None,
         velox: Optional[List[str]] = None,
     ) -> None:
         """
         Initialize a RemoveEngineProperties object.
 
-        :param PrestissimoEnginePropertiesCatalog catalog: (optional) catalog
-               properties.
+        :param PrestissimoEnginePropertiesCatalog catalog: (optional) Catalog
+               settings.
         :param RemoveEnginePropertiesConfiguration configuration: (optional) remove
                engine properties configuration.
-        :param RemoveEnginePropertiesConfiguration jvm: (optional) remove engine
-               properties configuration.
+        :param RemoveEnginePropertiesPrestissimoOaiGenJvm jvm: (optional) JVM
+               properties.
         :param List[str] velox: (optional) velox description.
         """
         self.catalog = catalog
@@ -13556,7 +18094,7 @@ class RemoveEngineProperties:
         if (configuration := _dict.get('configuration')) is not None:
             args['configuration'] = RemoveEnginePropertiesConfiguration.from_dict(configuration)
         if (jvm := _dict.get('jvm')) is not None:
-            args['jvm'] = RemoveEnginePropertiesConfiguration.from_dict(jvm)
+            args['jvm'] = RemoveEnginePropertiesPrestissimoOaiGenJvm.from_dict(jvm)
         if (velox := _dict.get('velox')) is not None:
             args['velox'] = velox
         return cls(**args)
@@ -13806,6 +18344,64 @@ class RemoveEnginePropertiesOaiGenJvm:
         return not self == other
 
 
+class RemoveEnginePropertiesPrestissimoOaiGenJvm:
+    """
+    JVM properties.
+
+    :param List[str] coordinator: (optional) List of coordinator properties.
+    """
+
+    def __init__(
+        self,
+        *,
+        coordinator: Optional[List[str]] = None,
+    ) -> None:
+        """
+        Initialize a RemoveEnginePropertiesPrestissimoOaiGenJvm object.
+
+        :param List[str] coordinator: (optional) List of coordinator properties.
+        """
+        self.coordinator = coordinator
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'RemoveEnginePropertiesPrestissimoOaiGenJvm':
+        """Initialize a RemoveEnginePropertiesPrestissimoOaiGenJvm object from a json dictionary."""
+        args = {}
+        if (coordinator := _dict.get('coordinator')) is not None:
+            args['coordinator'] = coordinator
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a RemoveEnginePropertiesPrestissimoOaiGenJvm object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'coordinator') and self.coordinator is not None:
+            _dict['coordinator'] = self.coordinator
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this RemoveEnginePropertiesPrestissimoOaiGenJvm object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'RemoveEnginePropertiesPrestissimoOaiGenJvm') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'RemoveEnginePropertiesPrestissimoOaiGenJvm') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
 class ReplaceSnapshotCreatedBody:
     """
     success response.
@@ -13863,6 +18459,64 @@ class ReplaceSnapshotCreatedBody:
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other: 'ReplaceSnapshotCreatedBody') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class ResultExecuteQuery:
+    """
+    ResultExecuteQuery OK.
+
+    :param List[dict] result: (optional) Query result in JSON format.
+    """
+
+    def __init__(
+        self,
+        *,
+        result: Optional[List[dict]] = None,
+    ) -> None:
+        """
+        Initialize a ResultExecuteQuery object.
+
+        :param List[dict] result: (optional) Query result in JSON format.
+        """
+        self.result = result
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'ResultExecuteQuery':
+        """Initialize a ResultExecuteQuery object from a json dictionary."""
+        args = {}
+        if (result := _dict.get('result')) is not None:
+            args['result'] = result
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a ResultExecuteQuery object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'result') and self.result is not None:
+            _dict['result'] = self.result
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this ResultExecuteQuery object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'ResultExecuteQuery') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'ResultExecuteQuery') -> bool:
         """Return `true` when self and other are not equal, false otherwise."""
         return not self == other
 
@@ -14123,6 +18777,1891 @@ class RunExplainStatementOKBody:
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other: 'RunExplainStatementOKBody') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegration:
+    """
+    Sal Integration object.
+
+    :param str category_id: (optional) category UUID.
+    :param str engine_id: (optional) engine id.
+    :param List[ErrorObj] errors: (optional) errors.
+    :param str governance_scope_id: (optional) governance scope UUID.
+    :param str governance_scope_type: (optional) governance scope type.
+    :param str instance_id: (optional) instance_id.
+    :param str status: (optional) status of the integration.
+    :param str storage_resource_crn: (optional) COS resource CRN.
+    :param str storage_type: (optional) COS storage type.
+    :param str timestamp: (optional) sal integration creation timestamp.
+    :param bool trial_plan: (optional) whether the integration is trial plan.
+    :param str username: (optional) user name.
+    """
+
+    def __init__(
+        self,
+        *,
+        category_id: Optional[str] = None,
+        engine_id: Optional[str] = None,
+        errors: Optional[List['ErrorObj']] = None,
+        governance_scope_id: Optional[str] = None,
+        governance_scope_type: Optional[str] = None,
+        instance_id: Optional[str] = None,
+        status: Optional[str] = None,
+        storage_resource_crn: Optional[str] = None,
+        storage_type: Optional[str] = None,
+        timestamp: Optional[str] = None,
+        trial_plan: Optional[bool] = None,
+        username: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegration object.
+
+        :param str category_id: (optional) category UUID.
+        :param str engine_id: (optional) engine id.
+        :param List[ErrorObj] errors: (optional) errors.
+        :param str governance_scope_id: (optional) governance scope UUID.
+        :param str governance_scope_type: (optional) governance scope type.
+        :param str instance_id: (optional) instance_id.
+        :param str status: (optional) status of the integration.
+        :param str storage_resource_crn: (optional) COS resource CRN.
+        :param str storage_type: (optional) COS storage type.
+        :param str timestamp: (optional) sal integration creation timestamp.
+        :param bool trial_plan: (optional) whether the integration is trial plan.
+        :param str username: (optional) user name.
+        """
+        self.category_id = category_id
+        self.engine_id = engine_id
+        self.errors = errors
+        self.governance_scope_id = governance_scope_id
+        self.governance_scope_type = governance_scope_type
+        self.instance_id = instance_id
+        self.status = status
+        self.storage_resource_crn = storage_resource_crn
+        self.storage_type = storage_type
+        self.timestamp = timestamp
+        self.trial_plan = trial_plan
+        self.username = username
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegration':
+        """Initialize a SalIntegration object from a json dictionary."""
+        args = {}
+        if (category_id := _dict.get('category_id')) is not None:
+            args['category_id'] = category_id
+        if (engine_id := _dict.get('engine_id')) is not None:
+            args['engine_id'] = engine_id
+        if (errors := _dict.get('errors')) is not None:
+            args['errors'] = [ErrorObj.from_dict(v) for v in errors]
+        if (governance_scope_id := _dict.get('governance_scope_id')) is not None:
+            args['governance_scope_id'] = governance_scope_id
+        if (governance_scope_type := _dict.get('governance_scope_type')) is not None:
+            args['governance_scope_type'] = governance_scope_type
+        if (instance_id := _dict.get('instance_id')) is not None:
+            args['instance_id'] = instance_id
+        if (status := _dict.get('status')) is not None:
+            args['status'] = status
+        if (storage_resource_crn := _dict.get('storage_resource_crn')) is not None:
+            args['storage_resource_crn'] = storage_resource_crn
+        if (storage_type := _dict.get('storage_type')) is not None:
+            args['storage_type'] = storage_type
+        if (timestamp := _dict.get('timestamp')) is not None:
+            args['timestamp'] = timestamp
+        if (trial_plan := _dict.get('trial_plan')) is not None:
+            args['trial_plan'] = trial_plan
+        if (username := _dict.get('username')) is not None:
+            args['username'] = username
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegration object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'category_id') and self.category_id is not None:
+            _dict['category_id'] = self.category_id
+        if hasattr(self, 'engine_id') and self.engine_id is not None:
+            _dict['engine_id'] = self.engine_id
+        if hasattr(self, 'errors') and self.errors is not None:
+            errors_list = []
+            for v in self.errors:
+                if isinstance(v, dict):
+                    errors_list.append(v)
+                else:
+                    errors_list.append(v.to_dict())
+            _dict['errors'] = errors_list
+        if hasattr(self, 'governance_scope_id') and self.governance_scope_id is not None:
+            _dict['governance_scope_id'] = self.governance_scope_id
+        if hasattr(self, 'governance_scope_type') and self.governance_scope_type is not None:
+            _dict['governance_scope_type'] = self.governance_scope_type
+        if hasattr(self, 'instance_id') and self.instance_id is not None:
+            _dict['instance_id'] = self.instance_id
+        if hasattr(self, 'status') and self.status is not None:
+            _dict['status'] = self.status
+        if hasattr(self, 'storage_resource_crn') and self.storage_resource_crn is not None:
+            _dict['storage_resource_crn'] = self.storage_resource_crn
+        if hasattr(self, 'storage_type') and self.storage_type is not None:
+            _dict['storage_type'] = self.storage_type
+        if hasattr(self, 'timestamp') and self.timestamp is not None:
+            _dict['timestamp'] = self.timestamp
+        if hasattr(self, 'trial_plan') and self.trial_plan is not None:
+            _dict['trial_plan'] = self.trial_plan
+        if hasattr(self, 'username') and self.username is not None:
+            _dict['username'] = self.username
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegration object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegration') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegration') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentAssets:
+    """
+    sal integration enrichment assets.
+
+    :param EnrichmentAsset enrichment_asset: (optional) Encrichment asset.
+    """
+
+    def __init__(
+        self,
+        *,
+        enrichment_asset: Optional['EnrichmentAsset'] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentAssets object.
+
+        :param EnrichmentAsset enrichment_asset: (optional) Encrichment asset.
+        """
+        self.enrichment_asset = enrichment_asset
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentAssets':
+        """Initialize a SalIntegrationEnrichmentAssets object from a json dictionary."""
+        args = {}
+        if (enrichment_asset := _dict.get('enrichment_asset')) is not None:
+            args['enrichment_asset'] = EnrichmentAsset.from_dict(enrichment_asset)
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentAssets object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'enrichment_asset') and self.enrichment_asset is not None:
+            if isinstance(self.enrichment_asset, dict):
+                _dict['enrichment_asset'] = self.enrichment_asset
+            else:
+                _dict['enrichment_asset'] = self.enrichment_asset.to_dict()
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentAssets object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentAssets') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentAssets') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentDataAsset:
+    """
+    semantic enrichment data asset.
+
+    :param str asset: (optional) name.
+    """
+
+    def __init__(
+        self,
+        *,
+        asset: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentDataAsset object.
+
+        :param str asset: (optional) name.
+        """
+        self.asset = asset
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentDataAsset':
+        """Initialize a SalIntegrationEnrichmentDataAsset object from a json dictionary."""
+        args = {}
+        if (asset := _dict.get('asset')) is not None:
+            args['asset'] = asset
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentDataAsset object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'asset') and self.asset is not None:
+            _dict['asset'] = self.asset
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentDataAsset object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentDataAsset') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentDataAsset') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentJobRun:
+    """
+    semantic enrichment job run.
+
+    :param str response: (optional) job run response.
+    """
+
+    def __init__(
+        self,
+        *,
+        response: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentJobRun object.
+
+        :param str response: (optional) job run response.
+        """
+        self.response = response
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentJobRun':
+        """Initialize a SalIntegrationEnrichmentJobRun object from a json dictionary."""
+        args = {}
+        if (response := _dict.get('response')) is not None:
+            args['response'] = response
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentJobRun object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'response') and self.response is not None:
+            _dict['response'] = self.response
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentJobRun object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentJobRun') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentJobRun') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentJobRunLogs:
+    """
+    semantic enrichment job run logs.
+
+    :param List[str] results: (optional) results.
+    :param int total_count: (optional) name.
+    """
+
+    def __init__(
+        self,
+        *,
+        results: Optional[List[str]] = None,
+        total_count: Optional[int] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentJobRunLogs object.
+
+        :param List[str] results: (optional) results.
+        :param int total_count: (optional) name.
+        """
+        self.results = results
+        self.total_count = total_count
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentJobRunLogs':
+        """Initialize a SalIntegrationEnrichmentJobRunLogs object from a json dictionary."""
+        args = {}
+        if (results := _dict.get('results')) is not None:
+            args['results'] = results
+        if (total_count := _dict.get('total_count')) is not None:
+            args['total_count'] = total_count
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentJobRunLogs object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'results') and self.results is not None:
+            _dict['results'] = self.results
+        if hasattr(self, 'total_count') and self.total_count is not None:
+            _dict['total_count'] = self.total_count
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentJobRunLogs object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentJobRunLogs') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentJobRunLogs') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentJobs:
+    """
+    Sal Integration Mappings object.
+
+    :param SalIntegrationEnrichmentJobsProperties jobs: (optional) catalog name.
+    """
+
+    def __init__(
+        self,
+        *,
+        jobs: Optional['SalIntegrationEnrichmentJobsProperties'] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentJobs object.
+
+        :param SalIntegrationEnrichmentJobsProperties jobs: (optional) catalog
+               name.
+        """
+        self.jobs = jobs
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentJobs':
+        """Initialize a SalIntegrationEnrichmentJobs object from a json dictionary."""
+        args = {}
+        if (jobs := _dict.get('jobs')) is not None:
+            args['jobs'] = SalIntegrationEnrichmentJobsProperties.from_dict(jobs)
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentJobs object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'jobs') and self.jobs is not None:
+            if isinstance(self.jobs, dict):
+                _dict['jobs'] = self.jobs
+            else:
+                _dict['jobs'] = self.jobs.to_dict()
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentJobs object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentJobs') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentJobs') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentJobsProperties:
+    """
+    catalog name.
+
+    :param List[SalIntegrationEnrichmentJobsResultItem] results: (optional) Array of
+          result items.
+    :param int total_rows: (optional) Total number of rows.
+    """
+
+    def __init__(
+        self,
+        *,
+        results: Optional[List['SalIntegrationEnrichmentJobsResultItem']] = None,
+        total_rows: Optional[int] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentJobsProperties object.
+
+        :param List[SalIntegrationEnrichmentJobsResultItem] results: (optional)
+               Array of result items.
+        :param int total_rows: (optional) Total number of rows.
+        """
+        self.results = results
+        self.total_rows = total_rows
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentJobsProperties':
+        """Initialize a SalIntegrationEnrichmentJobsProperties object from a json dictionary."""
+        args = {}
+        if (results := _dict.get('results')) is not None:
+            args['results'] = [SalIntegrationEnrichmentJobsResultItem.from_dict(v) for v in results]
+        if (total_rows := _dict.get('total_rows')) is not None:
+            args['total_rows'] = total_rows
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentJobsProperties object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'results') and self.results is not None:
+            results_list = []
+            for v in self.results:
+                if isinstance(v, dict):
+                    results_list.append(v)
+                else:
+                    results_list.append(v.to_dict())
+            _dict['results'] = results_list
+        if hasattr(self, 'total_rows') and self.total_rows is not None:
+            _dict['total_rows'] = self.total_rows
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentJobsProperties object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentJobsProperties') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentJobsProperties') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentJobsResultItem:
+    """
+    A single result item containing entity and metadata.
+
+    :param SalIntegrationEnrichmentJobsResultItemEntity entity: (optional) Entity
+          details including job information.
+    :param SalIntegrationEnrichmentJobsResultItemMetadata metadata: (optional)
+          Metadata information about the job.
+    """
+
+    def __init__(
+        self,
+        *,
+        entity: Optional['SalIntegrationEnrichmentJobsResultItemEntity'] = None,
+        metadata: Optional['SalIntegrationEnrichmentJobsResultItemMetadata'] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentJobsResultItem object.
+
+        :param SalIntegrationEnrichmentJobsResultItemEntity entity: (optional)
+               Entity details including job information.
+        :param SalIntegrationEnrichmentJobsResultItemMetadata metadata: (optional)
+               Metadata information about the job.
+        """
+        self.entity = entity
+        self.metadata = metadata
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentJobsResultItem':
+        """Initialize a SalIntegrationEnrichmentJobsResultItem object from a json dictionary."""
+        args = {}
+        if (entity := _dict.get('entity')) is not None:
+            args['entity'] = SalIntegrationEnrichmentJobsResultItemEntity.from_dict(entity)
+        if (metadata := _dict.get('metadata')) is not None:
+            args['metadata'] = SalIntegrationEnrichmentJobsResultItemMetadata.from_dict(metadata)
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentJobsResultItem object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'entity') and self.entity is not None:
+            if isinstance(self.entity, dict):
+                _dict['entity'] = self.entity
+            else:
+                _dict['entity'] = self.entity.to_dict()
+        if hasattr(self, 'metadata') and self.metadata is not None:
+            if isinstance(self.metadata, dict):
+                _dict['metadata'] = self.metadata
+            else:
+                _dict['metadata'] = self.metadata.to_dict()
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentJobsResultItem object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentJobsResultItem') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentJobsResultItem') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentJobsResultItemEntity:
+    """
+    Entity details including job information.
+
+    :param SalIntegrationEnrichmentJobsResultItemEntityJob job: (optional) Details
+          about the job.
+    """
+
+    def __init__(
+        self,
+        *,
+        job: Optional['SalIntegrationEnrichmentJobsResultItemEntityJob'] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentJobsResultItemEntity object.
+
+        :param SalIntegrationEnrichmentJobsResultItemEntityJob job: (optional)
+               Details about the job.
+        """
+        self.job = job
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentJobsResultItemEntity':
+        """Initialize a SalIntegrationEnrichmentJobsResultItemEntity object from a json dictionary."""
+        args = {}
+        if (job := _dict.get('job')) is not None:
+            args['job'] = SalIntegrationEnrichmentJobsResultItemEntityJob.from_dict(job)
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentJobsResultItemEntity object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'job') and self.job is not None:
+            if isinstance(self.job, dict):
+                _dict['job'] = self.job
+            else:
+                _dict['job'] = self.job.to_dict()
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentJobsResultItemEntity object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentJobsResultItemEntity') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentJobsResultItemEntity') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentJobsResultItemEntityJob:
+    """
+    Details about the job.
+
+    :param str asset_ref: (optional) Reference ID for the asset.
+    :param str asset_ref_type: (optional) Type of the asset reference.
+    :param SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration
+          configuration: (optional) Configuration settings for the job.
+    :param bool enable_notifications: (optional) Flag indicating if notifications
+          are enabled for the job.
+    :param List[str] future_scheduled_runs: (optional) List of future scheduled run
+          times.
+    :param str last_run_initiator: (optional) Initiator of the last run.
+    :param str last_run_status: (optional) Status of the last run.
+    :param int last_run_status_timestamp: (optional) Timestamp of the last run
+          status.
+    :param str last_run_time: (optional) Time of the last run.
+    :param str project_name: (optional) Name of the project associated with the job.
+    :param str schedule_creator_id: (optional) ID of the creator of the schedule.
+    :param str schedule_id: (optional) ID of the schedule.
+    :param ScheduleInfo schedule_info: (optional) Information about the schedule.
+    :param SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport
+          task_credentials_support: (optional) Credentials support information for the
+          task.
+    """
+
+    def __init__(
+        self,
+        *,
+        asset_ref: Optional[str] = None,
+        asset_ref_type: Optional[str] = None,
+        configuration: Optional['SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration'] = None,
+        enable_notifications: Optional[bool] = None,
+        future_scheduled_runs: Optional[List[str]] = None,
+        last_run_initiator: Optional[str] = None,
+        last_run_status: Optional[str] = None,
+        last_run_status_timestamp: Optional[int] = None,
+        last_run_time: Optional[str] = None,
+        project_name: Optional[str] = None,
+        schedule_creator_id: Optional[str] = None,
+        schedule_id: Optional[str] = None,
+        schedule_info: Optional['ScheduleInfo'] = None,
+        task_credentials_support: Optional['SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport'] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentJobsResultItemEntityJob object.
+
+        :param str asset_ref: (optional) Reference ID for the asset.
+        :param str asset_ref_type: (optional) Type of the asset reference.
+        :param SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration
+               configuration: (optional) Configuration settings for the job.
+        :param bool enable_notifications: (optional) Flag indicating if
+               notifications are enabled for the job.
+        :param List[str] future_scheduled_runs: (optional) List of future scheduled
+               run times.
+        :param str last_run_initiator: (optional) Initiator of the last run.
+        :param str last_run_status: (optional) Status of the last run.
+        :param int last_run_status_timestamp: (optional) Timestamp of the last run
+               status.
+        :param str last_run_time: (optional) Time of the last run.
+        :param str project_name: (optional) Name of the project associated with the
+               job.
+        :param str schedule_creator_id: (optional) ID of the creator of the
+               schedule.
+        :param str schedule_id: (optional) ID of the schedule.
+        :param ScheduleInfo schedule_info: (optional) Information about the
+               schedule.
+        :param SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport
+               task_credentials_support: (optional) Credentials support information for
+               the task.
+        """
+        self.asset_ref = asset_ref
+        self.asset_ref_type = asset_ref_type
+        self.configuration = configuration
+        self.enable_notifications = enable_notifications
+        self.future_scheduled_runs = future_scheduled_runs
+        self.last_run_initiator = last_run_initiator
+        self.last_run_status = last_run_status
+        self.last_run_status_timestamp = last_run_status_timestamp
+        self.last_run_time = last_run_time
+        self.project_name = project_name
+        self.schedule_creator_id = schedule_creator_id
+        self.schedule_id = schedule_id
+        self.schedule_info = schedule_info
+        self.task_credentials_support = task_credentials_support
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentJobsResultItemEntityJob':
+        """Initialize a SalIntegrationEnrichmentJobsResultItemEntityJob object from a json dictionary."""
+        args = {}
+        if (asset_ref := _dict.get('asset_ref')) is not None:
+            args['asset_ref'] = asset_ref
+        if (asset_ref_type := _dict.get('asset_ref_type')) is not None:
+            args['asset_ref_type'] = asset_ref_type
+        if (configuration := _dict.get('configuration')) is not None:
+            args['configuration'] = SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration.from_dict(configuration)
+        if (enable_notifications := _dict.get('enable_notifications')) is not None:
+            args['enable_notifications'] = enable_notifications
+        if (future_scheduled_runs := _dict.get('future_scheduled_runs')) is not None:
+            args['future_scheduled_runs'] = future_scheduled_runs
+        if (last_run_initiator := _dict.get('last_run_initiator')) is not None:
+            args['last_run_initiator'] = last_run_initiator
+        if (last_run_status := _dict.get('last_run_status')) is not None:
+            args['last_run_status'] = last_run_status
+        if (last_run_status_timestamp := _dict.get('last_run_status_timestamp')) is not None:
+            args['last_run_status_timestamp'] = last_run_status_timestamp
+        if (last_run_time := _dict.get('last_run_time')) is not None:
+            args['last_run_time'] = last_run_time
+        if (project_name := _dict.get('project_name')) is not None:
+            args['project_name'] = project_name
+        if (schedule_creator_id := _dict.get('schedule_creator_id')) is not None:
+            args['schedule_creator_id'] = schedule_creator_id
+        if (schedule_id := _dict.get('schedule_id')) is not None:
+            args['schedule_id'] = schedule_id
+        if (schedule_info := _dict.get('schedule_info')) is not None:
+            args['schedule_info'] = ScheduleInfo.from_dict(schedule_info)
+        if (task_credentials_support := _dict.get('task_credentials_support')) is not None:
+            args['task_credentials_support'] = SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport.from_dict(task_credentials_support)
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentJobsResultItemEntityJob object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'asset_ref') and self.asset_ref is not None:
+            _dict['asset_ref'] = self.asset_ref
+        if hasattr(self, 'asset_ref_type') and self.asset_ref_type is not None:
+            _dict['asset_ref_type'] = self.asset_ref_type
+        if hasattr(self, 'configuration') and self.configuration is not None:
+            if isinstance(self.configuration, dict):
+                _dict['configuration'] = self.configuration
+            else:
+                _dict['configuration'] = self.configuration.to_dict()
+        if hasattr(self, 'enable_notifications') and self.enable_notifications is not None:
+            _dict['enable_notifications'] = self.enable_notifications
+        if hasattr(self, 'future_scheduled_runs') and self.future_scheduled_runs is not None:
+            _dict['future_scheduled_runs'] = self.future_scheduled_runs
+        if hasattr(self, 'last_run_initiator') and self.last_run_initiator is not None:
+            _dict['last_run_initiator'] = self.last_run_initiator
+        if hasattr(self, 'last_run_status') and self.last_run_status is not None:
+            _dict['last_run_status'] = self.last_run_status
+        if hasattr(self, 'last_run_status_timestamp') and self.last_run_status_timestamp is not None:
+            _dict['last_run_status_timestamp'] = self.last_run_status_timestamp
+        if hasattr(self, 'last_run_time') and self.last_run_time is not None:
+            _dict['last_run_time'] = self.last_run_time
+        if hasattr(self, 'project_name') and self.project_name is not None:
+            _dict['project_name'] = self.project_name
+        if hasattr(self, 'schedule_creator_id') and self.schedule_creator_id is not None:
+            _dict['schedule_creator_id'] = self.schedule_creator_id
+        if hasattr(self, 'schedule_id') and self.schedule_id is not None:
+            _dict['schedule_id'] = self.schedule_id
+        if hasattr(self, 'schedule_info') and self.schedule_info is not None:
+            if isinstance(self.schedule_info, dict):
+                _dict['schedule_info'] = self.schedule_info
+            else:
+                _dict['schedule_info'] = self.schedule_info.to_dict()
+        if hasattr(self, 'task_credentials_support') and self.task_credentials_support is not None:
+            if isinstance(self.task_credentials_support, dict):
+                _dict['task_credentials_support'] = self.task_credentials_support
+            else:
+                _dict['task_credentials_support'] = self.task_credentials_support.to_dict()
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentJobsResultItemEntityJob object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentJobsResultItemEntityJob') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentJobsResultItemEntityJob') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration:
+    """
+    Configuration settings for the job.
+
+    :param str env_type: (optional) The environment type.
+    :param List[str] env_variables: (optional) Environment variables for the job.
+    """
+
+    def __init__(
+        self,
+        *,
+        env_type: Optional[str] = None,
+        env_variables: Optional[List[str]] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration object.
+
+        :param str env_type: (optional) The environment type.
+        :param List[str] env_variables: (optional) Environment variables for the
+               job.
+        """
+        self.env_type = env_type
+        self.env_variables = env_variables
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration':
+        """Initialize a SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration object from a json dictionary."""
+        args = {}
+        if (env_type := _dict.get('env_type')) is not None:
+            args['env_type'] = env_type
+        if (env_variables := _dict.get('env_variables')) is not None:
+            args['env_variables'] = env_variables
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'env_type') and self.env_type is not None:
+            _dict['env_type'] = self.env_type
+        if hasattr(self, 'env_variables') and self.env_variables is not None:
+            _dict['env_variables'] = self.env_variables
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport:
+    """
+    Credentials support information for the task.
+
+    :param str account_id: (optional) The account ID associated with the task.
+    :param bool task_credentials_enabled: (optional) Indicates if task credentials
+          are enabled.
+    :param str user_id: (optional) The user ID associated with the task.
+    """
+
+    def __init__(
+        self,
+        *,
+        account_id: Optional[str] = None,
+        task_credentials_enabled: Optional[bool] = None,
+        user_id: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport object.
+
+        :param str account_id: (optional) The account ID associated with the task.
+        :param bool task_credentials_enabled: (optional) Indicates if task
+               credentials are enabled.
+        :param str user_id: (optional) The user ID associated with the task.
+        """
+        self.account_id = account_id
+        self.task_credentials_enabled = task_credentials_enabled
+        self.user_id = user_id
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport':
+        """Initialize a SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport object from a json dictionary."""
+        args = {}
+        if (account_id := _dict.get('account_id')) is not None:
+            args['account_id'] = account_id
+        if (task_credentials_enabled := _dict.get('task_credentials_enabled')) is not None:
+            args['task_credentials_enabled'] = task_credentials_enabled
+        if (user_id := _dict.get('user_id')) is not None:
+            args['user_id'] = user_id
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'account_id') and self.account_id is not None:
+            _dict['account_id'] = self.account_id
+        if hasattr(self, 'task_credentials_enabled') and self.task_credentials_enabled is not None:
+            _dict['task_credentials_enabled'] = self.task_credentials_enabled
+        if hasattr(self, 'user_id') and self.user_id is not None:
+            _dict['user_id'] = self.user_id
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentJobsResultItemMetadata:
+    """
+    Metadata information about the job.
+
+    :param str asset_id: (optional) The ID of the asset.
+    :param str name: (optional) Name of the job.
+    :param str owner_id: (optional) ID of the owner of the job.
+    :param int version: (optional) Version of the job.
+    """
+
+    def __init__(
+        self,
+        *,
+        asset_id: Optional[str] = None,
+        name: Optional[str] = None,
+        owner_id: Optional[str] = None,
+        version: Optional[int] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentJobsResultItemMetadata object.
+
+        :param str asset_id: (optional) The ID of the asset.
+        :param str name: (optional) Name of the job.
+        :param str owner_id: (optional) ID of the owner of the job.
+        :param int version: (optional) Version of the job.
+        """
+        self.asset_id = asset_id
+        self.name = name
+        self.owner_id = owner_id
+        self.version = version
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentJobsResultItemMetadata':
+        """Initialize a SalIntegrationEnrichmentJobsResultItemMetadata object from a json dictionary."""
+        args = {}
+        if (asset_id := _dict.get('asset_id')) is not None:
+            args['asset_id'] = asset_id
+        if (name := _dict.get('name')) is not None:
+            args['name'] = name
+        if (owner_id := _dict.get('owner_id')) is not None:
+            args['owner_id'] = owner_id
+        if (version := _dict.get('version')) is not None:
+            args['version'] = version
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentJobsResultItemMetadata object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'asset_id') and self.asset_id is not None:
+            _dict['asset_id'] = self.asset_id
+        if hasattr(self, 'name') and self.name is not None:
+            _dict['name'] = self.name
+        if hasattr(self, 'owner_id') and self.owner_id is not None:
+            _dict['owner_id'] = self.owner_id
+        if hasattr(self, 'version') and self.version is not None:
+            _dict['version'] = self.version
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentJobsResultItemMetadata object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentJobsResultItemMetadata') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentJobsResultItemMetadata') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentSettings:
+    """
+    Sal Integration Enrichment Settings objects.
+
+    :param SalIntegrationEnrichmentSettingsSemanticExpansion semantic_expansion:
+          (optional) semantic expansion.
+    :param SalIntegrationEnrichmentSettingsTermAssignment term_assignment:
+          (optional) semantic expansion.
+    """
+
+    def __init__(
+        self,
+        *,
+        semantic_expansion: Optional['SalIntegrationEnrichmentSettingsSemanticExpansion'] = None,
+        term_assignment: Optional['SalIntegrationEnrichmentSettingsTermAssignment'] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentSettings object.
+
+        :param SalIntegrationEnrichmentSettingsSemanticExpansion
+               semantic_expansion: (optional) semantic expansion.
+        :param SalIntegrationEnrichmentSettingsTermAssignment term_assignment:
+               (optional) semantic expansion.
+        """
+        self.semantic_expansion = semantic_expansion
+        self.term_assignment = term_assignment
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentSettings':
+        """Initialize a SalIntegrationEnrichmentSettings object from a json dictionary."""
+        args = {}
+        if (semantic_expansion := _dict.get('semantic_expansion')) is not None:
+            args['semantic_expansion'] = SalIntegrationEnrichmentSettingsSemanticExpansion.from_dict(semantic_expansion)
+        if (term_assignment := _dict.get('term_assignment')) is not None:
+            args['term_assignment'] = SalIntegrationEnrichmentSettingsTermAssignment.from_dict(term_assignment)
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentSettings object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'semantic_expansion') and self.semantic_expansion is not None:
+            if isinstance(self.semantic_expansion, dict):
+                _dict['semantic_expansion'] = self.semantic_expansion
+            else:
+                _dict['semantic_expansion'] = self.semantic_expansion.to_dict()
+        if hasattr(self, 'term_assignment') and self.term_assignment is not None:
+            if isinstance(self.term_assignment, dict):
+                _dict['term_assignment'] = self.term_assignment
+            else:
+                _dict['term_assignment'] = self.term_assignment.to_dict()
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentSettings object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentSettings') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentSettings') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentSettingsSemanticExpansion:
+    """
+    semantic expansion.
+
+    :param bool description_generation: (optional) description generation.
+    :param
+          SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration
+          description_generation_configuration: (optional) description generation
+          configuration.
+    :param bool name_expansion: (optional) name expansion.
+    :param
+          SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration
+          name_expansion_configuration: (optional) name expansion configuration.
+    """
+
+    def __init__(
+        self,
+        *,
+        description_generation: Optional[bool] = None,
+        description_generation_configuration: Optional['SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration'] = None,
+        name_expansion: Optional[bool] = None,
+        name_expansion_configuration: Optional['SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration'] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentSettingsSemanticExpansion object.
+
+        :param bool description_generation: (optional) description generation.
+        :param
+               SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration
+               description_generation_configuration: (optional) description generation
+               configuration.
+        :param bool name_expansion: (optional) name expansion.
+        :param
+               SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration
+               name_expansion_configuration: (optional) name expansion configuration.
+        """
+        self.description_generation = description_generation
+        self.description_generation_configuration = description_generation_configuration
+        self.name_expansion = name_expansion
+        self.name_expansion_configuration = name_expansion_configuration
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentSettingsSemanticExpansion':
+        """Initialize a SalIntegrationEnrichmentSettingsSemanticExpansion object from a json dictionary."""
+        args = {}
+        if (description_generation := _dict.get('description_generation')) is not None:
+            args['description_generation'] = description_generation
+        if (description_generation_configuration := _dict.get('description_generation_configuration')) is not None:
+            args['description_generation_configuration'] = SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration.from_dict(description_generation_configuration)
+        if (name_expansion := _dict.get('name_expansion')) is not None:
+            args['name_expansion'] = name_expansion
+        if (name_expansion_configuration := _dict.get('name_expansion_configuration')) is not None:
+            args['name_expansion_configuration'] = SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration.from_dict(name_expansion_configuration)
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentSettingsSemanticExpansion object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'description_generation') and self.description_generation is not None:
+            _dict['description_generation'] = self.description_generation
+        if hasattr(self, 'description_generation_configuration') and self.description_generation_configuration is not None:
+            if isinstance(self.description_generation_configuration, dict):
+                _dict['description_generation_configuration'] = self.description_generation_configuration
+            else:
+                _dict['description_generation_configuration'] = self.description_generation_configuration.to_dict()
+        if hasattr(self, 'name_expansion') and self.name_expansion is not None:
+            _dict['name_expansion'] = self.name_expansion
+        if hasattr(self, 'name_expansion_configuration') and self.name_expansion_configuration is not None:
+            if isinstance(self.name_expansion_configuration, dict):
+                _dict['name_expansion_configuration'] = self.name_expansion_configuration
+            else:
+                _dict['name_expansion_configuration'] = self.name_expansion_configuration.to_dict()
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentSettingsSemanticExpansion object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentSettingsSemanticExpansion') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentSettingsSemanticExpansion') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration:
+    """
+    description generation configuration.
+
+    :param float assignment_threshold: (optional) assignment threshold.
+    :param float suggestion_threshold: (optional) suggestion threshold.
+    """
+
+    def __init__(
+        self,
+        *,
+        assignment_threshold: Optional[float] = None,
+        suggestion_threshold: Optional[float] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration object.
+
+        :param float assignment_threshold: (optional) assignment threshold.
+        :param float suggestion_threshold: (optional) suggestion threshold.
+        """
+        self.assignment_threshold = assignment_threshold
+        self.suggestion_threshold = suggestion_threshold
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration':
+        """Initialize a SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration object from a json dictionary."""
+        args = {}
+        if (assignment_threshold := _dict.get('assignment_threshold')) is not None:
+            args['assignment_threshold'] = assignment_threshold
+        if (suggestion_threshold := _dict.get('suggestion_threshold')) is not None:
+            args['suggestion_threshold'] = suggestion_threshold
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'assignment_threshold') and self.assignment_threshold is not None:
+            _dict['assignment_threshold'] = self.assignment_threshold
+        if hasattr(self, 'suggestion_threshold') and self.suggestion_threshold is not None:
+            _dict['suggestion_threshold'] = self.suggestion_threshold
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration:
+    """
+    name expansion configuration.
+
+    :param float assignment_threshold: (optional) assignment threshold.
+    :param float suggestion_threshold: (optional) suggestion threshold.
+    """
+
+    def __init__(
+        self,
+        *,
+        assignment_threshold: Optional[float] = None,
+        suggestion_threshold: Optional[float] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration object.
+
+        :param float assignment_threshold: (optional) assignment threshold.
+        :param float suggestion_threshold: (optional) suggestion threshold.
+        """
+        self.assignment_threshold = assignment_threshold
+        self.suggestion_threshold = suggestion_threshold
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration':
+        """Initialize a SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration object from a json dictionary."""
+        args = {}
+        if (assignment_threshold := _dict.get('assignment_threshold')) is not None:
+            args['assignment_threshold'] = assignment_threshold
+        if (suggestion_threshold := _dict.get('suggestion_threshold')) is not None:
+            args['suggestion_threshold'] = suggestion_threshold
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'assignment_threshold') and self.assignment_threshold is not None:
+            _dict['assignment_threshold'] = self.assignment_threshold
+        if hasattr(self, 'suggestion_threshold') and self.suggestion_threshold is not None:
+            _dict['suggestion_threshold'] = self.suggestion_threshold
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationEnrichmentSettingsTermAssignment:
+    """
+    semantic expansion.
+
+    :param bool class_based_assignments: (optional) class based assignments.
+    :param bool evaluate_negative_assignments: (optional) evaluate negative
+          assignments.
+    :param bool llm_based_assignments: (optional) llm based assignments.
+    :param bool ml_based_assignments_custom: (optional) ml based assignments custom.
+    :param bool ml_based_assignments_default: (optional) ml based assignments
+          default.
+    :param bool name_matching: (optional) name matching.
+    :param float term_assignment_threshold: (optional) term assignment threshold.
+    :param float term_suggestion_threshold: (optional) term suggestion threshold.
+    """
+
+    def __init__(
+        self,
+        *,
+        class_based_assignments: Optional[bool] = None,
+        evaluate_negative_assignments: Optional[bool] = None,
+        llm_based_assignments: Optional[bool] = None,
+        ml_based_assignments_custom: Optional[bool] = None,
+        ml_based_assignments_default: Optional[bool] = None,
+        name_matching: Optional[bool] = None,
+        term_assignment_threshold: Optional[float] = None,
+        term_suggestion_threshold: Optional[float] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationEnrichmentSettingsTermAssignment object.
+
+        :param bool class_based_assignments: (optional) class based assignments.
+        :param bool evaluate_negative_assignments: (optional) evaluate negative
+               assignments.
+        :param bool llm_based_assignments: (optional) llm based assignments.
+        :param bool ml_based_assignments_custom: (optional) ml based assignments
+               custom.
+        :param bool ml_based_assignments_default: (optional) ml based assignments
+               default.
+        :param bool name_matching: (optional) name matching.
+        :param float term_assignment_threshold: (optional) term assignment
+               threshold.
+        :param float term_suggestion_threshold: (optional) term suggestion
+               threshold.
+        """
+        self.class_based_assignments = class_based_assignments
+        self.evaluate_negative_assignments = evaluate_negative_assignments
+        self.llm_based_assignments = llm_based_assignments
+        self.ml_based_assignments_custom = ml_based_assignments_custom
+        self.ml_based_assignments_default = ml_based_assignments_default
+        self.name_matching = name_matching
+        self.term_assignment_threshold = term_assignment_threshold
+        self.term_suggestion_threshold = term_suggestion_threshold
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationEnrichmentSettingsTermAssignment':
+        """Initialize a SalIntegrationEnrichmentSettingsTermAssignment object from a json dictionary."""
+        args = {}
+        if (class_based_assignments := _dict.get('class_based_assignments')) is not None:
+            args['class_based_assignments'] = class_based_assignments
+        if (evaluate_negative_assignments := _dict.get('evaluate_negative_assignments')) is not None:
+            args['evaluate_negative_assignments'] = evaluate_negative_assignments
+        if (llm_based_assignments := _dict.get('llm_based_assignments')) is not None:
+            args['llm_based_assignments'] = llm_based_assignments
+        if (ml_based_assignments_custom := _dict.get('ml_based_assignments_custom')) is not None:
+            args['ml_based_assignments_custom'] = ml_based_assignments_custom
+        if (ml_based_assignments_default := _dict.get('ml_based_assignments_default')) is not None:
+            args['ml_based_assignments_default'] = ml_based_assignments_default
+        if (name_matching := _dict.get('name_matching')) is not None:
+            args['name_matching'] = name_matching
+        if (term_assignment_threshold := _dict.get('term_assignment_threshold')) is not None:
+            args['term_assignment_threshold'] = term_assignment_threshold
+        if (term_suggestion_threshold := _dict.get('term_suggestion_threshold')) is not None:
+            args['term_suggestion_threshold'] = term_suggestion_threshold
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationEnrichmentSettingsTermAssignment object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'class_based_assignments') and self.class_based_assignments is not None:
+            _dict['class_based_assignments'] = self.class_based_assignments
+        if hasattr(self, 'evaluate_negative_assignments') and self.evaluate_negative_assignments is not None:
+            _dict['evaluate_negative_assignments'] = self.evaluate_negative_assignments
+        if hasattr(self, 'llm_based_assignments') and self.llm_based_assignments is not None:
+            _dict['llm_based_assignments'] = self.llm_based_assignments
+        if hasattr(self, 'ml_based_assignments_custom') and self.ml_based_assignments_custom is not None:
+            _dict['ml_based_assignments_custom'] = self.ml_based_assignments_custom
+        if hasattr(self, 'ml_based_assignments_default') and self.ml_based_assignments_default is not None:
+            _dict['ml_based_assignments_default'] = self.ml_based_assignments_default
+        if hasattr(self, 'name_matching') and self.name_matching is not None:
+            _dict['name_matching'] = self.name_matching
+        if hasattr(self, 'term_assignment_threshold') and self.term_assignment_threshold is not None:
+            _dict['term_assignment_threshold'] = self.term_assignment_threshold
+        if hasattr(self, 'term_suggestion_threshold') and self.term_suggestion_threshold is not None:
+            _dict['term_suggestion_threshold'] = self.term_suggestion_threshold
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationEnrichmentSettingsTermAssignment object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationEnrichmentSettingsTermAssignment') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationEnrichmentSettingsTermAssignment') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationGlossaryTerms:
+    """
+    Sal integration glossary terms.
+
+    :param GlossaryObject glossary_term: (optional) glossary object.
+    """
+
+    def __init__(
+        self,
+        *,
+        glossary_term: Optional['GlossaryObject'] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationGlossaryTerms object.
+
+        :param GlossaryObject glossary_term: (optional) glossary object.
+        """
+        self.glossary_term = glossary_term
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationGlossaryTerms':
+        """Initialize a SalIntegrationGlossaryTerms object from a json dictionary."""
+        args = {}
+        if (glossary_term := _dict.get('glossary_term')) is not None:
+            args['glossary_term'] = GlossaryObject.from_dict(glossary_term)
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationGlossaryTerms object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'glossary_term') and self.glossary_term is not None:
+            if isinstance(self.glossary_term, dict):
+                _dict['glossary_term'] = self.glossary_term
+            else:
+                _dict['glossary_term'] = self.glossary_term.to_dict()
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationGlossaryTerms object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationGlossaryTerms') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationGlossaryTerms') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationMappings:
+    """
+    Sal Integration Mappings object.
+
+    :param str wkc_catalog_id: (optional) catalog name.
+    :param str wkc_project_id: (optional) operation type.
+    """
+
+    def __init__(
+        self,
+        *,
+        wkc_catalog_id: Optional[str] = None,
+        wkc_project_id: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationMappings object.
+
+        :param str wkc_catalog_id: (optional) catalog name.
+        :param str wkc_project_id: (optional) operation type.
+        """
+        self.wkc_catalog_id = wkc_catalog_id
+        self.wkc_project_id = wkc_project_id
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationMappings':
+        """Initialize a SalIntegrationMappings object from a json dictionary."""
+        args = {}
+        if (wkc_catalog_id := _dict.get('wkc_catalog_id')) is not None:
+            args['wkc_catalog_id'] = wkc_catalog_id
+        if (wkc_project_id := _dict.get('wkc_project_id')) is not None:
+            args['wkc_project_id'] = wkc_project_id
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationMappings object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'wkc_catalog_id') and self.wkc_catalog_id is not None:
+            _dict['wkc_catalog_id'] = self.wkc_catalog_id
+        if hasattr(self, 'wkc_project_id') and self.wkc_project_id is not None:
+            _dict['wkc_project_id'] = self.wkc_project_id
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationMappings object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationMappings') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationMappings') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationPatch:
+    """
+    update sal integration.
+
+    :param str op: (optional) op.
+    :param str path: (optional) path.
+    :param str value: (optional) path.
+    """
+
+    def __init__(
+        self,
+        *,
+        op: Optional[str] = None,
+        path: Optional[str] = None,
+        value: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationPatch object.
+
+        :param str op: (optional) op.
+        :param str path: (optional) path.
+        :param str value: (optional) path.
+        """
+        self.op = op
+        self.path = path
+        self.value = value
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationPatch':
+        """Initialize a SalIntegrationPatch object from a json dictionary."""
+        args = {}
+        if (op := _dict.get('op')) is not None:
+            args['op'] = op
+        if (path := _dict.get('path')) is not None:
+            args['path'] = path
+        if (value := _dict.get('value')) is not None:
+            args['value'] = value
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationPatch object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'op') and self.op is not None:
+            _dict['op'] = self.op
+        if hasattr(self, 'path') and self.path is not None:
+            _dict['path'] = self.path
+        if hasattr(self, 'value') and self.value is not None:
+            _dict['value'] = self.value
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationPatch object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationPatch') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationPatch') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationUploadGlossary:
+    """
+    Sal Integration Upload Glossary.
+
+    :param str process_id: (optional) catalog name.
+    """
+
+    def __init__(
+        self,
+        *,
+        process_id: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationUploadGlossary object.
+
+        :param str process_id: (optional) catalog name.
+        """
+        self.process_id = process_id
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationUploadGlossary':
+        """Initialize a SalIntegrationUploadGlossary object from a json dictionary."""
+        args = {}
+        if (process_id := _dict.get('process_id')) is not None:
+            args['process_id'] = process_id
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationUploadGlossary object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'process_id') and self.process_id is not None:
+            _dict['process_id'] = self.process_id
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationUploadGlossary object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationUploadGlossary') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationUploadGlossary') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class SalIntegrationUploadGlossaryStatus:
+    """
+    Sal Integration Upload Glossary Status.
+
+    :param str response: (optional) catalog status.
+    """
+
+    def __init__(
+        self,
+        *,
+        response: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a SalIntegrationUploadGlossaryStatus object.
+
+        :param str response: (optional) catalog status.
+        """
+        self.response = response
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'SalIntegrationUploadGlossaryStatus':
+        """Initialize a SalIntegrationUploadGlossaryStatus object from a json dictionary."""
+        args = {}
+        if (response := _dict.get('response')) is not None:
+            args['response'] = response
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a SalIntegrationUploadGlossaryStatus object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'response') and self.response is not None:
+            _dict['response'] = self.response
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this SalIntegrationUploadGlossaryStatus object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'SalIntegrationUploadGlossaryStatus') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'SalIntegrationUploadGlossaryStatus') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
+class ScheduleInfo:
+    """
+    Information about the schedule.
+
+    :param str frequency: (optional) Frequency of schedule execution (e.g., daily,
+          weekly, monthly).
+    """
+
+    def __init__(
+        self,
+        *,
+        frequency: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a ScheduleInfo object.
+
+        :param str frequency: (optional) Frequency of schedule execution (e.g.,
+               daily, weekly, monthly).
+        """
+        self.frequency = frequency
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'ScheduleInfo':
+        """Initialize a ScheduleInfo object from a json dictionary."""
+        args = {}
+        if (frequency := _dict.get('frequency')) is not None:
+            args['frequency'] = frequency
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a ScheduleInfo object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'frequency') and self.frequency is not None:
+            _dict['frequency'] = self.frequency
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this ScheduleInfo object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'ScheduleInfo') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'ScheduleInfo') -> bool:
         """Return `true` when self and other are not equal, false otherwise."""
         return not self == other
 
@@ -15958,6 +22497,143 @@ class SparkVolumeDetails:
         return not self == other
 
 
+class StorageDetails:
+    """
+    storage details.
+
+    :param str access_key: (optional) Access key ID, encrypted during bucket
+          registration.
+    :param str application_id: (optional) Application Id for bucket registration.
+    :param str auth_mode: Auth mode types.
+    :param str container_name: actual container name.
+    :param str directory_id: (optional) Directory Id for bucket registration.
+    :param str endpoint: ADLS endpoint.
+    :param str sas_token: (optional) sas token, encrypted during bucket
+          registration.
+    :param str secret_key: (optional) Secret access key, encrypted during bucket
+          registration.
+    :param str storage_account_name: actual storage name.
+    """
+
+    def __init__(
+        self,
+        auth_mode: str,
+        container_name: str,
+        endpoint: str,
+        storage_account_name: str,
+        *,
+        access_key: Optional[str] = None,
+        application_id: Optional[str] = None,
+        directory_id: Optional[str] = None,
+        sas_token: Optional[str] = None,
+        secret_key: Optional[str] = None,
+    ) -> None:
+        """
+        Initialize a StorageDetails object.
+
+        :param str auth_mode: Auth mode types.
+        :param str container_name: actual container name.
+        :param str endpoint: ADLS endpoint.
+        :param str storage_account_name: actual storage name.
+        :param str access_key: (optional) Access key ID, encrypted during bucket
+               registration.
+        :param str application_id: (optional) Application Id for bucket
+               registration.
+        :param str directory_id: (optional) Directory Id for bucket registration.
+        :param str sas_token: (optional) sas token, encrypted during bucket
+               registration.
+        :param str secret_key: (optional) Secret access key, encrypted during
+               bucket registration.
+        """
+        self.access_key = access_key
+        self.application_id = application_id
+        self.auth_mode = auth_mode
+        self.container_name = container_name
+        self.directory_id = directory_id
+        self.endpoint = endpoint
+        self.sas_token = sas_token
+        self.secret_key = secret_key
+        self.storage_account_name = storage_account_name
+
+    @classmethod
+    def from_dict(cls, _dict: Dict) -> 'StorageDetails':
+        """Initialize a StorageDetails object from a json dictionary."""
+        args = {}
+        if (access_key := _dict.get('access_key')) is not None:
+            args['access_key'] = access_key
+        if (application_id := _dict.get('application_id')) is not None:
+            args['application_id'] = application_id
+        if (auth_mode := _dict.get('auth_mode')) is not None:
+            args['auth_mode'] = auth_mode
+        else:
+            raise ValueError('Required property \'auth_mode\' not present in StorageDetails JSON')
+        if (container_name := _dict.get('container_name')) is not None:
+            args['container_name'] = container_name
+        else:
+            raise ValueError('Required property \'container_name\' not present in StorageDetails JSON')
+        if (directory_id := _dict.get('directory_id')) is not None:
+            args['directory_id'] = directory_id
+        if (endpoint := _dict.get('endpoint')) is not None:
+            args['endpoint'] = endpoint
+        else:
+            raise ValueError('Required property \'endpoint\' not present in StorageDetails JSON')
+        if (sas_token := _dict.get('sas_token')) is not None:
+            args['sas_token'] = sas_token
+        if (secret_key := _dict.get('secret_key')) is not None:
+            args['secret_key'] = secret_key
+        if (storage_account_name := _dict.get('storage_account_name')) is not None:
+            args['storage_account_name'] = storage_account_name
+        else:
+            raise ValueError('Required property \'storage_account_name\' not present in StorageDetails JSON')
+        return cls(**args)
+
+    @classmethod
+    def _from_dict(cls, _dict):
+        """Initialize a StorageDetails object from a json dictionary."""
+        return cls.from_dict(_dict)
+
+    def to_dict(self) -> Dict:
+        """Return a json dictionary representing this model."""
+        _dict = {}
+        if hasattr(self, 'access_key') and self.access_key is not None:
+            _dict['access_key'] = self.access_key
+        if hasattr(self, 'application_id') and self.application_id is not None:
+            _dict['application_id'] = self.application_id
+        if hasattr(self, 'auth_mode') and self.auth_mode is not None:
+            _dict['auth_mode'] = self.auth_mode
+        if hasattr(self, 'container_name') and self.container_name is not None:
+            _dict['container_name'] = self.container_name
+        if hasattr(self, 'directory_id') and self.directory_id is not None:
+            _dict['directory_id'] = self.directory_id
+        if hasattr(self, 'endpoint') and self.endpoint is not None:
+            _dict['endpoint'] = self.endpoint
+        if hasattr(self, 'sas_token') and self.sas_token is not None:
+            _dict['sas_token'] = self.sas_token
+        if hasattr(self, 'secret_key') and self.secret_key is not None:
+            _dict['secret_key'] = self.secret_key
+        if hasattr(self, 'storage_account_name') and self.storage_account_name is not None:
+            _dict['storage_account_name'] = self.storage_account_name
+        return _dict
+
+    def _to_dict(self):
+        """Return a json dictionary representing this model."""
+        return self.to_dict()
+
+    def __str__(self) -> str:
+        """Return a `str` version of this StorageDetails object."""
+        return json.dumps(self.to_dict(), indent=2)
+
+    def __eq__(self, other: 'StorageDetails') -> bool:
+        """Return `true` when self and other are equal, false otherwise."""
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other: 'StorageDetails') -> bool:
+        """Return `true` when self and other are not equal, false otherwise."""
+        return not self == other
+
+
 class SuccessResponse:
     """
     Response of success.
@@ -16028,20 +22704,21 @@ class SyncCatalogs:
     """
     catalogs definition.
 
-    :param bool auto_add_new_tables: Auto add new table.
-    :param bool sync_iceberg_md: Sync iceberg metadata.
+    :param bool auto_add_new_tables: (optional) Auto add new table.
+    :param bool sync_iceberg_md: (optional) Sync iceberg metadata.
     """
 
     def __init__(
         self,
-        auto_add_new_tables: bool,
-        sync_iceberg_md: bool,
+        *,
+        auto_add_new_tables: Optional[bool] = None,
+        sync_iceberg_md: Optional[bool] = None,
     ) -> None:
         """
         Initialize a SyncCatalogs object.
 
-        :param bool auto_add_new_tables: Auto add new table.
-        :param bool sync_iceberg_md: Sync iceberg metadata.
+        :param bool auto_add_new_tables: (optional) Auto add new table.
+        :param bool sync_iceberg_md: (optional) Sync iceberg metadata.
         """
         self.auto_add_new_tables = auto_add_new_tables
         self.sync_iceberg_md = sync_iceberg_md
@@ -16052,12 +22729,8 @@ class SyncCatalogs:
         args = {}
         if (auto_add_new_tables := _dict.get('auto_add_new_tables')) is not None:
             args['auto_add_new_tables'] = auto_add_new_tables
-        else:
-            raise ValueError('Required property \'auto_add_new_tables\' not present in SyncCatalogs JSON')
         if (sync_iceberg_md := _dict.get('sync_iceberg_md')) is not None:
             args['sync_iceberg_md'] = sync_iceberg_md
-        else:
-            raise ValueError('Required property \'sync_iceberg_md\' not present in SyncCatalogs JSON')
         return cls(**args)
 
     @classmethod
@@ -16286,45 +22959,93 @@ class TableSnapshot:
     """
     TableSnapshot.
 
+    :param str added_data_files: (optional) Added data files.
+    :param str added_files_size: (optional) Added files size.
+    :param str added_records: (optional) Added records.
+    :param str changed_partition_count: (optional) Changed partition count.
     :param str committed_at: (optional) Committed at.
     :param str operation: (optional) Operation.
     :param str snapshot_id: (optional) Snapshot id.
-    :param str summary: (optional) Summary.
+    :param str total_data_files: (optional) Total data files.
+    :param str total_delete_files: (optional) Total delete files.
+    :param str total_equality_deletes: (optional) Total equality deletes.
+    :param str total_position_deletes: (optional) Total position deletes.
+    :param str total_records: (optional) Total records.
     """
 
     def __init__(
         self,
         *,
+        added_data_files: Optional[str] = None,
+        added_files_size: Optional[str] = None,
+        added_records: Optional[str] = None,
+        changed_partition_count: Optional[str] = None,
         committed_at: Optional[str] = None,
         operation: Optional[str] = None,
         snapshot_id: Optional[str] = None,
-        summary: Optional[str] = None,
+        total_data_files: Optional[str] = None,
+        total_delete_files: Optional[str] = None,
+        total_equality_deletes: Optional[str] = None,
+        total_position_deletes: Optional[str] = None,
+        total_records: Optional[str] = None,
     ) -> None:
         """
         Initialize a TableSnapshot object.
 
+        :param str added_data_files: (optional) Added data files.
+        :param str added_files_size: (optional) Added files size.
+        :param str added_records: (optional) Added records.
+        :param str changed_partition_count: (optional) Changed partition count.
         :param str committed_at: (optional) Committed at.
         :param str operation: (optional) Operation.
         :param str snapshot_id: (optional) Snapshot id.
-        :param str summary: (optional) Summary.
+        :param str total_data_files: (optional) Total data files.
+        :param str total_delete_files: (optional) Total delete files.
+        :param str total_equality_deletes: (optional) Total equality deletes.
+        :param str total_position_deletes: (optional) Total position deletes.
+        :param str total_records: (optional) Total records.
         """
+        self.added_data_files = added_data_files
+        self.added_files_size = added_files_size
+        self.added_records = added_records
+        self.changed_partition_count = changed_partition_count
         self.committed_at = committed_at
         self.operation = operation
         self.snapshot_id = snapshot_id
-        self.summary = summary
+        self.total_data_files = total_data_files
+        self.total_delete_files = total_delete_files
+        self.total_equality_deletes = total_equality_deletes
+        self.total_position_deletes = total_position_deletes
+        self.total_records = total_records
 
     @classmethod
     def from_dict(cls, _dict: Dict) -> 'TableSnapshot':
         """Initialize a TableSnapshot object from a json dictionary."""
         args = {}
+        if (added_data_files := _dict.get('added_data_files')) is not None:
+            args['added_data_files'] = added_data_files
+        if (added_files_size := _dict.get('added_files_size')) is not None:
+            args['added_files_size'] = added_files_size
+        if (added_records := _dict.get('added_records')) is not None:
+            args['added_records'] = added_records
+        if (changed_partition_count := _dict.get('changed_partition_count')) is not None:
+            args['changed_partition_count'] = changed_partition_count
         if (committed_at := _dict.get('committed_at')) is not None:
             args['committed_at'] = committed_at
         if (operation := _dict.get('operation')) is not None:
             args['operation'] = operation
         if (snapshot_id := _dict.get('snapshot_id')) is not None:
             args['snapshot_id'] = snapshot_id
-        if (summary := _dict.get('summary')) is not None:
-            args['summary'] = summary
+        if (total_data_files := _dict.get('total_data_files')) is not None:
+            args['total_data_files'] = total_data_files
+        if (total_delete_files := _dict.get('total_delete_files')) is not None:
+            args['total_delete_files'] = total_delete_files
+        if (total_equality_deletes := _dict.get('total_equality_deletes')) is not None:
+            args['total_equality_deletes'] = total_equality_deletes
+        if (total_position_deletes := _dict.get('total_position_deletes')) is not None:
+            args['total_position_deletes'] = total_position_deletes
+        if (total_records := _dict.get('total_records')) is not None:
+            args['total_records'] = total_records
         return cls(**args)
 
     @classmethod
@@ -16335,14 +23056,30 @@ class TableSnapshot:
     def to_dict(self) -> Dict:
         """Return a json dictionary representing this model."""
         _dict = {}
+        if hasattr(self, 'added_data_files') and self.added_data_files is not None:
+            _dict['added_data_files'] = self.added_data_files
+        if hasattr(self, 'added_files_size') and self.added_files_size is not None:
+            _dict['added_files_size'] = self.added_files_size
+        if hasattr(self, 'added_records') and self.added_records is not None:
+            _dict['added_records'] = self.added_records
+        if hasattr(self, 'changed_partition_count') and self.changed_partition_count is not None:
+            _dict['changed_partition_count'] = self.changed_partition_count
         if hasattr(self, 'committed_at') and self.committed_at is not None:
             _dict['committed_at'] = self.committed_at
         if hasattr(self, 'operation') and self.operation is not None:
             _dict['operation'] = self.operation
         if hasattr(self, 'snapshot_id') and self.snapshot_id is not None:
             _dict['snapshot_id'] = self.snapshot_id
-        if hasattr(self, 'summary') and self.summary is not None:
-            _dict['summary'] = self.summary
+        if hasattr(self, 'total_data_files') and self.total_data_files is not None:
+            _dict['total_data_files'] = self.total_data_files
+        if hasattr(self, 'total_delete_files') and self.total_delete_files is not None:
+            _dict['total_delete_files'] = self.total_delete_files
+        if hasattr(self, 'total_equality_deletes') and self.total_equality_deletes is not None:
+            _dict['total_equality_deletes'] = self.total_equality_deletes
+        if hasattr(self, 'total_position_deletes') and self.total_position_deletes is not None:
+            _dict['total_position_deletes'] = self.total_position_deletes
+        if hasattr(self, 'total_records') and self.total_records is not None:
+            _dict['total_records'] = self.total_records
         return _dict
 
     def _to_dict(self):
@@ -16642,3 +23379,75 @@ class UpdateSyncCatalogOKBody:
     def __ne__(self, other: 'UpdateSyncCatalogOKBody') -> bool:
         """Return `true` when self and other are not equal, false otherwise."""
         return not self == other
+
+##############################################################################
+# Pagers
+##############################################################################
+
+
+class IngestionJobsPager:
+    """
+    IngestionJobsPager can be used to simplify the use of the "list_ingestion_jobs" method.
+    """
+
+    def __init__(
+        self,
+        *,
+        client: WatsonxDataV2,
+        auth_instance_id: str,
+        jobs_per_page: int = None,
+    ) -> None:
+        """
+        Initialize a IngestionJobsPager object.
+        :param str auth_instance_id: watsonx.data instance ID.
+        :param int jobs_per_page: (optional) Number of requested ingestion jobs.
+        """
+        self._has_next = True
+        self._client = client
+        self._page_context = {'next': None}
+        self._auth_instance_id = auth_instance_id
+        self._jobs_per_page = jobs_per_page
+
+    def has_next(self) -> bool:
+        """
+        Returns true if there are potentially more results to be retrieved.
+        """
+        return self._has_next
+
+    def get_next(self) -> List[dict]:
+        """
+        Returns the next page of results.
+        :return: A List[dict], where each element is a dict that represents an instance of IngestionJob.
+        :rtype: List[dict]
+        """
+        if not self.has_next():
+            raise StopIteration(message='No more results available')
+
+        result = self._client.list_ingestion_jobs(
+            auth_instance_id=self._auth_instance_id,
+            jobs_per_page=self._jobs_per_page,
+            start=self._page_context.get('next'),
+        ).get_result()
+
+        next = None
+        next_page_link = result.get('next')
+        if next_page_link is not None:
+            next = get_query_param(next_page_link.get('href'), 'start')
+        self._page_context['next'] = next
+        if next is None:
+            self._has_next = False
+
+        return result.get('ingestion_jobs')
+
+    def get_all(self) -> List[dict]:
+        """
+        Returns all results by invoking get_next() repeatedly
+        until all pages of results have been retrieved.
+        :return: A List[dict], where each element is a dict that represents an instance of IngestionJob.
+        :rtype: List[dict]
+        """
+        results = []
+        while self.has_next():
+            next_page = self.get_next()
+            results.extend(next_page)
+        return results

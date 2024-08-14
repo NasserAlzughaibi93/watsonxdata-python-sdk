@@ -103,7 +103,7 @@ class TestListBucketRegistrations:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations')
-        mock_response = '{"bucket_registrations": [{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}]}'
+        mock_response = '{"bucket_registrations": [{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "key_file": "key_file", "provider": "ibm_cos", "region": "us-south", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "storage_details": {"access_key": "<access_key>", "application_id": "<application_id>", "auth_mode": "<account_key/sas/service_principle>", "container_name": "sample-container", "directory_id": "<directory_id>", "endpoint": "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/", "sas_token": "<sas_token>", "secret_key": "secret_key", "storage_account_name": "sample-storage"}, "tags": ["tags"]}]}'
         responses.add(
             responses.GET,
             url,
@@ -141,7 +141,7 @@ class TestListBucketRegistrations:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations')
-        mock_response = '{"bucket_registrations": [{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}]}'
+        mock_response = '{"bucket_registrations": [{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "key_file": "key_file", "provider": "ibm_cos", "region": "us-south", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "storage_details": {"access_key": "<access_key>", "application_id": "<application_id>", "auth_mode": "<account_key/sas/service_principle>", "container_name": "sample-container", "directory_id": "<directory_id>", "endpoint": "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/", "sas_token": "<sas_token>", "secret_key": "secret_key", "storage_account_name": "sample-storage"}, "tags": ["tags"]}]}'
         responses.add(
             responses.GET,
             url,
@@ -179,7 +179,7 @@ class TestCreateBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "key_file": "key_file", "provider": "ibm_cos", "region": "us-south", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "storage_details": {"access_key": "<access_key>", "application_id": "<application_id>", "auth_mode": "<account_key/sas/service_principle>", "container_name": "sample-container", "directory_id": "<directory_id>", "endpoint": "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/", "sas_token": "<sas_token>", "secret_key": "secret_key", "storage_account_name": "sample-storage"}, "tags": ["tags"]}'
         responses.add(
             responses.POST,
             url,
@@ -188,39 +188,56 @@ class TestCreateBucketRegistration:
             status=201,
         )
 
-        # Construct a dict representation of a BucketDetails model
-        bucket_details_model = {}
-        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
-        bucket_details_model['bucket_name'] = 'sample-bucket'
-        bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
-
         # Construct a dict representation of a BucketCatalog model
         bucket_catalog_model = {}
         bucket_catalog_model['catalog_name'] = 'sampleCatalog'
         bucket_catalog_model['catalog_tags'] = ['catalog_tag_1', 'catalog_tag_2']
         bucket_catalog_model['catalog_type'] = 'iceberg'
 
+        # Construct a dict representation of a BucketDetails model
+        bucket_details_model = {}
+        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
+        bucket_details_model['bucket_name'] = 'sample-bucket'
+        bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
+        bucket_details_model['key_file'] = 'key_file'
+        bucket_details_model['provider'] = 'ibm_cos'
+        bucket_details_model['region'] = 'us-south'
+        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
+
+        # Construct a dict representation of a StorageDetails model
+        storage_details_model = {}
+        storage_details_model['access_key'] = '<access_key>'
+        storage_details_model['application_id'] = '<application_id>'
+        storage_details_model['auth_mode'] = '<account_key/sas/service_principle>'
+        storage_details_model['container_name'] = 'sample-container'
+        storage_details_model['directory_id'] = '<directory_id>'
+        storage_details_model['endpoint'] = 'abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/'
+        storage_details_model['sas_token'] = '<sas_token>'
+        storage_details_model['secret_key'] = 'secret_key'
+        storage_details_model['storage_account_name'] = 'sample-storage'
+
         # Set up parameter values
-        bucket_details = bucket_details_model
         bucket_type = 'ibm_cos'
         description = 'COS bucket for customer data'
         managed_by = 'ibm'
         associated_catalog = bucket_catalog_model
+        bucket_details = bucket_details_model
         bucket_display_name = 'sample-bucket-displayname'
         region = 'us-south'
+        storage_details = storage_details_model
         tags = ['bucket-tag1', 'bucket-tag2']
         auth_instance_id = 'testString'
 
         # Invoke method
         response = _service.create_bucket_registration(
-            bucket_details,
             bucket_type,
             description,
             managed_by,
             associated_catalog=associated_catalog,
+            bucket_details=bucket_details,
             bucket_display_name=bucket_display_name,
             region=region,
+            storage_details=storage_details,
             tags=tags,
             auth_instance_id=auth_instance_id,
             headers={},
@@ -231,13 +248,14 @@ class TestCreateBucketRegistration:
         assert response.status_code == 201
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['bucket_details'] == bucket_details_model
         assert req_body['bucket_type'] == 'ibm_cos'
         assert req_body['description'] == 'COS bucket for customer data'
         assert req_body['managed_by'] == 'ibm'
         assert req_body['associated_catalog'] == bucket_catalog_model
+        assert req_body['bucket_details'] == bucket_details_model
         assert req_body['bucket_display_name'] == 'sample-bucket-displayname'
         assert req_body['region'] == 'us-south'
+        assert req_body['storage_details'] == storage_details_model
         assert req_body['tags'] == ['bucket-tag1', 'bucket-tag2']
 
     def test_create_bucket_registration_all_params_with_retries(self):
@@ -256,7 +274,7 @@ class TestCreateBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "key_file": "key_file", "provider": "ibm_cos", "region": "us-south", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "storage_details": {"access_key": "<access_key>", "application_id": "<application_id>", "auth_mode": "<account_key/sas/service_principle>", "container_name": "sample-container", "directory_id": "<directory_id>", "endpoint": "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/", "sas_token": "<sas_token>", "secret_key": "secret_key", "storage_account_name": "sample-storage"}, "tags": ["tags"]}'
         responses.add(
             responses.POST,
             url,
@@ -265,38 +283,55 @@ class TestCreateBucketRegistration:
             status=201,
         )
 
-        # Construct a dict representation of a BucketDetails model
-        bucket_details_model = {}
-        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
-        bucket_details_model['bucket_name'] = 'sample-bucket'
-        bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
-
         # Construct a dict representation of a BucketCatalog model
         bucket_catalog_model = {}
         bucket_catalog_model['catalog_name'] = 'sampleCatalog'
         bucket_catalog_model['catalog_tags'] = ['catalog_tag_1', 'catalog_tag_2']
         bucket_catalog_model['catalog_type'] = 'iceberg'
 
+        # Construct a dict representation of a BucketDetails model
+        bucket_details_model = {}
+        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
+        bucket_details_model['bucket_name'] = 'sample-bucket'
+        bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
+        bucket_details_model['key_file'] = 'key_file'
+        bucket_details_model['provider'] = 'ibm_cos'
+        bucket_details_model['region'] = 'us-south'
+        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
+
+        # Construct a dict representation of a StorageDetails model
+        storage_details_model = {}
+        storage_details_model['access_key'] = '<access_key>'
+        storage_details_model['application_id'] = '<application_id>'
+        storage_details_model['auth_mode'] = '<account_key/sas/service_principle>'
+        storage_details_model['container_name'] = 'sample-container'
+        storage_details_model['directory_id'] = '<directory_id>'
+        storage_details_model['endpoint'] = 'abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/'
+        storage_details_model['sas_token'] = '<sas_token>'
+        storage_details_model['secret_key'] = 'secret_key'
+        storage_details_model['storage_account_name'] = 'sample-storage'
+
         # Set up parameter values
-        bucket_details = bucket_details_model
         bucket_type = 'ibm_cos'
         description = 'COS bucket for customer data'
         managed_by = 'ibm'
         associated_catalog = bucket_catalog_model
+        bucket_details = bucket_details_model
         bucket_display_name = 'sample-bucket-displayname'
         region = 'us-south'
+        storage_details = storage_details_model
         tags = ['bucket-tag1', 'bucket-tag2']
 
         # Invoke method
         response = _service.create_bucket_registration(
-            bucket_details,
             bucket_type,
             description,
             managed_by,
             associated_catalog=associated_catalog,
+            bucket_details=bucket_details,
             bucket_display_name=bucket_display_name,
             region=region,
+            storage_details=storage_details,
             tags=tags,
             headers={},
         )
@@ -306,13 +341,14 @@ class TestCreateBucketRegistration:
         assert response.status_code == 201
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['bucket_details'] == bucket_details_model
         assert req_body['bucket_type'] == 'ibm_cos'
         assert req_body['description'] == 'COS bucket for customer data'
         assert req_body['managed_by'] == 'ibm'
         assert req_body['associated_catalog'] == bucket_catalog_model
+        assert req_body['bucket_details'] == bucket_details_model
         assert req_body['bucket_display_name'] == 'sample-bucket-displayname'
         assert req_body['region'] == 'us-south'
+        assert req_body['storage_details'] == storage_details_model
         assert req_body['tags'] == ['bucket-tag1', 'bucket-tag2']
 
     def test_create_bucket_registration_required_params_with_retries(self):
@@ -331,7 +367,7 @@ class TestCreateBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "key_file": "key_file", "provider": "ibm_cos", "region": "us-south", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "storage_details": {"access_key": "<access_key>", "application_id": "<application_id>", "auth_mode": "<account_key/sas/service_principle>", "container_name": "sample-container", "directory_id": "<directory_id>", "endpoint": "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/", "sas_token": "<sas_token>", "secret_key": "secret_key", "storage_account_name": "sample-storage"}, "tags": ["tags"]}'
         responses.add(
             responses.POST,
             url,
@@ -340,32 +376,47 @@ class TestCreateBucketRegistration:
             status=201,
         )
 
-        # Construct a dict representation of a BucketDetails model
-        bucket_details_model = {}
-        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
-        bucket_details_model['bucket_name'] = 'sample-bucket'
-        bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
-
         # Construct a dict representation of a BucketCatalog model
         bucket_catalog_model = {}
         bucket_catalog_model['catalog_name'] = 'sampleCatalog'
         bucket_catalog_model['catalog_tags'] = ['catalog_tag_1', 'catalog_tag_2']
         bucket_catalog_model['catalog_type'] = 'iceberg'
 
+        # Construct a dict representation of a BucketDetails model
+        bucket_details_model = {}
+        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
+        bucket_details_model['bucket_name'] = 'sample-bucket'
+        bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
+        bucket_details_model['key_file'] = 'key_file'
+        bucket_details_model['provider'] = 'ibm_cos'
+        bucket_details_model['region'] = 'us-south'
+        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
+
+        # Construct a dict representation of a StorageDetails model
+        storage_details_model = {}
+        storage_details_model['access_key'] = '<access_key>'
+        storage_details_model['application_id'] = '<application_id>'
+        storage_details_model['auth_mode'] = '<account_key/sas/service_principle>'
+        storage_details_model['container_name'] = 'sample-container'
+        storage_details_model['directory_id'] = '<directory_id>'
+        storage_details_model['endpoint'] = 'abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/'
+        storage_details_model['sas_token'] = '<sas_token>'
+        storage_details_model['secret_key'] = 'secret_key'
+        storage_details_model['storage_account_name'] = 'sample-storage'
+
         # Set up parameter values
-        bucket_details = bucket_details_model
         bucket_type = 'ibm_cos'
         description = 'COS bucket for customer data'
         managed_by = 'ibm'
         associated_catalog = bucket_catalog_model
+        bucket_details = bucket_details_model
         bucket_display_name = 'sample-bucket-displayname'
         region = 'us-south'
+        storage_details = storage_details_model
         tags = ['bucket-tag1', 'bucket-tag2']
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
-            "bucket_details": bucket_details,
             "bucket_type": bucket_type,
             "description": description,
             "managed_by": managed_by,
@@ -397,7 +448,7 @@ class TestGetBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "key_file": "key_file", "provider": "ibm_cos", "region": "us-south", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "storage_details": {"access_key": "<access_key>", "application_id": "<application_id>", "auth_mode": "<account_key/sas/service_principle>", "container_name": "sample-container", "directory_id": "<directory_id>", "endpoint": "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/", "sas_token": "<sas_token>", "secret_key": "secret_key", "storage_account_name": "sample-storage"}, "tags": ["tags"]}'
         responses.add(
             responses.GET,
             url,
@@ -437,7 +488,7 @@ class TestGetBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "key_file": "key_file", "provider": "ibm_cos", "region": "us-south", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "storage_details": {"access_key": "<access_key>", "application_id": "<application_id>", "auth_mode": "<account_key/sas/service_principle>", "container_name": "sample-container", "directory_id": "<directory_id>", "endpoint": "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/", "sas_token": "<sas_token>", "secret_key": "secret_key", "storage_account_name": "sample-storage"}, "tags": ["tags"]}'
         responses.add(
             responses.GET,
             url,
@@ -475,7 +526,7 @@ class TestGetBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "key_file": "key_file", "provider": "ibm_cos", "region": "us-south", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "storage_details": {"access_key": "<access_key>", "application_id": "<application_id>", "auth_mode": "<account_key/sas/service_principle>", "container_name": "sample-container", "directory_id": "<directory_id>", "endpoint": "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/", "sas_token": "<sas_token>", "secret_key": "secret_key", "storage_account_name": "sample-storage"}, "tags": ["tags"]}'
         responses.add(
             responses.GET,
             url,
@@ -506,15 +557,15 @@ class TestGetBucketRegistration:
         self.test_get_bucket_registration_value_error()
 
 
-class TestDeregisterBucket:
+class TestDeleteBucketRegistration:
     """
-    Test Class for deregister_bucket
+    Test Class for delete_bucket_registration
     """
 
     @responses.activate
-    def test_deregister_bucket_all_params(self):
+    def test_delete_bucket_registration_all_params(self):
         """
-        deregister_bucket()
+        delete_bucket_registration()
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
@@ -529,7 +580,7 @@ class TestDeregisterBucket:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.deregister_bucket(
+        response = _service.delete_bucket_registration(
             bucket_id,
             auth_instance_id=auth_instance_id,
             headers={},
@@ -539,19 +590,19 @@ class TestDeregisterBucket:
         assert len(responses.calls) == 1
         assert response.status_code == 204
 
-    def test_deregister_bucket_all_params_with_retries(self):
-        # Enable retries and run test_deregister_bucket_all_params.
+    def test_delete_bucket_registration_all_params_with_retries(self):
+        # Enable retries and run test_delete_bucket_registration_all_params.
         _service.enable_retries()
-        self.test_deregister_bucket_all_params()
+        self.test_delete_bucket_registration_all_params()
 
-        # Disable retries and run test_deregister_bucket_all_params.
+        # Disable retries and run test_delete_bucket_registration_all_params.
         _service.disable_retries()
-        self.test_deregister_bucket_all_params()
+        self.test_delete_bucket_registration_all_params()
 
     @responses.activate
-    def test_deregister_bucket_required_params(self):
+    def test_delete_bucket_registration_required_params(self):
         """
-        test_deregister_bucket_required_params()
+        test_delete_bucket_registration_required_params()
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
@@ -565,7 +616,7 @@ class TestDeregisterBucket:
         bucket_id = 'testString'
 
         # Invoke method
-        response = _service.deregister_bucket(
+        response = _service.delete_bucket_registration(
             bucket_id,
             headers={},
         )
@@ -574,19 +625,19 @@ class TestDeregisterBucket:
         assert len(responses.calls) == 1
         assert response.status_code == 204
 
-    def test_deregister_bucket_required_params_with_retries(self):
-        # Enable retries and run test_deregister_bucket_required_params.
+    def test_delete_bucket_registration_required_params_with_retries(self):
+        # Enable retries and run test_delete_bucket_registration_required_params.
         _service.enable_retries()
-        self.test_deregister_bucket_required_params()
+        self.test_delete_bucket_registration_required_params()
 
-        # Disable retries and run test_deregister_bucket_required_params.
+        # Disable retries and run test_delete_bucket_registration_required_params.
         _service.disable_retries()
-        self.test_deregister_bucket_required_params()
+        self.test_delete_bucket_registration_required_params()
 
     @responses.activate
-    def test_deregister_bucket_value_error(self):
+    def test_delete_bucket_registration_value_error(self):
         """
-        test_deregister_bucket_value_error()
+        test_delete_bucket_registration_value_error()
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
@@ -606,16 +657,16 @@ class TestDeregisterBucket:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.deregister_bucket(**req_copy)
+                _service.delete_bucket_registration(**req_copy)
 
-    def test_deregister_bucket_value_error_with_retries(self):
-        # Enable retries and run test_deregister_bucket_value_error.
+    def test_delete_bucket_registration_value_error_with_retries(self):
+        # Enable retries and run test_delete_bucket_registration_value_error.
         _service.enable_retries()
-        self.test_deregister_bucket_value_error()
+        self.test_delete_bucket_registration_value_error()
 
-        # Disable retries and run test_deregister_bucket_value_error.
+        # Disable retries and run test_delete_bucket_registration_value_error.
         _service.disable_retries()
-        self.test_deregister_bucket_value_error()
+        self.test_delete_bucket_registration_value_error()
 
 
 class TestUpdateBucketRegistration:
@@ -630,7 +681,7 @@ class TestUpdateBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "key_file": "key_file", "provider": "ibm_cos", "region": "us-south", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "storage_details": {"access_key": "<access_key>", "application_id": "<application_id>", "auth_mode": "<account_key/sas/service_principle>", "container_name": "sample-container", "directory_id": "<directory_id>", "endpoint": "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/", "sas_token": "<sas_token>", "secret_key": "secret_key", "storage_account_name": "sample-storage"}, "tags": ["tags"]}'
         responses.add(
             responses.PATCH,
             url,
@@ -644,6 +695,9 @@ class TestUpdateBucketRegistration:
         bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
         bucket_details_model['bucket_name'] = 'sample-bucket'
         bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
+        bucket_details_model['key_file'] = 'key_file'
+        bucket_details_model['provider'] = 'ibm_cos'
+        bucket_details_model['region'] = 'us-south'
         bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
 
         # Construct a dict representation of a BucketRegistrationPatch model
@@ -689,7 +743,7 @@ class TestUpdateBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "key_file": "key_file", "provider": "ibm_cos", "region": "us-south", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "storage_details": {"access_key": "<access_key>", "application_id": "<application_id>", "auth_mode": "<account_key/sas/service_principle>", "container_name": "sample-container", "directory_id": "<directory_id>", "endpoint": "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/", "sas_token": "<sas_token>", "secret_key": "secret_key", "storage_account_name": "sample-storage"}, "tags": ["tags"]}'
         responses.add(
             responses.PATCH,
             url,
@@ -703,6 +757,9 @@ class TestUpdateBucketRegistration:
         bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
         bucket_details_model['bucket_name'] = 'sample-bucket'
         bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
+        bucket_details_model['key_file'] = 'key_file'
+        bucket_details_model['provider'] = 'ibm_cos'
+        bucket_details_model['region'] = 'us-south'
         bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
 
         # Construct a dict representation of a BucketRegistrationPatch model
@@ -746,7 +803,7 @@ class TestUpdateBucketRegistration:
         """
         # Set up mock
         url = preprocess_url('/bucket_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_details": {"access_key": "b9cbf248ea5c4c96947e64407108559j", "bucket_name": "sample-bucket", "endpoint": "https://s3.<region>.cloud-object-storage.appdomain.cloud/", "key_file": "key_file", "provider": "ibm_cos", "region": "us-south", "secret_key": "13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87"}, "bucket_display_name": "sample-bucket-displayname", "bucket_id": "samplebucket123", "bucket_type": "ibm_cos", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "COS bucket for customer data", "managed_by": "ibm", "region": "us-south", "state": "active", "storage_details": {"access_key": "<access_key>", "application_id": "<application_id>", "auth_mode": "<account_key/sas/service_principle>", "container_name": "sample-container", "directory_id": "<directory_id>", "endpoint": "abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/", "sas_token": "<sas_token>", "secret_key": "secret_key", "storage_account_name": "sample-storage"}, "tags": ["tags"]}'
         responses.add(
             responses.PATCH,
             url,
@@ -760,6 +817,9 @@ class TestUpdateBucketRegistration:
         bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
         bucket_details_model['bucket_name'] = 'sample-bucket'
         bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
+        bucket_details_model['key_file'] = 'key_file'
+        bucket_details_model['provider'] = 'ibm_cos'
+        bucket_details_model['region'] = 'us-south'
         bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
 
         # Construct a dict representation of a BucketRegistrationPatch model
@@ -1050,17 +1110,23 @@ class TestListBucketObjects:
         # Set up parameter values
         bucket_id = 'testString'
         auth_instance_id = 'testString'
+        path = 'testString'
 
         # Invoke method
         response = _service.list_bucket_objects(
             bucket_id,
             auth_instance_id=auth_instance_id,
+            path=path,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
         assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'path={}'.format(path) in query_string
 
     def test_list_bucket_objects_all_params_with_retries(self):
         # Enable retries and run test_list_bucket_objects_all_params.
@@ -1147,6 +1213,339 @@ class TestListBucketObjects:
         self.test_list_bucket_objects_value_error()
 
 
+class TestGetBucketObjectProperties:
+    """
+    Test Class for get_bucket_object_properties
+    """
+
+    @responses.activate
+    def test_get_bucket_object_properties_all_params(self):
+        """
+        get_bucket_object_properties()
+        """
+        # Set up mock
+        url = preprocess_url('/bucket_registrations/testString/object_properties')
+        mock_response = '{"object_properties": [{"content_type": "string", "file_type": "string", "last_modified": "utc-2014-07", "metadata": {"mapKey": "inner"}, "path": "abc/abc/data", "size": "1024"}]}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a Path model
+        path_model = {}
+        path_model['path'] = 'string'
+
+        # Set up parameter values
+        bucket_id = 'testString'
+        paths = [path_model]
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_bucket_object_properties(
+            bucket_id,
+            paths=paths,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['paths'] == [path_model]
+
+    def test_get_bucket_object_properties_all_params_with_retries(self):
+        # Enable retries and run test_get_bucket_object_properties_all_params.
+        _service.enable_retries()
+        self.test_get_bucket_object_properties_all_params()
+
+        # Disable retries and run test_get_bucket_object_properties_all_params.
+        _service.disable_retries()
+        self.test_get_bucket_object_properties_all_params()
+
+    @responses.activate
+    def test_get_bucket_object_properties_required_params(self):
+        """
+        test_get_bucket_object_properties_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/bucket_registrations/testString/object_properties')
+        mock_response = '{"object_properties": [{"content_type": "string", "file_type": "string", "last_modified": "utc-2014-07", "metadata": {"mapKey": "inner"}, "path": "abc/abc/data", "size": "1024"}]}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a Path model
+        path_model = {}
+        path_model['path'] = 'string'
+
+        # Set up parameter values
+        bucket_id = 'testString'
+        paths = [path_model]
+
+        # Invoke method
+        response = _service.get_bucket_object_properties(
+            bucket_id,
+            paths=paths,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['paths'] == [path_model]
+
+    def test_get_bucket_object_properties_required_params_with_retries(self):
+        # Enable retries and run test_get_bucket_object_properties_required_params.
+        _service.enable_retries()
+        self.test_get_bucket_object_properties_required_params()
+
+        # Disable retries and run test_get_bucket_object_properties_required_params.
+        _service.disable_retries()
+        self.test_get_bucket_object_properties_required_params()
+
+    @responses.activate
+    def test_get_bucket_object_properties_value_error(self):
+        """
+        test_get_bucket_object_properties_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/bucket_registrations/testString/object_properties')
+        mock_response = '{"object_properties": [{"content_type": "string", "file_type": "string", "last_modified": "utc-2014-07", "metadata": {"mapKey": "inner"}, "path": "abc/abc/data", "size": "1024"}]}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a Path model
+        path_model = {}
+        path_model['path'] = 'string'
+
+        # Set up parameter values
+        bucket_id = 'testString'
+        paths = [path_model]
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "bucket_id": bucket_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.get_bucket_object_properties(**req_copy)
+
+    def test_get_bucket_object_properties_value_error_with_retries(self):
+        # Enable retries and run test_get_bucket_object_properties_value_error.
+        _service.enable_retries()
+        self.test_get_bucket_object_properties_value_error()
+
+        # Disable retries and run test_get_bucket_object_properties_value_error.
+        _service.disable_retries()
+        self.test_get_bucket_object_properties_value_error()
+
+
+class TestCreateHdfsStorage:
+    """
+    Test Class for create_hdfs_storage
+    """
+
+    @responses.activate
+    def test_create_hdfs_storage_all_params(self):
+        """
+        create_hdfs_storage()
+        """
+        # Set up mock
+        url = preprocess_url('/storage_hdfs_registrations')
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_display_name": "sample hdfs displayname", "bucket_id": "hdfs123", "bucket_type": "hdfs", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "HDFS description for storage", "managed_by": "customer", "state": "active", "tags": ["tags"]}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        bucket_display_name = 'testString'
+        bucket_type = 'testString'
+        hms_thrift_uri = 'testString'
+        hms_thrift_port = 1
+        core_site = 'testString'
+        hdfs_site = 'testString'
+        kerberos = 'testString'
+        catalog_name = 'testString'
+        catalog_type = 'testString'
+        krb5_config = 'testString'
+        hive_keytab = io.BytesIO(b'This is a mock file.').getvalue()
+        hive_keytab_content_type = 'testString'
+        hdfs_keytab = io.BytesIO(b'This is a mock file.').getvalue()
+        hdfs_keytab_content_type = 'testString'
+        hive_server_principal = 'testString'
+        hive_client_principal = 'testString'
+        hdfs_principal = 'testString'
+        description = 'testString'
+        created_on = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_hdfs_storage(
+            bucket_display_name,
+            bucket_type,
+            hms_thrift_uri,
+            hms_thrift_port,
+            core_site,
+            hdfs_site,
+            kerberos,
+            catalog_name,
+            catalog_type,
+            krb5_config=krb5_config,
+            hive_keytab=hive_keytab,
+            hive_keytab_content_type=hive_keytab_content_type,
+            hdfs_keytab=hdfs_keytab,
+            hdfs_keytab_content_type=hdfs_keytab_content_type,
+            hive_server_principal=hive_server_principal,
+            hive_client_principal=hive_client_principal,
+            hdfs_principal=hdfs_principal,
+            description=description,
+            created_on=created_on,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_hdfs_storage_all_params_with_retries(self):
+        # Enable retries and run test_create_hdfs_storage_all_params.
+        _service.enable_retries()
+        self.test_create_hdfs_storage_all_params()
+
+        # Disable retries and run test_create_hdfs_storage_all_params.
+        _service.disable_retries()
+        self.test_create_hdfs_storage_all_params()
+
+    @responses.activate
+    def test_create_hdfs_storage_required_params(self):
+        """
+        test_create_hdfs_storage_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/storage_hdfs_registrations')
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_display_name": "sample hdfs displayname", "bucket_id": "hdfs123", "bucket_type": "hdfs", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "HDFS description for storage", "managed_by": "customer", "state": "active", "tags": ["tags"]}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        bucket_display_name = 'testString'
+        bucket_type = 'testString'
+        hms_thrift_uri = 'testString'
+        hms_thrift_port = 1
+        core_site = 'testString'
+        hdfs_site = 'testString'
+        kerberos = 'testString'
+        catalog_name = 'testString'
+        catalog_type = 'testString'
+
+        # Invoke method
+        response = _service.create_hdfs_storage(
+            bucket_display_name,
+            bucket_type,
+            hms_thrift_uri,
+            hms_thrift_port,
+            core_site,
+            hdfs_site,
+            kerberos,
+            catalog_name,
+            catalog_type,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_hdfs_storage_required_params_with_retries(self):
+        # Enable retries and run test_create_hdfs_storage_required_params.
+        _service.enable_retries()
+        self.test_create_hdfs_storage_required_params()
+
+        # Disable retries and run test_create_hdfs_storage_required_params.
+        _service.disable_retries()
+        self.test_create_hdfs_storage_required_params()
+
+    @responses.activate
+    def test_create_hdfs_storage_value_error(self):
+        """
+        test_create_hdfs_storage_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/storage_hdfs_registrations')
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "bucket_display_name": "sample hdfs displayname", "bucket_id": "hdfs123", "bucket_type": "hdfs", "created_by": "<username>@<domain>.com", "created_on": "1686120645", "description": "HDFS description for storage", "managed_by": "customer", "state": "active", "tags": ["tags"]}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        bucket_display_name = 'testString'
+        bucket_type = 'testString'
+        hms_thrift_uri = 'testString'
+        hms_thrift_port = 1
+        core_site = 'testString'
+        hdfs_site = 'testString'
+        kerberos = 'testString'
+        catalog_name = 'testString'
+        catalog_type = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "bucket_display_name": bucket_display_name,
+            "bucket_type": bucket_type,
+            "hms_thrift_uri": hms_thrift_uri,
+            "hms_thrift_port": hms_thrift_port,
+            "core_site": core_site,
+            "hdfs_site": hdfs_site,
+            "kerberos": kerberos,
+            "catalog_name": catalog_name,
+            "catalog_type": catalog_type,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_hdfs_storage(**req_copy)
+
+    def test_create_hdfs_storage_value_error_with_retries(self):
+        # Enable retries and run test_create_hdfs_storage_value_error.
+        _service.enable_retries()
+        self.test_create_hdfs_storage_value_error()
+
+        # Disable retries and run test_create_hdfs_storage_value_error.
+        _service.disable_retries()
+        self.test_create_hdfs_storage_value_error()
+
+
 # endregion
 ##############################################################################
 # End of Service: Buckets
@@ -1198,7 +1597,7 @@ class TestListDatabaseRegistrations:
         """
         # Set up mock
         url = preprocess_url('/database_registrations')
-        mock_response = '{"database_registrations": [{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}]}'
+        mock_response = '{"database_registrations": [{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"authentication_type": "LDAP", "broker_authentication_password": "samplepassword", "broker_authentication_type": "PASSWORD", "broker_authentication_user": "sampleuser", "certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "connection_method": "basic, apikey", "connection_mode": "service_name", "connection_mode_value": "orclpdb", "connection_type": "JDBC, Arrow flight", "controller_authentication_password": "samplepassword", "controller_authentication_type": "PASSWORD", "controller_authentication_user": "sampleuser", "cpd_hostname": "samplecpdhostname", "credentials_key": "eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "informix_server": "ol_informix1410", "password": "samplepassword", "port": 4553, "project_id": "conops-bigquery", "sasl": true, "service_api_key": "sampleapikey", "service_hostname": "api.dataplatform.dev.cloud.ibm.com", "service_password": "samplepassword", "service_port": 443, "service_ssl": true, "service_token_url": "sampletoakenurl", "service_username": "sampleusername", "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true, "verify_host_name": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external database", "tags": ["tags"], "topics": [{"created_on": "1686792721", "file_contents": "sample file content", "file_name": "sample file name", "topic_name": "customer"}]}]}'
         responses.add(
             responses.GET,
             url,
@@ -1236,7 +1635,7 @@ class TestListDatabaseRegistrations:
         """
         # Set up mock
         url = preprocess_url('/database_registrations')
-        mock_response = '{"database_registrations": [{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}]}'
+        mock_response = '{"database_registrations": [{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"authentication_type": "LDAP", "broker_authentication_password": "samplepassword", "broker_authentication_type": "PASSWORD", "broker_authentication_user": "sampleuser", "certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "connection_method": "basic, apikey", "connection_mode": "service_name", "connection_mode_value": "orclpdb", "connection_type": "JDBC, Arrow flight", "controller_authentication_password": "samplepassword", "controller_authentication_type": "PASSWORD", "controller_authentication_user": "sampleuser", "cpd_hostname": "samplecpdhostname", "credentials_key": "eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "informix_server": "ol_informix1410", "password": "samplepassword", "port": 4553, "project_id": "conops-bigquery", "sasl": true, "service_api_key": "sampleapikey", "service_hostname": "api.dataplatform.dev.cloud.ibm.com", "service_password": "samplepassword", "service_port": 443, "service_ssl": true, "service_token_url": "sampletoakenurl", "service_username": "sampleusername", "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true, "verify_host_name": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external database", "tags": ["tags"], "topics": [{"created_on": "1686792721", "file_contents": "sample file content", "file_name": "sample file name", "topic_name": "customer"}]}]}'
         responses.add(
             responses.GET,
             url,
@@ -1274,7 +1673,7 @@ class TestCreateDatabaseRegistration:
         """
         # Set up mock
         url = preprocess_url('/database_registrations')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"authentication_type": "LDAP", "broker_authentication_password": "samplepassword", "broker_authentication_type": "PASSWORD", "broker_authentication_user": "sampleuser", "certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "connection_method": "basic, apikey", "connection_mode": "service_name", "connection_mode_value": "orclpdb", "connection_type": "JDBC, Arrow flight", "controller_authentication_password": "samplepassword", "controller_authentication_type": "PASSWORD", "controller_authentication_user": "sampleuser", "cpd_hostname": "samplecpdhostname", "credentials_key": "eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "informix_server": "ol_informix1410", "password": "samplepassword", "port": 4553, "project_id": "conops-bigquery", "sasl": true, "service_api_key": "sampleapikey", "service_hostname": "api.dataplatform.dev.cloud.ibm.com", "service_password": "samplepassword", "service_port": 443, "service_ssl": true, "service_token_url": "sampletoakenurl", "service_username": "sampleusername", "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true, "verify_host_name": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external database", "tags": ["tags"], "topics": [{"created_on": "1686792721", "file_contents": "sample file content", "file_name": "sample file name", "topic_name": "customer"}]}'
         responses.add(
             responses.POST,
             url,
@@ -1291,19 +1690,42 @@ class TestCreateDatabaseRegistration:
 
         # Construct a dict representation of a DatabaseDetails model
         database_details_model = {}
+        database_details_model['authentication_type'] = 'LDAP'
+        database_details_model['broker_authentication_password'] = 'samplepassword'
+        database_details_model['broker_authentication_type'] = 'PASSWORD'
+        database_details_model['broker_authentication_user'] = 'sampleuser'
         database_details_model['certificate'] = 'contents of a pem/crt file'
         database_details_model['certificate_extension'] = 'pem/crt'
+        database_details_model['connection_method'] = 'basic, apikey'
+        database_details_model['connection_mode'] = 'service_name'
+        database_details_model['connection_mode_value'] = 'orclpdb'
+        database_details_model['connection_type'] = 'JDBC, Arrow flight'
+        database_details_model['controller_authentication_password'] = 'samplepassword'
+        database_details_model['controller_authentication_type'] = 'PASSWORD'
+        database_details_model['controller_authentication_user'] = 'sampleuser'
+        database_details_model['cpd_hostname'] = 'samplecpdhostname'
+        database_details_model['credentials_key'] = 'eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......'
         database_details_model['database_name'] = 'new_database'
         database_details_model['hostname'] = 'db2@<hostname>.com'
         database_details_model['hostname_in_certificate'] = 'samplehostname'
         database_details_model['hosts'] = 'abc.com:1234,xyz.com:4321'
+        database_details_model['informix_server'] = 'ol_informix1410'
         database_details_model['password'] = 'samplepassword'
         database_details_model['port'] = 4553
+        database_details_model['project_id'] = 'conops-bigquery'
         database_details_model['sasl'] = True
+        database_details_model['service_api_key'] = 'sampleapikey'
+        database_details_model['service_hostname'] = 'api.dataplatform.dev.cloud.ibm.com'
+        database_details_model['service_password'] = 'samplepassword'
+        database_details_model['service_port'] = 443
+        database_details_model['service_ssl'] = True
+        database_details_model['service_token_url'] = 'sampletoakenurl'
+        database_details_model['service_username'] = 'sampleusername'
         database_details_model['ssl'] = True
         database_details_model['tables'] = 'kafka_table_name'
         database_details_model['username'] = 'sampleuser'
         database_details_model['validate_server_certificate'] = True
+        database_details_model['verify_host_name'] = True
 
         # Construct a dict representation of a DatabaseRegistrationPrototypeDatabasePropertiesItems model
         database_registration_prototype_database_properties_items_model = {}
@@ -1366,7 +1788,7 @@ class TestCreateDatabaseRegistration:
         """
         # Set up mock
         url = preprocess_url('/database_registrations')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"authentication_type": "LDAP", "broker_authentication_password": "samplepassword", "broker_authentication_type": "PASSWORD", "broker_authentication_user": "sampleuser", "certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "connection_method": "basic, apikey", "connection_mode": "service_name", "connection_mode_value": "orclpdb", "connection_type": "JDBC, Arrow flight", "controller_authentication_password": "samplepassword", "controller_authentication_type": "PASSWORD", "controller_authentication_user": "sampleuser", "cpd_hostname": "samplecpdhostname", "credentials_key": "eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "informix_server": "ol_informix1410", "password": "samplepassword", "port": 4553, "project_id": "conops-bigquery", "sasl": true, "service_api_key": "sampleapikey", "service_hostname": "api.dataplatform.dev.cloud.ibm.com", "service_password": "samplepassword", "service_port": 443, "service_ssl": true, "service_token_url": "sampletoakenurl", "service_username": "sampleusername", "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true, "verify_host_name": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external database", "tags": ["tags"], "topics": [{"created_on": "1686792721", "file_contents": "sample file content", "file_name": "sample file name", "topic_name": "customer"}]}'
         responses.add(
             responses.POST,
             url,
@@ -1383,19 +1805,42 @@ class TestCreateDatabaseRegistration:
 
         # Construct a dict representation of a DatabaseDetails model
         database_details_model = {}
+        database_details_model['authentication_type'] = 'LDAP'
+        database_details_model['broker_authentication_password'] = 'samplepassword'
+        database_details_model['broker_authentication_type'] = 'PASSWORD'
+        database_details_model['broker_authentication_user'] = 'sampleuser'
         database_details_model['certificate'] = 'contents of a pem/crt file'
         database_details_model['certificate_extension'] = 'pem/crt'
+        database_details_model['connection_method'] = 'basic, apikey'
+        database_details_model['connection_mode'] = 'service_name'
+        database_details_model['connection_mode_value'] = 'orclpdb'
+        database_details_model['connection_type'] = 'JDBC, Arrow flight'
+        database_details_model['controller_authentication_password'] = 'samplepassword'
+        database_details_model['controller_authentication_type'] = 'PASSWORD'
+        database_details_model['controller_authentication_user'] = 'sampleuser'
+        database_details_model['cpd_hostname'] = 'samplecpdhostname'
+        database_details_model['credentials_key'] = 'eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......'
         database_details_model['database_name'] = 'new_database'
         database_details_model['hostname'] = 'db2@<hostname>.com'
         database_details_model['hostname_in_certificate'] = 'samplehostname'
         database_details_model['hosts'] = 'abc.com:1234,xyz.com:4321'
+        database_details_model['informix_server'] = 'ol_informix1410'
         database_details_model['password'] = 'samplepassword'
         database_details_model['port'] = 4553
+        database_details_model['project_id'] = 'conops-bigquery'
         database_details_model['sasl'] = True
+        database_details_model['service_api_key'] = 'sampleapikey'
+        database_details_model['service_hostname'] = 'api.dataplatform.dev.cloud.ibm.com'
+        database_details_model['service_password'] = 'samplepassword'
+        database_details_model['service_port'] = 443
+        database_details_model['service_ssl'] = True
+        database_details_model['service_token_url'] = 'sampletoakenurl'
+        database_details_model['service_username'] = 'sampleusername'
         database_details_model['ssl'] = True
         database_details_model['tables'] = 'kafka_table_name'
         database_details_model['username'] = 'sampleuser'
         database_details_model['validate_server_certificate'] = True
+        database_details_model['verify_host_name'] = True
 
         # Construct a dict representation of a DatabaseRegistrationPrototypeDatabasePropertiesItems model
         database_registration_prototype_database_properties_items_model = {}
@@ -1456,7 +1901,7 @@ class TestCreateDatabaseRegistration:
         """
         # Set up mock
         url = preprocess_url('/database_registrations')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"authentication_type": "LDAP", "broker_authentication_password": "samplepassword", "broker_authentication_type": "PASSWORD", "broker_authentication_user": "sampleuser", "certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "connection_method": "basic, apikey", "connection_mode": "service_name", "connection_mode_value": "orclpdb", "connection_type": "JDBC, Arrow flight", "controller_authentication_password": "samplepassword", "controller_authentication_type": "PASSWORD", "controller_authentication_user": "sampleuser", "cpd_hostname": "samplecpdhostname", "credentials_key": "eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "informix_server": "ol_informix1410", "password": "samplepassword", "port": 4553, "project_id": "conops-bigquery", "sasl": true, "service_api_key": "sampleapikey", "service_hostname": "api.dataplatform.dev.cloud.ibm.com", "service_password": "samplepassword", "service_port": 443, "service_ssl": true, "service_token_url": "sampletoakenurl", "service_username": "sampleusername", "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true, "verify_host_name": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external database", "tags": ["tags"], "topics": [{"created_on": "1686792721", "file_contents": "sample file content", "file_name": "sample file name", "topic_name": "customer"}]}'
         responses.add(
             responses.POST,
             url,
@@ -1473,19 +1918,42 @@ class TestCreateDatabaseRegistration:
 
         # Construct a dict representation of a DatabaseDetails model
         database_details_model = {}
+        database_details_model['authentication_type'] = 'LDAP'
+        database_details_model['broker_authentication_password'] = 'samplepassword'
+        database_details_model['broker_authentication_type'] = 'PASSWORD'
+        database_details_model['broker_authentication_user'] = 'sampleuser'
         database_details_model['certificate'] = 'contents of a pem/crt file'
         database_details_model['certificate_extension'] = 'pem/crt'
+        database_details_model['connection_method'] = 'basic, apikey'
+        database_details_model['connection_mode'] = 'service_name'
+        database_details_model['connection_mode_value'] = 'orclpdb'
+        database_details_model['connection_type'] = 'JDBC, Arrow flight'
+        database_details_model['controller_authentication_password'] = 'samplepassword'
+        database_details_model['controller_authentication_type'] = 'PASSWORD'
+        database_details_model['controller_authentication_user'] = 'sampleuser'
+        database_details_model['cpd_hostname'] = 'samplecpdhostname'
+        database_details_model['credentials_key'] = 'eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......'
         database_details_model['database_name'] = 'new_database'
         database_details_model['hostname'] = 'db2@<hostname>.com'
         database_details_model['hostname_in_certificate'] = 'samplehostname'
         database_details_model['hosts'] = 'abc.com:1234,xyz.com:4321'
+        database_details_model['informix_server'] = 'ol_informix1410'
         database_details_model['password'] = 'samplepassword'
         database_details_model['port'] = 4553
+        database_details_model['project_id'] = 'conops-bigquery'
         database_details_model['sasl'] = True
+        database_details_model['service_api_key'] = 'sampleapikey'
+        database_details_model['service_hostname'] = 'api.dataplatform.dev.cloud.ibm.com'
+        database_details_model['service_password'] = 'samplepassword'
+        database_details_model['service_port'] = 443
+        database_details_model['service_ssl'] = True
+        database_details_model['service_token_url'] = 'sampletoakenurl'
+        database_details_model['service_username'] = 'sampleusername'
         database_details_model['ssl'] = True
         database_details_model['tables'] = 'kafka_table_name'
         database_details_model['username'] = 'sampleuser'
         database_details_model['validate_server_certificate'] = True
+        database_details_model['verify_host_name'] = True
 
         # Construct a dict representation of a DatabaseRegistrationPrototypeDatabasePropertiesItems model
         database_registration_prototype_database_properties_items_model = {}
@@ -1535,7 +2003,7 @@ class TestGetDatabase:
         """
         # Set up mock
         url = preprocess_url('/database_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"authentication_type": "LDAP", "broker_authentication_password": "samplepassword", "broker_authentication_type": "PASSWORD", "broker_authentication_user": "sampleuser", "certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "connection_method": "basic, apikey", "connection_mode": "service_name", "connection_mode_value": "orclpdb", "connection_type": "JDBC, Arrow flight", "controller_authentication_password": "samplepassword", "controller_authentication_type": "PASSWORD", "controller_authentication_user": "sampleuser", "cpd_hostname": "samplecpdhostname", "credentials_key": "eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "informix_server": "ol_informix1410", "password": "samplepassword", "port": 4553, "project_id": "conops-bigquery", "sasl": true, "service_api_key": "sampleapikey", "service_hostname": "api.dataplatform.dev.cloud.ibm.com", "service_password": "samplepassword", "service_port": 443, "service_ssl": true, "service_token_url": "sampletoakenurl", "service_username": "sampleusername", "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true, "verify_host_name": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external database", "tags": ["tags"], "topics": [{"created_on": "1686792721", "file_contents": "sample file content", "file_name": "sample file name", "topic_name": "customer"}]}'
         responses.add(
             responses.GET,
             url,
@@ -1575,7 +2043,7 @@ class TestGetDatabase:
         """
         # Set up mock
         url = preprocess_url('/database_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"authentication_type": "LDAP", "broker_authentication_password": "samplepassword", "broker_authentication_type": "PASSWORD", "broker_authentication_user": "sampleuser", "certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "connection_method": "basic, apikey", "connection_mode": "service_name", "connection_mode_value": "orclpdb", "connection_type": "JDBC, Arrow flight", "controller_authentication_password": "samplepassword", "controller_authentication_type": "PASSWORD", "controller_authentication_user": "sampleuser", "cpd_hostname": "samplecpdhostname", "credentials_key": "eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "informix_server": "ol_informix1410", "password": "samplepassword", "port": 4553, "project_id": "conops-bigquery", "sasl": true, "service_api_key": "sampleapikey", "service_hostname": "api.dataplatform.dev.cloud.ibm.com", "service_password": "samplepassword", "service_port": 443, "service_ssl": true, "service_token_url": "sampletoakenurl", "service_username": "sampleusername", "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true, "verify_host_name": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external database", "tags": ["tags"], "topics": [{"created_on": "1686792721", "file_contents": "sample file content", "file_name": "sample file name", "topic_name": "customer"}]}'
         responses.add(
             responses.GET,
             url,
@@ -1613,7 +2081,7 @@ class TestGetDatabase:
         """
         # Set up mock
         url = preprocess_url('/database_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"authentication_type": "LDAP", "broker_authentication_password": "samplepassword", "broker_authentication_type": "PASSWORD", "broker_authentication_user": "sampleuser", "certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "connection_method": "basic, apikey", "connection_mode": "service_name", "connection_mode_value": "orclpdb", "connection_type": "JDBC, Arrow flight", "controller_authentication_password": "samplepassword", "controller_authentication_type": "PASSWORD", "controller_authentication_user": "sampleuser", "cpd_hostname": "samplecpdhostname", "credentials_key": "eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "informix_server": "ol_informix1410", "password": "samplepassword", "port": 4553, "project_id": "conops-bigquery", "sasl": true, "service_api_key": "sampleapikey", "service_hostname": "api.dataplatform.dev.cloud.ibm.com", "service_password": "samplepassword", "service_port": 443, "service_ssl": true, "service_token_url": "sampletoakenurl", "service_username": "sampleusername", "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true, "verify_host_name": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external database", "tags": ["tags"], "topics": [{"created_on": "1686792721", "file_contents": "sample file content", "file_name": "sample file name", "topic_name": "customer"}]}'
         responses.add(
             responses.GET,
             url,
@@ -1768,7 +2236,7 @@ class TestUpdateDatabase:
         """
         # Set up mock
         url = preprocess_url('/database_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"authentication_type": "LDAP", "broker_authentication_password": "samplepassword", "broker_authentication_type": "PASSWORD", "broker_authentication_user": "sampleuser", "certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "connection_method": "basic, apikey", "connection_mode": "service_name", "connection_mode_value": "orclpdb", "connection_type": "JDBC, Arrow flight", "controller_authentication_password": "samplepassword", "controller_authentication_type": "PASSWORD", "controller_authentication_user": "sampleuser", "cpd_hostname": "samplecpdhostname", "credentials_key": "eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "informix_server": "ol_informix1410", "password": "samplepassword", "port": 4553, "project_id": "conops-bigquery", "sasl": true, "service_api_key": "sampleapikey", "service_hostname": "api.dataplatform.dev.cloud.ibm.com", "service_password": "samplepassword", "service_port": 443, "service_ssl": true, "service_token_url": "sampletoakenurl", "service_username": "sampleusername", "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true, "verify_host_name": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external database", "tags": ["tags"], "topics": [{"created_on": "1686792721", "file_contents": "sample file content", "file_name": "sample file name", "topic_name": "customer"}]}'
         responses.add(
             responses.PATCH,
             url,
@@ -1782,12 +2250,20 @@ class TestUpdateDatabase:
         database_registration_patch_database_details_model['password'] = 'samplepassword'
         database_registration_patch_database_details_model['username'] = 'sampleuser'
 
+        # Construct a dict representation of a DatabaseRegistrationPatchTopicsItems model
+        database_registration_patch_topics_items_model = {}
+        database_registration_patch_topics_items_model['created_on'] = '1686792721'
+        database_registration_patch_topics_items_model['file_contents'] = 'sample file contents'
+        database_registration_patch_topics_items_model['file_name'] = 'sample file name'
+        database_registration_patch_topics_items_model['topic_name'] = 'customer'
+
         # Construct a dict representation of a DatabaseRegistrationPatch model
         database_registration_patch_model = {}
         database_registration_patch_model['database_details'] = database_registration_patch_database_details_model
         database_registration_patch_model['database_display_name'] = 'new_database'
         database_registration_patch_model['description'] = 'External database description'
         database_registration_patch_model['tags'] = ['testdatabase', 'userdatabase']
+        database_registration_patch_model['topics'] = [database_registration_patch_topics_items_model]
 
         # Set up parameter values
         database_id = 'testString'
@@ -1825,7 +2301,7 @@ class TestUpdateDatabase:
         """
         # Set up mock
         url = preprocess_url('/database_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"authentication_type": "LDAP", "broker_authentication_password": "samplepassword", "broker_authentication_type": "PASSWORD", "broker_authentication_user": "sampleuser", "certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "connection_method": "basic, apikey", "connection_mode": "service_name", "connection_mode_value": "orclpdb", "connection_type": "JDBC, Arrow flight", "controller_authentication_password": "samplepassword", "controller_authentication_type": "PASSWORD", "controller_authentication_user": "sampleuser", "cpd_hostname": "samplecpdhostname", "credentials_key": "eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "informix_server": "ol_informix1410", "password": "samplepassword", "port": 4553, "project_id": "conops-bigquery", "sasl": true, "service_api_key": "sampleapikey", "service_hostname": "api.dataplatform.dev.cloud.ibm.com", "service_password": "samplepassword", "service_port": 443, "service_ssl": true, "service_token_url": "sampletoakenurl", "service_username": "sampleusername", "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true, "verify_host_name": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external database", "tags": ["tags"], "topics": [{"created_on": "1686792721", "file_contents": "sample file content", "file_name": "sample file name", "topic_name": "customer"}]}'
         responses.add(
             responses.PATCH,
             url,
@@ -1839,12 +2315,20 @@ class TestUpdateDatabase:
         database_registration_patch_database_details_model['password'] = 'samplepassword'
         database_registration_patch_database_details_model['username'] = 'sampleuser'
 
+        # Construct a dict representation of a DatabaseRegistrationPatchTopicsItems model
+        database_registration_patch_topics_items_model = {}
+        database_registration_patch_topics_items_model['created_on'] = '1686792721'
+        database_registration_patch_topics_items_model['file_contents'] = 'sample file contents'
+        database_registration_patch_topics_items_model['file_name'] = 'sample file name'
+        database_registration_patch_topics_items_model['topic_name'] = 'customer'
+
         # Construct a dict representation of a DatabaseRegistrationPatch model
         database_registration_patch_model = {}
         database_registration_patch_model['database_details'] = database_registration_patch_database_details_model
         database_registration_patch_model['database_display_name'] = 'new_database'
         database_registration_patch_model['description'] = 'External database description'
         database_registration_patch_model['tags'] = ['testdatabase', 'userdatabase']
+        database_registration_patch_model['topics'] = [database_registration_patch_topics_items_model]
 
         # Set up parameter values
         database_id = 'testString'
@@ -1880,7 +2364,7 @@ class TestUpdateDatabase:
         """
         # Set up mock
         url = preprocess_url('/database_registrations/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "password": "samplepassword", "port": 4553, "sasl": true, "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external Database", "tags": ["tags"]}'
+        mock_response = '{"actions": ["actions"], "associated_catalog": {"catalog_name": "sampleCatalog", "catalog_tags": ["catalog_tags"], "catalog_type": "iceberg"}, "catalog_name": "sampleCatalog", "created_by": "user1@bim.com", "created_on": "1686792721", "database_details": {"authentication_type": "LDAP", "broker_authentication_password": "samplepassword", "broker_authentication_type": "PASSWORD", "broker_authentication_user": "sampleuser", "certificate": "contents of a pem/crt file", "certificate_extension": "pem/crt", "connection_method": "basic, apikey", "connection_mode": "service_name", "connection_mode_value": "orclpdb", "connection_type": "JDBC, Arrow flight", "controller_authentication_password": "samplepassword", "controller_authentication_type": "PASSWORD", "controller_authentication_user": "sampleuser", "cpd_hostname": "samplecpdhostname", "credentials_key": "eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......", "database_name": "new_database", "hostname": "db2@<hostname>.com", "hostname_in_certificate": "samplehostname", "hosts": "abc.com:1234,xyz.com:4321", "informix_server": "ol_informix1410", "password": "samplepassword", "port": 4553, "project_id": "conops-bigquery", "sasl": true, "service_api_key": "sampleapikey", "service_hostname": "api.dataplatform.dev.cloud.ibm.com", "service_password": "samplepassword", "service_port": 443, "service_ssl": true, "service_token_url": "sampletoakenurl", "service_username": "sampleusername", "ssl": true, "tables": "kafka_table_name", "username": "sampleuser", "validate_server_certificate": true, "verify_host_name": true}, "database_display_name": "new_database", "database_id": "new_database_id", "database_properties": [{"encrypt": true, "key": "hive.metastore", "value": "glue"}], "database_type": "netezza", "description": "Description of the external database", "tags": ["tags"], "topics": [{"created_on": "1686792721", "file_contents": "sample file content", "file_name": "sample file name", "topic_name": "customer"}]}'
         responses.add(
             responses.PATCH,
             url,
@@ -1894,12 +2378,20 @@ class TestUpdateDatabase:
         database_registration_patch_database_details_model['password'] = 'samplepassword'
         database_registration_patch_database_details_model['username'] = 'sampleuser'
 
+        # Construct a dict representation of a DatabaseRegistrationPatchTopicsItems model
+        database_registration_patch_topics_items_model = {}
+        database_registration_patch_topics_items_model['created_on'] = '1686792721'
+        database_registration_patch_topics_items_model['file_contents'] = 'sample file contents'
+        database_registration_patch_topics_items_model['file_name'] = 'sample file name'
+        database_registration_patch_topics_items_model['topic_name'] = 'customer'
+
         # Construct a dict representation of a DatabaseRegistrationPatch model
         database_registration_patch_model = {}
         database_registration_patch_model['database_details'] = database_registration_patch_database_details_model
         database_registration_patch_model['database_display_name'] = 'new_database'
         database_registration_patch_model['description'] = 'External database description'
         database_registration_patch_model['tags'] = ['testdatabase', 'userdatabase']
+        database_registration_patch_model['topics'] = [database_registration_patch_topics_items_model]
 
         # Set up parameter values
         database_id = 'testString'
@@ -1928,6 +2420,641 @@ class TestUpdateDatabase:
 # endregion
 ##############################################################################
 # End of Service: Databases
+##############################################################################
+
+##############################################################################
+# Start of Service: Drivers
+##############################################################################
+# region
+
+
+class TestNewInstance:
+    """
+    Test Class for new_instance
+    """
+
+    def test_new_instance(self):
+        """
+        new_instance()
+        """
+        os.environ['TEST_SERVICE_AUTH_TYPE'] = 'noAuth'
+
+        service = WatsonxDataV2.new_instance(
+            service_name='TEST_SERVICE',
+        )
+
+        assert service is not None
+        assert isinstance(service, WatsonxDataV2)
+
+    def test_new_instance_without_authenticator(self):
+        """
+        new_instance_without_authenticator()
+        """
+        with pytest.raises(ValueError, match='authenticator must be provided'):
+            service = WatsonxDataV2.new_instance(
+                service_name='TEST_SERVICE_NOT_FOUND',
+            )
+
+
+class TestListDriverRegistration:
+    """
+    Test Class for list_driver_registration
+    """
+
+    @responses.activate
+    def test_list_driver_registration_all_params(self):
+        """
+        list_driver_registration()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations')
+        mock_response = '{"driver_registrations": [{"associated_engines": ["associated_engines"], "connection_type": "connection-type", "driver_id": "sample-driver-123", "driver_name": "sample-driver-name", "modified_at": "1686792721", "modified_by": "user1@bim.com", "status": "validating", "version": "123-dev"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.list_driver_registration(
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_driver_registration_all_params_with_retries(self):
+        # Enable retries and run test_list_driver_registration_all_params.
+        _service.enable_retries()
+        self.test_list_driver_registration_all_params()
+
+        # Disable retries and run test_list_driver_registration_all_params.
+        _service.disable_retries()
+        self.test_list_driver_registration_all_params()
+
+    @responses.activate
+    def test_list_driver_registration_required_params(self):
+        """
+        test_list_driver_registration_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations')
+        mock_response = '{"driver_registrations": [{"associated_engines": ["associated_engines"], "connection_type": "connection-type", "driver_id": "sample-driver-123", "driver_name": "sample-driver-name", "modified_at": "1686792721", "modified_by": "user1@bim.com", "status": "validating", "version": "123-dev"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.list_driver_registration()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_driver_registration_required_params_with_retries(self):
+        # Enable retries and run test_list_driver_registration_required_params.
+        _service.enable_retries()
+        self.test_list_driver_registration_required_params()
+
+        # Disable retries and run test_list_driver_registration_required_params.
+        _service.disable_retries()
+        self.test_list_driver_registration_required_params()
+
+
+class TestCreateDriverRegistration:
+    """
+    Test Class for create_driver_registration
+    """
+
+    @responses.activate
+    def test_create_driver_registration_all_params(self):
+        """
+        create_driver_registration()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations')
+        mock_response = '{"associated_engines": ["associated_engines"], "connection_type": "connection-type", "driver_id": "sample-driver-123", "driver_name": "sample-driver-name", "modified_at": "1686792721", "modified_by": "user1@bim.com", "status": "validating", "version": "123-dev"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        driver = io.BytesIO(b'This is a mock file.').getvalue()
+        driver_name = 'testString'
+        connection_type = 'testString'
+        driver_content_type = 'testString'
+        version = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_driver_registration(
+            driver,
+            driver_name,
+            connection_type,
+            driver_content_type=driver_content_type,
+            version=version,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_driver_registration_all_params_with_retries(self):
+        # Enable retries and run test_create_driver_registration_all_params.
+        _service.enable_retries()
+        self.test_create_driver_registration_all_params()
+
+        # Disable retries and run test_create_driver_registration_all_params.
+        _service.disable_retries()
+        self.test_create_driver_registration_all_params()
+
+    @responses.activate
+    def test_create_driver_registration_required_params(self):
+        """
+        test_create_driver_registration_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations')
+        mock_response = '{"associated_engines": ["associated_engines"], "connection_type": "connection-type", "driver_id": "sample-driver-123", "driver_name": "sample-driver-name", "modified_at": "1686792721", "modified_by": "user1@bim.com", "status": "validating", "version": "123-dev"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        driver = io.BytesIO(b'This is a mock file.').getvalue()
+        driver_name = 'testString'
+        connection_type = 'testString'
+
+        # Invoke method
+        response = _service.create_driver_registration(
+            driver,
+            driver_name,
+            connection_type,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_driver_registration_required_params_with_retries(self):
+        # Enable retries and run test_create_driver_registration_required_params.
+        _service.enable_retries()
+        self.test_create_driver_registration_required_params()
+
+        # Disable retries and run test_create_driver_registration_required_params.
+        _service.disable_retries()
+        self.test_create_driver_registration_required_params()
+
+    @responses.activate
+    def test_create_driver_registration_value_error(self):
+        """
+        test_create_driver_registration_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations')
+        mock_response = '{"associated_engines": ["associated_engines"], "connection_type": "connection-type", "driver_id": "sample-driver-123", "driver_name": "sample-driver-name", "modified_at": "1686792721", "modified_by": "user1@bim.com", "status": "validating", "version": "123-dev"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        driver = io.BytesIO(b'This is a mock file.').getvalue()
+        driver_name = 'testString'
+        connection_type = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "driver": driver,
+            "driver_name": driver_name,
+            "connection_type": connection_type,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_driver_registration(**req_copy)
+
+    def test_create_driver_registration_value_error_with_retries(self):
+        # Enable retries and run test_create_driver_registration_value_error.
+        _service.enable_retries()
+        self.test_create_driver_registration_value_error()
+
+        # Disable retries and run test_create_driver_registration_value_error.
+        _service.disable_retries()
+        self.test_create_driver_registration_value_error()
+
+
+class TestDeleteDriverRegistration:
+    """
+    Test Class for delete_driver_registration
+    """
+
+    @responses.activate
+    def test_delete_driver_registration_all_params(self):
+        """
+        delete_driver_registration()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        driver_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_driver_registration(
+            driver_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+
+    def test_delete_driver_registration_all_params_with_retries(self):
+        # Enable retries and run test_delete_driver_registration_all_params.
+        _service.enable_retries()
+        self.test_delete_driver_registration_all_params()
+
+        # Disable retries and run test_delete_driver_registration_all_params.
+        _service.disable_retries()
+        self.test_delete_driver_registration_all_params()
+
+    @responses.activate
+    def test_delete_driver_registration_required_params(self):
+        """
+        test_delete_driver_registration_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        driver_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_driver_registration(
+            driver_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+
+    def test_delete_driver_registration_required_params_with_retries(self):
+        # Enable retries and run test_delete_driver_registration_required_params.
+        _service.enable_retries()
+        self.test_delete_driver_registration_required_params()
+
+        # Disable retries and run test_delete_driver_registration_required_params.
+        _service.disable_retries()
+        self.test_delete_driver_registration_required_params()
+
+    @responses.activate
+    def test_delete_driver_registration_value_error(self):
+        """
+        test_delete_driver_registration_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        driver_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "driver_id": driver_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.delete_driver_registration(**req_copy)
+
+    def test_delete_driver_registration_value_error_with_retries(self):
+        # Enable retries and run test_delete_driver_registration_value_error.
+        _service.enable_retries()
+        self.test_delete_driver_registration_value_error()
+
+        # Disable retries and run test_delete_driver_registration_value_error.
+        _service.disable_retries()
+        self.test_delete_driver_registration_value_error()
+
+
+class TestDeleteDriverEngines:
+    """
+    Test Class for delete_driver_engines
+    """
+
+    @responses.activate
+    def test_delete_driver_engines_all_params(self):
+        """
+        delete_driver_engines()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations/testString/engines')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        driver_id = 'testString'
+        engine_ids = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_driver_engines(
+            driver_id,
+            engine_ids,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'engine_ids={}'.format(engine_ids) in query_string
+
+    def test_delete_driver_engines_all_params_with_retries(self):
+        # Enable retries and run test_delete_driver_engines_all_params.
+        _service.enable_retries()
+        self.test_delete_driver_engines_all_params()
+
+        # Disable retries and run test_delete_driver_engines_all_params.
+        _service.disable_retries()
+        self.test_delete_driver_engines_all_params()
+
+    @responses.activate
+    def test_delete_driver_engines_required_params(self):
+        """
+        test_delete_driver_engines_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations/testString/engines')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        driver_id = 'testString'
+        engine_ids = 'testString'
+
+        # Invoke method
+        response = _service.delete_driver_engines(
+            driver_id,
+            engine_ids,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'engine_ids={}'.format(engine_ids) in query_string
+
+    def test_delete_driver_engines_required_params_with_retries(self):
+        # Enable retries and run test_delete_driver_engines_required_params.
+        _service.enable_retries()
+        self.test_delete_driver_engines_required_params()
+
+        # Disable retries and run test_delete_driver_engines_required_params.
+        _service.disable_retries()
+        self.test_delete_driver_engines_required_params()
+
+    @responses.activate
+    def test_delete_driver_engines_value_error(self):
+        """
+        test_delete_driver_engines_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations/testString/engines')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        driver_id = 'testString'
+        engine_ids = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "driver_id": driver_id,
+            "engine_ids": engine_ids,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.delete_driver_engines(**req_copy)
+
+    def test_delete_driver_engines_value_error_with_retries(self):
+        # Enable retries and run test_delete_driver_engines_value_error.
+        _service.enable_retries()
+        self.test_delete_driver_engines_value_error()
+
+        # Disable retries and run test_delete_driver_engines_value_error.
+        _service.disable_retries()
+        self.test_delete_driver_engines_value_error()
+
+
+class TestUpdateDriverEngines:
+    """
+    Test Class for update_driver_engines
+    """
+
+    @responses.activate
+    def test_update_driver_engines_all_params(self):
+        """
+        update_driver_engines()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations/testString/engines')
+        mock_response = '{"engines": ["engines"]}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a DriverRegistrationEnginePrototype model
+        driver_registration_engine_prototype_model = {}
+        driver_registration_engine_prototype_model['engines'] = ['testString']
+
+        # Set up parameter values
+        driver_id = 'testString'
+        body = driver_registration_engine_prototype_model
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.update_driver_engines(
+            driver_id,
+            body,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body == body
+
+    def test_update_driver_engines_all_params_with_retries(self):
+        # Enable retries and run test_update_driver_engines_all_params.
+        _service.enable_retries()
+        self.test_update_driver_engines_all_params()
+
+        # Disable retries and run test_update_driver_engines_all_params.
+        _service.disable_retries()
+        self.test_update_driver_engines_all_params()
+
+    @responses.activate
+    def test_update_driver_engines_required_params(self):
+        """
+        test_update_driver_engines_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations/testString/engines')
+        mock_response = '{"engines": ["engines"]}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a DriverRegistrationEnginePrototype model
+        driver_registration_engine_prototype_model = {}
+        driver_registration_engine_prototype_model['engines'] = ['testString']
+
+        # Set up parameter values
+        driver_id = 'testString'
+        body = driver_registration_engine_prototype_model
+
+        # Invoke method
+        response = _service.update_driver_engines(
+            driver_id,
+            body,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body == body
+
+    def test_update_driver_engines_required_params_with_retries(self):
+        # Enable retries and run test_update_driver_engines_required_params.
+        _service.enable_retries()
+        self.test_update_driver_engines_required_params()
+
+        # Disable retries and run test_update_driver_engines_required_params.
+        _service.disable_retries()
+        self.test_update_driver_engines_required_params()
+
+    @responses.activate
+    def test_update_driver_engines_value_error(self):
+        """
+        test_update_driver_engines_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/driver_registrations/testString/engines')
+        mock_response = '{"engines": ["engines"]}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a DriverRegistrationEnginePrototype model
+        driver_registration_engine_prototype_model = {}
+        driver_registration_engine_prototype_model['engines'] = ['testString']
+
+        # Set up parameter values
+        driver_id = 'testString'
+        body = driver_registration_engine_prototype_model
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "driver_id": driver_id,
+            "body": body,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.update_driver_engines(**req_copy)
+
+    def test_update_driver_engines_value_error_with_retries(self):
+        # Enable retries and run test_update_driver_engines_value_error.
+        _service.enable_retries()
+        self.test_update_driver_engines_value_error()
+
+        # Disable retries and run test_update_driver_engines_value_error.
+        _service.disable_retries()
+        self.test_update_driver_engines_value_error()
+
+
+# endregion
+##############################################################################
+# End of Service: Drivers
 ##############################################################################
 
 ##############################################################################
@@ -2072,7 +3199,6 @@ class TestCreateOtherEngine:
         description = 'external engine description'
         origin = 'external'
         tags = ['tag1', 'tag2']
-        type = 'netezza'
         auth_instance_id = 'testString'
 
         # Invoke method
@@ -2082,7 +3208,6 @@ class TestCreateOtherEngine:
             description=description,
             origin=origin,
             tags=tags,
-            type=type,
             auth_instance_id=auth_instance_id,
             headers={},
         )
@@ -2097,7 +3222,6 @@ class TestCreateOtherEngine:
         assert req_body['description'] == 'external engine description'
         assert req_body['origin'] == 'external'
         assert req_body['tags'] == ['tag1', 'tag2']
-        assert req_body['type'] == 'netezza'
 
     def test_create_other_engine_all_params_with_retries(self):
         # Enable retries and run test_create_other_engine_all_params.
@@ -2135,7 +3259,6 @@ class TestCreateOtherEngine:
         description = 'external engine description'
         origin = 'external'
         tags = ['tag1', 'tag2']
-        type = 'netezza'
 
         # Invoke method
         response = _service.create_other_engine(
@@ -2144,7 +3267,6 @@ class TestCreateOtherEngine:
             description=description,
             origin=origin,
             tags=tags,
-            type=type,
             headers={},
         )
 
@@ -2158,7 +3280,6 @@ class TestCreateOtherEngine:
         assert req_body['description'] == 'external engine description'
         assert req_body['origin'] == 'external'
         assert req_body['tags'] == ['tag1', 'tag2']
-        assert req_body['type'] == 'netezza'
 
     def test_create_other_engine_required_params_with_retries(self):
         # Enable retries and run test_create_other_engine_required_params.
@@ -2196,7 +3317,6 @@ class TestCreateOtherEngine:
         description = 'external engine description'
         origin = 'external'
         tags = ['tag1', 'tag2']
-        type = 'netezza'
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -2333,6 +3453,662 @@ class TestDeleteOtherEngine:
 # endregion
 ##############################################################################
 # End of Service: OtherEngines
+##############################################################################
+
+##############################################################################
+# Start of Service: Integrations
+##############################################################################
+# region
+
+
+class TestNewInstance:
+    """
+    Test Class for new_instance
+    """
+
+    def test_new_instance(self):
+        """
+        new_instance()
+        """
+        os.environ['TEST_SERVICE_AUTH_TYPE'] = 'noAuth'
+
+        service = WatsonxDataV2.new_instance(
+            service_name='TEST_SERVICE',
+        )
+
+        assert service is not None
+        assert isinstance(service, WatsonxDataV2)
+
+    def test_new_instance_without_authenticator(self):
+        """
+        new_instance_without_authenticator()
+        """
+        with pytest.raises(ValueError, match='authenticator must be provided'):
+            service = WatsonxDataV2.new_instance(
+                service_name='TEST_SERVICE_NOT_FOUND',
+            )
+
+
+class TestListAllIntegrations:
+    """
+    Test Class for list_all_integrations
+    """
+
+    @responses.activate
+    def test_list_all_integrations_all_params(self):
+        """
+        list_all_integrations()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations')
+        mock_response = '{"integrations": [{"apikey": "apikey", "config_properties": "ikc-env.password=ibmlhenc__0001__uMkFATDDZNnxJ7z6BA/QqA==\nikc-env.url=ikc\nikc-enabled-catalogs=\nikc-username=\nlh-unique-identifier=1711796957622126\nlh-crn=1711796957622126", "enable_data_policy_within_wxd": false, "governance_properties": "query-governance.name=external", "integration_id": "presto01", "modified_at": 11, "modified_by": "<username>@<domain>.com", "password": "password", "resource": "presto01", "service_type": "ikc", "state": "active", "storage_catalogs": ["storage_catalogs"], "url": "ikc.url", "username": "username@email.com"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+        secret = 'testString'
+        service_type = 'testString'
+        state = ['testString']
+
+        # Invoke method
+        response = _service.list_all_integrations(
+            auth_instance_id=auth_instance_id,
+            secret=secret,
+            service_type=service_type,
+            state=state,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'service_type={}'.format(service_type) in query_string
+        assert 'state={}'.format(','.join(state)) in query_string
+
+    def test_list_all_integrations_all_params_with_retries(self):
+        # Enable retries and run test_list_all_integrations_all_params.
+        _service.enable_retries()
+        self.test_list_all_integrations_all_params()
+
+        # Disable retries and run test_list_all_integrations_all_params.
+        _service.disable_retries()
+        self.test_list_all_integrations_all_params()
+
+    @responses.activate
+    def test_list_all_integrations_required_params(self):
+        """
+        test_list_all_integrations_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations')
+        mock_response = '{"integrations": [{"apikey": "apikey", "config_properties": "ikc-env.password=ibmlhenc__0001__uMkFATDDZNnxJ7z6BA/QqA==\nikc-env.url=ikc\nikc-enabled-catalogs=\nikc-username=\nlh-unique-identifier=1711796957622126\nlh-crn=1711796957622126", "enable_data_policy_within_wxd": false, "governance_properties": "query-governance.name=external", "integration_id": "presto01", "modified_at": 11, "modified_by": "<username>@<domain>.com", "password": "password", "resource": "presto01", "service_type": "ikc", "state": "active", "storage_catalogs": ["storage_catalogs"], "url": "ikc.url", "username": "username@email.com"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.list_all_integrations()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_all_integrations_required_params_with_retries(self):
+        # Enable retries and run test_list_all_integrations_required_params.
+        _service.enable_retries()
+        self.test_list_all_integrations_required_params()
+
+        # Disable retries and run test_list_all_integrations_required_params.
+        _service.disable_retries()
+        self.test_list_all_integrations_required_params()
+
+
+class TestCreateIntegration:
+    """
+    Test Class for create_integration
+    """
+
+    @responses.activate
+    def test_create_integration_all_params(self):
+        """
+        create_integration()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations')
+        mock_response = '{"apikey": "apikey", "config_properties": "ikc-env.password=ibmlhenc__0001__uMkFATDDZNnxJ7z6BA/QqA==\nikc-env.url=ikc\nikc-enabled-catalogs=\nikc-username=\nlh-unique-identifier=1711796957622126\nlh-crn=1711796957622126", "enable_data_policy_within_wxd": false, "governance_properties": "query-governance.name=external", "integration_id": "presto01", "modified_at": 11, "modified_by": "<username>@<domain>.com", "password": "password", "resource": "presto01", "service_type": "ikc", "state": "active", "storage_catalogs": ["storage_catalogs"], "url": "ikc.url", "username": "username@email.com"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        apikey = 'testString'
+        enable_data_policy_within_wxd = False
+        password = 'password'
+        resource = 'resource_name'
+        service_type = 'ranger'
+        storage_catalogs = ['testString']
+        url = 'http://abcd.efgh.com:9876/'
+        username = 'username'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_integration(
+            apikey=apikey,
+            enable_data_policy_within_wxd=enable_data_policy_within_wxd,
+            password=password,
+            resource=resource,
+            service_type=service_type,
+            storage_catalogs=storage_catalogs,
+            url=url,
+            username=username,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['apikey'] == 'testString'
+        assert req_body['enable_data_policy_within_wxd'] == False
+        assert req_body['password'] == 'password'
+        assert req_body['resource'] == 'resource_name'
+        assert req_body['service_type'] == 'ranger'
+        assert req_body['storage_catalogs'] == ['testString']
+        assert req_body['url'] == 'http://abcd.efgh.com:9876/'
+        assert req_body['username'] == 'username'
+
+    def test_create_integration_all_params_with_retries(self):
+        # Enable retries and run test_create_integration_all_params.
+        _service.enable_retries()
+        self.test_create_integration_all_params()
+
+        # Disable retries and run test_create_integration_all_params.
+        _service.disable_retries()
+        self.test_create_integration_all_params()
+
+    @responses.activate
+    def test_create_integration_required_params(self):
+        """
+        test_create_integration_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations')
+        mock_response = '{"apikey": "apikey", "config_properties": "ikc-env.password=ibmlhenc__0001__uMkFATDDZNnxJ7z6BA/QqA==\nikc-env.url=ikc\nikc-enabled-catalogs=\nikc-username=\nlh-unique-identifier=1711796957622126\nlh-crn=1711796957622126", "enable_data_policy_within_wxd": false, "governance_properties": "query-governance.name=external", "integration_id": "presto01", "modified_at": 11, "modified_by": "<username>@<domain>.com", "password": "password", "resource": "presto01", "service_type": "ikc", "state": "active", "storage_catalogs": ["storage_catalogs"], "url": "ikc.url", "username": "username@email.com"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        apikey = 'testString'
+        enable_data_policy_within_wxd = False
+        password = 'password'
+        resource = 'resource_name'
+        service_type = 'ranger'
+        storage_catalogs = ['testString']
+        url = 'http://abcd.efgh.com:9876/'
+        username = 'username'
+
+        # Invoke method
+        response = _service.create_integration(
+            apikey=apikey,
+            enable_data_policy_within_wxd=enable_data_policy_within_wxd,
+            password=password,
+            resource=resource,
+            service_type=service_type,
+            storage_catalogs=storage_catalogs,
+            url=url,
+            username=username,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['apikey'] == 'testString'
+        assert req_body['enable_data_policy_within_wxd'] == False
+        assert req_body['password'] == 'password'
+        assert req_body['resource'] == 'resource_name'
+        assert req_body['service_type'] == 'ranger'
+        assert req_body['storage_catalogs'] == ['testString']
+        assert req_body['url'] == 'http://abcd.efgh.com:9876/'
+        assert req_body['username'] == 'username'
+
+    def test_create_integration_required_params_with_retries(self):
+        # Enable retries and run test_create_integration_required_params.
+        _service.enable_retries()
+        self.test_create_integration_required_params()
+
+        # Disable retries and run test_create_integration_required_params.
+        _service.disable_retries()
+        self.test_create_integration_required_params()
+
+
+class TestGetIntegrations:
+    """
+    Test Class for get_integrations
+    """
+
+    @responses.activate
+    def test_get_integrations_all_params(self):
+        """
+        get_integrations()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations/testString')
+        mock_response = '{"apikey": "apikey", "config_properties": "ikc-env.password=ibmlhenc__0001__uMkFATDDZNnxJ7z6BA/QqA==\nikc-env.url=ikc\nikc-enabled-catalogs=\nikc-username=\nlh-unique-identifier=1711796957622126\nlh-crn=1711796957622126", "enable_data_policy_within_wxd": false, "governance_properties": "query-governance.name=external", "integration_id": "presto01", "modified_at": 11, "modified_by": "<username>@<domain>.com", "password": "password", "resource": "presto01", "service_type": "ikc", "state": "active", "storage_catalogs": ["storage_catalogs"], "url": "ikc.url", "username": "username@email.com"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        integration_id = 'testString'
+        auth_instance_id = 'testString'
+        secret = 'testString'
+
+        # Invoke method
+        response = _service.get_integrations(
+            integration_id,
+            auth_instance_id=auth_instance_id,
+            secret=secret,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_integrations_all_params_with_retries(self):
+        # Enable retries and run test_get_integrations_all_params.
+        _service.enable_retries()
+        self.test_get_integrations_all_params()
+
+        # Disable retries and run test_get_integrations_all_params.
+        _service.disable_retries()
+        self.test_get_integrations_all_params()
+
+    @responses.activate
+    def test_get_integrations_required_params(self):
+        """
+        test_get_integrations_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations/testString')
+        mock_response = '{"apikey": "apikey", "config_properties": "ikc-env.password=ibmlhenc__0001__uMkFATDDZNnxJ7z6BA/QqA==\nikc-env.url=ikc\nikc-enabled-catalogs=\nikc-username=\nlh-unique-identifier=1711796957622126\nlh-crn=1711796957622126", "enable_data_policy_within_wxd": false, "governance_properties": "query-governance.name=external", "integration_id": "presto01", "modified_at": 11, "modified_by": "<username>@<domain>.com", "password": "password", "resource": "presto01", "service_type": "ikc", "state": "active", "storage_catalogs": ["storage_catalogs"], "url": "ikc.url", "username": "username@email.com"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        integration_id = 'testString'
+
+        # Invoke method
+        response = _service.get_integrations(
+            integration_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_integrations_required_params_with_retries(self):
+        # Enable retries and run test_get_integrations_required_params.
+        _service.enable_retries()
+        self.test_get_integrations_required_params()
+
+        # Disable retries and run test_get_integrations_required_params.
+        _service.disable_retries()
+        self.test_get_integrations_required_params()
+
+    @responses.activate
+    def test_get_integrations_value_error(self):
+        """
+        test_get_integrations_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations/testString')
+        mock_response = '{"apikey": "apikey", "config_properties": "ikc-env.password=ibmlhenc__0001__uMkFATDDZNnxJ7z6BA/QqA==\nikc-env.url=ikc\nikc-enabled-catalogs=\nikc-username=\nlh-unique-identifier=1711796957622126\nlh-crn=1711796957622126", "enable_data_policy_within_wxd": false, "governance_properties": "query-governance.name=external", "integration_id": "presto01", "modified_at": 11, "modified_by": "<username>@<domain>.com", "password": "password", "resource": "presto01", "service_type": "ikc", "state": "active", "storage_catalogs": ["storage_catalogs"], "url": "ikc.url", "username": "username@email.com"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        integration_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "integration_id": integration_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.get_integrations(**req_copy)
+
+    def test_get_integrations_value_error_with_retries(self):
+        # Enable retries and run test_get_integrations_value_error.
+        _service.enable_retries()
+        self.test_get_integrations_value_error()
+
+        # Disable retries and run test_get_integrations_value_error.
+        _service.disable_retries()
+        self.test_get_integrations_value_error()
+
+
+class TestDeleteIntegration:
+    """
+    Test Class for delete_integration
+    """
+
+    @responses.activate
+    def test_delete_integration_all_params(self):
+        """
+        delete_integration()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        integration_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_integration(
+            integration_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+
+    def test_delete_integration_all_params_with_retries(self):
+        # Enable retries and run test_delete_integration_all_params.
+        _service.enable_retries()
+        self.test_delete_integration_all_params()
+
+        # Disable retries and run test_delete_integration_all_params.
+        _service.disable_retries()
+        self.test_delete_integration_all_params()
+
+    @responses.activate
+    def test_delete_integration_required_params(self):
+        """
+        test_delete_integration_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        integration_id = 'testString'
+
+        # Invoke method
+        response = _service.delete_integration(
+            integration_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+
+    def test_delete_integration_required_params_with_retries(self):
+        # Enable retries and run test_delete_integration_required_params.
+        _service.enable_retries()
+        self.test_delete_integration_required_params()
+
+        # Disable retries and run test_delete_integration_required_params.
+        _service.disable_retries()
+        self.test_delete_integration_required_params()
+
+    @responses.activate
+    def test_delete_integration_value_error(self):
+        """
+        test_delete_integration_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations/testString')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Set up parameter values
+        integration_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "integration_id": integration_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.delete_integration(**req_copy)
+
+    def test_delete_integration_value_error_with_retries(self):
+        # Enable retries and run test_delete_integration_value_error.
+        _service.enable_retries()
+        self.test_delete_integration_value_error()
+
+        # Disable retries and run test_delete_integration_value_error.
+        _service.disable_retries()
+        self.test_delete_integration_value_error()
+
+
+class TestUpdateIntegration:
+    """
+    Test Class for update_integration
+    """
+
+    @responses.activate
+    def test_update_integration_all_params(self):
+        """
+        update_integration()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations/testString')
+        mock_response = '{"apikey": "apikey", "config_properties": "ikc-env.password=ibmlhenc__0001__uMkFATDDZNnxJ7z6BA/QqA==\nikc-env.url=ikc\nikc-enabled-catalogs=\nikc-username=\nlh-unique-identifier=1711796957622126\nlh-crn=1711796957622126", "enable_data_policy_within_wxd": false, "governance_properties": "query-governance.name=external", "integration_id": "presto01", "modified_at": 11, "modified_by": "<username>@<domain>.com", "password": "password", "resource": "presto01", "service_type": "ikc", "state": "active", "storage_catalogs": ["storage_catalogs"], "url": "ikc.url", "username": "username@email.com"}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a IntegrationPatch model
+        integration_patch_model = {}
+        integration_patch_model['apikey'] = 'apikey'
+        integration_patch_model['enable_data_policy_within_wxd'] = True
+        integration_patch_model['password'] = 'password'
+        integration_patch_model['resource'] = 'resource_name'
+        integration_patch_model['storage_catalogs'] = ['iceberg_data', 'hive_data']
+        integration_patch_model['url'] = 'http://abcd.efgh.com:9876/'
+        integration_patch_model['username'] = 'username'
+
+        # Set up parameter values
+        integration_id = 'testString'
+        integration_patch = integration_patch_model
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.update_integration(
+            integration_id,
+            integration_patch,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body == integration_patch
+
+    def test_update_integration_all_params_with_retries(self):
+        # Enable retries and run test_update_integration_all_params.
+        _service.enable_retries()
+        self.test_update_integration_all_params()
+
+        # Disable retries and run test_update_integration_all_params.
+        _service.disable_retries()
+        self.test_update_integration_all_params()
+
+    @responses.activate
+    def test_update_integration_required_params(self):
+        """
+        test_update_integration_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations/testString')
+        mock_response = '{"apikey": "apikey", "config_properties": "ikc-env.password=ibmlhenc__0001__uMkFATDDZNnxJ7z6BA/QqA==\nikc-env.url=ikc\nikc-enabled-catalogs=\nikc-username=\nlh-unique-identifier=1711796957622126\nlh-crn=1711796957622126", "enable_data_policy_within_wxd": false, "governance_properties": "query-governance.name=external", "integration_id": "presto01", "modified_at": 11, "modified_by": "<username>@<domain>.com", "password": "password", "resource": "presto01", "service_type": "ikc", "state": "active", "storage_catalogs": ["storage_catalogs"], "url": "ikc.url", "username": "username@email.com"}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a IntegrationPatch model
+        integration_patch_model = {}
+        integration_patch_model['apikey'] = 'apikey'
+        integration_patch_model['enable_data_policy_within_wxd'] = True
+        integration_patch_model['password'] = 'password'
+        integration_patch_model['resource'] = 'resource_name'
+        integration_patch_model['storage_catalogs'] = ['iceberg_data', 'hive_data']
+        integration_patch_model['url'] = 'http://abcd.efgh.com:9876/'
+        integration_patch_model['username'] = 'username'
+
+        # Set up parameter values
+        integration_id = 'testString'
+        integration_patch = integration_patch_model
+
+        # Invoke method
+        response = _service.update_integration(
+            integration_id,
+            integration_patch,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body == integration_patch
+
+    def test_update_integration_required_params_with_retries(self):
+        # Enable retries and run test_update_integration_required_params.
+        _service.enable_retries()
+        self.test_update_integration_required_params()
+
+        # Disable retries and run test_update_integration_required_params.
+        _service.disable_retries()
+        self.test_update_integration_required_params()
+
+    @responses.activate
+    def test_update_integration_value_error(self):
+        """
+        test_update_integration_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/integrations/testString')
+        mock_response = '{"apikey": "apikey", "config_properties": "ikc-env.password=ibmlhenc__0001__uMkFATDDZNnxJ7z6BA/QqA==\nikc-env.url=ikc\nikc-enabled-catalogs=\nikc-username=\nlh-unique-identifier=1711796957622126\nlh-crn=1711796957622126", "enable_data_policy_within_wxd": false, "governance_properties": "query-governance.name=external", "integration_id": "presto01", "modified_at": 11, "modified_by": "<username>@<domain>.com", "password": "password", "resource": "presto01", "service_type": "ikc", "state": "active", "storage_catalogs": ["storage_catalogs"], "url": "ikc.url", "username": "username@email.com"}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a IntegrationPatch model
+        integration_patch_model = {}
+        integration_patch_model['apikey'] = 'apikey'
+        integration_patch_model['enable_data_policy_within_wxd'] = True
+        integration_patch_model['password'] = 'password'
+        integration_patch_model['resource'] = 'resource_name'
+        integration_patch_model['storage_catalogs'] = ['iceberg_data', 'hive_data']
+        integration_patch_model['url'] = 'http://abcd.efgh.com:9876/'
+        integration_patch_model['username'] = 'username'
+
+        # Set up parameter values
+        integration_id = 'testString'
+        integration_patch = integration_patch_model
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "integration_id": integration_id,
+            "integration_patch": integration_patch,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.update_integration(**req_copy)
+
+    def test_update_integration_value_error_with_retries(self):
+        # Enable retries and run test_update_integration_value_error.
+        _service.enable_retries()
+        self.test_update_integration_value_error()
+
+        # Disable retries and run test_update_integration_value_error.
+        _service.disable_retries()
+        self.test_update_integration_value_error()
+
+
+# endregion
+##############################################################################
+# End of Service: Integrations
 ##############################################################################
 
 ##############################################################################
@@ -3426,6 +5202,192 @@ class TestUpdateNetezzaEngine:
 ##############################################################################
 
 ##############################################################################
+# Start of Service: Queries
+##############################################################################
+# region
+
+
+class TestNewInstance:
+    """
+    Test Class for new_instance
+    """
+
+    def test_new_instance(self):
+        """
+        new_instance()
+        """
+        os.environ['TEST_SERVICE_AUTH_TYPE'] = 'noAuth'
+
+        service = WatsonxDataV2.new_instance(
+            service_name='TEST_SERVICE',
+        )
+
+        assert service is not None
+        assert isinstance(service, WatsonxDataV2)
+
+    def test_new_instance_without_authenticator(self):
+        """
+        new_instance_without_authenticator()
+        """
+        with pytest.raises(ValueError, match='authenticator must be provided'):
+            service = WatsonxDataV2.new_instance(
+                service_name='TEST_SERVICE_NOT_FOUND',
+            )
+
+
+class TestCreateExecuteQuery:
+    """
+    Test Class for create_execute_query
+    """
+
+    @responses.activate
+    def test_create_execute_query_all_params(self):
+        """
+        create_execute_query()
+        """
+        # Set up mock
+        url = preprocess_url('/queries/execute/testString')
+        mock_response = '{"response": {"result": [{"mapKey": "inner"}]}}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        sql_string = 'select expenses from expenditure'
+        catalog_name = 'sampleCatalog'
+        schema_name = 'SampleSchema1'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_execute_query(
+            engine_id,
+            sql_string,
+            catalog_name=catalog_name,
+            schema_name=schema_name,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['sql_string'] == 'select expenses from expenditure'
+        assert req_body['catalog_name'] == 'sampleCatalog'
+        assert req_body['schema_name'] == 'SampleSchema1'
+
+    def test_create_execute_query_all_params_with_retries(self):
+        # Enable retries and run test_create_execute_query_all_params.
+        _service.enable_retries()
+        self.test_create_execute_query_all_params()
+
+        # Disable retries and run test_create_execute_query_all_params.
+        _service.disable_retries()
+        self.test_create_execute_query_all_params()
+
+    @responses.activate
+    def test_create_execute_query_required_params(self):
+        """
+        test_create_execute_query_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/queries/execute/testString')
+        mock_response = '{"response": {"result": [{"mapKey": "inner"}]}}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        sql_string = 'select expenses from expenditure'
+        catalog_name = 'sampleCatalog'
+        schema_name = 'SampleSchema1'
+
+        # Invoke method
+        response = _service.create_execute_query(
+            engine_id,
+            sql_string,
+            catalog_name=catalog_name,
+            schema_name=schema_name,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['sql_string'] == 'select expenses from expenditure'
+        assert req_body['catalog_name'] == 'sampleCatalog'
+        assert req_body['schema_name'] == 'SampleSchema1'
+
+    def test_create_execute_query_required_params_with_retries(self):
+        # Enable retries and run test_create_execute_query_required_params.
+        _service.enable_retries()
+        self.test_create_execute_query_required_params()
+
+        # Disable retries and run test_create_execute_query_required_params.
+        _service.disable_retries()
+        self.test_create_execute_query_required_params()
+
+    @responses.activate
+    def test_create_execute_query_value_error(self):
+        """
+        test_create_execute_query_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/queries/execute/testString')
+        mock_response = '{"response": {"result": [{"mapKey": "inner"}]}}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        engine_id = 'testString'
+        sql_string = 'select expenses from expenditure'
+        catalog_name = 'sampleCatalog'
+        schema_name = 'SampleSchema1'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "engine_id": engine_id,
+            "sql_string": sql_string,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_execute_query(**req_copy)
+
+    def test_create_execute_query_value_error_with_retries(self):
+        # Enable retries and run test_create_execute_query_value_error.
+        _service.enable_retries()
+        self.test_create_execute_query_value_error()
+
+        # Disable retries and run test_create_execute_query_value_error.
+        _service.disable_retries()
+        self.test_create_execute_query_value_error()
+
+
+# endregion
+##############################################################################
+# End of Service: Queries
+##############################################################################
+
+##############################################################################
 # Start of Service: PrestissimoEngines
 ##############################################################################
 # region
@@ -3471,7 +5433,7 @@ class TestListPrestissimoEngines:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines')
-        mock_response = '{"prestissimo_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
+        mock_response = '{"prestissimo_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
         responses.add(
             responses.GET,
             url,
@@ -3509,7 +5471,7 @@ class TestListPrestissimoEngines:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines')
-        mock_response = '{"prestissimo_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
+        mock_response = '{"prestissimo_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
         responses.add(
             responses.GET,
             url,
@@ -3547,7 +5509,7 @@ class TestCreatePrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.POST,
             url,
@@ -3638,7 +5600,7 @@ class TestCreatePrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.POST,
             url,
@@ -3727,7 +5689,7 @@ class TestCreatePrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.POST,
             url,
@@ -3804,7 +5766,7 @@ class TestGetPrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.GET,
             url,
@@ -3844,7 +5806,7 @@ class TestGetPrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.GET,
             url,
@@ -3882,7 +5844,7 @@ class TestGetPrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.GET,
             url,
@@ -4037,7 +5999,7 @@ class TestUpdatePrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.PATCH,
             url,
@@ -4085,11 +6047,15 @@ class TestUpdatePrestissimoEngine:
         remove_engine_properties_configuration_model['coordinator'] = ['testString']
         remove_engine_properties_configuration_model['worker'] = ['testString']
 
+        # Construct a dict representation of a RemoveEnginePropertiesPrestissimoOaiGenJvm model
+        remove_engine_properties_prestissimo_oai_gen_jvm_model = {}
+        remove_engine_properties_prestissimo_oai_gen_jvm_model['coordinator'] = ['testString']
+
         # Construct a dict representation of a RemoveEngineProperties model
         remove_engine_properties_model = {}
         remove_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
         remove_engine_properties_model['configuration'] = remove_engine_properties_configuration_model
-        remove_engine_properties_model['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['jvm'] = remove_engine_properties_prestissimo_oai_gen_jvm_model
         remove_engine_properties_model['velox'] = ['testString']
 
         # Construct a dict representation of a PrestissimoEnginePatch model
@@ -4137,7 +6103,7 @@ class TestUpdatePrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.PATCH,
             url,
@@ -4185,11 +6151,15 @@ class TestUpdatePrestissimoEngine:
         remove_engine_properties_configuration_model['coordinator'] = ['testString']
         remove_engine_properties_configuration_model['worker'] = ['testString']
 
+        # Construct a dict representation of a RemoveEnginePropertiesPrestissimoOaiGenJvm model
+        remove_engine_properties_prestissimo_oai_gen_jvm_model = {}
+        remove_engine_properties_prestissimo_oai_gen_jvm_model['coordinator'] = ['testString']
+
         # Construct a dict representation of a RemoveEngineProperties model
         remove_engine_properties_model = {}
         remove_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
         remove_engine_properties_model['configuration'] = remove_engine_properties_configuration_model
-        remove_engine_properties_model['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['jvm'] = remove_engine_properties_prestissimo_oai_gen_jvm_model
         remove_engine_properties_model['velox'] = ['testString']
 
         # Construct a dict representation of a PrestissimoEnginePatch model
@@ -4235,7 +6205,7 @@ class TestUpdatePrestissimoEngine:
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "prestissimo engine for running sql queries", "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "endpoints": {"applications_api": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications/<application_id>", "history_server_endpoint": "$HOST/v2/spark/v3/instances/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_history_server", "spark_access_endpoint": "$HOST/analytics-engine/details/spark-<instance_id>", "spark_jobs_v4_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/spark_applications", "spark_kernel_endpoint": "$HOST/v4/analytics_engines/c7b3fccf-badb-46b0-b1ef-9b3154424021/jkg/api/kernels", "view_history_server": "view_history_server", "wxd_application_endpoint": "$HOST/v1/1698311655308796/engines/spark817/applications"}, "instance_id": "instance_id", "managed_by": "fully/self", "metastore_host": "1.2.3.4", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "velox": {"velox_property": ["velox_property"]}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "xyz-prestissimo-01-prestissimo-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": ["catalog_name"]}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"]}, "velox": ["velox"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "prestissimo", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.PATCH,
             url,
@@ -4283,11 +6253,15 @@ class TestUpdatePrestissimoEngine:
         remove_engine_properties_configuration_model['coordinator'] = ['testString']
         remove_engine_properties_configuration_model['worker'] = ['testString']
 
+        # Construct a dict representation of a RemoveEnginePropertiesPrestissimoOaiGenJvm model
+        remove_engine_properties_prestissimo_oai_gen_jvm_model = {}
+        remove_engine_properties_prestissimo_oai_gen_jvm_model['coordinator'] = ['testString']
+
         # Construct a dict representation of a RemoveEngineProperties model
         remove_engine_properties_model = {}
         remove_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
         remove_engine_properties_model['configuration'] = remove_engine_properties_configuration_model
-        remove_engine_properties_model['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['jvm'] = remove_engine_properties_prestissimo_oai_gen_jvm_model
         remove_engine_properties_model['velox'] = ['testString']
 
         # Construct a dict representation of a PrestissimoEnginePatch model
@@ -4444,19 +6418,19 @@ class TestListPrestissimoEngineCatalogs:
         self.test_list_prestissimo_engine_catalogs_value_error()
 
 
-class TestAddPrestissimoEngineCatalogs:
+class TestCreatePrestissimoEngineCatalogs:
     """
-    Test Class for add_prestissimo_engine_catalogs
+    Test Class for create_prestissimo_engine_catalogs
     """
 
     @responses.activate
-    def test_add_prestissimo_engine_catalogs_all_params(self):
+    def test_create_prestissimo_engine_catalogs_all_params(self):
         """
-        add_prestissimo_engine_catalogs()
+        create_prestissimo_engine_catalogs()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/catalogs')
-        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        mock_response = '{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}'
         responses.add(
             responses.POST,
             url,
@@ -4467,13 +6441,13 @@ class TestAddPrestissimoEngineCatalogs:
 
         # Set up parameter values
         engine_id = 'testString'
-        catalog_names = 'testString'
+        catalog_name = 'testString'
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.add_prestissimo_engine_catalogs(
+        response = _service.create_prestissimo_engine_catalogs(
             engine_id,
-            catalog_names=catalog_names,
+            catalog_name=catalog_name,
             auth_instance_id=auth_instance_id,
             headers={},
         )
@@ -4483,25 +6457,25 @@ class TestAddPrestissimoEngineCatalogs:
         assert response.status_code == 201
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['catalog_names'] == 'testString'
+        assert req_body['catalog_name'] == 'testString'
 
-    def test_add_prestissimo_engine_catalogs_all_params_with_retries(self):
-        # Enable retries and run test_add_prestissimo_engine_catalogs_all_params.
+    def test_create_prestissimo_engine_catalogs_all_params_with_retries(self):
+        # Enable retries and run test_create_prestissimo_engine_catalogs_all_params.
         _service.enable_retries()
-        self.test_add_prestissimo_engine_catalogs_all_params()
+        self.test_create_prestissimo_engine_catalogs_all_params()
 
-        # Disable retries and run test_add_prestissimo_engine_catalogs_all_params.
+        # Disable retries and run test_create_prestissimo_engine_catalogs_all_params.
         _service.disable_retries()
-        self.test_add_prestissimo_engine_catalogs_all_params()
+        self.test_create_prestissimo_engine_catalogs_all_params()
 
     @responses.activate
-    def test_add_prestissimo_engine_catalogs_required_params(self):
+    def test_create_prestissimo_engine_catalogs_required_params(self):
         """
-        test_add_prestissimo_engine_catalogs_required_params()
+        test_create_prestissimo_engine_catalogs_required_params()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/catalogs')
-        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        mock_response = '{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}'
         responses.add(
             responses.POST,
             url,
@@ -4512,12 +6486,12 @@ class TestAddPrestissimoEngineCatalogs:
 
         # Set up parameter values
         engine_id = 'testString'
-        catalog_names = 'testString'
+        catalog_name = 'testString'
 
         # Invoke method
-        response = _service.add_prestissimo_engine_catalogs(
+        response = _service.create_prestissimo_engine_catalogs(
             engine_id,
-            catalog_names=catalog_names,
+            catalog_name=catalog_name,
             headers={},
         )
 
@@ -4526,25 +6500,25 @@ class TestAddPrestissimoEngineCatalogs:
         assert response.status_code == 201
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['catalog_names'] == 'testString'
+        assert req_body['catalog_name'] == 'testString'
 
-    def test_add_prestissimo_engine_catalogs_required_params_with_retries(self):
-        # Enable retries and run test_add_prestissimo_engine_catalogs_required_params.
+    def test_create_prestissimo_engine_catalogs_required_params_with_retries(self):
+        # Enable retries and run test_create_prestissimo_engine_catalogs_required_params.
         _service.enable_retries()
-        self.test_add_prestissimo_engine_catalogs_required_params()
+        self.test_create_prestissimo_engine_catalogs_required_params()
 
-        # Disable retries and run test_add_prestissimo_engine_catalogs_required_params.
+        # Disable retries and run test_create_prestissimo_engine_catalogs_required_params.
         _service.disable_retries()
-        self.test_add_prestissimo_engine_catalogs_required_params()
+        self.test_create_prestissimo_engine_catalogs_required_params()
 
     @responses.activate
-    def test_add_prestissimo_engine_catalogs_value_error(self):
+    def test_create_prestissimo_engine_catalogs_value_error(self):
         """
-        test_add_prestissimo_engine_catalogs_value_error()
+        test_create_prestissimo_engine_catalogs_value_error()
         """
         # Set up mock
         url = preprocess_url('/prestissimo_engines/testString/catalogs')
-        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        mock_response = '{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}'
         responses.add(
             responses.POST,
             url,
@@ -4555,7 +6529,7 @@ class TestAddPrestissimoEngineCatalogs:
 
         # Set up parameter values
         engine_id = 'testString'
-        catalog_names = 'testString'
+        catalog_name = 'testString'
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -4564,16 +6538,16 @@ class TestAddPrestissimoEngineCatalogs:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.add_prestissimo_engine_catalogs(**req_copy)
+                _service.create_prestissimo_engine_catalogs(**req_copy)
 
-    def test_add_prestissimo_engine_catalogs_value_error_with_retries(self):
-        # Enable retries and run test_add_prestissimo_engine_catalogs_value_error.
+    def test_create_prestissimo_engine_catalogs_value_error_with_retries(self):
+        # Enable retries and run test_create_prestissimo_engine_catalogs_value_error.
         _service.enable_retries()
-        self.test_add_prestissimo_engine_catalogs_value_error()
+        self.test_create_prestissimo_engine_catalogs_value_error()
 
-        # Disable retries and run test_add_prestissimo_engine_catalogs_value_error.
+        # Disable retries and run test_create_prestissimo_engine_catalogs_value_error.
         _service.disable_retries()
-        self.test_add_prestissimo_engine_catalogs_value_error()
+        self.test_create_prestissimo_engine_catalogs_value_error()
 
 
 class TestDeletePrestissimoEngineCatalogs:
@@ -5684,7 +7658,7 @@ class TestListPrestoEngines:
         """
         # Set up mock
         url = preprocess_url('/presto_engines')
-        mock_response = '{"presto_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
+        mock_response = '{"presto_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "event_listener": {"event_listener_property": "event_listener_property"}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "log_config": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "event_listener": ["event_listener"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
         responses.add(
             responses.GET,
             url,
@@ -5722,7 +7696,7 @@ class TestListPrestoEngines:
         """
         # Set up mock
         url = preprocess_url('/presto_engines')
-        mock_response = '{"presto_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
+        mock_response = '{"presto_engines": [{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "event_listener": {"event_listener_property": "event_listener_property"}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "log_config": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "event_listener": ["event_listener"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}]}'
         responses.add(
             responses.GET,
             url,
@@ -5760,7 +7734,7 @@ class TestCreatePrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "event_listener": {"event_listener_property": "event_listener_property"}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "log_config": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "event_listener": ["event_listener"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.POST,
             url,
@@ -5839,7 +7813,7 @@ class TestCreatePrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "event_listener": {"event_listener_property": "event_listener_property"}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "log_config": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "event_listener": ["event_listener"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.POST,
             url,
@@ -5916,7 +7890,7 @@ class TestCreatePrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "event_listener": {"event_listener_property": "event_listener_property"}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "log_config": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "event_listener": ["event_listener"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.POST,
             url,
@@ -5981,7 +7955,7 @@ class TestGetPrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "event_listener": {"event_listener_property": "event_listener_property"}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "log_config": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "event_listener": ["event_listener"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.GET,
             url,
@@ -6021,7 +7995,7 @@ class TestGetPrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "event_listener": {"event_listener_property": "event_listener_property"}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "log_config": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "event_listener": ["event_listener"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.GET,
             url,
@@ -6059,7 +8033,7 @@ class TestGetPrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "event_listener": {"event_listener_property": "event_listener_property"}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "log_config": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "event_listener": ["event_listener"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.GET,
             url,
@@ -6214,7 +8188,7 @@ class TestUpdatePrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "event_listener": {"event_listener_property": "event_listener_property"}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "log_config": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "event_listener": ["event_listener"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.PATCH,
             url,
@@ -6237,6 +8211,10 @@ class TestUpdatePrestoEngine:
         engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
 
+        # Construct a dict representation of a PrestoEnginePropertiesEventListener model
+        presto_engine_properties_event_listener_model = {}
+        presto_engine_properties_event_listener_model['event_listener_property'] = 'testString'
+
         # Construct a dict representation of a PrestoEnginePropertiesGlobal model
         presto_engine_properties_global_model = {}
         presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
@@ -6246,12 +8224,19 @@ class TestUpdatePrestoEngine:
         engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
 
+        # Construct a dict representation of a EnginePropertiesLogConfiguration model
+        engine_properties_log_configuration_model = {}
+        engine_properties_log_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_log_configuration_model['worker'] = node_description_body_model
+
         # Construct a dict representation of a PrestoEngineEngineProperties model
         presto_engine_engine_properties_model = {}
         presto_engine_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
         presto_engine_engine_properties_model['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model['event_listener'] = presto_engine_properties_event_listener_model
         presto_engine_engine_properties_model['global'] = presto_engine_properties_global_model
         presto_engine_engine_properties_model['jvm'] = engine_properties_oai_gen1_jvm_model
+        presto_engine_engine_properties_model['log_config'] = engine_properties_log_configuration_model
 
         # Construct a dict representation of a RemoveEnginePropertiesOaiGenConfiguration model
         remove_engine_properties_oai_gen_configuration_model = {}
@@ -6265,9 +8250,10 @@ class TestUpdatePrestoEngine:
 
         # Construct a dict representation of a PrestoEnginePatchRemoveEngineProperties model
         presto_engine_patch_remove_engine_properties_model = {}
+        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
         presto_engine_patch_remove_engine_properties_model['configuration'] = remove_engine_properties_oai_gen_configuration_model
         presto_engine_patch_remove_engine_properties_model['jvm'] = remove_engine_properties_oai_gen_jvm_model
-        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_patch_remove_engine_properties_model['event_listener'] = []
 
         # Construct a dict representation of a PrestoEnginePatch model
         presto_engine_patch_model = {}
@@ -6314,7 +8300,7 @@ class TestUpdatePrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "event_listener": {"event_listener_property": "event_listener_property"}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "log_config": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "event_listener": ["event_listener"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.PATCH,
             url,
@@ -6337,6 +8323,10 @@ class TestUpdatePrestoEngine:
         engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
 
+        # Construct a dict representation of a PrestoEnginePropertiesEventListener model
+        presto_engine_properties_event_listener_model = {}
+        presto_engine_properties_event_listener_model['event_listener_property'] = 'testString'
+
         # Construct a dict representation of a PrestoEnginePropertiesGlobal model
         presto_engine_properties_global_model = {}
         presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
@@ -6346,12 +8336,19 @@ class TestUpdatePrestoEngine:
         engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
 
+        # Construct a dict representation of a EnginePropertiesLogConfiguration model
+        engine_properties_log_configuration_model = {}
+        engine_properties_log_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_log_configuration_model['worker'] = node_description_body_model
+
         # Construct a dict representation of a PrestoEngineEngineProperties model
         presto_engine_engine_properties_model = {}
         presto_engine_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
         presto_engine_engine_properties_model['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model['event_listener'] = presto_engine_properties_event_listener_model
         presto_engine_engine_properties_model['global'] = presto_engine_properties_global_model
         presto_engine_engine_properties_model['jvm'] = engine_properties_oai_gen1_jvm_model
+        presto_engine_engine_properties_model['log_config'] = engine_properties_log_configuration_model
 
         # Construct a dict representation of a RemoveEnginePropertiesOaiGenConfiguration model
         remove_engine_properties_oai_gen_configuration_model = {}
@@ -6365,9 +8362,10 @@ class TestUpdatePrestoEngine:
 
         # Construct a dict representation of a PrestoEnginePatchRemoveEngineProperties model
         presto_engine_patch_remove_engine_properties_model = {}
+        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
         presto_engine_patch_remove_engine_properties_model['configuration'] = remove_engine_properties_oai_gen_configuration_model
         presto_engine_patch_remove_engine_properties_model['jvm'] = remove_engine_properties_oai_gen_jvm_model
-        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_patch_remove_engine_properties_model['event_listener'] = []
 
         # Construct a dict representation of a PrestoEnginePatch model
         presto_engine_patch_model = {}
@@ -6412,7 +8410,7 @@ class TestUpdatePrestoEngine:
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString')
-        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "catalog": {"catalog_name": "catalog_name"}}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
+        mock_response = '{"actions": ["actions"], "associated_catalogs": ["associated_catalogs"], "build_version": "1.0.3.0.0", "coordinator": {"node_type": "worker", "quantity": 8}, "created_by": "<username>@<domain>.com", "created_on": 10, "description": "presto engine for running sql queries", "drivers": [{"connection_type": "saphana", "driver_id": "saphanadriver123", "driver_name": "saphanadriver-1.2.3", "driver_version": "1.2.3"}], "engine_details": {"api_key": "<api_key>", "connection_string": "1.2.3.4", "coordinator": {"node_type": "worker", "quantity": 8}, "instance_id": "instance_id", "managed_by": "fully/self", "size_config": "starter", "worker": {"node_type": "worker", "quantity": 8}}, "engine_display_name": "sampleEngine", "engine_id": "sampleEngine123", "engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "event_listener": {"event_listener_property": "event_listener_property"}, "global": {"global_property": "enable-mixed-case-support:true"}, "jvm": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}, "log_config": {"coordinator": {"node_type": "worker", "quantity": 8}, "worker": {"node_type": "worker", "quantity": 8}}}, "engine_restart": "force", "external_host_name": "your-hostname.apps.your-domain.com", "group_id": "new_group_id", "host_name": "ibm-lh-lakehouse-presto-01-presto-svc", "origin": "native", "port": 4, "region": "us-south", "remove_engine_properties": {"catalog": {"catalog_name": "catalog_name"}, "configuration": {"coordinator": ["coordinator"], "worker": ["worker"]}, "jvm": {"coordinator": ["coordinator"], "worker": ["worker"]}, "event_listener": ["event_listener"]}, "size_config": "starter", "status": "running", "status_code": 11, "tags": ["tags"], "type": "presto", "version": "1.2.0", "worker": {"node_type": "worker", "quantity": 8}}'
         responses.add(
             responses.PATCH,
             url,
@@ -6435,6 +8433,10 @@ class TestUpdatePrestoEngine:
         engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
 
+        # Construct a dict representation of a PrestoEnginePropertiesEventListener model
+        presto_engine_properties_event_listener_model = {}
+        presto_engine_properties_event_listener_model['event_listener_property'] = 'testString'
+
         # Construct a dict representation of a PrestoEnginePropertiesGlobal model
         presto_engine_properties_global_model = {}
         presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
@@ -6444,12 +8446,19 @@ class TestUpdatePrestoEngine:
         engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
 
+        # Construct a dict representation of a EnginePropertiesLogConfiguration model
+        engine_properties_log_configuration_model = {}
+        engine_properties_log_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_log_configuration_model['worker'] = node_description_body_model
+
         # Construct a dict representation of a PrestoEngineEngineProperties model
         presto_engine_engine_properties_model = {}
         presto_engine_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
         presto_engine_engine_properties_model['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model['event_listener'] = presto_engine_properties_event_listener_model
         presto_engine_engine_properties_model['global'] = presto_engine_properties_global_model
         presto_engine_engine_properties_model['jvm'] = engine_properties_oai_gen1_jvm_model
+        presto_engine_engine_properties_model['log_config'] = engine_properties_log_configuration_model
 
         # Construct a dict representation of a RemoveEnginePropertiesOaiGenConfiguration model
         remove_engine_properties_oai_gen_configuration_model = {}
@@ -6463,9 +8472,10 @@ class TestUpdatePrestoEngine:
 
         # Construct a dict representation of a PrestoEnginePatchRemoveEngineProperties model
         presto_engine_patch_remove_engine_properties_model = {}
+        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
         presto_engine_patch_remove_engine_properties_model['configuration'] = remove_engine_properties_oai_gen_configuration_model
         presto_engine_patch_remove_engine_properties_model['jvm'] = remove_engine_properties_oai_gen_jvm_model
-        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_patch_remove_engine_properties_model['event_listener'] = []
 
         # Construct a dict representation of a PrestoEnginePatch model
         presto_engine_patch_model = {}
@@ -6621,19 +8631,19 @@ class TestListPrestoEngineCatalogs:
         self.test_list_presto_engine_catalogs_value_error()
 
 
-class TestAddPrestoEngineCatalogs:
+class TestCreatePrestoEngineCatalogs:
     """
-    Test Class for add_presto_engine_catalogs
+    Test Class for create_presto_engine_catalogs
     """
 
     @responses.activate
-    def test_add_presto_engine_catalogs_all_params(self):
+    def test_create_presto_engine_catalogs_all_params(self):
         """
-        add_presto_engine_catalogs()
+        create_presto_engine_catalogs()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/catalogs')
-        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        mock_response = '{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}'
         responses.add(
             responses.POST,
             url,
@@ -6644,13 +8654,13 @@ class TestAddPrestoEngineCatalogs:
 
         # Set up parameter values
         engine_id = 'testString'
-        catalog_names = 'testString'
+        catalog_name = 'testString'
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.add_presto_engine_catalogs(
+        response = _service.create_presto_engine_catalogs(
             engine_id,
-            catalog_names=catalog_names,
+            catalog_name=catalog_name,
             auth_instance_id=auth_instance_id,
             headers={},
         )
@@ -6660,25 +8670,25 @@ class TestAddPrestoEngineCatalogs:
         assert response.status_code == 201
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['catalog_names'] == 'testString'
+        assert req_body['catalog_name'] == 'testString'
 
-    def test_add_presto_engine_catalogs_all_params_with_retries(self):
-        # Enable retries and run test_add_presto_engine_catalogs_all_params.
+    def test_create_presto_engine_catalogs_all_params_with_retries(self):
+        # Enable retries and run test_create_presto_engine_catalogs_all_params.
         _service.enable_retries()
-        self.test_add_presto_engine_catalogs_all_params()
+        self.test_create_presto_engine_catalogs_all_params()
 
-        # Disable retries and run test_add_presto_engine_catalogs_all_params.
+        # Disable retries and run test_create_presto_engine_catalogs_all_params.
         _service.disable_retries()
-        self.test_add_presto_engine_catalogs_all_params()
+        self.test_create_presto_engine_catalogs_all_params()
 
     @responses.activate
-    def test_add_presto_engine_catalogs_required_params(self):
+    def test_create_presto_engine_catalogs_required_params(self):
         """
-        test_add_presto_engine_catalogs_required_params()
+        test_create_presto_engine_catalogs_required_params()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/catalogs')
-        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        mock_response = '{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}'
         responses.add(
             responses.POST,
             url,
@@ -6689,12 +8699,12 @@ class TestAddPrestoEngineCatalogs:
 
         # Set up parameter values
         engine_id = 'testString'
-        catalog_names = 'testString'
+        catalog_name = 'testString'
 
         # Invoke method
-        response = _service.add_presto_engine_catalogs(
+        response = _service.create_presto_engine_catalogs(
             engine_id,
-            catalog_names=catalog_names,
+            catalog_name=catalog_name,
             headers={},
         )
 
@@ -6703,25 +8713,25 @@ class TestAddPrestoEngineCatalogs:
         assert response.status_code == 201
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['catalog_names'] == 'testString'
+        assert req_body['catalog_name'] == 'testString'
 
-    def test_add_presto_engine_catalogs_required_params_with_retries(self):
-        # Enable retries and run test_add_presto_engine_catalogs_required_params.
+    def test_create_presto_engine_catalogs_required_params_with_retries(self):
+        # Enable retries and run test_create_presto_engine_catalogs_required_params.
         _service.enable_retries()
-        self.test_add_presto_engine_catalogs_required_params()
+        self.test_create_presto_engine_catalogs_required_params()
 
-        # Disable retries and run test_add_presto_engine_catalogs_required_params.
+        # Disable retries and run test_create_presto_engine_catalogs_required_params.
         _service.disable_retries()
-        self.test_add_presto_engine_catalogs_required_params()
+        self.test_create_presto_engine_catalogs_required_params()
 
     @responses.activate
-    def test_add_presto_engine_catalogs_value_error(self):
+    def test_create_presto_engine_catalogs_value_error(self):
         """
-        test_add_presto_engine_catalogs_value_error()
+        test_create_presto_engine_catalogs_value_error()
         """
         # Set up mock
         url = preprocess_url('/presto_engines/testString/catalogs')
-        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        mock_response = '{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}'
         responses.add(
             responses.POST,
             url,
@@ -6732,7 +8742,7 @@ class TestAddPrestoEngineCatalogs:
 
         # Set up parameter values
         engine_id = 'testString'
-        catalog_names = 'testString'
+        catalog_name = 'testString'
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -6741,16 +8751,16 @@ class TestAddPrestoEngineCatalogs:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.add_presto_engine_catalogs(**req_copy)
+                _service.create_presto_engine_catalogs(**req_copy)
 
-    def test_add_presto_engine_catalogs_value_error_with_retries(self):
-        # Enable retries and run test_add_presto_engine_catalogs_value_error.
+    def test_create_presto_engine_catalogs_value_error_with_retries(self):
+        # Enable retries and run test_create_presto_engine_catalogs_value_error.
         _service.enable_retries()
-        self.test_add_presto_engine_catalogs_value_error()
+        self.test_create_presto_engine_catalogs_value_error()
 
-        # Disable retries and run test_add_presto_engine_catalogs_value_error.
+        # Disable retries and run test_create_presto_engine_catalogs_value_error.
         _service.disable_retries()
-        self.test_add_presto_engine_catalogs_value_error()
+        self.test_create_presto_engine_catalogs_value_error()
 
 
 class TestDeletePrestoEngineCatalogs:
@@ -7813,6 +9823,1859 @@ class TestScalePrestoEngine:
 # endregion
 ##############################################################################
 # End of Service: PrestoEngines
+##############################################################################
+
+##############################################################################
+# Start of Service: SemanticAutomationLayer
+##############################################################################
+# region
+
+
+class TestNewInstance:
+    """
+    Test Class for new_instance
+    """
+
+    def test_new_instance(self):
+        """
+        new_instance()
+        """
+        os.environ['TEST_SERVICE_AUTH_TYPE'] = 'noAuth'
+
+        service = WatsonxDataV2.new_instance(
+            service_name='TEST_SERVICE',
+        )
+
+        assert service is not None
+        assert isinstance(service, WatsonxDataV2)
+
+    def test_new_instance_without_authenticator(self):
+        """
+        new_instance_without_authenticator()
+        """
+        with pytest.raises(ValueError, match='authenticator must be provided'):
+            service = WatsonxDataV2.new_instance(
+                service_name='TEST_SERVICE_NOT_FOUND',
+            )
+
+
+class TestGetSalIntegration:
+    """
+    Test Class for get_sal_integration
+    """
+
+    @responses.activate
+    def test_get_sal_integration_all_params(self):
+        """
+        get_sal_integration()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations')
+        mock_response = '{"category_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "engine_id": "presto-01", "errors": [{"code": "unable_to_perform", "message": "Failed to process integration settings for watsonx.data instance"}], "governance_scope_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "governance_scope_type": "category", "instance_id": "18b49d7a-9519-4539-8db5-ff080623c226", "status": "provisioning", "storage_resource_crn": "crn:v1:staging:public:cloud-object-storage:global:a/04e9bc47612523rr19ac22759cb69bebd:asd23df-6ada-45ff-bfe8-4343222", "storage_type": "bmcos_object_storage", "timestamp": "1715056266", "trial_plan": false, "username": "xyz@abc.com"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_sal_integration(
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_all_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_all_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_all_params()
+
+        # Disable retries and run test_get_sal_integration_all_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_all_params()
+
+    @responses.activate
+    def test_get_sal_integration_required_params(self):
+        """
+        test_get_sal_integration_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations')
+        mock_response = '{"category_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "engine_id": "presto-01", "errors": [{"code": "unable_to_perform", "message": "Failed to process integration settings for watsonx.data instance"}], "governance_scope_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "governance_scope_type": "category", "instance_id": "18b49d7a-9519-4539-8db5-ff080623c226", "status": "provisioning", "storage_resource_crn": "crn:v1:staging:public:cloud-object-storage:global:a/04e9bc47612523rr19ac22759cb69bebd:asd23df-6ada-45ff-bfe8-4343222", "storage_type": "bmcos_object_storage", "timestamp": "1715056266", "trial_plan": false, "username": "xyz@abc.com"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.get_sal_integration()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_required_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_required_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_required_params()
+
+        # Disable retries and run test_get_sal_integration_required_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_required_params()
+
+
+class TestCreateSalIntegration:
+    """
+    Test Class for create_sal_integration
+    """
+
+    @responses.activate
+    def test_create_sal_integration_all_params(self):
+        """
+        create_sal_integration()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations')
+        mock_response = '{"category_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "engine_id": "presto-01", "errors": [{"code": "unable_to_perform", "message": "Failed to process integration settings for watsonx.data instance"}], "governance_scope_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "governance_scope_type": "category", "instance_id": "18b49d7a-9519-4539-8db5-ff080623c226", "status": "provisioning", "storage_resource_crn": "crn:v1:staging:public:cloud-object-storage:global:a/04e9bc47612523rr19ac22759cb69bebd:asd23df-6ada-45ff-bfe8-4343222", "storage_type": "bmcos_object_storage", "timestamp": "1715056266", "trial_plan": false, "username": "xyz@abc.com"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        apikey = '12efd3raq'
+        engine_id = 'presto-01'
+        storage_resource_crn = 'crn:v1:staging:public:cloud-object-storage:global:a/a7026b374f39f570d20984c1ac6ecf63:5778e94f-c8c7-46a8-9878-d5eeadb51161'
+        storage_type = 'bmcos_object_storage'
+        trial_plan = True
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_sal_integration(
+            apikey,
+            engine_id,
+            storage_resource_crn=storage_resource_crn,
+            storage_type=storage_type,
+            trial_plan=trial_plan,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['apikey'] == '12efd3raq'
+        assert req_body['engine_id'] == 'presto-01'
+        assert req_body['storage_resource_crn'] == 'crn:v1:staging:public:cloud-object-storage:global:a/a7026b374f39f570d20984c1ac6ecf63:5778e94f-c8c7-46a8-9878-d5eeadb51161'
+        assert req_body['storage_type'] == 'bmcos_object_storage'
+        assert req_body['trial_plan'] == True
+
+    def test_create_sal_integration_all_params_with_retries(self):
+        # Enable retries and run test_create_sal_integration_all_params.
+        _service.enable_retries()
+        self.test_create_sal_integration_all_params()
+
+        # Disable retries and run test_create_sal_integration_all_params.
+        _service.disable_retries()
+        self.test_create_sal_integration_all_params()
+
+    @responses.activate
+    def test_create_sal_integration_required_params(self):
+        """
+        test_create_sal_integration_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations')
+        mock_response = '{"category_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "engine_id": "presto-01", "errors": [{"code": "unable_to_perform", "message": "Failed to process integration settings for watsonx.data instance"}], "governance_scope_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "governance_scope_type": "category", "instance_id": "18b49d7a-9519-4539-8db5-ff080623c226", "status": "provisioning", "storage_resource_crn": "crn:v1:staging:public:cloud-object-storage:global:a/04e9bc47612523rr19ac22759cb69bebd:asd23df-6ada-45ff-bfe8-4343222", "storage_type": "bmcos_object_storage", "timestamp": "1715056266", "trial_plan": false, "username": "xyz@abc.com"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        apikey = '12efd3raq'
+        engine_id = 'presto-01'
+        storage_resource_crn = 'crn:v1:staging:public:cloud-object-storage:global:a/a7026b374f39f570d20984c1ac6ecf63:5778e94f-c8c7-46a8-9878-d5eeadb51161'
+        storage_type = 'bmcos_object_storage'
+        trial_plan = True
+
+        # Invoke method
+        response = _service.create_sal_integration(
+            apikey,
+            engine_id,
+            storage_resource_crn=storage_resource_crn,
+            storage_type=storage_type,
+            trial_plan=trial_plan,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['apikey'] == '12efd3raq'
+        assert req_body['engine_id'] == 'presto-01'
+        assert req_body['storage_resource_crn'] == 'crn:v1:staging:public:cloud-object-storage:global:a/a7026b374f39f570d20984c1ac6ecf63:5778e94f-c8c7-46a8-9878-d5eeadb51161'
+        assert req_body['storage_type'] == 'bmcos_object_storage'
+        assert req_body['trial_plan'] == True
+
+    def test_create_sal_integration_required_params_with_retries(self):
+        # Enable retries and run test_create_sal_integration_required_params.
+        _service.enable_retries()
+        self.test_create_sal_integration_required_params()
+
+        # Disable retries and run test_create_sal_integration_required_params.
+        _service.disable_retries()
+        self.test_create_sal_integration_required_params()
+
+    @responses.activate
+    def test_create_sal_integration_value_error(self):
+        """
+        test_create_sal_integration_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations')
+        mock_response = '{"category_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "engine_id": "presto-01", "errors": [{"code": "unable_to_perform", "message": "Failed to process integration settings for watsonx.data instance"}], "governance_scope_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "governance_scope_type": "category", "instance_id": "18b49d7a-9519-4539-8db5-ff080623c226", "status": "provisioning", "storage_resource_crn": "crn:v1:staging:public:cloud-object-storage:global:a/04e9bc47612523rr19ac22759cb69bebd:asd23df-6ada-45ff-bfe8-4343222", "storage_type": "bmcos_object_storage", "timestamp": "1715056266", "trial_plan": false, "username": "xyz@abc.com"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        apikey = '12efd3raq'
+        engine_id = 'presto-01'
+        storage_resource_crn = 'crn:v1:staging:public:cloud-object-storage:global:a/a7026b374f39f570d20984c1ac6ecf63:5778e94f-c8c7-46a8-9878-d5eeadb51161'
+        storage_type = 'bmcos_object_storage'
+        trial_plan = True
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "apikey": apikey,
+            "engine_id": engine_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_sal_integration(**req_copy)
+
+    def test_create_sal_integration_value_error_with_retries(self):
+        # Enable retries and run test_create_sal_integration_value_error.
+        _service.enable_retries()
+        self.test_create_sal_integration_value_error()
+
+        # Disable retries and run test_create_sal_integration_value_error.
+        _service.disable_retries()
+        self.test_create_sal_integration_value_error()
+
+
+class TestDeleteSalIntegration:
+    """
+    Test Class for delete_sal_integration
+    """
+
+    @responses.activate
+    def test_delete_sal_integration_all_params(self):
+        """
+        delete_sal_integration()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations')
+        responses.add(
+            responses.DELETE,
+            url,
+            status=204,
+        )
+
+        # Invoke method
+        response = _service.delete_sal_integration()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+
+    def test_delete_sal_integration_all_params_with_retries(self):
+        # Enable retries and run test_delete_sal_integration_all_params.
+        _service.enable_retries()
+        self.test_delete_sal_integration_all_params()
+
+        # Disable retries and run test_delete_sal_integration_all_params.
+        _service.disable_retries()
+        self.test_delete_sal_integration_all_params()
+
+
+class TestUpdateSalIntegration:
+    """
+    Test Class for update_sal_integration
+    """
+
+    @responses.activate
+    def test_update_sal_integration_all_params(self):
+        """
+        update_sal_integration()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations')
+        mock_response = '{"category_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "engine_id": "presto-01", "errors": [{"code": "unable_to_perform", "message": "Failed to process integration settings for watsonx.data instance"}], "governance_scope_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "governance_scope_type": "category", "instance_id": "18b49d7a-9519-4539-8db5-ff080623c226", "status": "provisioning", "storage_resource_crn": "crn:v1:staging:public:cloud-object-storage:global:a/04e9bc47612523rr19ac22759cb69bebd:asd23df-6ada-45ff-bfe8-4343222", "storage_type": "bmcos_object_storage", "timestamp": "1715056266", "trial_plan": false, "username": "xyz@abc.com"}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a SalIntegrationPatch model
+        sal_integration_patch_model = {}
+        sal_integration_patch_model['op'] = 'add'
+        sal_integration_patch_model['path'] = 'storage'
+        sal_integration_patch_model['value'] = 'new-apikey'
+
+        # Set up parameter values
+        body = sal_integration_patch_model
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.update_sal_integration(
+            body,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body == body
+
+    def test_update_sal_integration_all_params_with_retries(self):
+        # Enable retries and run test_update_sal_integration_all_params.
+        _service.enable_retries()
+        self.test_update_sal_integration_all_params()
+
+        # Disable retries and run test_update_sal_integration_all_params.
+        _service.disable_retries()
+        self.test_update_sal_integration_all_params()
+
+    @responses.activate
+    def test_update_sal_integration_required_params(self):
+        """
+        test_update_sal_integration_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations')
+        mock_response = '{"category_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "engine_id": "presto-01", "errors": [{"code": "unable_to_perform", "message": "Failed to process integration settings for watsonx.data instance"}], "governance_scope_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "governance_scope_type": "category", "instance_id": "18b49d7a-9519-4539-8db5-ff080623c226", "status": "provisioning", "storage_resource_crn": "crn:v1:staging:public:cloud-object-storage:global:a/04e9bc47612523rr19ac22759cb69bebd:asd23df-6ada-45ff-bfe8-4343222", "storage_type": "bmcos_object_storage", "timestamp": "1715056266", "trial_plan": false, "username": "xyz@abc.com"}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a SalIntegrationPatch model
+        sal_integration_patch_model = {}
+        sal_integration_patch_model['op'] = 'add'
+        sal_integration_patch_model['path'] = 'storage'
+        sal_integration_patch_model['value'] = 'new-apikey'
+
+        # Set up parameter values
+        body = sal_integration_patch_model
+
+        # Invoke method
+        response = _service.update_sal_integration(
+            body,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body == body
+
+    def test_update_sal_integration_required_params_with_retries(self):
+        # Enable retries and run test_update_sal_integration_required_params.
+        _service.enable_retries()
+        self.test_update_sal_integration_required_params()
+
+        # Disable retries and run test_update_sal_integration_required_params.
+        _service.disable_retries()
+        self.test_update_sal_integration_required_params()
+
+    @responses.activate
+    def test_update_sal_integration_value_error(self):
+        """
+        test_update_sal_integration_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations')
+        mock_response = '{"category_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "engine_id": "presto-01", "errors": [{"code": "unable_to_perform", "message": "Failed to process integration settings for watsonx.data instance"}], "governance_scope_id": "10e64285-bf37-4d5d-b759-bc6a46589234", "governance_scope_type": "category", "instance_id": "18b49d7a-9519-4539-8db5-ff080623c226", "status": "provisioning", "storage_resource_crn": "crn:v1:staging:public:cloud-object-storage:global:a/04e9bc47612523rr19ac22759cb69bebd:asd23df-6ada-45ff-bfe8-4343222", "storage_type": "bmcos_object_storage", "timestamp": "1715056266", "trial_plan": false, "username": "xyz@abc.com"}'
+        responses.add(
+            responses.PATCH,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Construct a dict representation of a SalIntegrationPatch model
+        sal_integration_patch_model = {}
+        sal_integration_patch_model['op'] = 'add'
+        sal_integration_patch_model['path'] = 'storage'
+        sal_integration_patch_model['value'] = 'new-apikey'
+
+        # Set up parameter values
+        body = sal_integration_patch_model
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "body": body,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.update_sal_integration(**req_copy)
+
+    def test_update_sal_integration_value_error_with_retries(self):
+        # Enable retries and run test_update_sal_integration_value_error.
+        _service.enable_retries()
+        self.test_update_sal_integration_value_error()
+
+        # Disable retries and run test_update_sal_integration_value_error.
+        _service.disable_retries()
+        self.test_update_sal_integration_value_error()
+
+
+class TestCreateSalIntegrationEnrichment:
+    """
+    Test Class for create_sal_integration_enrichment
+    """
+
+    @responses.activate
+    def test_create_sal_integration_enrichment_all_params(self):
+        """
+        create_sal_integration_enrichment()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/enrichment')
+        responses.add(
+            responses.POST,
+            url,
+            status=204,
+        )
+
+        # Construct a dict representation of a EnrichmentObj model
+        enrichment_obj_model = {}
+        enrichment_obj_model['catalog'] = 'iceberg_data'
+        enrichment_obj_model['operation'] = 'create'
+        enrichment_obj_model['schema'] = 'testString'
+        enrichment_obj_model['tables'] = ['testString']
+
+        # Set up parameter values
+        enrichment_prototype = enrichment_obj_model
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_sal_integration_enrichment(
+            enrichment_prototype=enrichment_prototype,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['enrichment_prototype'] == enrichment_obj_model
+
+    def test_create_sal_integration_enrichment_all_params_with_retries(self):
+        # Enable retries and run test_create_sal_integration_enrichment_all_params.
+        _service.enable_retries()
+        self.test_create_sal_integration_enrichment_all_params()
+
+        # Disable retries and run test_create_sal_integration_enrichment_all_params.
+        _service.disable_retries()
+        self.test_create_sal_integration_enrichment_all_params()
+
+    @responses.activate
+    def test_create_sal_integration_enrichment_required_params(self):
+        """
+        test_create_sal_integration_enrichment_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/enrichment')
+        responses.add(
+            responses.POST,
+            url,
+            status=204,
+        )
+
+        # Construct a dict representation of a EnrichmentObj model
+        enrichment_obj_model = {}
+        enrichment_obj_model['catalog'] = 'iceberg_data'
+        enrichment_obj_model['operation'] = 'create'
+        enrichment_obj_model['schema'] = 'testString'
+        enrichment_obj_model['tables'] = ['testString']
+
+        # Set up parameter values
+        enrichment_prototype = enrichment_obj_model
+
+        # Invoke method
+        response = _service.create_sal_integration_enrichment(
+            enrichment_prototype=enrichment_prototype,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['enrichment_prototype'] == enrichment_obj_model
+
+    def test_create_sal_integration_enrichment_required_params_with_retries(self):
+        # Enable retries and run test_create_sal_integration_enrichment_required_params.
+        _service.enable_retries()
+        self.test_create_sal_integration_enrichment_required_params()
+
+        # Disable retries and run test_create_sal_integration_enrichment_required_params.
+        _service.disable_retries()
+        self.test_create_sal_integration_enrichment_required_params()
+
+
+class TestGetSalIntegrationEnrichmentAssets:
+    """
+    Test Class for get_sal_integration_enrichment_assets
+    """
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_assets_all_params(self):
+        """
+        get_sal_integration_enrichment_assets()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/enrichment_assets')
+        mock_response = '{"enrichment_asset": {"asset_attributes": ["asset_attributes"], "asset_id": "ee0383b9-dcab-4c1a-b03d-bf521837b6ed", "asset_name": "newtable", "resource_key": "0000:0000:0000:0000:0000:FFFF:9EB0:04E2|31134|:/iceberg_data/new_schema/sampletable", "schema_name": "sampleschema"}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        project_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_assets(
+            project_id=project_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'project_id={}'.format(project_id) in query_string
+
+    def test_get_sal_integration_enrichment_assets_all_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_assets_all_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_assets_all_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_assets_all_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_assets_all_params()
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_assets_required_params(self):
+        """
+        test_get_sal_integration_enrichment_assets_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/enrichment_assets')
+        mock_response = '{"enrichment_asset": {"asset_attributes": ["asset_attributes"], "asset_id": "ee0383b9-dcab-4c1a-b03d-bf521837b6ed", "asset_name": "newtable", "resource_key": "0000:0000:0000:0000:0000:FFFF:9EB0:04E2|31134|:/iceberg_data/new_schema/sampletable", "schema_name": "sampleschema"}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_assets()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_enrichment_assets_required_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_assets_required_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_assets_required_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_assets_required_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_assets_required_params()
+
+
+class TestGetSalIntegrationEnrichmentDataAsset:
+    """
+    Test Class for get_sal_integration_enrichment_data_asset
+    """
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_data_asset_all_params(self):
+        """
+        get_sal_integration_enrichment_data_asset()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/enrichment_data_asset')
+        mock_response = '{"asset": "{}"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        project_id = 'testString'
+        asset_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_data_asset(
+            project_id=project_id,
+            asset_id=asset_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'project_id={}'.format(project_id) in query_string
+        assert 'asset_id={}'.format(asset_id) in query_string
+
+    def test_get_sal_integration_enrichment_data_asset_all_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_data_asset_all_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_data_asset_all_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_data_asset_all_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_data_asset_all_params()
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_data_asset_required_params(self):
+        """
+        test_get_sal_integration_enrichment_data_asset_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/enrichment_data_asset')
+        mock_response = '{"asset": "{}"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_data_asset()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_enrichment_data_asset_required_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_data_asset_required_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_data_asset_required_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_data_asset_required_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_data_asset_required_params()
+
+
+class TestGetSalIntegrationEnrichmentJobRunLogs:
+    """
+    Test Class for get_sal_integration_enrichment_job_run_logs
+    """
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_job_run_logs_all_params(self):
+        """
+        get_sal_integration_enrichment_job_run_logs()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/enrichment_job_run_logs')
+        mock_response = '{"results": ["results"], "total_count": 12}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        job_id = 'testString'
+        job_run_id = 'testString'
+        project_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_job_run_logs(
+            job_id=job_id,
+            job_run_id=job_run_id,
+            project_id=project_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'job_id={}'.format(job_id) in query_string
+        assert 'job_run_id={}'.format(job_run_id) in query_string
+        assert 'project_id={}'.format(project_id) in query_string
+
+    def test_get_sal_integration_enrichment_job_run_logs_all_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_job_run_logs_all_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_job_run_logs_all_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_job_run_logs_all_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_job_run_logs_all_params()
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_job_run_logs_required_params(self):
+        """
+        test_get_sal_integration_enrichment_job_run_logs_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/enrichment_job_run_logs')
+        mock_response = '{"results": ["results"], "total_count": 12}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_job_run_logs()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_enrichment_job_run_logs_required_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_job_run_logs_required_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_job_run_logs_required_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_job_run_logs_required_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_job_run_logs_required_params()
+
+
+class TestGetSalIntegrationEnrichmentJobRuns:
+    """
+    Test Class for get_sal_integration_enrichment_job_runs
+    """
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_job_runs_all_params(self):
+        """
+        get_sal_integration_enrichment_job_runs()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/enrichment_job_runs')
+        mock_response = '{"response": "{}"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        job_id = 'testString'
+        project_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_job_runs(
+            job_id=job_id,
+            project_id=project_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'job_id={}'.format(job_id) in query_string
+        assert 'project_id={}'.format(project_id) in query_string
+
+    def test_get_sal_integration_enrichment_job_runs_all_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_job_runs_all_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_job_runs_all_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_job_runs_all_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_job_runs_all_params()
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_job_runs_required_params(self):
+        """
+        test_get_sal_integration_enrichment_job_runs_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/enrichment_job_runs')
+        mock_response = '{"response": "{}"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_job_runs()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_enrichment_job_runs_required_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_job_runs_required_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_job_runs_required_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_job_runs_required_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_job_runs_required_params()
+
+
+class TestGetSalIntegrationEnrichmentJobs:
+    """
+    Test Class for get_sal_integration_enrichment_jobs
+    """
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_jobs_all_params(self):
+        """
+        get_sal_integration_enrichment_jobs()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/enrichment_jobs')
+        mock_response = '{"jobs": {"results": [{"entity": {"job": {"asset_ref": "8688a3b6-a946-499e-a93c-b7d099db80dd", "asset_ref_type": "metadata_enrichment_area", "configuration": {"env_type": "env_type", "env_variables": ["env_variables"]}, "enable_notifications": false, "future_scheduled_runs": ["future_scheduled_runs"], "last_run_initiator": "deprecated field", "last_run_status": "deprecated field", "last_run_status_timestamp": 0, "last_run_time": "deprecated field", "project_name": "SAL Mapping /iceberg_data/new_schema 9aae5be3-87cf-4c31-b17d-9256ab42c14e", "schedule_creator_id": "schedule_creator_id", "schedule_id": "schedule_id", "schedule_info": {"frequency": "frequency"}, "task_credentials_support": {"account_id": "04e9bc4761254b719ac22759cb69bebd", "task_credentials_enabled": true, "user_id": "IBMid-55000832RK"}}}, "metadata": {"asset_id": "ea73ce44-8aa0-4c75-bd69-6ca7074a1030", "name": "SAL_MDE job", "owner_id": "IBMid-55000832RK", "version": 0}}], "total_rows": 1}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        wkc_project_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_jobs(
+            wkc_project_id=wkc_project_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'wkc_project_id={}'.format(wkc_project_id) in query_string
+
+    def test_get_sal_integration_enrichment_jobs_all_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_jobs_all_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_jobs_all_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_jobs_all_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_jobs_all_params()
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_jobs_required_params(self):
+        """
+        test_get_sal_integration_enrichment_jobs_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/enrichment_jobs')
+        mock_response = '{"jobs": {"results": [{"entity": {"job": {"asset_ref": "8688a3b6-a946-499e-a93c-b7d099db80dd", "asset_ref_type": "metadata_enrichment_area", "configuration": {"env_type": "env_type", "env_variables": ["env_variables"]}, "enable_notifications": false, "future_scheduled_runs": ["future_scheduled_runs"], "last_run_initiator": "deprecated field", "last_run_status": "deprecated field", "last_run_status_timestamp": 0, "last_run_time": "deprecated field", "project_name": "SAL Mapping /iceberg_data/new_schema 9aae5be3-87cf-4c31-b17d-9256ab42c14e", "schedule_creator_id": "schedule_creator_id", "schedule_id": "schedule_id", "schedule_info": {"frequency": "frequency"}, "task_credentials_support": {"account_id": "04e9bc4761254b719ac22759cb69bebd", "task_credentials_enabled": true, "user_id": "IBMid-55000832RK"}}}, "metadata": {"asset_id": "ea73ce44-8aa0-4c75-bd69-6ca7074a1030", "name": "SAL_MDE job", "owner_id": "IBMid-55000832RK", "version": 0}}], "total_rows": 1}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_jobs()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_enrichment_jobs_required_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_jobs_required_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_jobs_required_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_jobs_required_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_jobs_required_params()
+
+
+class TestGetSalIntegrationGlossaryTerms:
+    """
+    Test Class for get_sal_integration_glossary_terms
+    """
+
+    @responses.activate
+    def test_get_sal_integration_glossary_terms_all_params(self):
+        """
+        get_sal_integration_glossary_terms()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/glossary_terms')
+        mock_response = '{"glossary_term": {"description": "First Name", "name": "Name"}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_sal_integration_glossary_terms(
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_glossary_terms_all_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_glossary_terms_all_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_glossary_terms_all_params()
+
+        # Disable retries and run test_get_sal_integration_glossary_terms_all_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_glossary_terms_all_params()
+
+    @responses.activate
+    def test_get_sal_integration_glossary_terms_required_params(self):
+        """
+        test_get_sal_integration_glossary_terms_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/glossary_terms')
+        mock_response = '{"glossary_term": {"description": "First Name", "name": "Name"}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.get_sal_integration_glossary_terms()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_glossary_terms_required_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_glossary_terms_required_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_glossary_terms_required_params()
+
+        # Disable retries and run test_get_sal_integration_glossary_terms_required_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_glossary_terms_required_params()
+
+
+class TestGetSalIntegrationMappings:
+    """
+    Test Class for get_sal_integration_mappings
+    """
+
+    @responses.activate
+    def test_get_sal_integration_mappings_all_params(self):
+        """
+        get_sal_integration_mappings()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/mappings')
+        mock_response = '{"wkc_catalog_id": "iceberg_data", "wkc_project_id": "create"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        catalog_name = 'testString'
+        schema_name = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_sal_integration_mappings(
+            catalog_name,
+            schema_name,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'catalog_name={}'.format(catalog_name) in query_string
+        assert 'schema_name={}'.format(schema_name) in query_string
+
+    def test_get_sal_integration_mappings_all_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_mappings_all_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_mappings_all_params()
+
+        # Disable retries and run test_get_sal_integration_mappings_all_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_mappings_all_params()
+
+    @responses.activate
+    def test_get_sal_integration_mappings_required_params(self):
+        """
+        test_get_sal_integration_mappings_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/mappings')
+        mock_response = '{"wkc_catalog_id": "iceberg_data", "wkc_project_id": "create"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        catalog_name = 'testString'
+        schema_name = 'testString'
+
+        # Invoke method
+        response = _service.get_sal_integration_mappings(
+            catalog_name,
+            schema_name,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'catalog_name={}'.format(catalog_name) in query_string
+        assert 'schema_name={}'.format(schema_name) in query_string
+
+    def test_get_sal_integration_mappings_required_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_mappings_required_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_mappings_required_params()
+
+        # Disable retries and run test_get_sal_integration_mappings_required_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_mappings_required_params()
+
+    @responses.activate
+    def test_get_sal_integration_mappings_value_error(self):
+        """
+        test_get_sal_integration_mappings_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/mappings')
+        mock_response = '{"wkc_catalog_id": "iceberg_data", "wkc_project_id": "create"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        catalog_name = 'testString'
+        schema_name = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "catalog_name": catalog_name,
+            "schema_name": schema_name,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.get_sal_integration_mappings(**req_copy)
+
+    def test_get_sal_integration_mappings_value_error_with_retries(self):
+        # Enable retries and run test_get_sal_integration_mappings_value_error.
+        _service.enable_retries()
+        self.test_get_sal_integration_mappings_value_error()
+
+        # Disable retries and run test_get_sal_integration_mappings_value_error.
+        _service.disable_retries()
+        self.test_get_sal_integration_mappings_value_error()
+
+
+class TestGetSalIntegrationEnrichmentGlobalSettings:
+    """
+    Test Class for get_sal_integration_enrichment_global_settings
+    """
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_global_settings_all_params(self):
+        """
+        get_sal_integration_enrichment_global_settings()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/metadata_enrichment_global_settings')
+        mock_response = '{"semantic_expansion": {"description_generation": true, "description_generation_configuration": {"assignment_threshold": 0.14, "suggestion_threshold": 0.9}, "name_expansion": true, "name_expansion_configuration": {"assignment_threshold": 0.1, "suggestion_threshold": 0.1}}, "term_assignment": {"class_based_assignments": false, "evaluate_negative_assignments": false, "llm_based_assignments": false, "ml_based_assignments_custom": false, "ml_based_assignments_default": false, "name_matching": false, "term_assignment_threshold": 0.3, "term_suggestion_threshold": 0.4}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_global_settings(
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_enrichment_global_settings_all_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_global_settings_all_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_global_settings_all_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_global_settings_all_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_global_settings_all_params()
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_global_settings_required_params(self):
+        """
+        test_get_sal_integration_enrichment_global_settings_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/metadata_enrichment_global_settings')
+        mock_response = '{"semantic_expansion": {"description_generation": true, "description_generation_configuration": {"assignment_threshold": 0.14, "suggestion_threshold": 0.9}, "name_expansion": true, "name_expansion_configuration": {"assignment_threshold": 0.1, "suggestion_threshold": 0.1}}, "term_assignment": {"class_based_assignments": false, "evaluate_negative_assignments": false, "llm_based_assignments": false, "ml_based_assignments_custom": false, "ml_based_assignments_default": false, "name_matching": false, "term_assignment_threshold": 0.3, "term_suggestion_threshold": 0.4}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_global_settings()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_enrichment_global_settings_required_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_global_settings_required_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_global_settings_required_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_global_settings_required_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_global_settings_required_params()
+
+
+class TestCreateSalIntegrationEnrichmentGlobalSettings:
+    """
+    Test Class for create_sal_integration_enrichment_global_settings
+    """
+
+    @responses.activate
+    def test_create_sal_integration_enrichment_global_settings_all_params(self):
+        """
+        create_sal_integration_enrichment_global_settings()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/metadata_enrichment_global_settings')
+        mock_response = '{"semantic_expansion": {"description_generation": true, "description_generation_configuration": {"assignment_threshold": 0.14, "suggestion_threshold": 0.9}, "name_expansion": true, "name_expansion_configuration": {"assignment_threshold": 0.1, "suggestion_threshold": 0.1}}, "term_assignment": {"class_based_assignments": false, "evaluate_negative_assignments": false, "llm_based_assignments": false, "ml_based_assignments_custom": false, "ml_based_assignments_default": false, "name_matching": false, "term_assignment_threshold": 0.3, "term_suggestion_threshold": 0.4}}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration model
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model = {}
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model['assignment_threshold'] = 0.14
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model['suggestion_threshold'] = 0.9
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration model
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model = {}
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model['assignment_threshold'] = 0.1
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model['suggestion_threshold'] = 0.1
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsSemanticExpansion model
+        sal_integration_enrichment_settings_semantic_expansion_model = {}
+        sal_integration_enrichment_settings_semantic_expansion_model['description_generation'] = True
+        sal_integration_enrichment_settings_semantic_expansion_model['description_generation_configuration'] = sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model
+        sal_integration_enrichment_settings_semantic_expansion_model['name_expansion'] = True
+        sal_integration_enrichment_settings_semantic_expansion_model['name_expansion_configuration'] = sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsTermAssignment model
+        sal_integration_enrichment_settings_term_assignment_model = {}
+        sal_integration_enrichment_settings_term_assignment_model['class_based_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['evaluate_negative_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['llm_based_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['ml_based_assignments_custom'] = False
+        sal_integration_enrichment_settings_term_assignment_model['ml_based_assignments_default'] = False
+        sal_integration_enrichment_settings_term_assignment_model['name_matching'] = False
+        sal_integration_enrichment_settings_term_assignment_model['term_assignment_threshold'] = 0.3
+        sal_integration_enrichment_settings_term_assignment_model['term_suggestion_threshold'] = 0.4
+
+        # Set up parameter values
+        semantic_expansion = sal_integration_enrichment_settings_semantic_expansion_model
+        term_assignment = sal_integration_enrichment_settings_term_assignment_model
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_sal_integration_enrichment_global_settings(
+            semantic_expansion=semantic_expansion,
+            term_assignment=term_assignment,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['semantic_expansion'] == sal_integration_enrichment_settings_semantic_expansion_model
+        assert req_body['term_assignment'] == sal_integration_enrichment_settings_term_assignment_model
+
+    def test_create_sal_integration_enrichment_global_settings_all_params_with_retries(self):
+        # Enable retries and run test_create_sal_integration_enrichment_global_settings_all_params.
+        _service.enable_retries()
+        self.test_create_sal_integration_enrichment_global_settings_all_params()
+
+        # Disable retries and run test_create_sal_integration_enrichment_global_settings_all_params.
+        _service.disable_retries()
+        self.test_create_sal_integration_enrichment_global_settings_all_params()
+
+    @responses.activate
+    def test_create_sal_integration_enrichment_global_settings_required_params(self):
+        """
+        test_create_sal_integration_enrichment_global_settings_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/metadata_enrichment_global_settings')
+        mock_response = '{"semantic_expansion": {"description_generation": true, "description_generation_configuration": {"assignment_threshold": 0.14, "suggestion_threshold": 0.9}, "name_expansion": true, "name_expansion_configuration": {"assignment_threshold": 0.1, "suggestion_threshold": 0.1}}, "term_assignment": {"class_based_assignments": false, "evaluate_negative_assignments": false, "llm_based_assignments": false, "ml_based_assignments_custom": false, "ml_based_assignments_default": false, "name_matching": false, "term_assignment_threshold": 0.3, "term_suggestion_threshold": 0.4}}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration model
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model = {}
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model['assignment_threshold'] = 0.14
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model['suggestion_threshold'] = 0.9
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration model
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model = {}
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model['assignment_threshold'] = 0.1
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model['suggestion_threshold'] = 0.1
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsSemanticExpansion model
+        sal_integration_enrichment_settings_semantic_expansion_model = {}
+        sal_integration_enrichment_settings_semantic_expansion_model['description_generation'] = True
+        sal_integration_enrichment_settings_semantic_expansion_model['description_generation_configuration'] = sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model
+        sal_integration_enrichment_settings_semantic_expansion_model['name_expansion'] = True
+        sal_integration_enrichment_settings_semantic_expansion_model['name_expansion_configuration'] = sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsTermAssignment model
+        sal_integration_enrichment_settings_term_assignment_model = {}
+        sal_integration_enrichment_settings_term_assignment_model['class_based_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['evaluate_negative_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['llm_based_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['ml_based_assignments_custom'] = False
+        sal_integration_enrichment_settings_term_assignment_model['ml_based_assignments_default'] = False
+        sal_integration_enrichment_settings_term_assignment_model['name_matching'] = False
+        sal_integration_enrichment_settings_term_assignment_model['term_assignment_threshold'] = 0.3
+        sal_integration_enrichment_settings_term_assignment_model['term_suggestion_threshold'] = 0.4
+
+        # Set up parameter values
+        semantic_expansion = sal_integration_enrichment_settings_semantic_expansion_model
+        term_assignment = sal_integration_enrichment_settings_term_assignment_model
+
+        # Invoke method
+        response = _service.create_sal_integration_enrichment_global_settings(
+            semantic_expansion=semantic_expansion,
+            term_assignment=term_assignment,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['semantic_expansion'] == sal_integration_enrichment_settings_semantic_expansion_model
+        assert req_body['term_assignment'] == sal_integration_enrichment_settings_term_assignment_model
+
+    def test_create_sal_integration_enrichment_global_settings_required_params_with_retries(self):
+        # Enable retries and run test_create_sal_integration_enrichment_global_settings_required_params.
+        _service.enable_retries()
+        self.test_create_sal_integration_enrichment_global_settings_required_params()
+
+        # Disable retries and run test_create_sal_integration_enrichment_global_settings_required_params.
+        _service.disable_retries()
+        self.test_create_sal_integration_enrichment_global_settings_required_params()
+
+
+class TestGetSalIntegrationEnrichmentSettings:
+    """
+    Test Class for get_sal_integration_enrichment_settings
+    """
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_settings_all_params(self):
+        """
+        get_sal_integration_enrichment_settings()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/metadata_enrichment_settings')
+        mock_response = '{"semantic_expansion": {"description_generation": true, "description_generation_configuration": {"assignment_threshold": 0.14, "suggestion_threshold": 0.9}, "name_expansion": true, "name_expansion_configuration": {"assignment_threshold": 0.1, "suggestion_threshold": 0.1}}, "term_assignment": {"class_based_assignments": false, "evaluate_negative_assignments": false, "llm_based_assignments": false, "ml_based_assignments_custom": false, "ml_based_assignments_default": false, "name_matching": false, "term_assignment_threshold": 0.3, "term_suggestion_threshold": 0.4}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        project_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_settings(
+            project_id=project_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'project_id={}'.format(project_id) in query_string
+
+    def test_get_sal_integration_enrichment_settings_all_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_settings_all_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_settings_all_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_settings_all_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_settings_all_params()
+
+    @responses.activate
+    def test_get_sal_integration_enrichment_settings_required_params(self):
+        """
+        test_get_sal_integration_enrichment_settings_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/metadata_enrichment_settings')
+        mock_response = '{"semantic_expansion": {"description_generation": true, "description_generation_configuration": {"assignment_threshold": 0.14, "suggestion_threshold": 0.9}, "name_expansion": true, "name_expansion_configuration": {"assignment_threshold": 0.1, "suggestion_threshold": 0.1}}, "term_assignment": {"class_based_assignments": false, "evaluate_negative_assignments": false, "llm_based_assignments": false, "ml_based_assignments_custom": false, "ml_based_assignments_default": false, "name_matching": false, "term_assignment_threshold": 0.3, "term_suggestion_threshold": 0.4}}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.get_sal_integration_enrichment_settings()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_enrichment_settings_required_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_enrichment_settings_required_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_enrichment_settings_required_params()
+
+        # Disable retries and run test_get_sal_integration_enrichment_settings_required_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_enrichment_settings_required_params()
+
+
+class TestCreateSalIntegrationEnrichmentSettings:
+    """
+    Test Class for create_sal_integration_enrichment_settings
+    """
+
+    @responses.activate
+    def test_create_sal_integration_enrichment_settings_all_params(self):
+        """
+        create_sal_integration_enrichment_settings()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/metadata_enrichment_settings')
+        responses.add(
+            responses.POST,
+            url,
+            status=204,
+        )
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration model
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model = {}
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model['assignment_threshold'] = 0.14
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model['suggestion_threshold'] = 0.9
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration model
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model = {}
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model['assignment_threshold'] = 0.1
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model['suggestion_threshold'] = 0.1
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsSemanticExpansion model
+        sal_integration_enrichment_settings_semantic_expansion_model = {}
+        sal_integration_enrichment_settings_semantic_expansion_model['description_generation'] = True
+        sal_integration_enrichment_settings_semantic_expansion_model['description_generation_configuration'] = sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model
+        sal_integration_enrichment_settings_semantic_expansion_model['name_expansion'] = True
+        sal_integration_enrichment_settings_semantic_expansion_model['name_expansion_configuration'] = sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsTermAssignment model
+        sal_integration_enrichment_settings_term_assignment_model = {}
+        sal_integration_enrichment_settings_term_assignment_model['class_based_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['evaluate_negative_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['llm_based_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['ml_based_assignments_custom'] = False
+        sal_integration_enrichment_settings_term_assignment_model['ml_based_assignments_default'] = False
+        sal_integration_enrichment_settings_term_assignment_model['name_matching'] = False
+        sal_integration_enrichment_settings_term_assignment_model['term_assignment_threshold'] = 0.3
+        sal_integration_enrichment_settings_term_assignment_model['term_suggestion_threshold'] = 0.4
+
+        # Set up parameter values
+        semantic_expansion = sal_integration_enrichment_settings_semantic_expansion_model
+        term_assignment = sal_integration_enrichment_settings_term_assignment_model
+        project_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_sal_integration_enrichment_settings(
+            semantic_expansion=semantic_expansion,
+            term_assignment=term_assignment,
+            project_id=project_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'project_id={}'.format(project_id) in query_string
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['semantic_expansion'] == sal_integration_enrichment_settings_semantic_expansion_model
+        assert req_body['term_assignment'] == sal_integration_enrichment_settings_term_assignment_model
+
+    def test_create_sal_integration_enrichment_settings_all_params_with_retries(self):
+        # Enable retries and run test_create_sal_integration_enrichment_settings_all_params.
+        _service.enable_retries()
+        self.test_create_sal_integration_enrichment_settings_all_params()
+
+        # Disable retries and run test_create_sal_integration_enrichment_settings_all_params.
+        _service.disable_retries()
+        self.test_create_sal_integration_enrichment_settings_all_params()
+
+    @responses.activate
+    def test_create_sal_integration_enrichment_settings_required_params(self):
+        """
+        test_create_sal_integration_enrichment_settings_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/metadata_enrichment_settings')
+        responses.add(
+            responses.POST,
+            url,
+            status=204,
+        )
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration model
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model = {}
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model['assignment_threshold'] = 0.14
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model['suggestion_threshold'] = 0.9
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration model
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model = {}
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model['assignment_threshold'] = 0.1
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model['suggestion_threshold'] = 0.1
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsSemanticExpansion model
+        sal_integration_enrichment_settings_semantic_expansion_model = {}
+        sal_integration_enrichment_settings_semantic_expansion_model['description_generation'] = True
+        sal_integration_enrichment_settings_semantic_expansion_model['description_generation_configuration'] = sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model
+        sal_integration_enrichment_settings_semantic_expansion_model['name_expansion'] = True
+        sal_integration_enrichment_settings_semantic_expansion_model['name_expansion_configuration'] = sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model
+
+        # Construct a dict representation of a SalIntegrationEnrichmentSettingsTermAssignment model
+        sal_integration_enrichment_settings_term_assignment_model = {}
+        sal_integration_enrichment_settings_term_assignment_model['class_based_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['evaluate_negative_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['llm_based_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['ml_based_assignments_custom'] = False
+        sal_integration_enrichment_settings_term_assignment_model['ml_based_assignments_default'] = False
+        sal_integration_enrichment_settings_term_assignment_model['name_matching'] = False
+        sal_integration_enrichment_settings_term_assignment_model['term_assignment_threshold'] = 0.3
+        sal_integration_enrichment_settings_term_assignment_model['term_suggestion_threshold'] = 0.4
+
+        # Set up parameter values
+        semantic_expansion = sal_integration_enrichment_settings_semantic_expansion_model
+        term_assignment = sal_integration_enrichment_settings_term_assignment_model
+
+        # Invoke method
+        response = _service.create_sal_integration_enrichment_settings(
+            semantic_expansion=semantic_expansion,
+            term_assignment=term_assignment,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 204
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['semantic_expansion'] == sal_integration_enrichment_settings_semantic_expansion_model
+        assert req_body['term_assignment'] == sal_integration_enrichment_settings_term_assignment_model
+
+    def test_create_sal_integration_enrichment_settings_required_params_with_retries(self):
+        # Enable retries and run test_create_sal_integration_enrichment_settings_required_params.
+        _service.enable_retries()
+        self.test_create_sal_integration_enrichment_settings_required_params()
+
+        # Disable retries and run test_create_sal_integration_enrichment_settings_required_params.
+        _service.disable_retries()
+        self.test_create_sal_integration_enrichment_settings_required_params()
+
+
+class TestCreateSalIntegrationUploadGlossary:
+    """
+    Test Class for create_sal_integration_upload_glossary
+    """
+
+    @responses.activate
+    def test_create_sal_integration_upload_glossary_all_params(self):
+        """
+        create_sal_integration_upload_glossary()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/upload_glossary')
+        mock_response = '{"process_id": "18b49d7a-9519-4539-8db5-ff080623c226"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        replace_option = 'all'
+        glossary_csv = io.BytesIO(b'This is a mock file.').getvalue()
+        glossary_csv_content_type = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_sal_integration_upload_glossary(
+            replace_option,
+            glossary_csv=glossary_csv,
+            glossary_csv_content_type=glossary_csv_content_type,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_sal_integration_upload_glossary_all_params_with_retries(self):
+        # Enable retries and run test_create_sal_integration_upload_glossary_all_params.
+        _service.enable_retries()
+        self.test_create_sal_integration_upload_glossary_all_params()
+
+        # Disable retries and run test_create_sal_integration_upload_glossary_all_params.
+        _service.disable_retries()
+        self.test_create_sal_integration_upload_glossary_all_params()
+
+    @responses.activate
+    def test_create_sal_integration_upload_glossary_required_params(self):
+        """
+        test_create_sal_integration_upload_glossary_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/upload_glossary')
+        mock_response = '{"process_id": "18b49d7a-9519-4539-8db5-ff080623c226"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        replace_option = 'all'
+
+        # Invoke method
+        response = _service.create_sal_integration_upload_glossary(
+            replace_option,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_sal_integration_upload_glossary_required_params_with_retries(self):
+        # Enable retries and run test_create_sal_integration_upload_glossary_required_params.
+        _service.enable_retries()
+        self.test_create_sal_integration_upload_glossary_required_params()
+
+        # Disable retries and run test_create_sal_integration_upload_glossary_required_params.
+        _service.disable_retries()
+        self.test_create_sal_integration_upload_glossary_required_params()
+
+    @responses.activate
+    def test_create_sal_integration_upload_glossary_value_error(self):
+        """
+        test_create_sal_integration_upload_glossary_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/upload_glossary')
+        mock_response = '{"process_id": "18b49d7a-9519-4539-8db5-ff080623c226"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        replace_option = 'all'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "replace_option": replace_option,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_sal_integration_upload_glossary(**req_copy)
+
+    def test_create_sal_integration_upload_glossary_value_error_with_retries(self):
+        # Enable retries and run test_create_sal_integration_upload_glossary_value_error.
+        _service.enable_retries()
+        self.test_create_sal_integration_upload_glossary_value_error()
+
+        # Disable retries and run test_create_sal_integration_upload_glossary_value_error.
+        _service.disable_retries()
+        self.test_create_sal_integration_upload_glossary_value_error()
+
+
+class TestGetSalIntegrationUploadGlossaryStatus:
+    """
+    Test Class for get_sal_integration_upload_glossary_status
+    """
+
+    @responses.activate
+    def test_get_sal_integration_upload_glossary_status_all_params(self):
+        """
+        get_sal_integration_upload_glossary_status()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/upload_glossary_status')
+        mock_response = '{"response": "Import status available"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        process_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_sal_integration_upload_glossary_status(
+            process_id=process_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+        # Validate query params
+        query_string = responses.calls[0].request.url.split('?', 1)[1]
+        query_string = urllib.parse.unquote_plus(query_string)
+        assert 'process_id={}'.format(process_id) in query_string
+
+    def test_get_sal_integration_upload_glossary_status_all_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_upload_glossary_status_all_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_upload_glossary_status_all_params()
+
+        # Disable retries and run test_get_sal_integration_upload_glossary_status_all_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_upload_glossary_status_all_params()
+
+    @responses.activate
+    def test_get_sal_integration_upload_glossary_status_required_params(self):
+        """
+        test_get_sal_integration_upload_glossary_status_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/sal_integrations/upload_glossary_status')
+        mock_response = '{"response": "Import status available"}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.get_sal_integration_upload_glossary_status()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_sal_integration_upload_glossary_status_required_params_with_retries(self):
+        # Enable retries and run test_get_sal_integration_upload_glossary_status_required_params.
+        _service.enable_retries()
+        self.test_get_sal_integration_upload_glossary_status_required_params()
+
+        # Disable retries and run test_get_sal_integration_upload_glossary_status_required_params.
+        _service.disable_retries()
+        self.test_get_sal_integration_upload_glossary_status_required_params()
+
+
+# endregion
+##############################################################################
+# End of Service: SemanticAutomationLayer
 ##############################################################################
 
 ##############################################################################
@@ -9347,19 +13210,19 @@ class TestListSparkEngineCatalogs:
         self.test_list_spark_engine_catalogs_value_error()
 
 
-class TestAddSparkEngineCatalogs:
+class TestCreateSparkEngineCatalogs:
     """
-    Test Class for add_spark_engine_catalogs
+    Test Class for create_spark_engine_catalogs
     """
 
     @responses.activate
-    def test_add_spark_engine_catalogs_all_params(self):
+    def test_create_spark_engine_catalogs_all_params(self):
         """
-        add_spark_engine_catalogs()
+        create_spark_engine_catalogs()
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/catalogs')
-        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        mock_response = '{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}'
         responses.add(
             responses.POST,
             url,
@@ -9370,13 +13233,13 @@ class TestAddSparkEngineCatalogs:
 
         # Set up parameter values
         engine_id = 'testString'
-        catalog_names = 'testString'
+        catalog_name = 'testString'
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.add_spark_engine_catalogs(
+        response = _service.create_spark_engine_catalogs(
             engine_id,
-            catalog_names=catalog_names,
+            catalog_name=catalog_name,
             auth_instance_id=auth_instance_id,
             headers={},
         )
@@ -9386,25 +13249,25 @@ class TestAddSparkEngineCatalogs:
         assert response.status_code == 201
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['catalog_names'] == 'testString'
+        assert req_body['catalog_name'] == 'testString'
 
-    def test_add_spark_engine_catalogs_all_params_with_retries(self):
-        # Enable retries and run test_add_spark_engine_catalogs_all_params.
+    def test_create_spark_engine_catalogs_all_params_with_retries(self):
+        # Enable retries and run test_create_spark_engine_catalogs_all_params.
         _service.enable_retries()
-        self.test_add_spark_engine_catalogs_all_params()
+        self.test_create_spark_engine_catalogs_all_params()
 
-        # Disable retries and run test_add_spark_engine_catalogs_all_params.
+        # Disable retries and run test_create_spark_engine_catalogs_all_params.
         _service.disable_retries()
-        self.test_add_spark_engine_catalogs_all_params()
+        self.test_create_spark_engine_catalogs_all_params()
 
     @responses.activate
-    def test_add_spark_engine_catalogs_required_params(self):
+    def test_create_spark_engine_catalogs_required_params(self):
         """
-        test_add_spark_engine_catalogs_required_params()
+        test_create_spark_engine_catalogs_required_params()
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/catalogs')
-        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        mock_response = '{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}'
         responses.add(
             responses.POST,
             url,
@@ -9415,12 +13278,12 @@ class TestAddSparkEngineCatalogs:
 
         # Set up parameter values
         engine_id = 'testString'
-        catalog_names = 'testString'
+        catalog_name = 'testString'
 
         # Invoke method
-        response = _service.add_spark_engine_catalogs(
+        response = _service.create_spark_engine_catalogs(
             engine_id,
-            catalog_names=catalog_names,
+            catalog_name=catalog_name,
             headers={},
         )
 
@@ -9429,25 +13292,25 @@ class TestAddSparkEngineCatalogs:
         assert response.status_code == 201
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
-        assert req_body['catalog_names'] == 'testString'
+        assert req_body['catalog_name'] == 'testString'
 
-    def test_add_spark_engine_catalogs_required_params_with_retries(self):
-        # Enable retries and run test_add_spark_engine_catalogs_required_params.
+    def test_create_spark_engine_catalogs_required_params_with_retries(self):
+        # Enable retries and run test_create_spark_engine_catalogs_required_params.
         _service.enable_retries()
-        self.test_add_spark_engine_catalogs_required_params()
+        self.test_create_spark_engine_catalogs_required_params()
 
-        # Disable retries and run test_add_spark_engine_catalogs_required_params.
+        # Disable retries and run test_create_spark_engine_catalogs_required_params.
         _service.disable_retries()
-        self.test_add_spark_engine_catalogs_required_params()
+        self.test_create_spark_engine_catalogs_required_params()
 
     @responses.activate
-    def test_add_spark_engine_catalogs_value_error(self):
+    def test_create_spark_engine_catalogs_value_error(self):
         """
-        test_add_spark_engine_catalogs_value_error()
+        test_create_spark_engine_catalogs_value_error()
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/catalogs')
-        mock_response = '{"catalogs": [{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}]}'
+        mock_response = '{"actions": ["actions"], "associated_buckets": ["associated_buckets"], "associated_databases": ["associated_databases"], "associated_engines": ["associated_engines"], "catalog_name": "sampleCatalog", "catalog_type": "iceberg", "created_by": "<username>@<domain>.com", "created_on": "1602839833", "description": "Iceberg catalog description", "hostname": "s3a://samplehost.com", "last_sync_at": "1602839833", "managed_by": "ibm", "metastore": "glue", "port": "3232", "status": "running", "sync_description": "Table registration was successful", "sync_exception": ["sync_exception"], "sync_status": "SUCCESS", "tags": ["tags"], "thrift_uri": "thrift://samplehost-catalog:4354"}'
         responses.add(
             responses.POST,
             url,
@@ -9458,7 +13321,7 @@ class TestAddSparkEngineCatalogs:
 
         # Set up parameter values
         engine_id = 'testString'
-        catalog_names = 'testString'
+        catalog_name = 'testString'
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -9467,16 +13330,16 @@ class TestAddSparkEngineCatalogs:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.add_spark_engine_catalogs(**req_copy)
+                _service.create_spark_engine_catalogs(**req_copy)
 
-    def test_add_spark_engine_catalogs_value_error_with_retries(self):
-        # Enable retries and run test_add_spark_engine_catalogs_value_error.
+    def test_create_spark_engine_catalogs_value_error_with_retries(self):
+        # Enable retries and run test_create_spark_engine_catalogs_value_error.
         _service.enable_retries()
-        self.test_add_spark_engine_catalogs_value_error()
+        self.test_create_spark_engine_catalogs_value_error()
 
-        # Disable retries and run test_add_spark_engine_catalogs_value_error.
+        # Disable retries and run test_create_spark_engine_catalogs_value_error.
         _service.disable_retries()
-        self.test_add_spark_engine_catalogs_value_error()
+        self.test_create_spark_engine_catalogs_value_error()
 
 
 class TestDeleteSparkEngineCatalogs:
@@ -10094,15 +13957,15 @@ class TestDeleteSparkEngineHistoryServer:
         self.test_delete_spark_engine_history_server_value_error()
 
 
-class TestCreateSparkEnginePause:
+class TestPauseSparkEngine:
     """
-    Test Class for create_spark_engine_pause
+    Test Class for pause_spark_engine
     """
 
     @responses.activate
-    def test_create_spark_engine_pause_all_params(self):
+    def test_pause_spark_engine_all_params(self):
         """
-        create_spark_engine_pause()
+        pause_spark_engine()
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/pause')
@@ -10112,7 +13975,7 @@ class TestCreateSparkEnginePause:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -10120,7 +13983,7 @@ class TestCreateSparkEnginePause:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.create_spark_engine_pause(
+        response = _service.pause_spark_engine(
             engine_id,
             auth_instance_id=auth_instance_id,
             headers={},
@@ -10128,21 +13991,21 @@ class TestCreateSparkEnginePause:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_spark_engine_pause_all_params_with_retries(self):
-        # Enable retries and run test_create_spark_engine_pause_all_params.
+    def test_pause_spark_engine_all_params_with_retries(self):
+        # Enable retries and run test_pause_spark_engine_all_params.
         _service.enable_retries()
-        self.test_create_spark_engine_pause_all_params()
+        self.test_pause_spark_engine_all_params()
 
-        # Disable retries and run test_create_spark_engine_pause_all_params.
+        # Disable retries and run test_pause_spark_engine_all_params.
         _service.disable_retries()
-        self.test_create_spark_engine_pause_all_params()
+        self.test_pause_spark_engine_all_params()
 
     @responses.activate
-    def test_create_spark_engine_pause_required_params(self):
+    def test_pause_spark_engine_required_params(self):
         """
-        test_create_spark_engine_pause_required_params()
+        test_pause_spark_engine_required_params()
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/pause')
@@ -10152,35 +14015,35 @@ class TestCreateSparkEnginePause:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
         engine_id = 'testString'
 
         # Invoke method
-        response = _service.create_spark_engine_pause(
+        response = _service.pause_spark_engine(
             engine_id,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_spark_engine_pause_required_params_with_retries(self):
-        # Enable retries and run test_create_spark_engine_pause_required_params.
+    def test_pause_spark_engine_required_params_with_retries(self):
+        # Enable retries and run test_pause_spark_engine_required_params.
         _service.enable_retries()
-        self.test_create_spark_engine_pause_required_params()
+        self.test_pause_spark_engine_required_params()
 
-        # Disable retries and run test_create_spark_engine_pause_required_params.
+        # Disable retries and run test_pause_spark_engine_required_params.
         _service.disable_retries()
-        self.test_create_spark_engine_pause_required_params()
+        self.test_pause_spark_engine_required_params()
 
     @responses.activate
-    def test_create_spark_engine_pause_value_error(self):
+    def test_pause_spark_engine_value_error(self):
         """
-        test_create_spark_engine_pause_value_error()
+        test_pause_spark_engine_value_error()
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/pause')
@@ -10190,7 +14053,7 @@ class TestCreateSparkEnginePause:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -10203,27 +14066,27 @@ class TestCreateSparkEnginePause:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.create_spark_engine_pause(**req_copy)
+                _service.pause_spark_engine(**req_copy)
 
-    def test_create_spark_engine_pause_value_error_with_retries(self):
-        # Enable retries and run test_create_spark_engine_pause_value_error.
+    def test_pause_spark_engine_value_error_with_retries(self):
+        # Enable retries and run test_pause_spark_engine_value_error.
         _service.enable_retries()
-        self.test_create_spark_engine_pause_value_error()
+        self.test_pause_spark_engine_value_error()
 
-        # Disable retries and run test_create_spark_engine_pause_value_error.
+        # Disable retries and run test_pause_spark_engine_value_error.
         _service.disable_retries()
-        self.test_create_spark_engine_pause_value_error()
+        self.test_pause_spark_engine_value_error()
 
 
-class TestCreateSparkEngineResume:
+class TestResumeSparkEngine:
     """
-    Test Class for create_spark_engine_resume
+    Test Class for resume_spark_engine
     """
 
     @responses.activate
-    def test_create_spark_engine_resume_all_params(self):
+    def test_resume_spark_engine_all_params(self):
         """
-        create_spark_engine_resume()
+        resume_spark_engine()
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/resume')
@@ -10233,7 +14096,7 @@ class TestCreateSparkEngineResume:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -10241,7 +14104,7 @@ class TestCreateSparkEngineResume:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.create_spark_engine_resume(
+        response = _service.resume_spark_engine(
             engine_id,
             auth_instance_id=auth_instance_id,
             headers={},
@@ -10249,21 +14112,21 @@ class TestCreateSparkEngineResume:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_spark_engine_resume_all_params_with_retries(self):
-        # Enable retries and run test_create_spark_engine_resume_all_params.
+    def test_resume_spark_engine_all_params_with_retries(self):
+        # Enable retries and run test_resume_spark_engine_all_params.
         _service.enable_retries()
-        self.test_create_spark_engine_resume_all_params()
+        self.test_resume_spark_engine_all_params()
 
-        # Disable retries and run test_create_spark_engine_resume_all_params.
+        # Disable retries and run test_resume_spark_engine_all_params.
         _service.disable_retries()
-        self.test_create_spark_engine_resume_all_params()
+        self.test_resume_spark_engine_all_params()
 
     @responses.activate
-    def test_create_spark_engine_resume_required_params(self):
+    def test_resume_spark_engine_required_params(self):
         """
-        test_create_spark_engine_resume_required_params()
+        test_resume_spark_engine_required_params()
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/resume')
@@ -10273,35 +14136,35 @@ class TestCreateSparkEngineResume:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
         engine_id = 'testString'
 
         # Invoke method
-        response = _service.create_spark_engine_resume(
+        response = _service.resume_spark_engine(
             engine_id,
             headers={},
         )
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 200
 
-    def test_create_spark_engine_resume_required_params_with_retries(self):
-        # Enable retries and run test_create_spark_engine_resume_required_params.
+    def test_resume_spark_engine_required_params_with_retries(self):
+        # Enable retries and run test_resume_spark_engine_required_params.
         _service.enable_retries()
-        self.test_create_spark_engine_resume_required_params()
+        self.test_resume_spark_engine_required_params()
 
-        # Disable retries and run test_create_spark_engine_resume_required_params.
+        # Disable retries and run test_resume_spark_engine_required_params.
         _service.disable_retries()
-        self.test_create_spark_engine_resume_required_params()
+        self.test_resume_spark_engine_required_params()
 
     @responses.activate
-    def test_create_spark_engine_resume_value_error(self):
+    def test_resume_spark_engine_value_error(self):
         """
-        test_create_spark_engine_resume_value_error()
+        test_resume_spark_engine_value_error()
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/resume')
@@ -10311,7 +14174,7 @@ class TestCreateSparkEngineResume:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=200,
         )
 
         # Set up parameter values
@@ -10324,27 +14187,27 @@ class TestCreateSparkEngineResume:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.create_spark_engine_resume(**req_copy)
+                _service.resume_spark_engine(**req_copy)
 
-    def test_create_spark_engine_resume_value_error_with_retries(self):
-        # Enable retries and run test_create_spark_engine_resume_value_error.
+    def test_resume_spark_engine_value_error_with_retries(self):
+        # Enable retries and run test_resume_spark_engine_value_error.
         _service.enable_retries()
-        self.test_create_spark_engine_resume_value_error()
+        self.test_resume_spark_engine_value_error()
 
-        # Disable retries and run test_create_spark_engine_resume_value_error.
+        # Disable retries and run test_resume_spark_engine_value_error.
         _service.disable_retries()
-        self.test_create_spark_engine_resume_value_error()
+        self.test_resume_spark_engine_value_error()
 
 
-class TestCreateSparkEngineScale:
+class TestScaleSparkEngine:
     """
-    Test Class for create_spark_engine_scale
+    Test Class for scale_spark_engine
     """
 
     @responses.activate
-    def test_create_spark_engine_scale_all_params(self):
+    def test_scale_spark_engine_all_params(self):
         """
-        create_spark_engine_scale()
+        scale_spark_engine()
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/scale')
@@ -10354,7 +14217,7 @@ class TestCreateSparkEngineScale:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=202,
         )
 
         # Set up parameter values
@@ -10363,7 +14226,7 @@ class TestCreateSparkEngineScale:
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.create_spark_engine_scale(
+        response = _service.scale_spark_engine(
             engine_id,
             number_of_nodes=number_of_nodes,
             auth_instance_id=auth_instance_id,
@@ -10372,24 +14235,24 @@ class TestCreateSparkEngineScale:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 202
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['number_of_nodes'] == 2
 
-    def test_create_spark_engine_scale_all_params_with_retries(self):
-        # Enable retries and run test_create_spark_engine_scale_all_params.
+    def test_scale_spark_engine_all_params_with_retries(self):
+        # Enable retries and run test_scale_spark_engine_all_params.
         _service.enable_retries()
-        self.test_create_spark_engine_scale_all_params()
+        self.test_scale_spark_engine_all_params()
 
-        # Disable retries and run test_create_spark_engine_scale_all_params.
+        # Disable retries and run test_scale_spark_engine_all_params.
         _service.disable_retries()
-        self.test_create_spark_engine_scale_all_params()
+        self.test_scale_spark_engine_all_params()
 
     @responses.activate
-    def test_create_spark_engine_scale_required_params(self):
+    def test_scale_spark_engine_required_params(self):
         """
-        test_create_spark_engine_scale_required_params()
+        test_scale_spark_engine_required_params()
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/scale')
@@ -10399,7 +14262,7 @@ class TestCreateSparkEngineScale:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=202,
         )
 
         # Set up parameter values
@@ -10407,7 +14270,7 @@ class TestCreateSparkEngineScale:
         number_of_nodes = 2
 
         # Invoke method
-        response = _service.create_spark_engine_scale(
+        response = _service.scale_spark_engine(
             engine_id,
             number_of_nodes=number_of_nodes,
             headers={},
@@ -10415,24 +14278,24 @@ class TestCreateSparkEngineScale:
 
         # Check for correct operation
         assert len(responses.calls) == 1
-        assert response.status_code == 201
+        assert response.status_code == 202
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body['number_of_nodes'] == 2
 
-    def test_create_spark_engine_scale_required_params_with_retries(self):
-        # Enable retries and run test_create_spark_engine_scale_required_params.
+    def test_scale_spark_engine_required_params_with_retries(self):
+        # Enable retries and run test_scale_spark_engine_required_params.
         _service.enable_retries()
-        self.test_create_spark_engine_scale_required_params()
+        self.test_scale_spark_engine_required_params()
 
-        # Disable retries and run test_create_spark_engine_scale_required_params.
+        # Disable retries and run test_scale_spark_engine_required_params.
         _service.disable_retries()
-        self.test_create_spark_engine_scale_required_params()
+        self.test_scale_spark_engine_required_params()
 
     @responses.activate
-    def test_create_spark_engine_scale_value_error(self):
+    def test_scale_spark_engine_value_error(self):
         """
-        test_create_spark_engine_scale_value_error()
+        test_scale_spark_engine_value_error()
         """
         # Set up mock
         url = preprocess_url('/spark_engines/testString/scale')
@@ -10442,7 +14305,7 @@ class TestCreateSparkEngineScale:
             url,
             body=mock_response,
             content_type='application/json',
-            status=201,
+            status=202,
         )
 
         # Set up parameter values
@@ -10456,16 +14319,16 @@ class TestCreateSparkEngineScale:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.create_spark_engine_scale(**req_copy)
+                _service.scale_spark_engine(**req_copy)
 
-    def test_create_spark_engine_scale_value_error_with_retries(self):
-        # Enable retries and run test_create_spark_engine_scale_value_error.
+    def test_scale_spark_engine_value_error_with_retries(self):
+        # Enable retries and run test_scale_spark_engine_value_error.
         _service.enable_retries()
-        self.test_create_spark_engine_scale_value_error()
+        self.test_scale_spark_engine_value_error()
 
-        # Disable retries and run test_create_spark_engine_scale_value_error.
+        # Disable retries and run test_scale_spark_engine_value_error.
         _service.disable_retries()
-        self.test_create_spark_engine_scale_value_error()
+        self.test_scale_spark_engine_value_error()
 
 
 class TestListSparkVersions:
@@ -10942,6 +14805,8 @@ class TestCreateSchema:
         custom_path = 'sample-path'
         schema_name = 'SampleSchema1'
         bucket_name = 'sample-bucket'
+        hostname = 'db2@hostname.com'
+        port = 4553
         auth_instance_id = 'testString'
 
         # Invoke method
@@ -10951,6 +14816,8 @@ class TestCreateSchema:
             custom_path,
             schema_name,
             bucket_name=bucket_name,
+            hostname=hostname,
+            port=port,
             auth_instance_id=auth_instance_id,
             headers={},
         )
@@ -10967,6 +14834,8 @@ class TestCreateSchema:
         assert req_body['custom_path'] == 'sample-path'
         assert req_body['schema_name'] == 'SampleSchema1'
         assert req_body['bucket_name'] == 'sample-bucket'
+        assert req_body['hostname'] == 'db2@hostname.com'
+        assert req_body['port'] == 4553
 
     def test_create_schema_all_params_with_retries(self):
         # Enable retries and run test_create_schema_all_params.
@@ -10999,6 +14868,8 @@ class TestCreateSchema:
         custom_path = 'sample-path'
         schema_name = 'SampleSchema1'
         bucket_name = 'sample-bucket'
+        hostname = 'db2@hostname.com'
+        port = 4553
 
         # Invoke method
         response = _service.create_schema(
@@ -11007,6 +14878,8 @@ class TestCreateSchema:
             custom_path,
             schema_name,
             bucket_name=bucket_name,
+            hostname=hostname,
+            port=port,
             headers={},
         )
 
@@ -11022,6 +14895,8 @@ class TestCreateSchema:
         assert req_body['custom_path'] == 'sample-path'
         assert req_body['schema_name'] == 'SampleSchema1'
         assert req_body['bucket_name'] == 'sample-bucket'
+        assert req_body['hostname'] == 'db2@hostname.com'
+        assert req_body['port'] == 4553
 
     def test_create_schema_required_params_with_retries(self):
         # Enable retries and run test_create_schema_required_params.
@@ -11054,6 +14929,8 @@ class TestCreateSchema:
         custom_path = 'sample-path'
         schema_name = 'SampleSchema1'
         bucket_name = 'sample-bucket'
+        hostname = 'db2@hostname.com'
+        port = 4553
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
@@ -11362,7 +15239,7 @@ class TestGetTable:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString')
-        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}], "table_name": "table_name"}'
+        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}], "table_name": "table_name"}'
         responses.add(
             responses.GET,
             url,
@@ -11376,6 +15253,7 @@ class TestGetTable:
         schema_id = 'testString'
         table_id = 'testString'
         engine_id = 'testString'
+        type = 'testString'
         auth_instance_id = 'testString'
 
         # Invoke method
@@ -11384,6 +15262,7 @@ class TestGetTable:
             schema_id,
             table_id,
             engine_id,
+            type=type,
             auth_instance_id=auth_instance_id,
             headers={},
         )
@@ -11395,6 +15274,7 @@ class TestGetTable:
         query_string = responses.calls[0].request.url.split('?', 1)[1]
         query_string = urllib.parse.unquote_plus(query_string)
         assert 'engine_id={}'.format(engine_id) in query_string
+        assert 'type={}'.format(type) in query_string
 
     def test_get_table_all_params_with_retries(self):
         # Enable retries and run test_get_table_all_params.
@@ -11412,7 +15292,7 @@ class TestGetTable:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString')
-        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}], "table_name": "table_name"}'
+        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}], "table_name": "table_name"}'
         responses.add(
             responses.GET,
             url,
@@ -11460,7 +15340,7 @@ class TestGetTable:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString')
-        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}], "table_name": "table_name"}'
+        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}], "table_name": "table_name"}'
         responses.add(
             responses.GET,
             url,
@@ -11520,6 +15400,7 @@ class TestDeleteTable:
         schema_id = 'testString'
         table_id = 'testString'
         engine_id = 'testString'
+        type = 'testString'
         auth_instance_id = 'testString'
 
         # Invoke method
@@ -11528,6 +15409,7 @@ class TestDeleteTable:
             schema_id,
             table_id,
             engine_id,
+            type=type,
             auth_instance_id=auth_instance_id,
             headers={},
         )
@@ -11539,6 +15421,7 @@ class TestDeleteTable:
         query_string = responses.calls[0].request.url.split('?', 1)[1]
         query_string = urllib.parse.unquote_plus(query_string)
         assert 'engine_id={}'.format(engine_id) in query_string
+        assert 'type={}'.format(type) in query_string
 
     def test_delete_table_all_params_with_retries(self):
         # Enable retries and run test_delete_table_all_params.
@@ -11635,19 +15518,19 @@ class TestDeleteTable:
         self.test_delete_table_value_error()
 
 
-class TestRenameTable:
+class TestUpdateTable:
     """
-    Test Class for rename_table
+    Test Class for update_table
     """
 
     @responses.activate
-    def test_rename_table_all_params(self):
+    def test_update_table_all_params(self):
         """
-        rename_table()
+        update_table()
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString')
-        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}], "table_name": "table_name"}'
+        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}], "table_name": "table_name"}'
         responses.add(
             responses.PATCH,
             url,
@@ -11666,15 +15549,17 @@ class TestRenameTable:
         table_id = 'testString'
         engine_id = 'testString'
         body = table_patch_model
+        type = 'testString'
         auth_instance_id = 'testString'
 
         # Invoke method
-        response = _service.rename_table(
+        response = _service.update_table(
             catalog_id,
             schema_id,
             table_id,
             engine_id,
             body,
+            type=type,
             auth_instance_id=auth_instance_id,
             headers={},
         )
@@ -11686,27 +15571,28 @@ class TestRenameTable:
         query_string = responses.calls[0].request.url.split('?', 1)[1]
         query_string = urllib.parse.unquote_plus(query_string)
         assert 'engine_id={}'.format(engine_id) in query_string
+        assert 'type={}'.format(type) in query_string
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body == body
 
-    def test_rename_table_all_params_with_retries(self):
-        # Enable retries and run test_rename_table_all_params.
+    def test_update_table_all_params_with_retries(self):
+        # Enable retries and run test_update_table_all_params.
         _service.enable_retries()
-        self.test_rename_table_all_params()
+        self.test_update_table_all_params()
 
-        # Disable retries and run test_rename_table_all_params.
+        # Disable retries and run test_update_table_all_params.
         _service.disable_retries()
-        self.test_rename_table_all_params()
+        self.test_update_table_all_params()
 
     @responses.activate
-    def test_rename_table_required_params(self):
+    def test_update_table_required_params(self):
         """
-        test_rename_table_required_params()
+        test_update_table_required_params()
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString')
-        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}], "table_name": "table_name"}'
+        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}], "table_name": "table_name"}'
         responses.add(
             responses.PATCH,
             url,
@@ -11727,7 +15613,7 @@ class TestRenameTable:
         body = table_patch_model
 
         # Invoke method
-        response = _service.rename_table(
+        response = _service.update_table(
             catalog_id,
             schema_id,
             table_id,
@@ -11747,23 +15633,23 @@ class TestRenameTable:
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
         assert req_body == body
 
-    def test_rename_table_required_params_with_retries(self):
-        # Enable retries and run test_rename_table_required_params.
+    def test_update_table_required_params_with_retries(self):
+        # Enable retries and run test_update_table_required_params.
         _service.enable_retries()
-        self.test_rename_table_required_params()
+        self.test_update_table_required_params()
 
-        # Disable retries and run test_rename_table_required_params.
+        # Disable retries and run test_update_table_required_params.
         _service.disable_retries()
-        self.test_rename_table_required_params()
+        self.test_update_table_required_params()
 
     @responses.activate
-    def test_rename_table_value_error(self):
+    def test_update_table_value_error(self):
         """
-        test_rename_table_value_error()
+        test_update_table_value_error()
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString')
-        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}], "table_name": "table_name"}'
+        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}], "table_name": "table_name"}'
         responses.add(
             responses.PATCH,
             url,
@@ -11794,16 +15680,16 @@ class TestRenameTable:
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
             with pytest.raises(ValueError):
-                _service.rename_table(**req_copy)
+                _service.update_table(**req_copy)
 
-    def test_rename_table_value_error_with_retries(self):
-        # Enable retries and run test_rename_table_value_error.
+    def test_update_table_value_error_with_retries(self):
+        # Enable retries and run test_update_table_value_error.
         _service.enable_retries()
-        self.test_rename_table_value_error()
+        self.test_update_table_value_error()
 
-        # Disable retries and run test_rename_table_value_error.
+        # Disable retries and run test_update_table_value_error.
         _service.disable_retries()
-        self.test_rename_table_value_error()
+        self.test_update_table_value_error()
 
 
 class TestListColumns:
@@ -11818,7 +15704,7 @@ class TestListColumns:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/columns')
-        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}]}'
+        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}]}'
         responses.add(
             responses.GET,
             url,
@@ -11868,7 +15754,7 @@ class TestListColumns:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/columns')
-        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}]}'
+        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}]}'
         responses.add(
             responses.GET,
             url,
@@ -11916,7 +15802,7 @@ class TestListColumns:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/columns')
-        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}]}'
+        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}]}'
         responses.add(
             responses.GET,
             url,
@@ -11965,7 +15851,7 @@ class TestCreateColumns:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/columns')
-        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}]}'
+        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}]}'
         responses.add(
             responses.POST,
             url,
@@ -11981,6 +15867,7 @@ class TestCreateColumns:
         column_model['extra'] = 'varchar'
         column_model['length'] = '30'
         column_model['scale'] = '2'
+        column_model['precision'] = '10'
         column_model['type'] = 'varchar'
 
         # Set up parameter values
@@ -12029,7 +15916,7 @@ class TestCreateColumns:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/columns')
-        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}]}'
+        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}]}'
         responses.add(
             responses.POST,
             url,
@@ -12045,6 +15932,7 @@ class TestCreateColumns:
         column_model['extra'] = 'varchar'
         column_model['length'] = '30'
         column_model['scale'] = '2'
+        column_model['precision'] = '10'
         column_model['type'] = 'varchar'
 
         # Set up parameter values
@@ -12091,7 +15979,7 @@ class TestCreateColumns:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/columns')
-        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}]}'
+        mock_response = '{"columns": [{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}]}'
         responses.add(
             responses.POST,
             url,
@@ -12107,6 +15995,7 @@ class TestCreateColumns:
         column_model['extra'] = 'varchar'
         column_model['length'] = '30'
         column_model['scale'] = '2'
+        column_model['precision'] = '10'
         column_model['type'] = 'varchar'
 
         # Set up parameter values
@@ -12294,7 +16183,7 @@ class TestUpdateColumn:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/columns/testString')
-        mock_response = '{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}'
+        mock_response = '{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}'
         responses.add(
             responses.PATCH,
             url,
@@ -12355,7 +16244,7 @@ class TestUpdateColumn:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/columns/testString')
-        mock_response = '{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}'
+        mock_response = '{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}'
         responses.add(
             responses.PATCH,
             url,
@@ -12414,7 +16303,7 @@ class TestUpdateColumn:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/columns/testString')
-        mock_response = '{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "type": "varchar"}'
+        mock_response = '{"column_name": "expenses", "comment": "expenses column", "extra": "varchar", "length": "30", "scale": "2", "precision": "10", "type": "varchar"}'
         responses.add(
             responses.PATCH,
             url,
@@ -12471,7 +16360,7 @@ class TestListTableSnapshots:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/snapshots')
-        mock_response = '{"snapshots": [{"committed_at": "1609379392", "operation": "alter", "snapshot_id": "2332342122211222", "summary": "summary"}]}'
+        mock_response = '{"snapshots": [{"added_data_files": "1", "added_files_size": "17425", "added_records": "3277", "changed_partition_count": "1", "committed_at": "1609379392", "operation": "alter", "snapshot_id": "2332342122211222", "total_data_files": "2", "total_delete_files": "0", "total_equality_deletes": "0", "total_position_deletes": "0", "total_records": "5000"}]}'
         responses.add(
             responses.GET,
             url,
@@ -12521,7 +16410,7 @@ class TestListTableSnapshots:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/snapshots')
-        mock_response = '{"snapshots": [{"committed_at": "1609379392", "operation": "alter", "snapshot_id": "2332342122211222", "summary": "summary"}]}'
+        mock_response = '{"snapshots": [{"added_data_files": "1", "added_files_size": "17425", "added_records": "3277", "changed_partition_count": "1", "committed_at": "1609379392", "operation": "alter", "snapshot_id": "2332342122211222", "total_data_files": "2", "total_delete_files": "0", "total_equality_deletes": "0", "total_position_deletes": "0", "total_records": "5000"}]}'
         responses.add(
             responses.GET,
             url,
@@ -12569,7 +16458,7 @@ class TestListTableSnapshots:
         """
         # Set up mock
         url = preprocess_url('/catalogs/testString/schemas/testString/tables/testString/snapshots')
-        mock_response = '{"snapshots": [{"committed_at": "1609379392", "operation": "alter", "snapshot_id": "2332342122211222", "summary": "summary"}]}'
+        mock_response = '{"snapshots": [{"added_data_files": "1", "added_files_size": "17425", "added_records": "3277", "changed_partition_count": "1", "committed_at": "1609379392", "operation": "alter", "snapshot_id": "2332342122211222", "total_data_files": "2", "total_delete_files": "0", "total_equality_deletes": "0", "total_position_deletes": "0", "total_records": "5000"}]}'
         responses.add(
             responses.GET,
             url,
@@ -12963,7 +16852,7 @@ class TestListMilvusServices:
         """
         # Set up mock
         url = preprocess_url('/milvus_services')
-        mock_response = '{"milvus_services": [{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}]}'
+        mock_response = '{"milvus_services": [{"access_key": "Sample bucket access key", "actions": ["actions"], "bucket_name": "Sample bucket name", "bucket_type": "Sample bucket type", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "endpoint": "Sample bucket type", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "root_path": "Sample path", "secret_key": "Sample bucket secret access key", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "tshirt_size": "small", "type": "milvus"}]}'
         responses.add(
             responses.GET,
             url,
@@ -13001,7 +16890,7 @@ class TestListMilvusServices:
         """
         # Set up mock
         url = preprocess_url('/milvus_services')
-        mock_response = '{"milvus_services": [{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}]}'
+        mock_response = '{"milvus_services": [{"access_key": "Sample bucket access key", "actions": ["actions"], "bucket_name": "Sample bucket name", "bucket_type": "Sample bucket type", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "endpoint": "Sample bucket type", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "root_path": "Sample path", "secret_key": "Sample bucket secret access key", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "tshirt_size": "small", "type": "milvus"}]}'
         responses.add(
             responses.GET,
             url,
@@ -13039,7 +16928,7 @@ class TestCreateMilvusService:
         """
         # Set up mock
         url = preprocess_url('/milvus_services')
-        mock_response = '{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}'
+        mock_response = '{"access_key": "Sample bucket access key", "actions": ["actions"], "bucket_name": "Sample bucket name", "bucket_type": "Sample bucket type", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "endpoint": "Sample bucket type", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "root_path": "Sample path", "secret_key": "Sample bucket secret access key", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "tshirt_size": "small", "type": "milvus"}'
         responses.add(
             responses.POST,
             url,
@@ -13049,18 +16938,26 @@ class TestCreateMilvusService:
         )
 
         # Set up parameter values
+        bucket_name = 'Sample bucket name'
         origin = 'native'
-        description = 'milvus service for running sql queries'
+        root_path = 'Sample path'
         service_display_name = 'sampleService'
+        bucket_type = 'Sample bucket type'
+        description = 'milvus service for running sql queries'
         tags = ['tag1', 'tag2']
+        tshirt_size = 'small'
         auth_instance_id = 'testString'
 
         # Invoke method
         response = _service.create_milvus_service(
+            bucket_name,
             origin,
+            root_path,
+            service_display_name,
+            bucket_type=bucket_type,
             description=description,
-            service_display_name=service_display_name,
             tags=tags,
+            tshirt_size=tshirt_size,
             auth_instance_id=auth_instance_id,
             headers={},
         )
@@ -13070,10 +16967,14 @@ class TestCreateMilvusService:
         assert response.status_code == 201
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['bucket_name'] == 'Sample bucket name'
         assert req_body['origin'] == 'native'
-        assert req_body['description'] == 'milvus service for running sql queries'
+        assert req_body['root_path'] == 'Sample path'
         assert req_body['service_display_name'] == 'sampleService'
+        assert req_body['bucket_type'] == 'Sample bucket type'
+        assert req_body['description'] == 'milvus service for running sql queries'
         assert req_body['tags'] == ['tag1', 'tag2']
+        assert req_body['tshirt_size'] == 'small'
 
     def test_create_milvus_service_all_params_with_retries(self):
         # Enable retries and run test_create_milvus_service_all_params.
@@ -13091,7 +16992,7 @@ class TestCreateMilvusService:
         """
         # Set up mock
         url = preprocess_url('/milvus_services')
-        mock_response = '{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}'
+        mock_response = '{"access_key": "Sample bucket access key", "actions": ["actions"], "bucket_name": "Sample bucket name", "bucket_type": "Sample bucket type", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "endpoint": "Sample bucket type", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "root_path": "Sample path", "secret_key": "Sample bucket secret access key", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "tshirt_size": "small", "type": "milvus"}'
         responses.add(
             responses.POST,
             url,
@@ -13101,17 +17002,25 @@ class TestCreateMilvusService:
         )
 
         # Set up parameter values
+        bucket_name = 'Sample bucket name'
         origin = 'native'
-        description = 'milvus service for running sql queries'
+        root_path = 'Sample path'
         service_display_name = 'sampleService'
+        bucket_type = 'Sample bucket type'
+        description = 'milvus service for running sql queries'
         tags = ['tag1', 'tag2']
+        tshirt_size = 'small'
 
         # Invoke method
         response = _service.create_milvus_service(
+            bucket_name,
             origin,
+            root_path,
+            service_display_name,
+            bucket_type=bucket_type,
             description=description,
-            service_display_name=service_display_name,
             tags=tags,
+            tshirt_size=tshirt_size,
             headers={},
         )
 
@@ -13120,10 +17029,14 @@ class TestCreateMilvusService:
         assert response.status_code == 201
         # Validate body params
         req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['bucket_name'] == 'Sample bucket name'
         assert req_body['origin'] == 'native'
-        assert req_body['description'] == 'milvus service for running sql queries'
+        assert req_body['root_path'] == 'Sample path'
         assert req_body['service_display_name'] == 'sampleService'
+        assert req_body['bucket_type'] == 'Sample bucket type'
+        assert req_body['description'] == 'milvus service for running sql queries'
         assert req_body['tags'] == ['tag1', 'tag2']
+        assert req_body['tshirt_size'] == 'small'
 
     def test_create_milvus_service_required_params_with_retries(self):
         # Enable retries and run test_create_milvus_service_required_params.
@@ -13141,7 +17054,7 @@ class TestCreateMilvusService:
         """
         # Set up mock
         url = preprocess_url('/milvus_services')
-        mock_response = '{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}'
+        mock_response = '{"access_key": "Sample bucket access key", "actions": ["actions"], "bucket_name": "Sample bucket name", "bucket_type": "Sample bucket type", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "endpoint": "Sample bucket type", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "root_path": "Sample path", "secret_key": "Sample bucket secret access key", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "tshirt_size": "small", "type": "milvus"}'
         responses.add(
             responses.POST,
             url,
@@ -13151,14 +17064,21 @@ class TestCreateMilvusService:
         )
 
         # Set up parameter values
+        bucket_name = 'Sample bucket name'
         origin = 'native'
-        description = 'milvus service for running sql queries'
+        root_path = 'Sample path'
         service_display_name = 'sampleService'
+        bucket_type = 'Sample bucket type'
+        description = 'milvus service for running sql queries'
         tags = ['tag1', 'tag2']
+        tshirt_size = 'small'
 
         # Pass in all but one required param and check for a ValueError
         req_param_dict = {
+            "bucket_name": bucket_name,
             "origin": origin,
+            "root_path": root_path,
+            "service_display_name": service_display_name,
         }
         for param in req_param_dict.keys():
             req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
@@ -13187,7 +17107,7 @@ class TestGetMilvusService:
         """
         # Set up mock
         url = preprocess_url('/milvus_services/testString')
-        mock_response = '{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}'
+        mock_response = '{"access_key": "Sample bucket access key", "actions": ["actions"], "bucket_name": "Sample bucket name", "bucket_type": "Sample bucket type", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "endpoint": "Sample bucket type", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "root_path": "Sample path", "secret_key": "Sample bucket secret access key", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "tshirt_size": "small", "type": "milvus"}'
         responses.add(
             responses.GET,
             url,
@@ -13227,7 +17147,7 @@ class TestGetMilvusService:
         """
         # Set up mock
         url = preprocess_url('/milvus_services/testString')
-        mock_response = '{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}'
+        mock_response = '{"access_key": "Sample bucket access key", "actions": ["actions"], "bucket_name": "Sample bucket name", "bucket_type": "Sample bucket type", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "endpoint": "Sample bucket type", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "root_path": "Sample path", "secret_key": "Sample bucket secret access key", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "tshirt_size": "small", "type": "milvus"}'
         responses.add(
             responses.GET,
             url,
@@ -13265,7 +17185,7 @@ class TestGetMilvusService:
         """
         # Set up mock
         url = preprocess_url('/milvus_services/testString')
-        mock_response = '{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}'
+        mock_response = '{"access_key": "Sample bucket access key", "actions": ["actions"], "bucket_name": "Sample bucket name", "bucket_type": "Sample bucket type", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "endpoint": "Sample bucket type", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "root_path": "Sample path", "secret_key": "Sample bucket secret access key", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "tshirt_size": "small", "type": "milvus"}'
         responses.add(
             responses.GET,
             url,
@@ -13420,7 +17340,7 @@ class TestUpdateMilvusService:
         """
         # Set up mock
         url = preprocess_url('/milvus_services/testString')
-        mock_response = '{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}'
+        mock_response = '{"access_key": "Sample bucket access key", "actions": ["actions"], "bucket_name": "Sample bucket name", "bucket_type": "Sample bucket type", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "endpoint": "Sample bucket type", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "root_path": "Sample path", "secret_key": "Sample bucket secret access key", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "tshirt_size": "small", "type": "milvus"}'
         responses.add(
             responses.PATCH,
             url,
@@ -13471,7 +17391,7 @@ class TestUpdateMilvusService:
         """
         # Set up mock
         url = preprocess_url('/milvus_services/testString')
-        mock_response = '{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}'
+        mock_response = '{"access_key": "Sample bucket access key", "actions": ["actions"], "bucket_name": "Sample bucket name", "bucket_type": "Sample bucket type", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "endpoint": "Sample bucket type", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "root_path": "Sample path", "secret_key": "Sample bucket secret access key", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "tshirt_size": "small", "type": "milvus"}'
         responses.add(
             responses.PATCH,
             url,
@@ -13520,7 +17440,7 @@ class TestUpdateMilvusService:
         """
         # Set up mock
         url = preprocess_url('/milvus_services/testString')
-        mock_response = '{"actions": ["actions"], "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "type": "milvus"}'
+        mock_response = '{"access_key": "Sample bucket access key", "actions": ["actions"], "bucket_name": "Sample bucket name", "bucket_type": "Sample bucket type", "created_by": "<username>@<domain>.com", "created_on": 10, "description": "milvus service for running sql queries", "endpoint": "Sample bucket type", "grpc_host": "example.grpc.host", "grpc_port": 9, "host_name": "sampleMilvus", "https_host": "example.https.host", "https_port": 10, "origin": "native", "root_path": "Sample path", "secret_key": "Sample bucket secret access key", "service_display_name": "sampleService", "service_id": "sampleService123", "status": "running", "status_code": 11, "tags": ["tags"], "tshirt_size": "small", "type": "milvus"}'
         responses.add(
             responses.PATCH,
             url,
@@ -13557,6 +17477,628 @@ class TestUpdateMilvusService:
         # Disable retries and run test_update_milvus_service_value_error.
         _service.disable_retries()
         self.test_update_milvus_service_value_error()
+
+
+class TestListMilvusServiceDatabases:
+    """
+    Test Class for list_milvus_service_databases
+    """
+
+    @responses.activate
+    def test_list_milvus_service_databases_all_params(self):
+        """
+        list_milvus_service_databases()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/databases')
+        mock_response = '{"databases": ["default"]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.list_milvus_service_databases(
+            service_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_milvus_service_databases_all_params_with_retries(self):
+        # Enable retries and run test_list_milvus_service_databases_all_params.
+        _service.enable_retries()
+        self.test_list_milvus_service_databases_all_params()
+
+        # Disable retries and run test_list_milvus_service_databases_all_params.
+        _service.disable_retries()
+        self.test_list_milvus_service_databases_all_params()
+
+    @responses.activate
+    def test_list_milvus_service_databases_required_params(self):
+        """
+        test_list_milvus_service_databases_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/databases')
+        mock_response = '{"databases": ["default"]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+
+        # Invoke method
+        response = _service.list_milvus_service_databases(
+            service_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_milvus_service_databases_required_params_with_retries(self):
+        # Enable retries and run test_list_milvus_service_databases_required_params.
+        _service.enable_retries()
+        self.test_list_milvus_service_databases_required_params()
+
+        # Disable retries and run test_list_milvus_service_databases_required_params.
+        _service.disable_retries()
+        self.test_list_milvus_service_databases_required_params()
+
+    @responses.activate
+    def test_list_milvus_service_databases_value_error(self):
+        """
+        test_list_milvus_service_databases_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/databases')
+        mock_response = '{"databases": ["default"]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "service_id": service_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.list_milvus_service_databases(**req_copy)
+
+    def test_list_milvus_service_databases_value_error_with_retries(self):
+        # Enable retries and run test_list_milvus_service_databases_value_error.
+        _service.enable_retries()
+        self.test_list_milvus_service_databases_value_error()
+
+        # Disable retries and run test_list_milvus_service_databases_value_error.
+        _service.disable_retries()
+        self.test_list_milvus_service_databases_value_error()
+
+
+class TestListMilvusDatabaseCollections:
+    """
+    Test Class for list_milvus_database_collections
+    """
+
+    @responses.activate
+    def test_list_milvus_database_collections_all_params(self):
+        """
+        list_milvus_database_collections()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/databases/testString/collections')
+        mock_response = '{"collections": [{"collection_id": 13, "collection_name": "col1", "physical_channels": ["physical_channels"], "virtual_channels": ["virtual_channels"]}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+        database_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.list_milvus_database_collections(
+            service_id,
+            database_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_milvus_database_collections_all_params_with_retries(self):
+        # Enable retries and run test_list_milvus_database_collections_all_params.
+        _service.enable_retries()
+        self.test_list_milvus_database_collections_all_params()
+
+        # Disable retries and run test_list_milvus_database_collections_all_params.
+        _service.disable_retries()
+        self.test_list_milvus_database_collections_all_params()
+
+    @responses.activate
+    def test_list_milvus_database_collections_required_params(self):
+        """
+        test_list_milvus_database_collections_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/databases/testString/collections')
+        mock_response = '{"collections": [{"collection_id": 13, "collection_name": "col1", "physical_channels": ["physical_channels"], "virtual_channels": ["virtual_channels"]}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+        database_id = 'testString'
+
+        # Invoke method
+        response = _service.list_milvus_database_collections(
+            service_id,
+            database_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_list_milvus_database_collections_required_params_with_retries(self):
+        # Enable retries and run test_list_milvus_database_collections_required_params.
+        _service.enable_retries()
+        self.test_list_milvus_database_collections_required_params()
+
+        # Disable retries and run test_list_milvus_database_collections_required_params.
+        _service.disable_retries()
+        self.test_list_milvus_database_collections_required_params()
+
+    @responses.activate
+    def test_list_milvus_database_collections_value_error(self):
+        """
+        test_list_milvus_database_collections_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/databases/testString/collections')
+        mock_response = '{"collections": [{"collection_id": 13, "collection_name": "col1", "physical_channels": ["physical_channels"], "virtual_channels": ["virtual_channels"]}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+        database_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "service_id": service_id,
+            "database_id": database_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.list_milvus_database_collections(**req_copy)
+
+    def test_list_milvus_database_collections_value_error_with_retries(self):
+        # Enable retries and run test_list_milvus_database_collections_value_error.
+        _service.enable_retries()
+        self.test_list_milvus_database_collections_value_error()
+
+        # Disable retries and run test_list_milvus_database_collections_value_error.
+        _service.disable_retries()
+        self.test_list_milvus_database_collections_value_error()
+
+
+class TestCreateMilvusServicePause:
+    """
+    Test Class for create_milvus_service_pause
+    """
+
+    @responses.activate
+    def test_create_milvus_service_pause_all_params(self):
+        """
+        create_milvus_service_pause()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/pause')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_milvus_service_pause(
+            service_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_milvus_service_pause_all_params_with_retries(self):
+        # Enable retries and run test_create_milvus_service_pause_all_params.
+        _service.enable_retries()
+        self.test_create_milvus_service_pause_all_params()
+
+        # Disable retries and run test_create_milvus_service_pause_all_params.
+        _service.disable_retries()
+        self.test_create_milvus_service_pause_all_params()
+
+    @responses.activate
+    def test_create_milvus_service_pause_required_params(self):
+        """
+        test_create_milvus_service_pause_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/pause')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+
+        # Invoke method
+        response = _service.create_milvus_service_pause(
+            service_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_milvus_service_pause_required_params_with_retries(self):
+        # Enable retries and run test_create_milvus_service_pause_required_params.
+        _service.enable_retries()
+        self.test_create_milvus_service_pause_required_params()
+
+        # Disable retries and run test_create_milvus_service_pause_required_params.
+        _service.disable_retries()
+        self.test_create_milvus_service_pause_required_params()
+
+    @responses.activate
+    def test_create_milvus_service_pause_value_error(self):
+        """
+        test_create_milvus_service_pause_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/pause')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "service_id": service_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_milvus_service_pause(**req_copy)
+
+    def test_create_milvus_service_pause_value_error_with_retries(self):
+        # Enable retries and run test_create_milvus_service_pause_value_error.
+        _service.enable_retries()
+        self.test_create_milvus_service_pause_value_error()
+
+        # Disable retries and run test_create_milvus_service_pause_value_error.
+        _service.disable_retries()
+        self.test_create_milvus_service_pause_value_error()
+
+
+class TestCreateMilvusServiceResume:
+    """
+    Test Class for create_milvus_service_resume
+    """
+
+    @responses.activate
+    def test_create_milvus_service_resume_all_params(self):
+        """
+        create_milvus_service_resume()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/resume')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_milvus_service_resume(
+            service_id,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_milvus_service_resume_all_params_with_retries(self):
+        # Enable retries and run test_create_milvus_service_resume_all_params.
+        _service.enable_retries()
+        self.test_create_milvus_service_resume_all_params()
+
+        # Disable retries and run test_create_milvus_service_resume_all_params.
+        _service.disable_retries()
+        self.test_create_milvus_service_resume_all_params()
+
+    @responses.activate
+    def test_create_milvus_service_resume_required_params(self):
+        """
+        test_create_milvus_service_resume_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/resume')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+
+        # Invoke method
+        response = _service.create_milvus_service_resume(
+            service_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+
+    def test_create_milvus_service_resume_required_params_with_retries(self):
+        # Enable retries and run test_create_milvus_service_resume_required_params.
+        _service.enable_retries()
+        self.test_create_milvus_service_resume_required_params()
+
+        # Disable retries and run test_create_milvus_service_resume_required_params.
+        _service.disable_retries()
+        self.test_create_milvus_service_resume_required_params()
+
+    @responses.activate
+    def test_create_milvus_service_resume_value_error(self):
+        """
+        test_create_milvus_service_resume_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/resume')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "service_id": service_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_milvus_service_resume(**req_copy)
+
+    def test_create_milvus_service_resume_value_error_with_retries(self):
+        # Enable retries and run test_create_milvus_service_resume_value_error.
+        _service.enable_retries()
+        self.test_create_milvus_service_resume_value_error()
+
+        # Disable retries and run test_create_milvus_service_resume_value_error.
+        _service.disable_retries()
+        self.test_create_milvus_service_resume_value_error()
+
+
+class TestCreateMilvusServiceScale:
+    """
+    Test Class for create_milvus_service_scale
+    """
+
+    @responses.activate
+    def test_create_milvus_service_scale_all_params(self):
+        """
+        create_milvus_service_scale()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/scale')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+        tshirt_size = 'small'
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.create_milvus_service_scale(
+            service_id,
+            tshirt_size=tshirt_size,
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['tshirt_size'] == 'small'
+
+    def test_create_milvus_service_scale_all_params_with_retries(self):
+        # Enable retries and run test_create_milvus_service_scale_all_params.
+        _service.enable_retries()
+        self.test_create_milvus_service_scale_all_params()
+
+        # Disable retries and run test_create_milvus_service_scale_all_params.
+        _service.disable_retries()
+        self.test_create_milvus_service_scale_all_params()
+
+    @responses.activate
+    def test_create_milvus_service_scale_required_params(self):
+        """
+        test_create_milvus_service_scale_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/scale')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+        tshirt_size = 'small'
+
+        # Invoke method
+        response = _service.create_milvus_service_scale(
+            service_id,
+            tshirt_size=tshirt_size,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 201
+        # Validate body params
+        req_body = json.loads(str(responses.calls[0].request.body, 'utf-8'))
+        assert req_body['tshirt_size'] == 'small'
+
+    def test_create_milvus_service_scale_required_params_with_retries(self):
+        # Enable retries and run test_create_milvus_service_scale_required_params.
+        _service.enable_retries()
+        self.test_create_milvus_service_scale_required_params()
+
+        # Disable retries and run test_create_milvus_service_scale_required_params.
+        _service.disable_retries()
+        self.test_create_milvus_service_scale_required_params()
+
+    @responses.activate
+    def test_create_milvus_service_scale_value_error(self):
+        """
+        test_create_milvus_service_scale_value_error()
+        """
+        # Set up mock
+        url = preprocess_url('/milvus_services/testString/scale')
+        mock_response = '{"message": "message", "message_code": "message_code"}'
+        responses.add(
+            responses.POST,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=201,
+        )
+
+        # Set up parameter values
+        service_id = 'testString'
+        tshirt_size = 'small'
+
+        # Pass in all but one required param and check for a ValueError
+        req_param_dict = {
+            "service_id": service_id,
+        }
+        for param in req_param_dict.keys():
+            req_copy = {key: val if key is not param else None for (key, val) in req_param_dict.items()}
+            with pytest.raises(ValueError):
+                _service.create_milvus_service_scale(**req_copy)
+
+    def test_create_milvus_service_scale_value_error_with_retries(self):
+        # Enable retries and run test_create_milvus_service_scale_value_error.
+        _service.enable_retries()
+        self.test_create_milvus_service_scale_value_error()
+
+        # Disable retries and run test_create_milvus_service_scale_value_error.
+        _service.disable_retries()
+        self.test_create_milvus_service_scale_value_error()
 
 
 # endregion
@@ -13621,13 +18163,13 @@ class TestListIngestionJobs:
 
         # Set up parameter values
         auth_instance_id = 'testString'
-        page = 1
+        start = '1'
         jobs_per_page = 1
 
         # Invoke method
         response = _service.list_ingestion_jobs(
             auth_instance_id,
-            page=page,
+            start=start,
             jobs_per_page=jobs_per_page,
             headers={},
         )
@@ -13638,7 +18180,7 @@ class TestListIngestionJobs:
         # Validate query params
         query_string = responses.calls[0].request.url.split('?', 1)[1]
         query_string = urllib.parse.unquote_plus(query_string)
-        assert 'page={}'.format(page) in query_string
+        assert 'start={}'.format(start) in query_string
         assert 'jobs_per_page={}'.format(jobs_per_page) in query_string
 
     def test_list_ingestion_jobs_all_params_with_retries(self):
@@ -13724,6 +18266,77 @@ class TestListIngestionJobs:
         # Disable retries and run test_list_ingestion_jobs_value_error.
         _service.disable_retries()
         self.test_list_ingestion_jobs_value_error()
+
+    @responses.activate
+    def test_list_ingestion_jobs_with_pager_get_next(self):
+        """
+        test_list_ingestion_jobs_with_pager_get_next()
+        """
+        # Set up a two-page mock response
+        url = preprocess_url('/ingestion_jobs')
+        mock_response1 = '{"next":{"href":"https://myhost.com/somePath?start=1"},"total_count":2,"limit":1,"ingestion_jobs":[{"create_if_not_exist":false,"csv_property":{"encoding":"utf-8","escape_character":"|","field_delimiter":",","header":true,"line_delimiter":"\n"},"details":"Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory","end_timestamp":"1685088775","engine_id":"spark123","engine_name":"sparkdemo","execute_config":{"driver_cores":1,"driver_memory":"2G","executor_cores":1,"executor_memory":"2G","num_executors":1},"instance_id":"1684432229673971","job_id":"ingestion-1699459946935","partition_by":"col1, col2","schema":"{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}","source_data_files":"s3://demobucket/data/yellow_tripdata_2022-01.parquet","source_file_type":"csv","start_timestamp":"1685084455","status":"running","target_table":"demodb.test.targettable","username":"ibmlhadmin","validate_csv_header":false}]}'
+        mock_response2 = '{"total_count":2,"limit":1,"ingestion_jobs":[{"create_if_not_exist":false,"csv_property":{"encoding":"utf-8","escape_character":"|","field_delimiter":",","header":true,"line_delimiter":"\n"},"details":"Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory","end_timestamp":"1685088775","engine_id":"spark123","engine_name":"sparkdemo","execute_config":{"driver_cores":1,"driver_memory":"2G","executor_cores":1,"executor_memory":"2G","num_executors":1},"instance_id":"1684432229673971","job_id":"ingestion-1699459946935","partition_by":"col1, col2","schema":"{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}","source_data_files":"s3://demobucket/data/yellow_tripdata_2022-01.parquet","source_file_type":"csv","start_timestamp":"1685084455","status":"running","target_table":"demodb.test.targettable","username":"ibmlhadmin","validate_csv_header":false}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response1,
+            content_type='application/json',
+            status=200,
+        )
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response2,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Exercise the pager class for this operation
+        all_results = []
+        pager = IngestionJobsPager(
+            client=_service,
+            auth_instance_id='testString',
+            jobs_per_page=1,
+        )
+        while pager.has_next():
+            next_page = pager.get_next()
+            assert next_page is not None
+            all_results.extend(next_page)
+        assert len(all_results) == 2
+
+    @responses.activate
+    def test_list_ingestion_jobs_with_pager_get_all(self):
+        """
+        test_list_ingestion_jobs_with_pager_get_all()
+        """
+        # Set up a two-page mock response
+        url = preprocess_url('/ingestion_jobs')
+        mock_response1 = '{"next":{"href":"https://myhost.com/somePath?start=1"},"total_count":2,"limit":1,"ingestion_jobs":[{"create_if_not_exist":false,"csv_property":{"encoding":"utf-8","escape_character":"|","field_delimiter":",","header":true,"line_delimiter":"\n"},"details":"Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory","end_timestamp":"1685088775","engine_id":"spark123","engine_name":"sparkdemo","execute_config":{"driver_cores":1,"driver_memory":"2G","executor_cores":1,"executor_memory":"2G","num_executors":1},"instance_id":"1684432229673971","job_id":"ingestion-1699459946935","partition_by":"col1, col2","schema":"{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}","source_data_files":"s3://demobucket/data/yellow_tripdata_2022-01.parquet","source_file_type":"csv","start_timestamp":"1685084455","status":"running","target_table":"demodb.test.targettable","username":"ibmlhadmin","validate_csv_header":false}]}'
+        mock_response2 = '{"total_count":2,"limit":1,"ingestion_jobs":[{"create_if_not_exist":false,"csv_property":{"encoding":"utf-8","escape_character":"|","field_delimiter":",","header":true,"line_delimiter":"\n"},"details":"Path does not exist \'demobucket/data/yellow_tripdata_2022-01.parquet\'. Detail: [errno 2] No such file or directory","end_timestamp":"1685088775","engine_id":"spark123","engine_name":"sparkdemo","execute_config":{"driver_cores":1,"driver_memory":"2G","executor_cores":1,"executor_memory":"2G","num_executors":1},"instance_id":"1684432229673971","job_id":"ingestion-1699459946935","partition_by":"col1, col2","schema":"{\\"type\\":\\"struct\\",\\"schema-id\\":0,\\"fields\\":[{\\"id\\":1,\\"name\\":\\"ID\\",\\"required\\":true,\\"type\\":\\"int\\"},{\\"id\\":2,\\"name\\":\\"Name\\",\\"required\\":true,\\"type\\":\\"string\\"}]}","source_data_files":"s3://demobucket/data/yellow_tripdata_2022-01.parquet","source_file_type":"csv","start_timestamp":"1685084455","status":"running","target_table":"demodb.test.targettable","username":"ibmlhadmin","validate_csv_header":false}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response1,
+            content_type='application/json',
+            status=200,
+        )
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response2,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Exercise the pager class for this operation
+        pager = IngestionJobsPager(
+            client=_service,
+            auth_instance_id='testString',
+            jobs_per_page=1,
+        )
+        all_results = pager.get_all()
+        assert all_results is not None
+        assert len(all_results) == 2
 
 
 class TestCreateIngestionJobs:
@@ -14331,6 +18944,121 @@ class TestCreatePreviewIngestionFile:
 # End of Service: Ingestion
 ##############################################################################
 
+##############################################################################
+# Start of Service: Endpoints
+##############################################################################
+# region
+
+
+class TestNewInstance:
+    """
+    Test Class for new_instance
+    """
+
+    def test_new_instance(self):
+        """
+        new_instance()
+        """
+        os.environ['TEST_SERVICE_AUTH_TYPE'] = 'noAuth'
+
+        service = WatsonxDataV2.new_instance(
+            service_name='TEST_SERVICE',
+        )
+
+        assert service is not None
+        assert isinstance(service, WatsonxDataV2)
+
+    def test_new_instance_without_authenticator(self):
+        """
+        new_instance_without_authenticator()
+        """
+        with pytest.raises(ValueError, match='authenticator must be provided'):
+            service = WatsonxDataV2.new_instance(
+                service_name='TEST_SERVICE_NOT_FOUND',
+            )
+
+
+class TestGetEndpoints:
+    """
+    Test Class for get_endpoints
+    """
+
+    @responses.activate
+    def test_get_endpoints_all_params(self):
+        """
+        get_endpoints()
+        """
+        # Set up mock
+        url = preprocess_url('/endpoints')
+        mock_response = '{"endpoints": [{"external_host": "https://cpg-svc.your-hostname.apps.your-domain.com", "service_type": "cpg"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Set up parameter values
+        auth_instance_id = 'testString'
+
+        # Invoke method
+        response = _service.get_endpoints(
+            auth_instance_id=auth_instance_id,
+            headers={},
+        )
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_endpoints_all_params_with_retries(self):
+        # Enable retries and run test_get_endpoints_all_params.
+        _service.enable_retries()
+        self.test_get_endpoints_all_params()
+
+        # Disable retries and run test_get_endpoints_all_params.
+        _service.disable_retries()
+        self.test_get_endpoints_all_params()
+
+    @responses.activate
+    def test_get_endpoints_required_params(self):
+        """
+        test_get_endpoints_required_params()
+        """
+        # Set up mock
+        url = preprocess_url('/endpoints')
+        mock_response = '{"endpoints": [{"external_host": "https://cpg-svc.your-hostname.apps.your-domain.com", "service_type": "cpg"}]}'
+        responses.add(
+            responses.GET,
+            url,
+            body=mock_response,
+            content_type='application/json',
+            status=200,
+        )
+
+        # Invoke method
+        response = _service.get_endpoints()
+
+        # Check for correct operation
+        assert len(responses.calls) == 1
+        assert response.status_code == 200
+
+    def test_get_endpoints_required_params_with_retries(self):
+        # Enable retries and run test_get_endpoints_required_params.
+        _service.enable_retries()
+        self.test_get_endpoints_required_params()
+
+        # Disable retries and run test_get_endpoints_required_params.
+        _service.disable_retries()
+        self.test_get_endpoints_required_params()
+
+
+# endregion
+##############################################################################
+# End of Service: Endpoints
+##############################################################################
+
 
 ##############################################################################
 # Start of Model Tests
@@ -14385,6 +19113,9 @@ class TestModel_BucketDetails:
         bucket_details_model_json['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
         bucket_details_model_json['bucket_name'] = 'sample-bucket'
         bucket_details_model_json['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
+        bucket_details_model_json['key_file'] = 'key_file'
+        bucket_details_model_json['provider'] = 'ibm_cos'
+        bucket_details_model_json['region'] = 'us-south'
         bucket_details_model_json['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
 
         # Construct a model instance of BucketDetails by calling from_dict on the json representation
@@ -14401,6 +19132,46 @@ class TestModel_BucketDetails:
         # Convert model instance back to dict and verify no loss of data
         bucket_details_model_json2 = bucket_details_model.to_dict()
         assert bucket_details_model_json2 == bucket_details_model_json
+
+
+class TestModel_BucketObjectProperties:
+    """
+    Test Class for BucketObjectProperties
+    """
+
+    def test_bucket_object_properties_serialization(self):
+        """
+        Test serialization/deserialization for BucketObjectProperties
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        bucket_registration_object_size_collection_model = {}  # BucketRegistrationObjectSizeCollection
+        bucket_registration_object_size_collection_model['content_type'] = 'string'
+        bucket_registration_object_size_collection_model['file_type'] = 'string'
+        bucket_registration_object_size_collection_model['last_modified'] = 'utc-2014-07'
+        bucket_registration_object_size_collection_model['metadata'] = {'key1': 'testString'}
+        bucket_registration_object_size_collection_model['path'] = 'abc/abc/data'
+        bucket_registration_object_size_collection_model['size'] = '1024'
+
+        # Construct a json representation of a BucketObjectProperties model
+        bucket_object_properties_model_json = {}
+        bucket_object_properties_model_json['object_properties'] = [bucket_registration_object_size_collection_model]
+
+        # Construct a model instance of BucketObjectProperties by calling from_dict on the json representation
+        bucket_object_properties_model = BucketObjectProperties.from_dict(bucket_object_properties_model_json)
+        assert bucket_object_properties_model != False
+
+        # Construct a model instance of BucketObjectProperties by calling from_dict on the json representation
+        bucket_object_properties_model_dict = BucketObjectProperties.from_dict(bucket_object_properties_model_json).__dict__
+        bucket_object_properties_model2 = BucketObjectProperties(**bucket_object_properties_model_dict)
+
+        # Verify the model instances are equivalent
+        assert bucket_object_properties_model == bucket_object_properties_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        bucket_object_properties_model_json2 = bucket_object_properties_model.to_dict()
+        assert bucket_object_properties_model_json2 == bucket_object_properties_model_json
 
 
 class TestModel_BucketRegistration:
@@ -14424,7 +19195,21 @@ class TestModel_BucketRegistration:
         bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
         bucket_details_model['bucket_name'] = 'sample-bucket'
         bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
+        bucket_details_model['key_file'] = 'key_file'
+        bucket_details_model['provider'] = 'ibm_cos'
+        bucket_details_model['region'] = 'us-south'
         bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
+
+        storage_details_model = {}  # StorageDetails
+        storage_details_model['access_key'] = '<access_key>'
+        storage_details_model['application_id'] = '<application_id>'
+        storage_details_model['auth_mode'] = '<account_key/sas/service_principle>'
+        storage_details_model['container_name'] = 'sample-container'
+        storage_details_model['directory_id'] = '<directory_id>'
+        storage_details_model['endpoint'] = 'abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/'
+        storage_details_model['sas_token'] = '<sas_token>'
+        storage_details_model['secret_key'] = 'secret_key'
+        storage_details_model['storage_account_name'] = 'sample-storage'
 
         # Construct a json representation of a BucketRegistration model
         bucket_registration_model_json = {}
@@ -14440,6 +19225,7 @@ class TestModel_BucketRegistration:
         bucket_registration_model_json['managed_by'] = 'ibm'
         bucket_registration_model_json['region'] = 'us-south'
         bucket_registration_model_json['state'] = 'active'
+        bucket_registration_model_json['storage_details'] = storage_details_model
         bucket_registration_model_json['tags'] = ['testbucket', 'write customer data\'']
 
         # Construct a model instance of BucketRegistration by calling from_dict on the json representation
@@ -14479,7 +19265,21 @@ class TestModel_BucketRegistrationCollection:
         bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
         bucket_details_model['bucket_name'] = 'iceberg-bucket'
         bucket_details_model['endpoint'] = 'http://xyz-minio-svc:9000'
+        bucket_details_model['key_file'] = 'key_file'
+        bucket_details_model['provider'] = 'ibm_cos'
+        bucket_details_model['region'] = 'us-south'
         bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
+
+        storage_details_model = {}  # StorageDetails
+        storage_details_model['access_key'] = '<access_key>'
+        storage_details_model['application_id'] = '<application_id>'
+        storage_details_model['auth_mode'] = '<auth_mode>'
+        storage_details_model['container_name'] = '<container_name>'
+        storage_details_model['directory_id'] = '<directory_id>'
+        storage_details_model['endpoint'] = 'abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/'
+        storage_details_model['sas_token'] = '<sas_token>'
+        storage_details_model['secret_key'] = 'secret_key'
+        storage_details_model['storage_account_name'] = '<storage_account_name>'
 
         bucket_registration_model = {}  # BucketRegistration
         bucket_registration_model['actions'] = ['browse', 'view', 'modify', 'create', 'grant', 'revoke', 'update', 'remove', 'activate', 'register']
@@ -14494,6 +19294,7 @@ class TestModel_BucketRegistrationCollection:
         bucket_registration_model['managed_by'] = 'ibm'
         bucket_registration_model['region'] = 'us-south'
         bucket_registration_model['state'] = 'active'
+        bucket_registration_model['storage_details'] = storage_details_model
         bucket_registration_model['tags'] = ['tag1', 'tag2']
 
         # Construct a json representation of a BucketRegistrationCollection model
@@ -14546,6 +19347,41 @@ class TestModel_BucketRegistrationObjectCollection:
         assert bucket_registration_object_collection_model_json2 == bucket_registration_object_collection_model_json
 
 
+class TestModel_BucketRegistrationObjectSizeCollection:
+    """
+    Test Class for BucketRegistrationObjectSizeCollection
+    """
+
+    def test_bucket_registration_object_size_collection_serialization(self):
+        """
+        Test serialization/deserialization for BucketRegistrationObjectSizeCollection
+        """
+
+        # Construct a json representation of a BucketRegistrationObjectSizeCollection model
+        bucket_registration_object_size_collection_model_json = {}
+        bucket_registration_object_size_collection_model_json['content_type'] = 'string'
+        bucket_registration_object_size_collection_model_json['file_type'] = 'string'
+        bucket_registration_object_size_collection_model_json['last_modified'] = 'utc-2014-07'
+        bucket_registration_object_size_collection_model_json['metadata'] = {'key1': 'testString'}
+        bucket_registration_object_size_collection_model_json['path'] = 'abc/abc/data'
+        bucket_registration_object_size_collection_model_json['size'] = '1024'
+
+        # Construct a model instance of BucketRegistrationObjectSizeCollection by calling from_dict on the json representation
+        bucket_registration_object_size_collection_model = BucketRegistrationObjectSizeCollection.from_dict(bucket_registration_object_size_collection_model_json)
+        assert bucket_registration_object_size_collection_model != False
+
+        # Construct a model instance of BucketRegistrationObjectSizeCollection by calling from_dict on the json representation
+        bucket_registration_object_size_collection_model_dict = BucketRegistrationObjectSizeCollection.from_dict(bucket_registration_object_size_collection_model_json).__dict__
+        bucket_registration_object_size_collection_model2 = BucketRegistrationObjectSizeCollection(**bucket_registration_object_size_collection_model_dict)
+
+        # Verify the model instances are equivalent
+        assert bucket_registration_object_size_collection_model == bucket_registration_object_size_collection_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        bucket_registration_object_size_collection_model_json2 = bucket_registration_object_size_collection_model.to_dict()
+        assert bucket_registration_object_size_collection_model_json2 == bucket_registration_object_size_collection_model_json
+
+
 class TestModel_BucketRegistrationPatch:
     """
     Test Class for BucketRegistrationPatch
@@ -14559,10 +19395,13 @@ class TestModel_BucketRegistrationPatch:
         # Construct dict forms of any model objects needed in order to build this model.
 
         bucket_details_model = {}  # BucketDetails
-        bucket_details_model['access_key'] = 'b9cbf248ea5c4c96947e64407108559j'
+        bucket_details_model['access_key'] = '<access_key>'
         bucket_details_model['bucket_name'] = 'sample-bucket'
         bucket_details_model['endpoint'] = 'https://s3.<region>.cloud-object-storage.appdomain.cloud/'
-        bucket_details_model['secret_key'] = '13b4045cac1a0be54c9fjbe53cb22df5fn397cd2c45b66c87'
+        bucket_details_model['key_file'] = 'key_file'
+        bucket_details_model['provider'] = 'ibm_cos'
+        bucket_details_model['region'] = 'us-south'
+        bucket_details_model['secret_key'] = 'secret_key'
 
         # Construct a json representation of a BucketRegistrationPatch model
         bucket_registration_patch_model_json = {}
@@ -14707,6 +19546,7 @@ class TestModel_Column:
         column_model_json['extra'] = 'varchar'
         column_model_json['length'] = '30'
         column_model_json['scale'] = '2'
+        column_model_json['precision'] = '10'
         column_model_json['type'] = 'varchar'
 
         # Construct a model instance of Column by calling from_dict on the json representation
@@ -14739,10 +19579,11 @@ class TestModel_ColumnCollection:
 
         column_model = {}  # Column
         column_model['column_name'] = 'customer_data'
-        column_model['comment'] = 'expenses column'
+        column_model['comment'] = 'customer_data column'
         column_model['extra'] = 'varchar'
         column_model['length'] = '30'
         column_model['scale'] = '2'
+        column_model['precision'] = '10'
         column_model['type'] = 'varchar'
 
         # Construct a json representation of a ColumnCollection model
@@ -15055,19 +19896,42 @@ class TestModel_DatabaseDetails:
 
         # Construct a json representation of a DatabaseDetails model
         database_details_model_json = {}
+        database_details_model_json['authentication_type'] = 'LDAP'
+        database_details_model_json['broker_authentication_password'] = 'samplepassword'
+        database_details_model_json['broker_authentication_type'] = 'PASSWORD'
+        database_details_model_json['broker_authentication_user'] = 'sampleuser'
         database_details_model_json['certificate'] = 'contents of a pem/crt file'
         database_details_model_json['certificate_extension'] = 'pem/crt'
+        database_details_model_json['connection_method'] = 'basic, apikey'
+        database_details_model_json['connection_mode'] = 'service_name'
+        database_details_model_json['connection_mode_value'] = 'orclpdb'
+        database_details_model_json['connection_type'] = 'JDBC, Arrow flight'
+        database_details_model_json['controller_authentication_password'] = 'samplepassword'
+        database_details_model_json['controller_authentication_type'] = 'PASSWORD'
+        database_details_model_json['controller_authentication_user'] = 'sampleuser'
+        database_details_model_json['cpd_hostname'] = 'samplecpdhostname'
+        database_details_model_json['credentials_key'] = 'eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......'
         database_details_model_json['database_name'] = 'new_database'
         database_details_model_json['hostname'] = 'db2@<hostname>.com'
         database_details_model_json['hostname_in_certificate'] = 'samplehostname'
         database_details_model_json['hosts'] = 'abc.com:1234,xyz.com:4321'
+        database_details_model_json['informix_server'] = 'ol_informix1410'
         database_details_model_json['password'] = 'samplepassword'
         database_details_model_json['port'] = 4553
+        database_details_model_json['project_id'] = 'conops-bigquery'
         database_details_model_json['sasl'] = True
+        database_details_model_json['service_api_key'] = 'sampleapikey'
+        database_details_model_json['service_hostname'] = 'api.dataplatform.dev.cloud.ibm.com'
+        database_details_model_json['service_password'] = 'samplepassword'
+        database_details_model_json['service_port'] = 443
+        database_details_model_json['service_ssl'] = True
+        database_details_model_json['service_token_url'] = 'sampletoakenurl'
+        database_details_model_json['service_username'] = 'sampleusername'
         database_details_model_json['ssl'] = True
         database_details_model_json['tables'] = 'kafka_table_name'
         database_details_model_json['username'] = 'sampleuser'
         database_details_model_json['validate_server_certificate'] = True
+        database_details_model_json['verify_host_name'] = True
 
         # Construct a model instance of DatabaseDetails by calling from_dict on the json representation
         database_details_model = DatabaseDetails.from_dict(database_details_model_json)
@@ -15103,24 +19967,53 @@ class TestModel_DatabaseRegistration:
         database_catalog_model['catalog_type'] = 'iceberg'
 
         database_details_model = {}  # DatabaseDetails
+        database_details_model['authentication_type'] = 'LDAP'
+        database_details_model['broker_authentication_password'] = 'samplepassword'
+        database_details_model['broker_authentication_type'] = 'PASSWORD'
+        database_details_model['broker_authentication_user'] = 'sampleuser'
         database_details_model['certificate'] = 'contents of a pem/crt file'
         database_details_model['certificate_extension'] = 'pem/crt'
+        database_details_model['connection_method'] = 'basic, apikey'
+        database_details_model['connection_mode'] = 'service_name'
+        database_details_model['connection_mode_value'] = 'orclpdb'
+        database_details_model['connection_type'] = 'JDBC, Arrow flight'
+        database_details_model['controller_authentication_password'] = 'samplepassword'
+        database_details_model['controller_authentication_type'] = 'PASSWORD'
+        database_details_model['controller_authentication_user'] = 'sampleuser'
+        database_details_model['cpd_hostname'] = 'samplecpdhostname'
+        database_details_model['credentials_key'] = 'eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......'
         database_details_model['database_name'] = 'new_database'
         database_details_model['hostname'] = 'netezza://abc.efg.com'
         database_details_model['hostname_in_certificate'] = 'samplehostname'
         database_details_model['hosts'] = 'abc.com:1234,xyz.com:4321'
+        database_details_model['informix_server'] = 'ol_informix1410'
         database_details_model['password'] = 'samplepassword'
         database_details_model['port'] = 4353
+        database_details_model['project_id'] = 'conops-bigquery'
         database_details_model['sasl'] = True
+        database_details_model['service_api_key'] = 'sampleapikey'
+        database_details_model['service_hostname'] = 'api.dataplatform.dev.cloud.ibm.com'
+        database_details_model['service_password'] = 'samplepassword'
+        database_details_model['service_port'] = 443
+        database_details_model['service_ssl'] = True
+        database_details_model['service_token_url'] = 'sampletoakenurl'
+        database_details_model['service_username'] = 'sampleusername'
         database_details_model['ssl'] = True
         database_details_model['tables'] = 'netezza_table_name'
         database_details_model['username'] = 'sampleuser'
         database_details_model['validate_server_certificate'] = True
+        database_details_model['verify_host_name'] = True
 
         database_registration_database_properties_items_model = {}  # DatabaseRegistrationDatabasePropertiesItems
         database_registration_database_properties_items_model['encrypt'] = True
         database_registration_database_properties_items_model['key'] = 'abc'
         database_registration_database_properties_items_model['value'] = 'xyz'
+
+        database_registration_topics_items_model = {}  # DatabaseRegistrationTopicsItems
+        database_registration_topics_items_model['created_on'] = '1686792721'
+        database_registration_topics_items_model['file_contents'] = 'sample file content'
+        database_registration_topics_items_model['file_name'] = 'sample file name'
+        database_registration_topics_items_model['topic_name'] = 'customer'
 
         # Construct a json representation of a DatabaseRegistration model
         database_registration_model_json = {}
@@ -15134,8 +20027,9 @@ class TestModel_DatabaseRegistration:
         database_registration_model_json['database_id'] = 'new_database_id'
         database_registration_model_json['database_properties'] = [database_registration_database_properties_items_model]
         database_registration_model_json['database_type'] = 'netezza'
-        database_registration_model_json['description'] = 'Description of the external Database'
+        database_registration_model_json['description'] = 'Description of the external database'
         database_registration_model_json['tags'] = ['testdatabase', 'userdatabase']
+        database_registration_model_json['topics'] = [database_registration_topics_items_model]
 
         # Construct a model instance of DatabaseRegistration by calling from_dict on the json representation
         database_registration_model = DatabaseRegistration.from_dict(database_registration_model_json)
@@ -15171,24 +20065,53 @@ class TestModel_DatabaseRegistrationCollection:
         database_catalog_model['catalog_type'] = 'hive'
 
         database_details_model = {}  # DatabaseDetails
+        database_details_model['authentication_type'] = 'LDAP'
+        database_details_model['broker_authentication_password'] = 'samplepassword'
+        database_details_model['broker_authentication_type'] = 'PASSWORD'
+        database_details_model['broker_authentication_user'] = 'sampleuser'
         database_details_model['certificate'] = 'contents of a pem/crt file'
         database_details_model['certificate_extension'] = 'pem/crt'
+        database_details_model['connection_method'] = 'basic, apikey'
+        database_details_model['connection_mode'] = 'service_name'
+        database_details_model['connection_mode_value'] = 'orclpdb'
+        database_details_model['connection_type'] = 'JDBC, Arrow flight'
+        database_details_model['controller_authentication_password'] = 'samplepassword'
+        database_details_model['controller_authentication_type'] = 'PASSWORD'
+        database_details_model['controller_authentication_user'] = 'sampleuser'
+        database_details_model['cpd_hostname'] = 'samplecpdhostname'
+        database_details_model['credentials_key'] = 'eyJ0eXBlIjoic2VydmljZV9hY2NvdW50IiwicHJvamVjdF9pZCI6ImNvbm9wcy1iaWdxdWVyeSIsInByaXZhdGVfa2V5X2lkIjoiMGY3......'
         database_details_model['database_name'] = 'new_database'
         database_details_model['hostname'] = 'netezza://ps.fyre.com'
         database_details_model['hostname_in_certificate'] = 'samplehostname'
         database_details_model['hosts'] = 'abc.com:1234,xyz.com:4321'
+        database_details_model['informix_server'] = 'ol_informix1410'
         database_details_model['password'] = 'samplepassword'
         database_details_model['port'] = 4353
+        database_details_model['project_id'] = 'conops-bigquery'
         database_details_model['sasl'] = True
+        database_details_model['service_api_key'] = 'sampleapikey'
+        database_details_model['service_hostname'] = 'api.dataplatform.dev.cloud.ibm.com'
+        database_details_model['service_password'] = 'samplepassword'
+        database_details_model['service_port'] = 443
+        database_details_model['service_ssl'] = True
+        database_details_model['service_token_url'] = 'sampletoakenurl'
+        database_details_model['service_username'] = 'sampleusername'
         database_details_model['ssl'] = True
         database_details_model['tables'] = 'netezza_table_name'
         database_details_model['username'] = 'sampleuser'
         database_details_model['validate_server_certificate'] = True
+        database_details_model['verify_host_name'] = True
 
         database_registration_database_properties_items_model = {}  # DatabaseRegistrationDatabasePropertiesItems
         database_registration_database_properties_items_model['encrypt'] = True
         database_registration_database_properties_items_model['key'] = 'abc'
         database_registration_database_properties_items_model['value'] = 'xyz'
+
+        database_registration_topics_items_model = {}  # DatabaseRegistrationTopicsItems
+        database_registration_topics_items_model['created_on'] = '1686792721'
+        database_registration_topics_items_model['file_contents'] = 'sample file content'
+        database_registration_topics_items_model['file_name'] = 'sample file name'
+        database_registration_topics_items_model['topic_name'] = 'customer'
 
         database_registration_model = {}  # DatabaseRegistration
         database_registration_model['actions'] = ['update', 'delete']
@@ -15201,8 +20124,9 @@ class TestModel_DatabaseRegistrationCollection:
         database_registration_model['database_id'] = 'new_database_id'
         database_registration_model['database_properties'] = [database_registration_database_properties_items_model]
         database_registration_model['database_type'] = 'netezza'
-        database_registration_model['description'] = 'Description of the external Database'
+        database_registration_model['description'] = 'Description of the external database'
         database_registration_model['tags'] = ['testdatabase', 'userdatabase']
+        database_registration_model['topics'] = [database_registration_topics_items_model]
 
         # Construct a json representation of a DatabaseRegistrationCollection model
         database_registration_collection_model_json = {}
@@ -15272,12 +20196,19 @@ class TestModel_DatabaseRegistrationPatch:
         database_registration_patch_database_details_model['password'] = 'samplepassword'
         database_registration_patch_database_details_model['username'] = 'sampleuser'
 
+        database_registration_patch_topics_items_model = {}  # DatabaseRegistrationPatchTopicsItems
+        database_registration_patch_topics_items_model['created_on'] = '1686792721'
+        database_registration_patch_topics_items_model['file_contents'] = 'sample file contents'
+        database_registration_patch_topics_items_model['file_name'] = 'sample file name'
+        database_registration_patch_topics_items_model['topic_name'] = 'customer'
+
         # Construct a json representation of a DatabaseRegistrationPatch model
         database_registration_patch_model_json = {}
         database_registration_patch_model_json['database_details'] = database_registration_patch_database_details_model
         database_registration_patch_model_json['database_display_name'] = 'new_database'
         database_registration_patch_model_json['description'] = 'External database description'
         database_registration_patch_model_json['tags'] = ['testdatabase', 'userdatabase']
+        database_registration_patch_model_json['topics'] = [database_registration_patch_topics_items_model]
 
         # Construct a model instance of DatabaseRegistrationPatch by calling from_dict on the json representation
         database_registration_patch_model = DatabaseRegistrationPatch.from_dict(database_registration_patch_model_json)
@@ -15326,6 +20257,39 @@ class TestModel_DatabaseRegistrationPatchDatabaseDetails:
         assert database_registration_patch_database_details_model_json2 == database_registration_patch_database_details_model_json
 
 
+class TestModel_DatabaseRegistrationPatchTopicsItems:
+    """
+    Test Class for DatabaseRegistrationPatchTopicsItems
+    """
+
+    def test_database_registration_patch_topics_items_serialization(self):
+        """
+        Test serialization/deserialization for DatabaseRegistrationPatchTopicsItems
+        """
+
+        # Construct a json representation of a DatabaseRegistrationPatchTopicsItems model
+        database_registration_patch_topics_items_model_json = {}
+        database_registration_patch_topics_items_model_json['created_on'] = '1686792721'
+        database_registration_patch_topics_items_model_json['file_contents'] = 'sample file contents'
+        database_registration_patch_topics_items_model_json['file_name'] = 'sample file name'
+        database_registration_patch_topics_items_model_json['topic_name'] = 'customer'
+
+        # Construct a model instance of DatabaseRegistrationPatchTopicsItems by calling from_dict on the json representation
+        database_registration_patch_topics_items_model = DatabaseRegistrationPatchTopicsItems.from_dict(database_registration_patch_topics_items_model_json)
+        assert database_registration_patch_topics_items_model != False
+
+        # Construct a model instance of DatabaseRegistrationPatchTopicsItems by calling from_dict on the json representation
+        database_registration_patch_topics_items_model_dict = DatabaseRegistrationPatchTopicsItems.from_dict(database_registration_patch_topics_items_model_json).__dict__
+        database_registration_patch_topics_items_model2 = DatabaseRegistrationPatchTopicsItems(**database_registration_patch_topics_items_model_dict)
+
+        # Verify the model instances are equivalent
+        assert database_registration_patch_topics_items_model == database_registration_patch_topics_items_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        database_registration_patch_topics_items_model_json2 = database_registration_patch_topics_items_model.to_dict()
+        assert database_registration_patch_topics_items_model_json2 == database_registration_patch_topics_items_model_json
+
+
 class TestModel_DatabaseRegistrationPrototypeDatabasePropertiesItems:
     """
     Test Class for DatabaseRegistrationPrototypeDatabasePropertiesItems
@@ -15356,6 +20320,39 @@ class TestModel_DatabaseRegistrationPrototypeDatabasePropertiesItems:
         # Convert model instance back to dict and verify no loss of data
         database_registration_prototype_database_properties_items_model_json2 = database_registration_prototype_database_properties_items_model.to_dict()
         assert database_registration_prototype_database_properties_items_model_json2 == database_registration_prototype_database_properties_items_model_json
+
+
+class TestModel_DatabaseRegistrationTopicsItems:
+    """
+    Test Class for DatabaseRegistrationTopicsItems
+    """
+
+    def test_database_registration_topics_items_serialization(self):
+        """
+        Test serialization/deserialization for DatabaseRegistrationTopicsItems
+        """
+
+        # Construct a json representation of a DatabaseRegistrationTopicsItems model
+        database_registration_topics_items_model_json = {}
+        database_registration_topics_items_model_json['created_on'] = '1686792721'
+        database_registration_topics_items_model_json['file_contents'] = 'sample file content'
+        database_registration_topics_items_model_json['file_name'] = 'sample file name'
+        database_registration_topics_items_model_json['topic_name'] = 'customer'
+
+        # Construct a model instance of DatabaseRegistrationTopicsItems by calling from_dict on the json representation
+        database_registration_topics_items_model = DatabaseRegistrationTopicsItems.from_dict(database_registration_topics_items_model_json)
+        assert database_registration_topics_items_model != False
+
+        # Construct a model instance of DatabaseRegistrationTopicsItems by calling from_dict on the json representation
+        database_registration_topics_items_model_dict = DatabaseRegistrationTopicsItems.from_dict(database_registration_topics_items_model_json).__dict__
+        database_registration_topics_items_model2 = DatabaseRegistrationTopicsItems(**database_registration_topics_items_model_dict)
+
+        # Verify the model instances are equivalent
+        assert database_registration_topics_items_model == database_registration_topics_items_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        database_registration_topics_items_model_json2 = database_registration_topics_items_model.to_dict()
+        assert database_registration_topics_items_model_json2 == database_registration_topics_items_model_json
 
 
 class TestModel_Db2Engine:
@@ -15615,6 +20612,212 @@ class TestModel_Driver:
         assert driver_model_json2 == driver_model_json
 
 
+class TestModel_DriverRegistration:
+    """
+    Test Class for DriverRegistration
+    """
+
+    def test_driver_registration_serialization(self):
+        """
+        Test serialization/deserialization for DriverRegistration
+        """
+
+        # Construct a json representation of a DriverRegistration model
+        driver_registration_model_json = {}
+        driver_registration_model_json['associated_engines'] = ['my-engine-1', 'my-engine-2']
+        driver_registration_model_json['connection_type'] = 'connection-type'
+        driver_registration_model_json['driver_id'] = 'sample-driver-123'
+        driver_registration_model_json['driver_name'] = 'sample-driver-name'
+        driver_registration_model_json['modified_at'] = '1686792721'
+        driver_registration_model_json['modified_by'] = 'user1@bim.com'
+        driver_registration_model_json['status'] = 'validating'
+        driver_registration_model_json['version'] = '123-dev'
+
+        # Construct a model instance of DriverRegistration by calling from_dict on the json representation
+        driver_registration_model = DriverRegistration.from_dict(driver_registration_model_json)
+        assert driver_registration_model != False
+
+        # Construct a model instance of DriverRegistration by calling from_dict on the json representation
+        driver_registration_model_dict = DriverRegistration.from_dict(driver_registration_model_json).__dict__
+        driver_registration_model2 = DriverRegistration(**driver_registration_model_dict)
+
+        # Verify the model instances are equivalent
+        assert driver_registration_model == driver_registration_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        driver_registration_model_json2 = driver_registration_model.to_dict()
+        assert driver_registration_model_json2 == driver_registration_model_json
+
+
+class TestModel_DriverRegistrationCollection:
+    """
+    Test Class for DriverRegistrationCollection
+    """
+
+    def test_driver_registration_collection_serialization(self):
+        """
+        Test serialization/deserialization for DriverRegistrationCollection
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        driver_registration_model = {}  # DriverRegistration
+        driver_registration_model['associated_engines'] = ['my-engine-1', 'my-engine-2']
+        driver_registration_model['connection_type'] = 'connection-type'
+        driver_registration_model['driver_id'] = 'sample-driver-123'
+        driver_registration_model['driver_name'] = 'sample-driver-name'
+        driver_registration_model['modified_at'] = '1686792721'
+        driver_registration_model['modified_by'] = 'user1@bim.com'
+        driver_registration_model['status'] = 'validating'
+        driver_registration_model['version'] = '123-dev'
+
+        # Construct a json representation of a DriverRegistrationCollection model
+        driver_registration_collection_model_json = {}
+        driver_registration_collection_model_json['driver_registrations'] = [driver_registration_model]
+
+        # Construct a model instance of DriverRegistrationCollection by calling from_dict on the json representation
+        driver_registration_collection_model = DriverRegistrationCollection.from_dict(driver_registration_collection_model_json)
+        assert driver_registration_collection_model != False
+
+        # Construct a model instance of DriverRegistrationCollection by calling from_dict on the json representation
+        driver_registration_collection_model_dict = DriverRegistrationCollection.from_dict(driver_registration_collection_model_json).__dict__
+        driver_registration_collection_model2 = DriverRegistrationCollection(**driver_registration_collection_model_dict)
+
+        # Verify the model instances are equivalent
+        assert driver_registration_collection_model == driver_registration_collection_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        driver_registration_collection_model_json2 = driver_registration_collection_model.to_dict()
+        assert driver_registration_collection_model_json2 == driver_registration_collection_model_json
+
+
+class TestModel_DriverRegistrationEngine:
+    """
+    Test Class for DriverRegistrationEngine
+    """
+
+    def test_driver_registration_engine_serialization(self):
+        """
+        Test serialization/deserialization for DriverRegistrationEngine
+        """
+
+        # Construct a json representation of a DriverRegistrationEngine model
+        driver_registration_engine_model_json = {}
+        driver_registration_engine_model_json['engines'] = ['testString']
+
+        # Construct a model instance of DriverRegistrationEngine by calling from_dict on the json representation
+        driver_registration_engine_model = DriverRegistrationEngine.from_dict(driver_registration_engine_model_json)
+        assert driver_registration_engine_model != False
+
+        # Construct a model instance of DriverRegistrationEngine by calling from_dict on the json representation
+        driver_registration_engine_model_dict = DriverRegistrationEngine.from_dict(driver_registration_engine_model_json).__dict__
+        driver_registration_engine_model2 = DriverRegistrationEngine(**driver_registration_engine_model_dict)
+
+        # Verify the model instances are equivalent
+        assert driver_registration_engine_model == driver_registration_engine_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        driver_registration_engine_model_json2 = driver_registration_engine_model.to_dict()
+        assert driver_registration_engine_model_json2 == driver_registration_engine_model_json
+
+
+class TestModel_DriverRegistrationEnginePrototype:
+    """
+    Test Class for DriverRegistrationEnginePrototype
+    """
+
+    def test_driver_registration_engine_prototype_serialization(self):
+        """
+        Test serialization/deserialization for DriverRegistrationEnginePrototype
+        """
+
+        # Construct a json representation of a DriverRegistrationEnginePrototype model
+        driver_registration_engine_prototype_model_json = {}
+        driver_registration_engine_prototype_model_json['engines'] = ['testString']
+
+        # Construct a model instance of DriverRegistrationEnginePrototype by calling from_dict on the json representation
+        driver_registration_engine_prototype_model = DriverRegistrationEnginePrototype.from_dict(driver_registration_engine_prototype_model_json)
+        assert driver_registration_engine_prototype_model != False
+
+        # Construct a model instance of DriverRegistrationEnginePrototype by calling from_dict on the json representation
+        driver_registration_engine_prototype_model_dict = DriverRegistrationEnginePrototype.from_dict(driver_registration_engine_prototype_model_json).__dict__
+        driver_registration_engine_prototype_model2 = DriverRegistrationEnginePrototype(**driver_registration_engine_prototype_model_dict)
+
+        # Verify the model instances are equivalent
+        assert driver_registration_engine_prototype_model == driver_registration_engine_prototype_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        driver_registration_engine_prototype_model_json2 = driver_registration_engine_prototype_model.to_dict()
+        assert driver_registration_engine_prototype_model_json2 == driver_registration_engine_prototype_model_json
+
+
+class TestModel_Endpoint:
+    """
+    Test Class for Endpoint
+    """
+
+    def test_endpoint_serialization(self):
+        """
+        Test serialization/deserialization for Endpoint
+        """
+
+        # Construct a json representation of a Endpoint model
+        endpoint_model_json = {}
+        endpoint_model_json['external_host'] = 'https://cpg-svc.your-hostname.apps.your-domain.com'
+        endpoint_model_json['service_type'] = 'cpg'
+
+        # Construct a model instance of Endpoint by calling from_dict on the json representation
+        endpoint_model = Endpoint.from_dict(endpoint_model_json)
+        assert endpoint_model != False
+
+        # Construct a model instance of Endpoint by calling from_dict on the json representation
+        endpoint_model_dict = Endpoint.from_dict(endpoint_model_json).__dict__
+        endpoint_model2 = Endpoint(**endpoint_model_dict)
+
+        # Verify the model instances are equivalent
+        assert endpoint_model == endpoint_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        endpoint_model_json2 = endpoint_model.to_dict()
+        assert endpoint_model_json2 == endpoint_model_json
+
+
+class TestModel_EndpointCollection:
+    """
+    Test Class for EndpointCollection
+    """
+
+    def test_endpoint_collection_serialization(self):
+        """
+        Test serialization/deserialization for EndpointCollection
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        endpoint_model = {}  # Endpoint
+        endpoint_model['external_host'] = 'https://cpg-svc.your-hostname.apps.your-domain.com'
+        endpoint_model['service_type'] = 'cpg'
+
+        # Construct a json representation of a EndpointCollection model
+        endpoint_collection_model_json = {}
+        endpoint_collection_model_json['endpoints'] = [endpoint_model]
+
+        # Construct a model instance of EndpointCollection by calling from_dict on the json representation
+        endpoint_collection_model = EndpointCollection.from_dict(endpoint_collection_model_json)
+        assert endpoint_collection_model != False
+
+        # Construct a model instance of EndpointCollection by calling from_dict on the json representation
+        endpoint_collection_model_dict = EndpointCollection.from_dict(endpoint_collection_model_json).__dict__
+        endpoint_collection_model2 = EndpointCollection(**endpoint_collection_model_dict)
+
+        # Verify the model instances are equivalent
+        assert endpoint_collection_model == endpoint_collection_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        endpoint_collection_model_json2 = endpoint_collection_model.to_dict()
+        assert endpoint_collection_model_json2 == endpoint_collection_model_json
+
+
 class TestModel_EngineDetailsBody:
     """
     Test Class for EngineDetailsBody
@@ -15655,6 +20858,43 @@ class TestModel_EngineDetailsBody:
         # Convert model instance back to dict and verify no loss of data
         engine_details_body_model_json2 = engine_details_body_model.to_dict()
         assert engine_details_body_model_json2 == engine_details_body_model_json
+
+
+class TestModel_EnginePropertiesLogConfiguration:
+    """
+    Test Class for EnginePropertiesLogConfiguration
+    """
+
+    def test_engine_properties_log_configuration_serialization(self):
+        """
+        Test serialization/deserialization for EnginePropertiesLogConfiguration
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        node_description_body_model = {}  # NodeDescriptionBody
+        node_description_body_model['node_type'] = 'worker'
+        node_description_body_model['quantity'] = 38
+
+        # Construct a json representation of a EnginePropertiesLogConfiguration model
+        engine_properties_log_configuration_model_json = {}
+        engine_properties_log_configuration_model_json['coordinator'] = node_description_body_model
+        engine_properties_log_configuration_model_json['worker'] = node_description_body_model
+
+        # Construct a model instance of EnginePropertiesLogConfiguration by calling from_dict on the json representation
+        engine_properties_log_configuration_model = EnginePropertiesLogConfiguration.from_dict(engine_properties_log_configuration_model_json)
+        assert engine_properties_log_configuration_model != False
+
+        # Construct a model instance of EnginePropertiesLogConfiguration by calling from_dict on the json representation
+        engine_properties_log_configuration_model_dict = EnginePropertiesLogConfiguration.from_dict(engine_properties_log_configuration_model_json).__dict__
+        engine_properties_log_configuration_model2 = EnginePropertiesLogConfiguration(**engine_properties_log_configuration_model_dict)
+
+        # Verify the model instances are equivalent
+        assert engine_properties_log_configuration_model == engine_properties_log_configuration_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        engine_properties_log_configuration_model_json2 = engine_properties_log_configuration_model.to_dict()
+        assert engine_properties_log_configuration_model_json2 == engine_properties_log_configuration_model_json
 
 
 class TestModel_EnginePropertiesOaiGen1Configuration:
@@ -15766,6 +21006,217 @@ class TestModel_EnginePropertiesOaiGenConfiguration:
         # Convert model instance back to dict and verify no loss of data
         engine_properties_oai_gen_configuration_model_json2 = engine_properties_oai_gen_configuration_model.to_dict()
         assert engine_properties_oai_gen_configuration_model_json2 == engine_properties_oai_gen_configuration_model_json
+
+
+class TestModel_EnrichmentAsset:
+    """
+    Test Class for EnrichmentAsset
+    """
+
+    def test_enrichment_asset_serialization(self):
+        """
+        Test serialization/deserialization for EnrichmentAsset
+        """
+
+        # Construct a json representation of a EnrichmentAsset model
+        enrichment_asset_model_json = {}
+        enrichment_asset_model_json['asset_attributes'] = ['testString']
+        enrichment_asset_model_json['asset_id'] = 'ee0383b9-dcab-4c1a-b03d-bf521837b6ed'
+        enrichment_asset_model_json['asset_name'] = 'newtable'
+        enrichment_asset_model_json['resource_key'] = '0000:0000:0000:0000:0000:FFFF:9EB0:04E2|31134|:/iceberg_data/new_schema/sampletable'
+        enrichment_asset_model_json['schema_name'] = 'sampleschema'
+
+        # Construct a model instance of EnrichmentAsset by calling from_dict on the json representation
+        enrichment_asset_model = EnrichmentAsset.from_dict(enrichment_asset_model_json)
+        assert enrichment_asset_model != False
+
+        # Construct a model instance of EnrichmentAsset by calling from_dict on the json representation
+        enrichment_asset_model_dict = EnrichmentAsset.from_dict(enrichment_asset_model_json).__dict__
+        enrichment_asset_model2 = EnrichmentAsset(**enrichment_asset_model_dict)
+
+        # Verify the model instances are equivalent
+        assert enrichment_asset_model == enrichment_asset_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        enrichment_asset_model_json2 = enrichment_asset_model.to_dict()
+        assert enrichment_asset_model_json2 == enrichment_asset_model_json
+
+
+class TestModel_EnrichmentObj:
+    """
+    Test Class for EnrichmentObj
+    """
+
+    def test_enrichment_obj_serialization(self):
+        """
+        Test serialization/deserialization for EnrichmentObj
+        """
+
+        # Construct a json representation of a EnrichmentObj model
+        enrichment_obj_model_json = {}
+        enrichment_obj_model_json['catalog'] = 'iceberg_data'
+        enrichment_obj_model_json['operation'] = 'create'
+        enrichment_obj_model_json['schema'] = 'testString'
+        enrichment_obj_model_json['tables'] = ['testString']
+
+        # Construct a model instance of EnrichmentObj by calling from_dict on the json representation
+        enrichment_obj_model = EnrichmentObj.from_dict(enrichment_obj_model_json)
+        assert enrichment_obj_model != False
+
+        # Construct a model instance of EnrichmentObj by calling from_dict on the json representation
+        enrichment_obj_model_dict = EnrichmentObj.from_dict(enrichment_obj_model_json).__dict__
+        enrichment_obj_model2 = EnrichmentObj(**enrichment_obj_model_dict)
+
+        # Verify the model instances are equivalent
+        assert enrichment_obj_model == enrichment_obj_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        enrichment_obj_model_json2 = enrichment_obj_model.to_dict()
+        assert enrichment_obj_model_json2 == enrichment_obj_model_json
+
+
+class TestModel_ErrorObj:
+    """
+    Test Class for ErrorObj
+    """
+
+    def test_error_obj_serialization(self):
+        """
+        Test serialization/deserialization for ErrorObj
+        """
+
+        # Construct a json representation of a ErrorObj model
+        error_obj_model_json = {}
+        error_obj_model_json['code'] = 'unable_to_perform'
+        error_obj_model_json['message'] = 'Failed to process integration settings for watsonx.data instance'
+
+        # Construct a model instance of ErrorObj by calling from_dict on the json representation
+        error_obj_model = ErrorObj.from_dict(error_obj_model_json)
+        assert error_obj_model != False
+
+        # Construct a model instance of ErrorObj by calling from_dict on the json representation
+        error_obj_model_dict = ErrorObj.from_dict(error_obj_model_json).__dict__
+        error_obj_model2 = ErrorObj(**error_obj_model_dict)
+
+        # Verify the model instances are equivalent
+        assert error_obj_model == error_obj_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        error_obj_model_json2 = error_obj_model.to_dict()
+        assert error_obj_model_json2 == error_obj_model_json
+
+
+class TestModel_ExecuteQueryCreatedBody:
+    """
+    Test Class for ExecuteQueryCreatedBody
+    """
+
+    def test_execute_query_created_body_serialization(self):
+        """
+        Test serialization/deserialization for ExecuteQueryCreatedBody
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        result_execute_query_model = {}  # ResultExecuteQuery
+        result_execute_query_model['result'] = [{'key1': 'testString'}]
+
+        # Construct a json representation of a ExecuteQueryCreatedBody model
+        execute_query_created_body_model_json = {}
+        execute_query_created_body_model_json['response'] = result_execute_query_model
+
+        # Construct a model instance of ExecuteQueryCreatedBody by calling from_dict on the json representation
+        execute_query_created_body_model = ExecuteQueryCreatedBody.from_dict(execute_query_created_body_model_json)
+        assert execute_query_created_body_model != False
+
+        # Construct a model instance of ExecuteQueryCreatedBody by calling from_dict on the json representation
+        execute_query_created_body_model_dict = ExecuteQueryCreatedBody.from_dict(execute_query_created_body_model_json).__dict__
+        execute_query_created_body_model2 = ExecuteQueryCreatedBody(**execute_query_created_body_model_dict)
+
+        # Verify the model instances are equivalent
+        assert execute_query_created_body_model == execute_query_created_body_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        execute_query_created_body_model_json2 = execute_query_created_body_model.to_dict()
+        assert execute_query_created_body_model_json2 == execute_query_created_body_model_json
+
+
+class TestModel_GlossaryObject:
+    """
+    Test Class for GlossaryObject
+    """
+
+    def test_glossary_object_serialization(self):
+        """
+        Test serialization/deserialization for GlossaryObject
+        """
+
+        # Construct a json representation of a GlossaryObject model
+        glossary_object_model_json = {}
+        glossary_object_model_json['description'] = 'First Name'
+        glossary_object_model_json['name'] = 'Name'
+
+        # Construct a model instance of GlossaryObject by calling from_dict on the json representation
+        glossary_object_model = GlossaryObject.from_dict(glossary_object_model_json)
+        assert glossary_object_model != False
+
+        # Construct a model instance of GlossaryObject by calling from_dict on the json representation
+        glossary_object_model_dict = GlossaryObject.from_dict(glossary_object_model_json).__dict__
+        glossary_object_model2 = GlossaryObject(**glossary_object_model_dict)
+
+        # Verify the model instances are equivalent
+        assert glossary_object_model == glossary_object_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        glossary_object_model_json2 = glossary_object_model.to_dict()
+        assert glossary_object_model_json2 == glossary_object_model_json
+
+
+class TestModel_HdfsStorageRegistration:
+    """
+    Test Class for HdfsStorageRegistration
+    """
+
+    def test_hdfs_storage_registration_serialization(self):
+        """
+        Test serialization/deserialization for HdfsStorageRegistration
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        bucket_catalog_model = {}  # BucketCatalog
+        bucket_catalog_model['catalog_name'] = 'hive_data'
+        bucket_catalog_model['catalog_tags'] = ['catalog_tag_1', 'catalog_tag_2']
+        bucket_catalog_model['catalog_type'] = 'hive'
+
+        # Construct a json representation of a HdfsStorageRegistration model
+        hdfs_storage_registration_model_json = {}
+        hdfs_storage_registration_model_json['actions'] = ['read', 'update']
+        hdfs_storage_registration_model_json['associated_catalog'] = bucket_catalog_model
+        hdfs_storage_registration_model_json['bucket_display_name'] = 'sample hdfs displayname'
+        hdfs_storage_registration_model_json['bucket_id'] = 'hdfs123'
+        hdfs_storage_registration_model_json['bucket_type'] = 'hdfs'
+        hdfs_storage_registration_model_json['created_by'] = '<username>@<domain>.com'
+        hdfs_storage_registration_model_json['created_on'] = '1686120645'
+        hdfs_storage_registration_model_json['description'] = 'HDFS description for storage'
+        hdfs_storage_registration_model_json['managed_by'] = 'customer'
+        hdfs_storage_registration_model_json['state'] = 'active'
+        hdfs_storage_registration_model_json['tags'] = ['test', 'write customer data\'']
+
+        # Construct a model instance of HdfsStorageRegistration by calling from_dict on the json representation
+        hdfs_storage_registration_model = HdfsStorageRegistration.from_dict(hdfs_storage_registration_model_json)
+        assert hdfs_storage_registration_model != False
+
+        # Construct a model instance of HdfsStorageRegistration by calling from_dict on the json representation
+        hdfs_storage_registration_model_dict = HdfsStorageRegistration.from_dict(hdfs_storage_registration_model_json).__dict__
+        hdfs_storage_registration_model2 = HdfsStorageRegistration(**hdfs_storage_registration_model_dict)
+
+        # Verify the model instances are equivalent
+        assert hdfs_storage_registration_model == hdfs_storage_registration_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        hdfs_storage_registration_model_json2 = hdfs_storage_registration_model.to_dict()
+        assert hdfs_storage_registration_model_json2 == hdfs_storage_registration_model_json
 
 
 class TestModel_IngestionJob:
@@ -16066,6 +21517,133 @@ class TestModel_IngestionJobPrototypeExecuteConfig:
         assert ingestion_job_prototype_execute_config_model_json2 == ingestion_job_prototype_execute_config_model_json
 
 
+class TestModel_Integration:
+    """
+    Test Class for Integration
+    """
+
+    def test_integration_serialization(self):
+        """
+        Test serialization/deserialization for Integration
+        """
+
+        # Construct a json representation of a Integration model
+        integration_model_json = {}
+        integration_model_json['apikey'] = 'apikey'
+        integration_model_json['config_properties'] = 'ikc-env.password=ibmlhenc__0001__uMkFATDDZNnxJ7z6BA/QqA==\\nikc-env.url=ikc\\nikc-enabled-catalogs=\\nikc-username=\\nlh-unique-identifier=1711796957622126\\nlh-crn=1711796957622126'
+        integration_model_json['enable_data_policy_within_wxd'] = False
+        integration_model_json['governance_properties'] = 'query-governance.name=external'
+        integration_model_json['integration_id'] = 'presto01'
+        integration_model_json['modified_at'] = 38
+        integration_model_json['modified_by'] = '<username>@<domain>.com'
+        integration_model_json['password'] = 'password'
+        integration_model_json['resource'] = 'presto01'
+        integration_model_json['service_type'] = 'ikc'
+        integration_model_json['state'] = 'active'
+        integration_model_json['storage_catalogs'] = ['iceberg_data', 'hive_data']
+        integration_model_json['url'] = 'ikc.url'
+        integration_model_json['username'] = 'username@email.com'
+
+        # Construct a model instance of Integration by calling from_dict on the json representation
+        integration_model = Integration.from_dict(integration_model_json)
+        assert integration_model != False
+
+        # Construct a model instance of Integration by calling from_dict on the json representation
+        integration_model_dict = Integration.from_dict(integration_model_json).__dict__
+        integration_model2 = Integration(**integration_model_dict)
+
+        # Verify the model instances are equivalent
+        assert integration_model == integration_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        integration_model_json2 = integration_model.to_dict()
+        assert integration_model_json2 == integration_model_json
+
+
+class TestModel_IntegrationCollection:
+    """
+    Test Class for IntegrationCollection
+    """
+
+    def test_integration_collection_serialization(self):
+        """
+        Test serialization/deserialization for IntegrationCollection
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        integration_model = {}  # Integration
+        integration_model['apikey'] = 'apikey'
+        integration_model['config_properties'] = 'ikc-env.password=ibmlhenc__0001__uMkFATDDZNnxJ7z6BA/QqA==\\\\nikc-env.url=ikc\\\\nikc-username=\\\\nikc-enabled-catalogs=\\\\nlh-unique-identifier=1711796957622126\\\\nlh-crn=1711796957622126'
+        integration_model['enable_data_policy_within_wxd'] = False
+        integration_model['governance_properties'] = 'query-governance.name=external'
+        integration_model['integration_id'] = 'ikc543'
+        integration_model['modified_at'] = 1716878292
+        integration_model['modified_by'] = 'admin'
+        integration_model['password'] = 'password'
+        integration_model['resource'] = 'presto01'
+        integration_model['service_type'] = 'ikc'
+        integration_model['state'] = 'active'
+        integration_model['storage_catalogs'] = ['iceberg_data', 'hive_data']
+        integration_model['url'] = 'ikc.url'
+        integration_model['username'] = 'admin'
+
+        # Construct a json representation of a IntegrationCollection model
+        integration_collection_model_json = {}
+        integration_collection_model_json['integrations'] = [integration_model]
+
+        # Construct a model instance of IntegrationCollection by calling from_dict on the json representation
+        integration_collection_model = IntegrationCollection.from_dict(integration_collection_model_json)
+        assert integration_collection_model != False
+
+        # Construct a model instance of IntegrationCollection by calling from_dict on the json representation
+        integration_collection_model_dict = IntegrationCollection.from_dict(integration_collection_model_json).__dict__
+        integration_collection_model2 = IntegrationCollection(**integration_collection_model_dict)
+
+        # Verify the model instances are equivalent
+        assert integration_collection_model == integration_collection_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        integration_collection_model_json2 = integration_collection_model.to_dict()
+        assert integration_collection_model_json2 == integration_collection_model_json
+
+
+class TestModel_IntegrationPatch:
+    """
+    Test Class for IntegrationPatch
+    """
+
+    def test_integration_patch_serialization(self):
+        """
+        Test serialization/deserialization for IntegrationPatch
+        """
+
+        # Construct a json representation of a IntegrationPatch model
+        integration_patch_model_json = {}
+        integration_patch_model_json['apikey'] = 'apikey'
+        integration_patch_model_json['enable_data_policy_within_wxd'] = False
+        integration_patch_model_json['password'] = 'password'
+        integration_patch_model_json['resource'] = 'presto01'
+        integration_patch_model_json['storage_catalogs'] = ['iceberg_data', 'hive_data']
+        integration_patch_model_json['url'] = 'ikc.url'
+        integration_patch_model_json['username'] = 'username@email.com'
+
+        # Construct a model instance of IntegrationPatch by calling from_dict on the json representation
+        integration_patch_model = IntegrationPatch.from_dict(integration_patch_model_json)
+        assert integration_patch_model != False
+
+        # Construct a model instance of IntegrationPatch by calling from_dict on the json representation
+        integration_patch_model_dict = IntegrationPatch.from_dict(integration_patch_model_json).__dict__
+        integration_patch_model2 = IntegrationPatch(**integration_patch_model_dict)
+
+        # Verify the model instances are equivalent
+        assert integration_patch_model == integration_patch_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        integration_patch_model_json2 = integration_patch_model.to_dict()
+        assert integration_patch_model_json2 == integration_patch_model_json
+
+
 class TestModel_ListSchemasOKBody:
     """
     Test Class for ListSchemasOKBody
@@ -16079,7 +21657,7 @@ class TestModel_ListSchemasOKBody:
         # Construct dict forms of any model objects needed in order to build this model.
 
         success_response_model = {}  # SuccessResponse
-        success_response_model['message'] = 'create schema'
+        success_response_model['message'] = 'list all schemas'
         success_response_model['message_code'] = 'success'
 
         # Construct a json representation of a ListSchemasOKBody model
@@ -16143,6 +21721,44 @@ class TestModel_ListSparkVersionsOKBody:
         assert list_spark_versions_ok_body_model_json2 == list_spark_versions_ok_body_model_json
 
 
+class TestModel_MilvusDatabaseCollections:
+    """
+    Test Class for MilvusDatabaseCollections
+    """
+
+    def test_milvus_database_collections_serialization(self):
+        """
+        Test serialization/deserialization for MilvusDatabaseCollections
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        milvusdbcollection_model = {}  # Milvusdbcollection
+        milvusdbcollection_model['collection_id'] = 449533249905689150
+        milvusdbcollection_model['collection_name'] = 'new'
+        milvusdbcollection_model['physical_channels'] = []
+        milvusdbcollection_model['virtual_channels'] = []
+
+        # Construct a json representation of a MilvusDatabaseCollections model
+        milvus_database_collections_model_json = {}
+        milvus_database_collections_model_json['collections'] = [milvusdbcollection_model]
+
+        # Construct a model instance of MilvusDatabaseCollections by calling from_dict on the json representation
+        milvus_database_collections_model = MilvusDatabaseCollections.from_dict(milvus_database_collections_model_json)
+        assert milvus_database_collections_model != False
+
+        # Construct a model instance of MilvusDatabaseCollections by calling from_dict on the json representation
+        milvus_database_collections_model_dict = MilvusDatabaseCollections.from_dict(milvus_database_collections_model_json).__dict__
+        milvus_database_collections_model2 = MilvusDatabaseCollections(**milvus_database_collections_model_dict)
+
+        # Verify the model instances are equivalent
+        assert milvus_database_collections_model == milvus_database_collections_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        milvus_database_collections_model_json2 = milvus_database_collections_model.to_dict()
+        assert milvus_database_collections_model_json2 == milvus_database_collections_model_json
+
+
 class TestModel_MilvusService:
     """
     Test Class for MilvusService
@@ -16155,21 +21771,28 @@ class TestModel_MilvusService:
 
         # Construct a json representation of a MilvusService model
         milvus_service_model_json = {}
+        milvus_service_model_json['access_key'] = 'Sample bucket access key'
         milvus_service_model_json['actions'] = ['update', 'delete']
+        milvus_service_model_json['bucket_name'] = 'Sample bucket name'
+        milvus_service_model_json['bucket_type'] = 'Sample bucket type'
         milvus_service_model_json['created_by'] = '<username>@<domain>.com'
         milvus_service_model_json['created_on'] = 38
         milvus_service_model_json['description'] = 'milvus service for running sql queries'
+        milvus_service_model_json['endpoint'] = 'Sample bucket type'
         milvus_service_model_json['grpc_host'] = 'example.grpc.host'
         milvus_service_model_json['grpc_port'] = 26
         milvus_service_model_json['host_name'] = 'sampleMilvus'
         milvus_service_model_json['https_host'] = 'example.https.host'
         milvus_service_model_json['https_port'] = 26
         milvus_service_model_json['origin'] = 'native'
+        milvus_service_model_json['root_path'] = 'Sample path'
+        milvus_service_model_json['secret_key'] = 'Sample bucket secret access key'
         milvus_service_model_json['service_display_name'] = 'sampleService'
         milvus_service_model_json['service_id'] = 'sampleService123'
         milvus_service_model_json['status'] = 'running'
         milvus_service_model_json['status_code'] = 38
         milvus_service_model_json['tags'] = ['tag1', 'tag2']
+        milvus_service_model_json['tshirt_size'] = 'small'
         milvus_service_model_json['type'] = 'milvus'
 
         # Construct a model instance of MilvusService by calling from_dict on the json representation
@@ -16201,21 +21824,28 @@ class TestModel_MilvusServiceCollection:
         # Construct dict forms of any model objects needed in order to build this model.
 
         milvus_service_model = {}  # MilvusService
+        milvus_service_model['access_key'] = 'Sample bucket access key'
         milvus_service_model['actions'] = ['update', 'delete']
+        milvus_service_model['bucket_name'] = 'Sample bucket name'
+        milvus_service_model['bucket_type'] = 'Sample bucket type'
         milvus_service_model['created_by'] = 'username@domain.com'
         milvus_service_model['created_on'] = 1700201877
-        milvus_service_model['description'] = 'description'
-        milvus_service_model['grpc_host'] = '<formation_id>.<kubernetes_cluster>.databases.appdomain.cloud'
+        milvus_service_model['description'] = 'milvus service for running sql queries'
+        milvus_service_model['endpoint'] = 'Sample bucket type'
+        milvus_service_model['grpc_host'] = 'example.grpc.host'
         milvus_service_model['grpc_port'] = 31501
-        milvus_service_model['host_name'] = 'sampleMilvus'
-        milvus_service_model['https_host'] = '<formation_id>.<kubernetes_cluster>.databases.appdomain.cloud'
+        milvus_service_model['host_name'] = '<formation_id>.<kubernetes_cluster>.databases.appdomain.cloud'
+        milvus_service_model['https_host'] = 'example.https.host'
         milvus_service_model['https_port'] = 31012
         milvus_service_model['origin'] = 'native'
+        milvus_service_model['root_path'] = 'Sample path'
+        milvus_service_model['secret_key'] = 'Sample bucket secret access key'
         milvus_service_model['service_display_name'] = 'test-milvus'
         milvus_service_model['service_id'] = 'milvus76'
         milvus_service_model['status'] = 'running'
         milvus_service_model['status_code'] = 11
-        milvus_service_model['tags'] = []
+        milvus_service_model['tags'] = ['tag1', 'tag2']
+        milvus_service_model['tshirt_size'] = 'string'
         milvus_service_model['type'] = 'milvus'
 
         # Construct a json representation of a MilvusServiceCollection model
@@ -16236,6 +21866,36 @@ class TestModel_MilvusServiceCollection:
         # Convert model instance back to dict and verify no loss of data
         milvus_service_collection_model_json2 = milvus_service_collection_model.to_dict()
         assert milvus_service_collection_model_json2 == milvus_service_collection_model_json
+
+
+class TestModel_MilvusServiceDatabases:
+    """
+    Test Class for MilvusServiceDatabases
+    """
+
+    def test_milvus_service_databases_serialization(self):
+        """
+        Test serialization/deserialization for MilvusServiceDatabases
+        """
+
+        # Construct a json representation of a MilvusServiceDatabases model
+        milvus_service_databases_model_json = {}
+        milvus_service_databases_model_json['databases'] = ['default']
+
+        # Construct a model instance of MilvusServiceDatabases by calling from_dict on the json representation
+        milvus_service_databases_model = MilvusServiceDatabases.from_dict(milvus_service_databases_model_json)
+        assert milvus_service_databases_model != False
+
+        # Construct a model instance of MilvusServiceDatabases by calling from_dict on the json representation
+        milvus_service_databases_model_dict = MilvusServiceDatabases.from_dict(milvus_service_databases_model_json).__dict__
+        milvus_service_databases_model2 = MilvusServiceDatabases(**milvus_service_databases_model_dict)
+
+        # Verify the model instances are equivalent
+        assert milvus_service_databases_model == milvus_service_databases_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        milvus_service_databases_model_json2 = milvus_service_databases_model.to_dict()
+        assert milvus_service_databases_model_json2 == milvus_service_databases_model_json
 
 
 class TestModel_MilvusServicePatch:
@@ -16268,6 +21928,39 @@ class TestModel_MilvusServicePatch:
         # Convert model instance back to dict and verify no loss of data
         milvus_service_patch_model_json2 = milvus_service_patch_model.to_dict()
         assert milvus_service_patch_model_json2 == milvus_service_patch_model_json
+
+
+class TestModel_Milvusdbcollection:
+    """
+    Test Class for Milvusdbcollection
+    """
+
+    def test_milvusdbcollection_serialization(self):
+        """
+        Test serialization/deserialization for Milvusdbcollection
+        """
+
+        # Construct a json representation of a Milvusdbcollection model
+        milvusdbcollection_model_json = {}
+        milvusdbcollection_model_json['collection_id'] = 26
+        milvusdbcollection_model_json['collection_name'] = 'col1'
+        milvusdbcollection_model_json['physical_channels'] = ['testString']
+        milvusdbcollection_model_json['virtual_channels'] = ['testString']
+
+        # Construct a model instance of Milvusdbcollection by calling from_dict on the json representation
+        milvusdbcollection_model = Milvusdbcollection.from_dict(milvusdbcollection_model_json)
+        assert milvusdbcollection_model != False
+
+        # Construct a model instance of Milvusdbcollection by calling from_dict on the json representation
+        milvusdbcollection_model_dict = Milvusdbcollection.from_dict(milvusdbcollection_model_json).__dict__
+        milvusdbcollection_model2 = Milvusdbcollection(**milvusdbcollection_model_dict)
+
+        # Verify the model instances are equivalent
+        assert milvusdbcollection_model == milvusdbcollection_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        milvusdbcollection_model_json2 = milvusdbcollection_model.to_dict()
+        assert milvusdbcollection_model_json2 == milvusdbcollection_model_json
 
 
 class TestModel_NetezzaEngine:
@@ -16690,6 +22383,36 @@ class TestModel_OtherEngineDetailsBody:
         assert other_engine_details_body_model_json2 == other_engine_details_body_model_json
 
 
+class TestModel_Path:
+    """
+    Test Class for Path
+    """
+
+    def test_path_serialization(self):
+        """
+        Test serialization/deserialization for Path
+        """
+
+        # Construct a json representation of a Path model
+        path_model_json = {}
+        path_model_json['path'] = 'string'
+
+        # Construct a model instance of Path by calling from_dict on the json representation
+        path_model = Path.from_dict(path_model_json)
+        assert path_model != False
+
+        # Construct a model instance of Path by calling from_dict on the json representation
+        path_model_dict = Path.from_dict(path_model_json).__dict__
+        path_model2 = Path(**path_model_dict)
+
+        # Verify the model instances are equivalent
+        assert path_model == path_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        path_model_json2 = path_model.to_dict()
+        assert path_model_json2 == path_model_json
+
+
 class TestModel_PrestissimoEndpoints:
     """
     Test Class for PrestissimoEndpoints
@@ -16789,10 +22512,13 @@ class TestModel_PrestissimoEngine:
         remove_engine_properties_configuration_model['coordinator'] = ['testString']
         remove_engine_properties_configuration_model['worker'] = ['testString']
 
+        remove_engine_properties_prestissimo_oai_gen_jvm_model = {}  # RemoveEnginePropertiesPrestissimoOaiGenJvm
+        remove_engine_properties_prestissimo_oai_gen_jvm_model['coordinator'] = ['testString']
+
         remove_engine_properties_model = {}  # RemoveEngineProperties
         remove_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
         remove_engine_properties_model['configuration'] = remove_engine_properties_configuration_model
-        remove_engine_properties_model['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['jvm'] = remove_engine_properties_prestissimo_oai_gen_jvm_model
         remove_engine_properties_model['velox'] = ['testString']
 
         # Construct a json representation of a PrestissimoEngine model
@@ -16903,10 +22629,13 @@ class TestModel_PrestissimoEngineCollection:
         remove_engine_properties_configuration_model['coordinator'] = ['testString']
         remove_engine_properties_configuration_model['worker'] = ['testString']
 
+        remove_engine_properties_prestissimo_oai_gen_jvm_model = {}  # RemoveEnginePropertiesPrestissimoOaiGenJvm
+        remove_engine_properties_prestissimo_oai_gen_jvm_model['coordinator'] = ['testString']
+
         remove_engine_properties_model = {}  # RemoveEngineProperties
         remove_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
         remove_engine_properties_model['configuration'] = remove_engine_properties_configuration_model
-        remove_engine_properties_model['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['jvm'] = remove_engine_properties_prestissimo_oai_gen_jvm_model
         remove_engine_properties_model['velox'] = ['testString']
 
         prestissimo_engine_model = {}  # PrestissimoEngine
@@ -17109,10 +22838,13 @@ class TestModel_PrestissimoEnginePatch:
         remove_engine_properties_configuration_model['coordinator'] = ['testString']
         remove_engine_properties_configuration_model['worker'] = ['testString']
 
+        remove_engine_properties_prestissimo_oai_gen_jvm_model = {}  # RemoveEnginePropertiesPrestissimoOaiGenJvm
+        remove_engine_properties_prestissimo_oai_gen_jvm_model['coordinator'] = ['testString']
+
         remove_engine_properties_model = {}  # RemoveEngineProperties
         remove_engine_properties_model['catalog'] = prestissimo_engine_properties_catalog_model
         remove_engine_properties_model['configuration'] = remove_engine_properties_configuration_model
-        remove_engine_properties_model['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model['jvm'] = remove_engine_properties_prestissimo_oai_gen_jvm_model
         remove_engine_properties_model['velox'] = ['testString']
 
         # Construct a json representation of a PrestissimoEnginePatch model
@@ -17309,6 +23041,9 @@ class TestModel_PrestoEngine:
         engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
 
+        presto_engine_properties_event_listener_model = {}  # PrestoEnginePropertiesEventListener
+        presto_engine_properties_event_listener_model['event_listener_property'] = 'testString'
+
         presto_engine_properties_global_model = {}  # PrestoEnginePropertiesGlobal
         presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
 
@@ -17316,11 +23051,17 @@ class TestModel_PrestoEngine:
         engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
 
+        engine_properties_log_configuration_model = {}  # EnginePropertiesLogConfiguration
+        engine_properties_log_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_log_configuration_model['worker'] = node_description_body_model
+
         presto_engine_engine_properties_model = {}  # PrestoEngineEngineProperties
         presto_engine_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
         presto_engine_engine_properties_model['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model['event_listener'] = presto_engine_properties_event_listener_model
         presto_engine_engine_properties_model['global'] = presto_engine_properties_global_model
         presto_engine_engine_properties_model['jvm'] = engine_properties_oai_gen1_jvm_model
+        presto_engine_engine_properties_model['log_config'] = engine_properties_log_configuration_model
 
         remove_engine_properties_oai_gen_configuration_model = {}  # RemoveEnginePropertiesOaiGenConfiguration
         remove_engine_properties_oai_gen_configuration_model['coordinator'] = ['testString']
@@ -17331,9 +23072,10 @@ class TestModel_PrestoEngine:
         remove_engine_properties_oai_gen_jvm_model['worker'] = ['testString']
 
         presto_engine_patch_remove_engine_properties_model = {}  # PrestoEnginePatchRemoveEngineProperties
+        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
         presto_engine_patch_remove_engine_properties_model['configuration'] = remove_engine_properties_oai_gen_configuration_model
         presto_engine_patch_remove_engine_properties_model['jvm'] = remove_engine_properties_oai_gen_jvm_model
-        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_patch_remove_engine_properties_model['event_listener'] = []
 
         # Construct a json representation of a PrestoEngine model
         presto_engine_model_json = {}
@@ -17423,6 +23165,9 @@ class TestModel_PrestoEngineCollection:
         engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
 
+        presto_engine_properties_event_listener_model = {}  # PrestoEnginePropertiesEventListener
+        presto_engine_properties_event_listener_model['event_listener_property'] = 'testString'
+
         presto_engine_properties_global_model = {}  # PrestoEnginePropertiesGlobal
         presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
 
@@ -17430,11 +23175,17 @@ class TestModel_PrestoEngineCollection:
         engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
 
+        engine_properties_log_configuration_model = {}  # EnginePropertiesLogConfiguration
+        engine_properties_log_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_log_configuration_model['worker'] = node_description_body_model
+
         presto_engine_engine_properties_model = {}  # PrestoEngineEngineProperties
         presto_engine_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
         presto_engine_engine_properties_model['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model['event_listener'] = presto_engine_properties_event_listener_model
         presto_engine_engine_properties_model['global'] = presto_engine_properties_global_model
         presto_engine_engine_properties_model['jvm'] = engine_properties_oai_gen1_jvm_model
+        presto_engine_engine_properties_model['log_config'] = engine_properties_log_configuration_model
 
         remove_engine_properties_oai_gen_configuration_model = {}  # RemoveEnginePropertiesOaiGenConfiguration
         remove_engine_properties_oai_gen_configuration_model['coordinator'] = ['testString']
@@ -17445,9 +23196,10 @@ class TestModel_PrestoEngineCollection:
         remove_engine_properties_oai_gen_jvm_model['worker'] = ['testString']
 
         presto_engine_patch_remove_engine_properties_model = {}  # PrestoEnginePatchRemoveEngineProperties
+        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
         presto_engine_patch_remove_engine_properties_model['configuration'] = remove_engine_properties_oai_gen_configuration_model
         presto_engine_patch_remove_engine_properties_model['jvm'] = remove_engine_properties_oai_gen_jvm_model
-        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_patch_remove_engine_properties_model['event_listener'] = []
 
         presto_engine_model = {}  # PrestoEngine
         presto_engine_model['actions'] = ['view', 'use', 'update', 'select', 'access_ui', 'associate', 'disassociate', 'restart', 'pause', 'resume', 'grant', 'revoke', 'delete', 'create', 'scale']
@@ -17521,6 +23273,9 @@ class TestModel_PrestoEngineEngineProperties:
         engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
 
+        presto_engine_properties_event_listener_model = {}  # PrestoEnginePropertiesEventListener
+        presto_engine_properties_event_listener_model['event_listener_property'] = 'testString'
+
         presto_engine_properties_global_model = {}  # PrestoEnginePropertiesGlobal
         presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
 
@@ -17528,12 +23283,18 @@ class TestModel_PrestoEngineEngineProperties:
         engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
 
+        engine_properties_log_configuration_model = {}  # EnginePropertiesLogConfiguration
+        engine_properties_log_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_log_configuration_model['worker'] = node_description_body_model
+
         # Construct a json representation of a PrestoEngineEngineProperties model
         presto_engine_engine_properties_model_json = {}
         presto_engine_engine_properties_model_json['catalog'] = presto_engine_properties_catalog_model
         presto_engine_engine_properties_model_json['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model_json['event_listener'] = presto_engine_properties_event_listener_model
         presto_engine_engine_properties_model_json['global'] = presto_engine_properties_global_model
         presto_engine_engine_properties_model_json['jvm'] = engine_properties_oai_gen1_jvm_model
+        presto_engine_engine_properties_model_json['log_config'] = engine_properties_log_configuration_model
 
         # Construct a model instance of PrestoEngineEngineProperties by calling from_dict on the json representation
         presto_engine_engine_properties_model = PrestoEngineEngineProperties.from_dict(presto_engine_engine_properties_model_json)
@@ -17574,6 +23335,9 @@ class TestModel_PrestoEnginePatch:
         engine_properties_oai_gen1_configuration_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_configuration_model['worker'] = node_description_body_model
 
+        presto_engine_properties_event_listener_model = {}  # PrestoEnginePropertiesEventListener
+        presto_engine_properties_event_listener_model['event_listener_property'] = 'testString'
+
         presto_engine_properties_global_model = {}  # PrestoEnginePropertiesGlobal
         presto_engine_properties_global_model['global_property'] = 'enable-mixed-case-support:true'
 
@@ -17581,11 +23345,17 @@ class TestModel_PrestoEnginePatch:
         engine_properties_oai_gen1_jvm_model['coordinator'] = node_description_body_model
         engine_properties_oai_gen1_jvm_model['worker'] = node_description_body_model
 
+        engine_properties_log_configuration_model = {}  # EnginePropertiesLogConfiguration
+        engine_properties_log_configuration_model['coordinator'] = node_description_body_model
+        engine_properties_log_configuration_model['worker'] = node_description_body_model
+
         presto_engine_engine_properties_model = {}  # PrestoEngineEngineProperties
         presto_engine_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
         presto_engine_engine_properties_model['configuration'] = engine_properties_oai_gen1_configuration_model
+        presto_engine_engine_properties_model['event_listener'] = presto_engine_properties_event_listener_model
         presto_engine_engine_properties_model['global'] = presto_engine_properties_global_model
         presto_engine_engine_properties_model['jvm'] = engine_properties_oai_gen1_jvm_model
+        presto_engine_engine_properties_model['log_config'] = engine_properties_log_configuration_model
 
         remove_engine_properties_oai_gen_configuration_model = {}  # RemoveEnginePropertiesOaiGenConfiguration
         remove_engine_properties_oai_gen_configuration_model['coordinator'] = ['testString']
@@ -17596,9 +23366,10 @@ class TestModel_PrestoEnginePatch:
         remove_engine_properties_oai_gen_jvm_model['worker'] = ['testString']
 
         presto_engine_patch_remove_engine_properties_model = {}  # PrestoEnginePatchRemoveEngineProperties
+        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
         presto_engine_patch_remove_engine_properties_model['configuration'] = remove_engine_properties_oai_gen_configuration_model
         presto_engine_patch_remove_engine_properties_model['jvm'] = remove_engine_properties_oai_gen_jvm_model
-        presto_engine_patch_remove_engine_properties_model['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_patch_remove_engine_properties_model['event_listener'] = []
 
         # Construct a json representation of a PrestoEnginePatch model
         presto_engine_patch_model_json = {}
@@ -17637,6 +23408,9 @@ class TestModel_PrestoEnginePatchRemoveEngineProperties:
 
         # Construct dict forms of any model objects needed in order to build this model.
 
+        presto_engine_properties_catalog_model = {}  # PrestoEnginePropertiesCatalog
+        presto_engine_properties_catalog_model['catalog_name'] = 'testString'
+
         remove_engine_properties_oai_gen_configuration_model = {}  # RemoveEnginePropertiesOaiGenConfiguration
         remove_engine_properties_oai_gen_configuration_model['coordinator'] = ['testString']
         remove_engine_properties_oai_gen_configuration_model['worker'] = ['testString']
@@ -17645,14 +23419,12 @@ class TestModel_PrestoEnginePatchRemoveEngineProperties:
         remove_engine_properties_oai_gen_jvm_model['coordinator'] = ['testString']
         remove_engine_properties_oai_gen_jvm_model['worker'] = ['testString']
 
-        presto_engine_properties_catalog_model = {}  # PrestoEnginePropertiesCatalog
-        presto_engine_properties_catalog_model['catalog_name'] = 'testString'
-
         # Construct a json representation of a PrestoEnginePatchRemoveEngineProperties model
         presto_engine_patch_remove_engine_properties_model_json = {}
+        presto_engine_patch_remove_engine_properties_model_json['catalog'] = presto_engine_properties_catalog_model
         presto_engine_patch_remove_engine_properties_model_json['configuration'] = remove_engine_properties_oai_gen_configuration_model
         presto_engine_patch_remove_engine_properties_model_json['jvm'] = remove_engine_properties_oai_gen_jvm_model
-        presto_engine_patch_remove_engine_properties_model_json['catalog'] = presto_engine_properties_catalog_model
+        presto_engine_patch_remove_engine_properties_model_json['event_listener'] = []
 
         # Construct a model instance of PrestoEnginePatchRemoveEngineProperties by calling from_dict on the json representation
         presto_engine_patch_remove_engine_properties_model = PrestoEnginePatchRemoveEngineProperties.from_dict(presto_engine_patch_remove_engine_properties_model_json)
@@ -17698,6 +23470,36 @@ class TestModel_PrestoEnginePropertiesCatalog:
         # Convert model instance back to dict and verify no loss of data
         presto_engine_properties_catalog_model_json2 = presto_engine_properties_catalog_model.to_dict()
         assert presto_engine_properties_catalog_model_json2 == presto_engine_properties_catalog_model_json
+
+
+class TestModel_PrestoEnginePropertiesEventListener:
+    """
+    Test Class for PrestoEnginePropertiesEventListener
+    """
+
+    def test_presto_engine_properties_event_listener_serialization(self):
+        """
+        Test serialization/deserialization for PrestoEnginePropertiesEventListener
+        """
+
+        # Construct a json representation of a PrestoEnginePropertiesEventListener model
+        presto_engine_properties_event_listener_model_json = {}
+        presto_engine_properties_event_listener_model_json['event_listener_property'] = 'testString'
+
+        # Construct a model instance of PrestoEnginePropertiesEventListener by calling from_dict on the json representation
+        presto_engine_properties_event_listener_model = PrestoEnginePropertiesEventListener.from_dict(presto_engine_properties_event_listener_model_json)
+        assert presto_engine_properties_event_listener_model != False
+
+        # Construct a model instance of PrestoEnginePropertiesEventListener by calling from_dict on the json representation
+        presto_engine_properties_event_listener_model_dict = PrestoEnginePropertiesEventListener.from_dict(presto_engine_properties_event_listener_model_json).__dict__
+        presto_engine_properties_event_listener_model2 = PrestoEnginePropertiesEventListener(**presto_engine_properties_event_listener_model_dict)
+
+        # Verify the model instances are equivalent
+        assert presto_engine_properties_event_listener_model == presto_engine_properties_event_listener_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        presto_engine_properties_event_listener_model_json2 = presto_engine_properties_event_listener_model.to_dict()
+        assert presto_engine_properties_event_listener_model_json2 == presto_engine_properties_event_listener_model_json
 
 
 class TestModel_PrestoEnginePropertiesGlobal:
@@ -17869,11 +23671,14 @@ class TestModel_RemoveEngineProperties:
         remove_engine_properties_configuration_model['coordinator'] = ['testString']
         remove_engine_properties_configuration_model['worker'] = ['testString']
 
+        remove_engine_properties_prestissimo_oai_gen_jvm_model = {}  # RemoveEnginePropertiesPrestissimoOaiGenJvm
+        remove_engine_properties_prestissimo_oai_gen_jvm_model['coordinator'] = ['testString']
+
         # Construct a json representation of a RemoveEngineProperties model
         remove_engine_properties_model_json = {}
         remove_engine_properties_model_json['catalog'] = prestissimo_engine_properties_catalog_model
         remove_engine_properties_model_json['configuration'] = remove_engine_properties_configuration_model
-        remove_engine_properties_model_json['jvm'] = remove_engine_properties_configuration_model
+        remove_engine_properties_model_json['jvm'] = remove_engine_properties_prestissimo_oai_gen_jvm_model
         remove_engine_properties_model_json['velox'] = ['testString']
 
         # Construct a model instance of RemoveEngineProperties by calling from_dict on the json representation
@@ -17985,6 +23790,36 @@ class TestModel_RemoveEnginePropertiesOaiGenJvm:
         assert remove_engine_properties_oai_gen_jvm_model_json2 == remove_engine_properties_oai_gen_jvm_model_json
 
 
+class TestModel_RemoveEnginePropertiesPrestissimoOaiGenJvm:
+    """
+    Test Class for RemoveEnginePropertiesPrestissimoOaiGenJvm
+    """
+
+    def test_remove_engine_properties_prestissimo_oai_gen_jvm_serialization(self):
+        """
+        Test serialization/deserialization for RemoveEnginePropertiesPrestissimoOaiGenJvm
+        """
+
+        # Construct a json representation of a RemoveEnginePropertiesPrestissimoOaiGenJvm model
+        remove_engine_properties_prestissimo_oai_gen_jvm_model_json = {}
+        remove_engine_properties_prestissimo_oai_gen_jvm_model_json['coordinator'] = ['testString']
+
+        # Construct a model instance of RemoveEnginePropertiesPrestissimoOaiGenJvm by calling from_dict on the json representation
+        remove_engine_properties_prestissimo_oai_gen_jvm_model = RemoveEnginePropertiesPrestissimoOaiGenJvm.from_dict(remove_engine_properties_prestissimo_oai_gen_jvm_model_json)
+        assert remove_engine_properties_prestissimo_oai_gen_jvm_model != False
+
+        # Construct a model instance of RemoveEnginePropertiesPrestissimoOaiGenJvm by calling from_dict on the json representation
+        remove_engine_properties_prestissimo_oai_gen_jvm_model_dict = RemoveEnginePropertiesPrestissimoOaiGenJvm.from_dict(remove_engine_properties_prestissimo_oai_gen_jvm_model_json).__dict__
+        remove_engine_properties_prestissimo_oai_gen_jvm_model2 = RemoveEnginePropertiesPrestissimoOaiGenJvm(**remove_engine_properties_prestissimo_oai_gen_jvm_model_dict)
+
+        # Verify the model instances are equivalent
+        assert remove_engine_properties_prestissimo_oai_gen_jvm_model == remove_engine_properties_prestissimo_oai_gen_jvm_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        remove_engine_properties_prestissimo_oai_gen_jvm_model_json2 = remove_engine_properties_prestissimo_oai_gen_jvm_model.to_dict()
+        assert remove_engine_properties_prestissimo_oai_gen_jvm_model_json2 == remove_engine_properties_prestissimo_oai_gen_jvm_model_json
+
+
 class TestModel_ReplaceSnapshotCreatedBody:
     """
     Test Class for ReplaceSnapshotCreatedBody
@@ -18019,6 +23854,36 @@ class TestModel_ReplaceSnapshotCreatedBody:
         # Convert model instance back to dict and verify no loss of data
         replace_snapshot_created_body_model_json2 = replace_snapshot_created_body_model.to_dict()
         assert replace_snapshot_created_body_model_json2 == replace_snapshot_created_body_model_json
+
+
+class TestModel_ResultExecuteQuery:
+    """
+    Test Class for ResultExecuteQuery
+    """
+
+    def test_result_execute_query_serialization(self):
+        """
+        Test serialization/deserialization for ResultExecuteQuery
+        """
+
+        # Construct a json representation of a ResultExecuteQuery model
+        result_execute_query_model_json = {}
+        result_execute_query_model_json['result'] = [{'key1': 'testString'}]
+
+        # Construct a model instance of ResultExecuteQuery by calling from_dict on the json representation
+        result_execute_query_model = ResultExecuteQuery.from_dict(result_execute_query_model_json)
+        assert result_execute_query_model != False
+
+        # Construct a model instance of ResultExecuteQuery by calling from_dict on the json representation
+        result_execute_query_model_dict = ResultExecuteQuery.from_dict(result_execute_query_model_json).__dict__
+        result_execute_query_model2 = ResultExecuteQuery(**result_execute_query_model_dict)
+
+        # Verify the model instances are equivalent
+        assert result_execute_query_model == result_execute_query_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        result_execute_query_model_json2 = result_execute_query_model.to_dict()
+        assert result_execute_query_model_json2 == result_execute_query_model_json
 
 
 class TestModel_ResultPrestissimoExplainStatement:
@@ -18153,6 +24018,1005 @@ class TestModel_RunExplainStatementOKBody:
         # Convert model instance back to dict and verify no loss of data
         run_explain_statement_ok_body_model_json2 = run_explain_statement_ok_body_model.to_dict()
         assert run_explain_statement_ok_body_model_json2 == run_explain_statement_ok_body_model_json
+
+
+class TestModel_SalIntegration:
+    """
+    Test Class for SalIntegration
+    """
+
+    def test_sal_integration_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegration
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        error_obj_model = {}  # ErrorObj
+        error_obj_model['code'] = 'unable_to_perform'
+        error_obj_model['message'] = 'Failed to process integration settings for watsonx.data instance'
+
+        # Construct a json representation of a SalIntegration model
+        sal_integration_model_json = {}
+        sal_integration_model_json['category_id'] = '10e64285-bf37-4d5d-b759-bc6a46589234'
+        sal_integration_model_json['engine_id'] = 'presto-01'
+        sal_integration_model_json['errors'] = [error_obj_model]
+        sal_integration_model_json['governance_scope_id'] = '10e64285-bf37-4d5d-b759-bc6a46589234'
+        sal_integration_model_json['governance_scope_type'] = 'category'
+        sal_integration_model_json['instance_id'] = '18b49d7a-9519-4539-8db5-ff080623c226'
+        sal_integration_model_json['status'] = 'provisioning'
+        sal_integration_model_json['storage_resource_crn'] = 'crn:v1:staging:public:cloud-object-storage:global:a/04e9bc47612523rr19ac22759cb69bebd:asd23df-6ada-45ff-bfe8-4343222'
+        sal_integration_model_json['storage_type'] = 'bmcos_object_storage'
+        sal_integration_model_json['timestamp'] = '1715056266'
+        sal_integration_model_json['trial_plan'] = False
+        sal_integration_model_json['username'] = 'xyz@abc.com'
+
+        # Construct a model instance of SalIntegration by calling from_dict on the json representation
+        sal_integration_model = SalIntegration.from_dict(sal_integration_model_json)
+        assert sal_integration_model != False
+
+        # Construct a model instance of SalIntegration by calling from_dict on the json representation
+        sal_integration_model_dict = SalIntegration.from_dict(sal_integration_model_json).__dict__
+        sal_integration_model2 = SalIntegration(**sal_integration_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_model == sal_integration_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_model_json2 = sal_integration_model.to_dict()
+        assert sal_integration_model_json2 == sal_integration_model_json
+
+
+class TestModel_SalIntegrationEnrichmentAssets:
+    """
+    Test Class for SalIntegrationEnrichmentAssets
+    """
+
+    def test_sal_integration_enrichment_assets_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentAssets
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        enrichment_asset_model = {}  # EnrichmentAsset
+        enrichment_asset_model['asset_attributes'] = ['attribute1', 'attribute2', 'attribute3']
+        enrichment_asset_model['asset_id'] = 'ee0383b9-dcab-4c1a-b03d-bf521837b6ed'
+        enrichment_asset_model['asset_name'] = 'newtable'
+        enrichment_asset_model['resource_key'] = '0000:0000:0000:0000:0000:FFFF:9EB0:04E2|31134|:/iceberg_data/new_schema/sampletable'
+        enrichment_asset_model['schema_name'] = 'sampleschema'
+
+        # Construct a json representation of a SalIntegrationEnrichmentAssets model
+        sal_integration_enrichment_assets_model_json = {}
+        sal_integration_enrichment_assets_model_json['enrichment_asset'] = enrichment_asset_model
+
+        # Construct a model instance of SalIntegrationEnrichmentAssets by calling from_dict on the json representation
+        sal_integration_enrichment_assets_model = SalIntegrationEnrichmentAssets.from_dict(sal_integration_enrichment_assets_model_json)
+        assert sal_integration_enrichment_assets_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentAssets by calling from_dict on the json representation
+        sal_integration_enrichment_assets_model_dict = SalIntegrationEnrichmentAssets.from_dict(sal_integration_enrichment_assets_model_json).__dict__
+        sal_integration_enrichment_assets_model2 = SalIntegrationEnrichmentAssets(**sal_integration_enrichment_assets_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_assets_model == sal_integration_enrichment_assets_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_assets_model_json2 = sal_integration_enrichment_assets_model.to_dict()
+        assert sal_integration_enrichment_assets_model_json2 == sal_integration_enrichment_assets_model_json
+
+
+class TestModel_SalIntegrationEnrichmentDataAsset:
+    """
+    Test Class for SalIntegrationEnrichmentDataAsset
+    """
+
+    def test_sal_integration_enrichment_data_asset_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentDataAsset
+        """
+
+        # Construct a json representation of a SalIntegrationEnrichmentDataAsset model
+        sal_integration_enrichment_data_asset_model_json = {}
+        sal_integration_enrichment_data_asset_model_json['asset'] = '{}'
+
+        # Construct a model instance of SalIntegrationEnrichmentDataAsset by calling from_dict on the json representation
+        sal_integration_enrichment_data_asset_model = SalIntegrationEnrichmentDataAsset.from_dict(sal_integration_enrichment_data_asset_model_json)
+        assert sal_integration_enrichment_data_asset_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentDataAsset by calling from_dict on the json representation
+        sal_integration_enrichment_data_asset_model_dict = SalIntegrationEnrichmentDataAsset.from_dict(sal_integration_enrichment_data_asset_model_json).__dict__
+        sal_integration_enrichment_data_asset_model2 = SalIntegrationEnrichmentDataAsset(**sal_integration_enrichment_data_asset_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_data_asset_model == sal_integration_enrichment_data_asset_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_data_asset_model_json2 = sal_integration_enrichment_data_asset_model.to_dict()
+        assert sal_integration_enrichment_data_asset_model_json2 == sal_integration_enrichment_data_asset_model_json
+
+
+class TestModel_SalIntegrationEnrichmentJobRun:
+    """
+    Test Class for SalIntegrationEnrichmentJobRun
+    """
+
+    def test_sal_integration_enrichment_job_run_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentJobRun
+        """
+
+        # Construct a json representation of a SalIntegrationEnrichmentJobRun model
+        sal_integration_enrichment_job_run_model_json = {}
+        sal_integration_enrichment_job_run_model_json['response'] = '{}'
+
+        # Construct a model instance of SalIntegrationEnrichmentJobRun by calling from_dict on the json representation
+        sal_integration_enrichment_job_run_model = SalIntegrationEnrichmentJobRun.from_dict(sal_integration_enrichment_job_run_model_json)
+        assert sal_integration_enrichment_job_run_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentJobRun by calling from_dict on the json representation
+        sal_integration_enrichment_job_run_model_dict = SalIntegrationEnrichmentJobRun.from_dict(sal_integration_enrichment_job_run_model_json).__dict__
+        sal_integration_enrichment_job_run_model2 = SalIntegrationEnrichmentJobRun(**sal_integration_enrichment_job_run_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_job_run_model == sal_integration_enrichment_job_run_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_job_run_model_json2 = sal_integration_enrichment_job_run_model.to_dict()
+        assert sal_integration_enrichment_job_run_model_json2 == sal_integration_enrichment_job_run_model_json
+
+
+class TestModel_SalIntegrationEnrichmentJobRunLogs:
+    """
+    Test Class for SalIntegrationEnrichmentJobRunLogs
+    """
+
+    def test_sal_integration_enrichment_job_run_logs_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentJobRunLogs
+        """
+
+        # Construct a json representation of a SalIntegrationEnrichmentJobRunLogs model
+        sal_integration_enrichment_job_run_logs_model_json = {}
+        sal_integration_enrichment_job_run_logs_model_json['results'] = ['testString']
+        sal_integration_enrichment_job_run_logs_model_json['total_count'] = 12
+
+        # Construct a model instance of SalIntegrationEnrichmentJobRunLogs by calling from_dict on the json representation
+        sal_integration_enrichment_job_run_logs_model = SalIntegrationEnrichmentJobRunLogs.from_dict(sal_integration_enrichment_job_run_logs_model_json)
+        assert sal_integration_enrichment_job_run_logs_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentJobRunLogs by calling from_dict on the json representation
+        sal_integration_enrichment_job_run_logs_model_dict = SalIntegrationEnrichmentJobRunLogs.from_dict(sal_integration_enrichment_job_run_logs_model_json).__dict__
+        sal_integration_enrichment_job_run_logs_model2 = SalIntegrationEnrichmentJobRunLogs(**sal_integration_enrichment_job_run_logs_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_job_run_logs_model == sal_integration_enrichment_job_run_logs_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_job_run_logs_model_json2 = sal_integration_enrichment_job_run_logs_model.to_dict()
+        assert sal_integration_enrichment_job_run_logs_model_json2 == sal_integration_enrichment_job_run_logs_model_json
+
+
+class TestModel_SalIntegrationEnrichmentJobs:
+    """
+    Test Class for SalIntegrationEnrichmentJobs
+    """
+
+    def test_sal_integration_enrichment_jobs_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentJobs
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model['env_type'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model['env_variables'] = []
+
+        schedule_info_model = {}  # ScheduleInfo
+        schedule_info_model['frequency'] = 'testString'
+
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['account_id'] = '04e9bc4761254b719ac22759cb69bebd'
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['task_credentials_enabled'] = True
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['user_id'] = 'IBMid-55000832RK'
+
+        sal_integration_enrichment_jobs_result_item_entity_job_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityJob
+        sal_integration_enrichment_jobs_result_item_entity_job_model['asset_ref'] = '8688a3b6-a946-499e-a93c-b7d099db80dd'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['asset_ref_type'] = 'metadata_enrichment_area'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['configuration'] = sal_integration_enrichment_jobs_result_item_entity_job_configuration_model
+        sal_integration_enrichment_jobs_result_item_entity_job_model['enable_notifications'] = False
+        sal_integration_enrichment_jobs_result_item_entity_job_model['future_scheduled_runs'] = []
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_initiator'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_status'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_status_timestamp'] = 0
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_time'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['project_name'] = 'SAL Mapping /iceberg_data/new_schema 9aae5be3-87cf-4c31-b17d-9256ab42c14e'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['schedule_creator_id'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['schedule_id'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['schedule_info'] = schedule_info_model
+        sal_integration_enrichment_jobs_result_item_entity_job_model['task_credentials_support'] = sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model
+
+        sal_integration_enrichment_jobs_result_item_entity_model = {}  # SalIntegrationEnrichmentJobsResultItemEntity
+        sal_integration_enrichment_jobs_result_item_entity_model['job'] = sal_integration_enrichment_jobs_result_item_entity_job_model
+
+        sal_integration_enrichment_jobs_result_item_metadata_model = {}  # SalIntegrationEnrichmentJobsResultItemMetadata
+        sal_integration_enrichment_jobs_result_item_metadata_model['asset_id'] = 'ea73ce44-8aa0-4c75-bd69-6ca7074a1030'
+        sal_integration_enrichment_jobs_result_item_metadata_model['name'] = 'SAL_MDE job'
+        sal_integration_enrichment_jobs_result_item_metadata_model['owner_id'] = 'IBMid-55000832RK'
+        sal_integration_enrichment_jobs_result_item_metadata_model['version'] = 0
+
+        sal_integration_enrichment_jobs_result_item_model = {}  # SalIntegrationEnrichmentJobsResultItem
+        sal_integration_enrichment_jobs_result_item_model['entity'] = sal_integration_enrichment_jobs_result_item_entity_model
+        sal_integration_enrichment_jobs_result_item_model['metadata'] = sal_integration_enrichment_jobs_result_item_metadata_model
+
+        sal_integration_enrichment_jobs_properties_model = {}  # SalIntegrationEnrichmentJobsProperties
+        sal_integration_enrichment_jobs_properties_model['results'] = [sal_integration_enrichment_jobs_result_item_model]
+        sal_integration_enrichment_jobs_properties_model['total_rows'] = 1
+
+        # Construct a json representation of a SalIntegrationEnrichmentJobs model
+        sal_integration_enrichment_jobs_model_json = {}
+        sal_integration_enrichment_jobs_model_json['jobs'] = sal_integration_enrichment_jobs_properties_model
+
+        # Construct a model instance of SalIntegrationEnrichmentJobs by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_model = SalIntegrationEnrichmentJobs.from_dict(sal_integration_enrichment_jobs_model_json)
+        assert sal_integration_enrichment_jobs_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentJobs by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_model_dict = SalIntegrationEnrichmentJobs.from_dict(sal_integration_enrichment_jobs_model_json).__dict__
+        sal_integration_enrichment_jobs_model2 = SalIntegrationEnrichmentJobs(**sal_integration_enrichment_jobs_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_jobs_model == sal_integration_enrichment_jobs_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_jobs_model_json2 = sal_integration_enrichment_jobs_model.to_dict()
+        assert sal_integration_enrichment_jobs_model_json2 == sal_integration_enrichment_jobs_model_json
+
+
+class TestModel_SalIntegrationEnrichmentJobsProperties:
+    """
+    Test Class for SalIntegrationEnrichmentJobsProperties
+    """
+
+    def test_sal_integration_enrichment_jobs_properties_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentJobsProperties
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model['env_type'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model['env_variables'] = []
+
+        schedule_info_model = {}  # ScheduleInfo
+        schedule_info_model['frequency'] = 'testString'
+
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['account_id'] = '04e9bc4761254b719ac22759cb69bebd'
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['task_credentials_enabled'] = True
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['user_id'] = 'IBMid-55000832RK'
+
+        sal_integration_enrichment_jobs_result_item_entity_job_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityJob
+        sal_integration_enrichment_jobs_result_item_entity_job_model['asset_ref'] = '8688a3b6-a946-499e-a93c-b7d099db80dd'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['asset_ref_type'] = 'metadata_enrichment_area'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['configuration'] = sal_integration_enrichment_jobs_result_item_entity_job_configuration_model
+        sal_integration_enrichment_jobs_result_item_entity_job_model['enable_notifications'] = False
+        sal_integration_enrichment_jobs_result_item_entity_job_model['future_scheduled_runs'] = []
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_initiator'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_status'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_status_timestamp'] = 0
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_time'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['project_name'] = 'SAL Mapping /iceberg_data/new_schema 9aae5be3-87cf-4c31-b17d-9256ab42c14e'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['schedule_creator_id'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['schedule_id'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['schedule_info'] = schedule_info_model
+        sal_integration_enrichment_jobs_result_item_entity_job_model['task_credentials_support'] = sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model
+
+        sal_integration_enrichment_jobs_result_item_entity_model = {}  # SalIntegrationEnrichmentJobsResultItemEntity
+        sal_integration_enrichment_jobs_result_item_entity_model['job'] = sal_integration_enrichment_jobs_result_item_entity_job_model
+
+        sal_integration_enrichment_jobs_result_item_metadata_model = {}  # SalIntegrationEnrichmentJobsResultItemMetadata
+        sal_integration_enrichment_jobs_result_item_metadata_model['asset_id'] = 'ea73ce44-8aa0-4c75-bd69-6ca7074a1030'
+        sal_integration_enrichment_jobs_result_item_metadata_model['name'] = 'SAL_MDE job'
+        sal_integration_enrichment_jobs_result_item_metadata_model['owner_id'] = 'IBMid-55000832RK'
+        sal_integration_enrichment_jobs_result_item_metadata_model['version'] = 0
+
+        sal_integration_enrichment_jobs_result_item_model = {}  # SalIntegrationEnrichmentJobsResultItem
+        sal_integration_enrichment_jobs_result_item_model['entity'] = sal_integration_enrichment_jobs_result_item_entity_model
+        sal_integration_enrichment_jobs_result_item_model['metadata'] = sal_integration_enrichment_jobs_result_item_metadata_model
+
+        # Construct a json representation of a SalIntegrationEnrichmentJobsProperties model
+        sal_integration_enrichment_jobs_properties_model_json = {}
+        sal_integration_enrichment_jobs_properties_model_json['results'] = [sal_integration_enrichment_jobs_result_item_model]
+        sal_integration_enrichment_jobs_properties_model_json['total_rows'] = 1
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsProperties by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_properties_model = SalIntegrationEnrichmentJobsProperties.from_dict(sal_integration_enrichment_jobs_properties_model_json)
+        assert sal_integration_enrichment_jobs_properties_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsProperties by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_properties_model_dict = SalIntegrationEnrichmentJobsProperties.from_dict(sal_integration_enrichment_jobs_properties_model_json).__dict__
+        sal_integration_enrichment_jobs_properties_model2 = SalIntegrationEnrichmentJobsProperties(**sal_integration_enrichment_jobs_properties_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_jobs_properties_model == sal_integration_enrichment_jobs_properties_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_jobs_properties_model_json2 = sal_integration_enrichment_jobs_properties_model.to_dict()
+        assert sal_integration_enrichment_jobs_properties_model_json2 == sal_integration_enrichment_jobs_properties_model_json
+
+
+class TestModel_SalIntegrationEnrichmentJobsResultItem:
+    """
+    Test Class for SalIntegrationEnrichmentJobsResultItem
+    """
+
+    def test_sal_integration_enrichment_jobs_result_item_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentJobsResultItem
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model['env_type'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model['env_variables'] = []
+
+        schedule_info_model = {}  # ScheduleInfo
+        schedule_info_model['frequency'] = 'testString'
+
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['account_id'] = '04e9bc4761254b719ac22759cb69bebd'
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['task_credentials_enabled'] = True
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['user_id'] = 'IBMid-55000832RK'
+
+        sal_integration_enrichment_jobs_result_item_entity_job_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityJob
+        sal_integration_enrichment_jobs_result_item_entity_job_model['asset_ref'] = '8688a3b6-a946-499e-a93c-b7d099db80dd'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['asset_ref_type'] = 'metadata_enrichment_area'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['configuration'] = sal_integration_enrichment_jobs_result_item_entity_job_configuration_model
+        sal_integration_enrichment_jobs_result_item_entity_job_model['enable_notifications'] = False
+        sal_integration_enrichment_jobs_result_item_entity_job_model['future_scheduled_runs'] = []
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_initiator'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_status'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_status_timestamp'] = 0
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_time'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['project_name'] = 'SAL Mapping /iceberg_data/new_schema 9aae5be3-87cf-4c31-b17d-9256ab42c14e'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['schedule_creator_id'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['schedule_id'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['schedule_info'] = schedule_info_model
+        sal_integration_enrichment_jobs_result_item_entity_job_model['task_credentials_support'] = sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model
+
+        sal_integration_enrichment_jobs_result_item_entity_model = {}  # SalIntegrationEnrichmentJobsResultItemEntity
+        sal_integration_enrichment_jobs_result_item_entity_model['job'] = sal_integration_enrichment_jobs_result_item_entity_job_model
+
+        sal_integration_enrichment_jobs_result_item_metadata_model = {}  # SalIntegrationEnrichmentJobsResultItemMetadata
+        sal_integration_enrichment_jobs_result_item_metadata_model['asset_id'] = 'ea73ce44-8aa0-4c75-bd69-6ca7074a1030'
+        sal_integration_enrichment_jobs_result_item_metadata_model['name'] = 'SAL_MDE job'
+        sal_integration_enrichment_jobs_result_item_metadata_model['owner_id'] = 'IBMid-55000832RK'
+        sal_integration_enrichment_jobs_result_item_metadata_model['version'] = 0
+
+        # Construct a json representation of a SalIntegrationEnrichmentJobsResultItem model
+        sal_integration_enrichment_jobs_result_item_model_json = {}
+        sal_integration_enrichment_jobs_result_item_model_json['entity'] = sal_integration_enrichment_jobs_result_item_entity_model
+        sal_integration_enrichment_jobs_result_item_model_json['metadata'] = sal_integration_enrichment_jobs_result_item_metadata_model
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsResultItem by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_result_item_model = SalIntegrationEnrichmentJobsResultItem.from_dict(sal_integration_enrichment_jobs_result_item_model_json)
+        assert sal_integration_enrichment_jobs_result_item_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsResultItem by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_result_item_model_dict = SalIntegrationEnrichmentJobsResultItem.from_dict(sal_integration_enrichment_jobs_result_item_model_json).__dict__
+        sal_integration_enrichment_jobs_result_item_model2 = SalIntegrationEnrichmentJobsResultItem(**sal_integration_enrichment_jobs_result_item_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_jobs_result_item_model == sal_integration_enrichment_jobs_result_item_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_jobs_result_item_model_json2 = sal_integration_enrichment_jobs_result_item_model.to_dict()
+        assert sal_integration_enrichment_jobs_result_item_model_json2 == sal_integration_enrichment_jobs_result_item_model_json
+
+
+class TestModel_SalIntegrationEnrichmentJobsResultItemEntity:
+    """
+    Test Class for SalIntegrationEnrichmentJobsResultItemEntity
+    """
+
+    def test_sal_integration_enrichment_jobs_result_item_entity_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentJobsResultItemEntity
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model['env_type'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model['env_variables'] = []
+
+        schedule_info_model = {}  # ScheduleInfo
+        schedule_info_model['frequency'] = 'testString'
+
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['account_id'] = '04e9bc4761254b719ac22759cb69bebd'
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['task_credentials_enabled'] = True
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['user_id'] = 'IBMid-55000832RK'
+
+        sal_integration_enrichment_jobs_result_item_entity_job_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityJob
+        sal_integration_enrichment_jobs_result_item_entity_job_model['asset_ref'] = '8688a3b6-a946-499e-a93c-b7d099db80dd'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['asset_ref_type'] = 'metadata_enrichment_area'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['configuration'] = sal_integration_enrichment_jobs_result_item_entity_job_configuration_model
+        sal_integration_enrichment_jobs_result_item_entity_job_model['enable_notifications'] = False
+        sal_integration_enrichment_jobs_result_item_entity_job_model['future_scheduled_runs'] = []
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_initiator'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_status'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_status_timestamp'] = 0
+        sal_integration_enrichment_jobs_result_item_entity_job_model['last_run_time'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['project_name'] = 'SAL Mapping /iceberg_data/new_schema 9aae5be3-87cf-4c31-b17d-9256ab42c14e'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['schedule_creator_id'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['schedule_id'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_model['schedule_info'] = schedule_info_model
+        sal_integration_enrichment_jobs_result_item_entity_job_model['task_credentials_support'] = sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model
+
+        # Construct a json representation of a SalIntegrationEnrichmentJobsResultItemEntity model
+        sal_integration_enrichment_jobs_result_item_entity_model_json = {}
+        sal_integration_enrichment_jobs_result_item_entity_model_json['job'] = sal_integration_enrichment_jobs_result_item_entity_job_model
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsResultItemEntity by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_result_item_entity_model = SalIntegrationEnrichmentJobsResultItemEntity.from_dict(sal_integration_enrichment_jobs_result_item_entity_model_json)
+        assert sal_integration_enrichment_jobs_result_item_entity_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsResultItemEntity by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_result_item_entity_model_dict = SalIntegrationEnrichmentJobsResultItemEntity.from_dict(sal_integration_enrichment_jobs_result_item_entity_model_json).__dict__
+        sal_integration_enrichment_jobs_result_item_entity_model2 = SalIntegrationEnrichmentJobsResultItemEntity(**sal_integration_enrichment_jobs_result_item_entity_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_jobs_result_item_entity_model == sal_integration_enrichment_jobs_result_item_entity_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_jobs_result_item_entity_model_json2 = sal_integration_enrichment_jobs_result_item_entity_model.to_dict()
+        assert sal_integration_enrichment_jobs_result_item_entity_model_json2 == sal_integration_enrichment_jobs_result_item_entity_model_json
+
+
+class TestModel_SalIntegrationEnrichmentJobsResultItemEntityJob:
+    """
+    Test Class for SalIntegrationEnrichmentJobsResultItemEntityJob
+    """
+
+    def test_sal_integration_enrichment_jobs_result_item_entity_job_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentJobsResultItemEntityJob
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model['env_type'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model['env_variables'] = []
+
+        schedule_info_model = {}  # ScheduleInfo
+        schedule_info_model['frequency'] = 'testString'
+
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model = {}  # SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['account_id'] = '04e9bc4761254b719ac22759cb69bebd'
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['task_credentials_enabled'] = True
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model['user_id'] = 'IBMid-55000832RK'
+
+        # Construct a json representation of a SalIntegrationEnrichmentJobsResultItemEntityJob model
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json = {}
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['asset_ref'] = '8688a3b6-a946-499e-a93c-b7d099db80dd'
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['asset_ref_type'] = 'metadata_enrichment_area'
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['configuration'] = sal_integration_enrichment_jobs_result_item_entity_job_configuration_model
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['enable_notifications'] = False
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['future_scheduled_runs'] = []
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['last_run_initiator'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['last_run_status'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['last_run_status_timestamp'] = 0
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['last_run_time'] = 'deprecated field'
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['project_name'] = 'SAL Mapping /iceberg_data/new_schema 9aae5be3-87cf-4c31-b17d-9256ab42c14e'
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['schedule_creator_id'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['schedule_id'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['schedule_info'] = schedule_info_model
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json['task_credentials_support'] = sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsResultItemEntityJob by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_result_item_entity_job_model = SalIntegrationEnrichmentJobsResultItemEntityJob.from_dict(sal_integration_enrichment_jobs_result_item_entity_job_model_json)
+        assert sal_integration_enrichment_jobs_result_item_entity_job_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsResultItemEntityJob by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_result_item_entity_job_model_dict = SalIntegrationEnrichmentJobsResultItemEntityJob.from_dict(sal_integration_enrichment_jobs_result_item_entity_job_model_json).__dict__
+        sal_integration_enrichment_jobs_result_item_entity_job_model2 = SalIntegrationEnrichmentJobsResultItemEntityJob(**sal_integration_enrichment_jobs_result_item_entity_job_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_jobs_result_item_entity_job_model == sal_integration_enrichment_jobs_result_item_entity_job_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_jobs_result_item_entity_job_model_json2 = sal_integration_enrichment_jobs_result_item_entity_job_model.to_dict()
+        assert sal_integration_enrichment_jobs_result_item_entity_job_model_json2 == sal_integration_enrichment_jobs_result_item_entity_job_model_json
+
+
+class TestModel_SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration:
+    """
+    Test Class for SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration
+    """
+
+    def test_sal_integration_enrichment_jobs_result_item_entity_job_configuration_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration
+        """
+
+        # Construct a json representation of a SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration model
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model_json = {}
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model_json['env_type'] = 'testString'
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model_json['env_variables'] = []
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model = SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration.from_dict(sal_integration_enrichment_jobs_result_item_entity_job_configuration_model_json)
+        assert sal_integration_enrichment_jobs_result_item_entity_job_configuration_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model_dict = SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration.from_dict(sal_integration_enrichment_jobs_result_item_entity_job_configuration_model_json).__dict__
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model2 = SalIntegrationEnrichmentJobsResultItemEntityJobConfiguration(**sal_integration_enrichment_jobs_result_item_entity_job_configuration_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_jobs_result_item_entity_job_configuration_model == sal_integration_enrichment_jobs_result_item_entity_job_configuration_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_jobs_result_item_entity_job_configuration_model_json2 = sal_integration_enrichment_jobs_result_item_entity_job_configuration_model.to_dict()
+        assert sal_integration_enrichment_jobs_result_item_entity_job_configuration_model_json2 == sal_integration_enrichment_jobs_result_item_entity_job_configuration_model_json
+
+
+class TestModel_SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport:
+    """
+    Test Class for SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport
+    """
+
+    def test_sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport
+        """
+
+        # Construct a json representation of a SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport model
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model_json = {}
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model_json['account_id'] = '04e9bc4761254b719ac22759cb69bebd'
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model_json['task_credentials_enabled'] = True
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model_json['user_id'] = 'IBMid-55000832RK'
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model = SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport.from_dict(sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model_json)
+        assert sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model_dict = SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport.from_dict(sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model_json).__dict__
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model2 = SalIntegrationEnrichmentJobsResultItemEntityTaskCredentialsSupport(**sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model == sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model_json2 = sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model.to_dict()
+        assert sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model_json2 == sal_integration_enrichment_jobs_result_item_entity_task_credentials_support_model_json
+
+
+class TestModel_SalIntegrationEnrichmentJobsResultItemMetadata:
+    """
+    Test Class for SalIntegrationEnrichmentJobsResultItemMetadata
+    """
+
+    def test_sal_integration_enrichment_jobs_result_item_metadata_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentJobsResultItemMetadata
+        """
+
+        # Construct a json representation of a SalIntegrationEnrichmentJobsResultItemMetadata model
+        sal_integration_enrichment_jobs_result_item_metadata_model_json = {}
+        sal_integration_enrichment_jobs_result_item_metadata_model_json['asset_id'] = 'ea73ce44-8aa0-4c75-bd69-6ca7074a1030'
+        sal_integration_enrichment_jobs_result_item_metadata_model_json['name'] = 'SAL_MDE job'
+        sal_integration_enrichment_jobs_result_item_metadata_model_json['owner_id'] = 'IBMid-55000832RK'
+        sal_integration_enrichment_jobs_result_item_metadata_model_json['version'] = 0
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsResultItemMetadata by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_result_item_metadata_model = SalIntegrationEnrichmentJobsResultItemMetadata.from_dict(sal_integration_enrichment_jobs_result_item_metadata_model_json)
+        assert sal_integration_enrichment_jobs_result_item_metadata_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentJobsResultItemMetadata by calling from_dict on the json representation
+        sal_integration_enrichment_jobs_result_item_metadata_model_dict = SalIntegrationEnrichmentJobsResultItemMetadata.from_dict(sal_integration_enrichment_jobs_result_item_metadata_model_json).__dict__
+        sal_integration_enrichment_jobs_result_item_metadata_model2 = SalIntegrationEnrichmentJobsResultItemMetadata(**sal_integration_enrichment_jobs_result_item_metadata_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_jobs_result_item_metadata_model == sal_integration_enrichment_jobs_result_item_metadata_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_jobs_result_item_metadata_model_json2 = sal_integration_enrichment_jobs_result_item_metadata_model.to_dict()
+        assert sal_integration_enrichment_jobs_result_item_metadata_model_json2 == sal_integration_enrichment_jobs_result_item_metadata_model_json
+
+
+class TestModel_SalIntegrationEnrichmentSettings:
+    """
+    Test Class for SalIntegrationEnrichmentSettings
+    """
+
+    def test_sal_integration_enrichment_settings_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentSettings
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model = {}  # SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model['assignment_threshold'] = 0.14
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model['suggestion_threshold'] = 0.9
+
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model = {}  # SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model['assignment_threshold'] = 0.1
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model['suggestion_threshold'] = 0.1
+
+        sal_integration_enrichment_settings_semantic_expansion_model = {}  # SalIntegrationEnrichmentSettingsSemanticExpansion
+        sal_integration_enrichment_settings_semantic_expansion_model['description_generation'] = True
+        sal_integration_enrichment_settings_semantic_expansion_model['description_generation_configuration'] = sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model
+        sal_integration_enrichment_settings_semantic_expansion_model['name_expansion'] = True
+        sal_integration_enrichment_settings_semantic_expansion_model['name_expansion_configuration'] = sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model
+
+        sal_integration_enrichment_settings_term_assignment_model = {}  # SalIntegrationEnrichmentSettingsTermAssignment
+        sal_integration_enrichment_settings_term_assignment_model['class_based_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['evaluate_negative_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['llm_based_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model['ml_based_assignments_custom'] = False
+        sal_integration_enrichment_settings_term_assignment_model['ml_based_assignments_default'] = False
+        sal_integration_enrichment_settings_term_assignment_model['name_matching'] = False
+        sal_integration_enrichment_settings_term_assignment_model['term_assignment_threshold'] = 0.3
+        sal_integration_enrichment_settings_term_assignment_model['term_suggestion_threshold'] = 0.4
+
+        # Construct a json representation of a SalIntegrationEnrichmentSettings model
+        sal_integration_enrichment_settings_model_json = {}
+        sal_integration_enrichment_settings_model_json['semantic_expansion'] = sal_integration_enrichment_settings_semantic_expansion_model
+        sal_integration_enrichment_settings_model_json['term_assignment'] = sal_integration_enrichment_settings_term_assignment_model
+
+        # Construct a model instance of SalIntegrationEnrichmentSettings by calling from_dict on the json representation
+        sal_integration_enrichment_settings_model = SalIntegrationEnrichmentSettings.from_dict(sal_integration_enrichment_settings_model_json)
+        assert sal_integration_enrichment_settings_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentSettings by calling from_dict on the json representation
+        sal_integration_enrichment_settings_model_dict = SalIntegrationEnrichmentSettings.from_dict(sal_integration_enrichment_settings_model_json).__dict__
+        sal_integration_enrichment_settings_model2 = SalIntegrationEnrichmentSettings(**sal_integration_enrichment_settings_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_settings_model == sal_integration_enrichment_settings_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_settings_model_json2 = sal_integration_enrichment_settings_model.to_dict()
+        assert sal_integration_enrichment_settings_model_json2 == sal_integration_enrichment_settings_model_json
+
+
+class TestModel_SalIntegrationEnrichmentSettingsSemanticExpansion:
+    """
+    Test Class for SalIntegrationEnrichmentSettingsSemanticExpansion
+    """
+
+    def test_sal_integration_enrichment_settings_semantic_expansion_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentSettingsSemanticExpansion
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model = {}  # SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model['assignment_threshold'] = 0.14
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model['suggestion_threshold'] = 0.9
+
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model = {}  # SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model['assignment_threshold'] = 0.1
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model['suggestion_threshold'] = 0.1
+
+        # Construct a json representation of a SalIntegrationEnrichmentSettingsSemanticExpansion model
+        sal_integration_enrichment_settings_semantic_expansion_model_json = {}
+        sal_integration_enrichment_settings_semantic_expansion_model_json['description_generation'] = True
+        sal_integration_enrichment_settings_semantic_expansion_model_json['description_generation_configuration'] = sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model
+        sal_integration_enrichment_settings_semantic_expansion_model_json['name_expansion'] = True
+        sal_integration_enrichment_settings_semantic_expansion_model_json['name_expansion_configuration'] = sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model
+
+        # Construct a model instance of SalIntegrationEnrichmentSettingsSemanticExpansion by calling from_dict on the json representation
+        sal_integration_enrichment_settings_semantic_expansion_model = SalIntegrationEnrichmentSettingsSemanticExpansion.from_dict(sal_integration_enrichment_settings_semantic_expansion_model_json)
+        assert sal_integration_enrichment_settings_semantic_expansion_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentSettingsSemanticExpansion by calling from_dict on the json representation
+        sal_integration_enrichment_settings_semantic_expansion_model_dict = SalIntegrationEnrichmentSettingsSemanticExpansion.from_dict(sal_integration_enrichment_settings_semantic_expansion_model_json).__dict__
+        sal_integration_enrichment_settings_semantic_expansion_model2 = SalIntegrationEnrichmentSettingsSemanticExpansion(**sal_integration_enrichment_settings_semantic_expansion_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_settings_semantic_expansion_model == sal_integration_enrichment_settings_semantic_expansion_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_settings_semantic_expansion_model_json2 = sal_integration_enrichment_settings_semantic_expansion_model.to_dict()
+        assert sal_integration_enrichment_settings_semantic_expansion_model_json2 == sal_integration_enrichment_settings_semantic_expansion_model_json
+
+
+class TestModel_SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration:
+    """
+    Test Class for SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration
+    """
+
+    def test_sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration
+        """
+
+        # Construct a json representation of a SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration model
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model_json = {}
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model_json['assignment_threshold'] = 0.14
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model_json['suggestion_threshold'] = 0.9
+
+        # Construct a model instance of SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration by calling from_dict on the json representation
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model = SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration.from_dict(sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model_json)
+        assert sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration by calling from_dict on the json representation
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model_dict = SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration.from_dict(sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model_json).__dict__
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model2 = SalIntegrationEnrichmentSettingsSemanticExpansionDescriptionGenerationConfiguration(**sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model == sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model_json2 = sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model.to_dict()
+        assert sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model_json2 == sal_integration_enrichment_settings_semantic_expansion_description_generation_configuration_model_json
+
+
+class TestModel_SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration:
+    """
+    Test Class for SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration
+    """
+
+    def test_sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration
+        """
+
+        # Construct a json representation of a SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration model
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model_json = {}
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model_json['assignment_threshold'] = 0.1
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model_json['suggestion_threshold'] = 0.1
+
+        # Construct a model instance of SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration by calling from_dict on the json representation
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model = SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration.from_dict(sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model_json)
+        assert sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration by calling from_dict on the json representation
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model_dict = SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration.from_dict(sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model_json).__dict__
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model2 = SalIntegrationEnrichmentSettingsSemanticExpansionNameExpansionConfiguration(**sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model == sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model_json2 = sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model.to_dict()
+        assert sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model_json2 == sal_integration_enrichment_settings_semantic_expansion_name_expansion_configuration_model_json
+
+
+class TestModel_SalIntegrationEnrichmentSettingsTermAssignment:
+    """
+    Test Class for SalIntegrationEnrichmentSettingsTermAssignment
+    """
+
+    def test_sal_integration_enrichment_settings_term_assignment_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationEnrichmentSettingsTermAssignment
+        """
+
+        # Construct a json representation of a SalIntegrationEnrichmentSettingsTermAssignment model
+        sal_integration_enrichment_settings_term_assignment_model_json = {}
+        sal_integration_enrichment_settings_term_assignment_model_json['class_based_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model_json['evaluate_negative_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model_json['llm_based_assignments'] = False
+        sal_integration_enrichment_settings_term_assignment_model_json['ml_based_assignments_custom'] = False
+        sal_integration_enrichment_settings_term_assignment_model_json['ml_based_assignments_default'] = False
+        sal_integration_enrichment_settings_term_assignment_model_json['name_matching'] = False
+        sal_integration_enrichment_settings_term_assignment_model_json['term_assignment_threshold'] = 0.3
+        sal_integration_enrichment_settings_term_assignment_model_json['term_suggestion_threshold'] = 0.4
+
+        # Construct a model instance of SalIntegrationEnrichmentSettingsTermAssignment by calling from_dict on the json representation
+        sal_integration_enrichment_settings_term_assignment_model = SalIntegrationEnrichmentSettingsTermAssignment.from_dict(sal_integration_enrichment_settings_term_assignment_model_json)
+        assert sal_integration_enrichment_settings_term_assignment_model != False
+
+        # Construct a model instance of SalIntegrationEnrichmentSettingsTermAssignment by calling from_dict on the json representation
+        sal_integration_enrichment_settings_term_assignment_model_dict = SalIntegrationEnrichmentSettingsTermAssignment.from_dict(sal_integration_enrichment_settings_term_assignment_model_json).__dict__
+        sal_integration_enrichment_settings_term_assignment_model2 = SalIntegrationEnrichmentSettingsTermAssignment(**sal_integration_enrichment_settings_term_assignment_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_enrichment_settings_term_assignment_model == sal_integration_enrichment_settings_term_assignment_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_enrichment_settings_term_assignment_model_json2 = sal_integration_enrichment_settings_term_assignment_model.to_dict()
+        assert sal_integration_enrichment_settings_term_assignment_model_json2 == sal_integration_enrichment_settings_term_assignment_model_json
+
+
+class TestModel_SalIntegrationGlossaryTerms:
+    """
+    Test Class for SalIntegrationGlossaryTerms
+    """
+
+    def test_sal_integration_glossary_terms_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationGlossaryTerms
+        """
+
+        # Construct dict forms of any model objects needed in order to build this model.
+
+        glossary_object_model = {}  # GlossaryObject
+        glossary_object_model['description'] = 'First Name'
+        glossary_object_model['name'] = 'Name'
+
+        # Construct a json representation of a SalIntegrationGlossaryTerms model
+        sal_integration_glossary_terms_model_json = {}
+        sal_integration_glossary_terms_model_json['glossary_term'] = glossary_object_model
+
+        # Construct a model instance of SalIntegrationGlossaryTerms by calling from_dict on the json representation
+        sal_integration_glossary_terms_model = SalIntegrationGlossaryTerms.from_dict(sal_integration_glossary_terms_model_json)
+        assert sal_integration_glossary_terms_model != False
+
+        # Construct a model instance of SalIntegrationGlossaryTerms by calling from_dict on the json representation
+        sal_integration_glossary_terms_model_dict = SalIntegrationGlossaryTerms.from_dict(sal_integration_glossary_terms_model_json).__dict__
+        sal_integration_glossary_terms_model2 = SalIntegrationGlossaryTerms(**sal_integration_glossary_terms_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_glossary_terms_model == sal_integration_glossary_terms_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_glossary_terms_model_json2 = sal_integration_glossary_terms_model.to_dict()
+        assert sal_integration_glossary_terms_model_json2 == sal_integration_glossary_terms_model_json
+
+
+class TestModel_SalIntegrationMappings:
+    """
+    Test Class for SalIntegrationMappings
+    """
+
+    def test_sal_integration_mappings_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationMappings
+        """
+
+        # Construct a json representation of a SalIntegrationMappings model
+        sal_integration_mappings_model_json = {}
+        sal_integration_mappings_model_json['wkc_catalog_id'] = 'iceberg_data'
+        sal_integration_mappings_model_json['wkc_project_id'] = 'create'
+
+        # Construct a model instance of SalIntegrationMappings by calling from_dict on the json representation
+        sal_integration_mappings_model = SalIntegrationMappings.from_dict(sal_integration_mappings_model_json)
+        assert sal_integration_mappings_model != False
+
+        # Construct a model instance of SalIntegrationMappings by calling from_dict on the json representation
+        sal_integration_mappings_model_dict = SalIntegrationMappings.from_dict(sal_integration_mappings_model_json).__dict__
+        sal_integration_mappings_model2 = SalIntegrationMappings(**sal_integration_mappings_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_mappings_model == sal_integration_mappings_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_mappings_model_json2 = sal_integration_mappings_model.to_dict()
+        assert sal_integration_mappings_model_json2 == sal_integration_mappings_model_json
+
+
+class TestModel_SalIntegrationPatch:
+    """
+    Test Class for SalIntegrationPatch
+    """
+
+    def test_sal_integration_patch_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationPatch
+        """
+
+        # Construct a json representation of a SalIntegrationPatch model
+        sal_integration_patch_model_json = {}
+        sal_integration_patch_model_json['op'] = 'add'
+        sal_integration_patch_model_json['path'] = 'storage'
+        sal_integration_patch_model_json['value'] = 'new-apikey'
+
+        # Construct a model instance of SalIntegrationPatch by calling from_dict on the json representation
+        sal_integration_patch_model = SalIntegrationPatch.from_dict(sal_integration_patch_model_json)
+        assert sal_integration_patch_model != False
+
+        # Construct a model instance of SalIntegrationPatch by calling from_dict on the json representation
+        sal_integration_patch_model_dict = SalIntegrationPatch.from_dict(sal_integration_patch_model_json).__dict__
+        sal_integration_patch_model2 = SalIntegrationPatch(**sal_integration_patch_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_patch_model == sal_integration_patch_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_patch_model_json2 = sal_integration_patch_model.to_dict()
+        assert sal_integration_patch_model_json2 == sal_integration_patch_model_json
+
+
+class TestModel_SalIntegrationUploadGlossary:
+    """
+    Test Class for SalIntegrationUploadGlossary
+    """
+
+    def test_sal_integration_upload_glossary_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationUploadGlossary
+        """
+
+        # Construct a json representation of a SalIntegrationUploadGlossary model
+        sal_integration_upload_glossary_model_json = {}
+        sal_integration_upload_glossary_model_json['process_id'] = '18b49d7a-9519-4539-8db5-ff080623c226'
+
+        # Construct a model instance of SalIntegrationUploadGlossary by calling from_dict on the json representation
+        sal_integration_upload_glossary_model = SalIntegrationUploadGlossary.from_dict(sal_integration_upload_glossary_model_json)
+        assert sal_integration_upload_glossary_model != False
+
+        # Construct a model instance of SalIntegrationUploadGlossary by calling from_dict on the json representation
+        sal_integration_upload_glossary_model_dict = SalIntegrationUploadGlossary.from_dict(sal_integration_upload_glossary_model_json).__dict__
+        sal_integration_upload_glossary_model2 = SalIntegrationUploadGlossary(**sal_integration_upload_glossary_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_upload_glossary_model == sal_integration_upload_glossary_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_upload_glossary_model_json2 = sal_integration_upload_glossary_model.to_dict()
+        assert sal_integration_upload_glossary_model_json2 == sal_integration_upload_glossary_model_json
+
+
+class TestModel_SalIntegrationUploadGlossaryStatus:
+    """
+    Test Class for SalIntegrationUploadGlossaryStatus
+    """
+
+    def test_sal_integration_upload_glossary_status_serialization(self):
+        """
+        Test serialization/deserialization for SalIntegrationUploadGlossaryStatus
+        """
+
+        # Construct a json representation of a SalIntegrationUploadGlossaryStatus model
+        sal_integration_upload_glossary_status_model_json = {}
+        sal_integration_upload_glossary_status_model_json['response'] = 'Import status available'
+
+        # Construct a model instance of SalIntegrationUploadGlossaryStatus by calling from_dict on the json representation
+        sal_integration_upload_glossary_status_model = SalIntegrationUploadGlossaryStatus.from_dict(sal_integration_upload_glossary_status_model_json)
+        assert sal_integration_upload_glossary_status_model != False
+
+        # Construct a model instance of SalIntegrationUploadGlossaryStatus by calling from_dict on the json representation
+        sal_integration_upload_glossary_status_model_dict = SalIntegrationUploadGlossaryStatus.from_dict(sal_integration_upload_glossary_status_model_json).__dict__
+        sal_integration_upload_glossary_status_model2 = SalIntegrationUploadGlossaryStatus(**sal_integration_upload_glossary_status_model_dict)
+
+        # Verify the model instances are equivalent
+        assert sal_integration_upload_glossary_status_model == sal_integration_upload_glossary_status_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        sal_integration_upload_glossary_status_model_json2 = sal_integration_upload_glossary_status_model.to_dict()
+        assert sal_integration_upload_glossary_status_model_json2 == sal_integration_upload_glossary_status_model_json
+
+
+class TestModel_ScheduleInfo:
+    """
+    Test Class for ScheduleInfo
+    """
+
+    def test_schedule_info_serialization(self):
+        """
+        Test serialization/deserialization for ScheduleInfo
+        """
+
+        # Construct a json representation of a ScheduleInfo model
+        schedule_info_model_json = {}
+        schedule_info_model_json['frequency'] = 'testString'
+
+        # Construct a model instance of ScheduleInfo by calling from_dict on the json representation
+        schedule_info_model = ScheduleInfo.from_dict(schedule_info_model_json)
+        assert schedule_info_model != False
+
+        # Construct a model instance of ScheduleInfo by calling from_dict on the json representation
+        schedule_info_model_dict = ScheduleInfo.from_dict(schedule_info_model_json).__dict__
+        schedule_info_model2 = ScheduleInfo(**schedule_info_model_dict)
+
+        # Verify the model instances are equivalent
+        assert schedule_info_model == schedule_info_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        schedule_info_model_json2 = schedule_info_model.to_dict()
+        assert schedule_info_model_json2 == schedule_info_model_json
 
 
 class TestModel_SparkApplicationConfig:
@@ -18979,6 +25843,44 @@ class TestModel_SparkVolumeDetails:
         assert spark_volume_details_model_json2 == spark_volume_details_model_json
 
 
+class TestModel_StorageDetails:
+    """
+    Test Class for StorageDetails
+    """
+
+    def test_storage_details_serialization(self):
+        """
+        Test serialization/deserialization for StorageDetails
+        """
+
+        # Construct a json representation of a StorageDetails model
+        storage_details_model_json = {}
+        storage_details_model_json['access_key'] = '<access_key>'
+        storage_details_model_json['application_id'] = '<application_id>'
+        storage_details_model_json['auth_mode'] = '<account_key/sas/service_principle>'
+        storage_details_model_json['container_name'] = 'sample-container'
+        storage_details_model_json['directory_id'] = '<directory_id>'
+        storage_details_model_json['endpoint'] = 'abfss://<container_name>@<storage_account_name>.dfs.core.windows.net/'
+        storage_details_model_json['sas_token'] = '<sas_token>'
+        storage_details_model_json['secret_key'] = 'secret_key'
+        storage_details_model_json['storage_account_name'] = 'sample-storage'
+
+        # Construct a model instance of StorageDetails by calling from_dict on the json representation
+        storage_details_model = StorageDetails.from_dict(storage_details_model_json)
+        assert storage_details_model != False
+
+        # Construct a model instance of StorageDetails by calling from_dict on the json representation
+        storage_details_model_dict = StorageDetails.from_dict(storage_details_model_json).__dict__
+        storage_details_model2 = StorageDetails(**storage_details_model_dict)
+
+        # Verify the model instances are equivalent
+        assert storage_details_model == storage_details_model2
+
+        # Convert model instance back to dict and verify no loss of data
+        storage_details_model_json2 = storage_details_model.to_dict()
+        assert storage_details_model_json2 == storage_details_model_json
+
+
 class TestModel_SuccessResponse:
     """
     Test Class for SuccessResponse
@@ -19059,6 +25961,7 @@ class TestModel_Table:
         column_model['extra'] = 'varchar'
         column_model['length'] = '30'
         column_model['scale'] = '2'
+        column_model['precision'] = '10'
         column_model['type'] = 'varchar'
 
         # Construct a json representation of a Table model
@@ -19154,10 +26057,18 @@ class TestModel_TableSnapshot:
 
         # Construct a json representation of a TableSnapshot model
         table_snapshot_model_json = {}
+        table_snapshot_model_json['added_data_files'] = '1'
+        table_snapshot_model_json['added_files_size'] = '17425'
+        table_snapshot_model_json['added_records'] = '3277'
+        table_snapshot_model_json['changed_partition_count'] = '1'
         table_snapshot_model_json['committed_at'] = '1609379392'
         table_snapshot_model_json['operation'] = 'alter'
         table_snapshot_model_json['snapshot_id'] = '2332342122211222'
-        table_snapshot_model_json['summary'] = 'testString'
+        table_snapshot_model_json['total_data_files'] = '2'
+        table_snapshot_model_json['total_delete_files'] = '0'
+        table_snapshot_model_json['total_equality_deletes'] = '0'
+        table_snapshot_model_json['total_position_deletes'] = '0'
+        table_snapshot_model_json['total_records'] = '5000'
 
         # Construct a model instance of TableSnapshot by calling from_dict on the json representation
         table_snapshot_model = TableSnapshot.from_dict(table_snapshot_model_json)
@@ -19188,10 +26099,18 @@ class TestModel_TableSnapshotCollection:
         # Construct dict forms of any model objects needed in order to build this model.
 
         table_snapshot_model = {}  # TableSnapshot
+        table_snapshot_model['added_data_files'] = '1'
+        table_snapshot_model['added_files_size'] = '17425'
+        table_snapshot_model['added_records'] = '3277'
+        table_snapshot_model['changed_partition_count'] = '1'
         table_snapshot_model['committed_at'] = '1609379392'
         table_snapshot_model['operation'] = 'alter'
         table_snapshot_model['snapshot_id'] = '2332342122211222'
-        table_snapshot_model['summary'] = 'testString'
+        table_snapshot_model['total_data_files'] = '2'
+        table_snapshot_model['total_delete_files'] = '0'
+        table_snapshot_model['total_equality_deletes'] = '0'
+        table_snapshot_model['total_position_deletes'] = '0'
+        table_snapshot_model['total_records'] = '5000'
 
         # Construct a json representation of a TableSnapshotCollection model
         table_snapshot_collection_model_json = {}
